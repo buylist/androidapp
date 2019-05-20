@@ -1,3 +1,23 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">BuyList</string>
+
+    <!--BuyListFragment-->
+    <string name="buylist_title">Заголовок</string>
+
+    <!--ProductFragment-->
+    <string name="pattern_button">По шаблону</string>
+    <string name="recipe_button">По рецепту</string>
+    <string name="list_title_hint">Введите заголовок списка</string>
+    <string name="product_name_hint">Наименование продукта</string>
+
+    <string name="buylist_report_subject">BuyList Список покупок</string>
+    <string name="send_report">Поделиться через</string>
+
+    <!--Menu-->
+    <string name="new_buylist">Новый список</string>
+    <string name="show_settings">Настройки</string>
+
+    <string name="buylist_delete">Удалить</string>
+    <string name="list_is_empty">Список пуст</string>
+    <string name="add_product">Добавить в список</string>
 </resources>
