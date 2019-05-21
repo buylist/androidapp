@@ -17,9 +17,12 @@ import android.widget.*;
 import java.util.*;
 
 import ru.buylist.R;
+import ru.buylist.data.BuyListDbSchema;
 import ru.buylist.models.BuyList;
 import ru.buylist.models.Product;
 import ru.buylist.models.ProductLab;
+
+import static ru.buylist.data.BuyListDbSchema.*;
 
 public class ProductFragment extends Fragment {
 
@@ -96,7 +99,7 @@ public class ProductFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.buylist_delete:
                 ProductLab productLab = ProductLab.get(getActivity());
-                productLab.deleteBuyList(buyList.getId());
+                productLab.deleteFromDb(buyList.getId(), BuyTable.NAME);
                 getActivity().finish();
                 updateList();
                 return true;
@@ -112,6 +115,7 @@ public class ProductFragment extends Fragment {
     }
 
     private void initUi(View view) {
+        getActivity().setTitle(buyList.getTitle());
         titleField = view.findViewById(R.id.list_title);
         titleField.setText(buyList.getTitle());
         onTitleFieldChangedListener();
@@ -168,7 +172,7 @@ public class ProductFragment extends Fragment {
                 Product product = new Product();
                 product.setBuylistId(buyList.getId() + buyList.getTitle());
                 product.setName(productField.getText().toString());
-                ProductLab.get(getActivity()).addProductList(product);
+                ProductLab.get(getActivity()).addProducts(product);
                 updateProductListUi();
                 productField.setText("");
             }

@@ -23,7 +23,7 @@ public class BuyListActivity extends SingleFragmentActivity implements BuyListFr
 
     public void onProductSelected(BuyList buyList) {
         if (findViewById(R.id.detail_fragment_container) == null) {
-            Intent intent = BuyListPagerActivity.newIntent(this, buyList.getId());
+            Intent intent = ProductActivity.newIntent(this, buyList.getId());
             startActivity(intent);
         } else {
             Fragment newDetail = ProductFragment.newInstance(buyList.getId());

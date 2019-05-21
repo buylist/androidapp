@@ -38,7 +38,7 @@ public class ProductLab {
         return values;
     }
 
-    private static ContentValues getProductListContentValues(Product product) {
+    private static ContentValues getProductsContentValues(Product product) {
         ContentValues values = new ContentValues();
         values.put(ProductTable.Cols.BUYLIST_ID, product.getBuylistId());
         values.put(ProductTable.Cols.PRODUCT_NAME, product.getName());
@@ -52,18 +52,18 @@ public class ProductLab {
         database.insert(BuyTable.NAME, null, values);
     }
 
-    public void addProductList(Product product) {
-        ContentValues values = getProductListContentValues(product);
+    public void addProducts(Product product) {
+        ContentValues values = getProductsContentValues(product);
         database.insert(ProductTable.NAME, null, values);
     }
 
-    public void deleteBuyList(UUID id) {
-        database.delete(BuyTable.NAME, BuyTable.Cols.UUID + "=?", new String[]{id.toString()});
+    public void deleteFromDb(UUID id, String tableName) {
+        database.delete(tableName, BuyTable.Cols.UUID + "=?", new String[]{id.toString()});
     }
 
     public List<BuyList> getBuyLists() {
         List<BuyList> lists = new ArrayList<>();
-        BuyListCursorWrapper cursor = queryBuyLists(null, null);
+        BuyListCursorWrapper cursor = queryList(null, null, BuyTable.NAME);
 
         try {
             cursor.moveToFirst();
@@ -78,9 +78,8 @@ public class ProductLab {
     }
 
     public BuyList getBuyList(UUID id) {
-        BuyListCursorWrapper cursor = queryBuyLists(
-                BuyTable.Cols.UUID + " = ?", new String[]{id.toString()}
-        );
+        BuyListCursorWrapper cursor = queryList(
+                BuyTable.Cols.UUID + " = ?", new String[]{id.toString()}, BuyTable.NAME);
 
         try {
             if (cursor.getCount() == 0) {
@@ -97,8 +96,8 @@ public class ProductLab {
 
     public List<Product> getProductList(String id) {
         List<Product> products = new ArrayList<>();
-        BuyListCursorWrapper cursor = queryProductList(
-                ProductTable.Cols.BUYLIST_ID + " = ?", new String[]{id});
+        BuyListCursorWrapper cursor = queryList(
+                ProductTable.Cols.BUYLIST_ID + " = ?", new String[]{id}, ProductTable.NAME);
 
         try {
             cursor.moveToFirst();
@@ -120,7 +119,7 @@ public class ProductLab {
                 new String[]{uuidString});
     }
 
-    public void updateDB(List<BuyList> lists) {
+    public void updateBuyTable(List<BuyList> lists) {
         database.delete(BuyTable.NAME, null, null);
 
         for (BuyList buyList : lists) {
@@ -128,22 +127,9 @@ public class ProductLab {
         }
     }
 
-    private BuyListCursorWrapper queryBuyLists(String whereClause, String[] whereArgs) {
+    private BuyListCursorWrapper queryList(String whereClause, String[] whereArgs, String tableName) {
         Cursor cursor = database.query(
-                BuyTable.NAME,
-                null,
-                whereClause,
-                whereArgs,
-                null,
-                null,
-                null
-        );
-        return new BuyListCursorWrapper(cursor);
-    }
-
-    private BuyListCursorWrapper queryProductList(String whereClause, String[] whereArgs) {
-        Cursor cursor = database.query(
-                ProductTable.NAME,
+                tableName,
                 null,
                 whereClause,
                 whereArgs,

@@ -22,6 +22,8 @@ import ru.buylist.swipe_helper.ITouchHelperAdapter;
 import ru.buylist.swipe_helper.ITouchHelperHolder;
 import ru.buylist.swipe_helper.TouchHelperCallback;
 
+import static ru.buylist.data.BuyListDbSchema.*;
+
 public class BuyListFragment extends Fragment {
 
     private RecyclerView recyclerView;
@@ -132,7 +134,7 @@ public class BuyListFragment extends Fragment {
             @Override
             public void run() {
                 ProductLab productLab = ProductLab.get(getActivity());
-                productLab.updateDB(lists);
+                productLab.updateBuyTable(lists);
             }
         }).start();
     }
@@ -218,7 +220,7 @@ public class BuyListFragment extends Fragment {
         public void onItemDismiss(int position) {
             Log.d("TAG", "onItemDismiss: ");
             ProductLab productLab = ProductLab.get(getActivity());
-            productLab.deleteBuyList(lists.get(position).getId());
+            productLab.deleteFromDb(lists.get(position).getId(), BuyTable.NAME);
             notifyItemRemoved(position);
             updateUI();
         }
