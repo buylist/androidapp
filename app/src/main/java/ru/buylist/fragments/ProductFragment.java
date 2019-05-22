@@ -17,7 +17,6 @@ import android.widget.*;
 import java.util.*;
 
 import ru.buylist.R;
-import ru.buylist.data.BuyListDbSchema;
 import ru.buylist.models.BuyList;
 import ru.buylist.models.Product;
 import ru.buylist.models.ProductLab;
@@ -97,11 +96,7 @@ public class ProductFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.buylist_delete:
-                ProductLab productLab = ProductLab.get(getActivity());
-                productLab.deleteFromDb(buyList.getId(), BuyTable.NAME);
-                getActivity().finish();
-                updateList();
+            case R.id.buylist_edit:
                 return true;
             default:
                 updateList();

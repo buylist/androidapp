@@ -20,4 +20,13 @@
     <string name="buylist_delete">Удалить</string>
     <string name="list_is_empty">Список пуст</string>
     <string name="add_product">Добавить в список</string>
+    <string name="products_edit">Редактировать</string>
+    <string name="list_collection">Коллекция списков</string>
+    <string name="list_templates">Шаблоны</string>
+    <string name="recipe_list">Рецепты</string>
+    <string name="name_list_collection_hint">Введите название списка</string>
+    <string name="new_list_collection_description">Добавить новый список в колекцию</string>
+    <string name="create_new_list_collection_description">Создать список</string>
+    <string name="new_list_templates_description">Добавить шаблон</string>
+    <string name="new_recipe_description">Добавить рецепт</string>
 </resources>

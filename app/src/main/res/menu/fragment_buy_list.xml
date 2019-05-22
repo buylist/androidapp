@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/new_buylist"
-        android:icon="@drawable/ic_menu_add"
-        android:title="@string/new_buylist"
-        app:showAsAction="ifRoom|withText" />
-
-    <item
         android:id="@+id/settings"
         android:title="@string/show_settings"
         app:showAsAction="never" />

@@ -26,8 +26,20 @@ import static ru.buylist.data.BuyListDbSchema.*;
 
 public class BuyListFragment extends Fragment {
 
-    private RecyclerView recyclerView;
-    private TextView emptyTextView;
+    private RecyclerView list_collection_recycler;
+
+    private Button collection;
+    private Button templates;
+    private Button recipe;
+
+    private ImageButton newCollection;
+    private ImageButton newTemplates;
+    private ImageButton newRecipe;
+
+    private LinearLayout createCollectionLayout;
+    private EditText nameCollection;
+    private ImageButton createCollection;
+
     private BuyListAdapter adapter;
     private Callbacks callbacks;
 
@@ -48,17 +60,34 @@ public class BuyListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_buy_list, container, false);
-        emptyTextView = view.findViewById(R.id.list_is_empty);
-        recyclerView = view.findViewById(R.id.buy_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        initUi(view);
+        return view;
+    }
+
+    private void initUi(View view) {
+        collection = view.findViewById(R.id.list_collection);
+        templates = view.findViewById(R.id.list_templates);
+        recipe = view.findViewById(R.id.recipe_list);
+
+        newCollection = view.findViewById(R.id.new_list_collection);
+        newTemplates = view.findViewById(R.id.new_list_templates);
+        newRecipe = view.findViewById(R.id.new_recipe_list);
+
+        createCollectionLayout = view.findViewById(R.id.new_list_collection_layout);
+        nameCollection = view.findViewById(R.id.name_new_list_collection);
+        createCollection = view.findViewById(R.id.create_new_list_collection);
+
+        onNewCollectionButtonClick();
+        onCreateCollectionButtonClick();
+
+        list_collection_recycler = view.findViewById(R.id.list_collection_recycler_view);
+        list_collection_recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         updateUI();
 
         ItemTouchHelper.Callback callback = new TouchHelperCallback(adapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(recyclerView);
-
-        return view;
+        touchHelper.attachToRecyclerView(list_collection_recycler);
     }
 
     @Override
@@ -83,28 +112,6 @@ public class BuyListFragment extends Fragment {
         super.onDestroy();
     }
 
-    private void checkList(List<BuyList> lists) {
-        if (lists.isEmpty()) {
-            emptyTextView.setVisibility(View.VISIBLE);
-        } else {
-            emptyTextView.setVisibility(View.GONE);
-        }
-    }
-
-    public void updateUI() {
-        ProductLab productLab = ProductLab.get(getActivity());
-        List<BuyList> lists = productLab.getBuyLists();
-        checkList(lists);
-
-        if (adapter == null) {
-            adapter = new BuyListAdapter(lists);
-            recyclerView.setAdapter(adapter);
-        } else {
-            adapter.setLists(lists);
-            adapter.notifyDataSetChanged();
-        }
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -114,18 +121,47 @@ public class BuyListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.new_buylist:
-                BuyList buyList = new BuyList();
-                ProductLab.get(getActivity()).addBuyList(buyList);
-                updateUI();
-                callbacks.onProductSelected(buyList);
-                return true;
             case R.id.settings:
-                getActivity().invalidateOptionsMenu();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void updateUI() {
+        ProductLab productLab = ProductLab.get(getActivity());
+        List<BuyList> lists = productLab.getBuyLists();
+
+        if (adapter == null) {
+            adapter = new BuyListAdapter(lists);
+            list_collection_recycler.setAdapter(adapter);
+        } else {
+            adapter.setLists(lists);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private void onNewCollectionButtonClick() {
+        newCollection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createCollectionLayout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void onCreateCollectionButtonClick() {
+        createCollection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BuyList buyList = new BuyList();
+                buyList.setTitle(nameCollection.getText().toString());
+                ProductLab.get(getActivity()).addBuyList(buyList);
+                updateUI();
+                nameCollection.setText("");
+                createCollectionLayout.setVisibility(View.GONE);
+            }
+        });
     }
 
 
