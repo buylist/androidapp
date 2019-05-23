@@ -38,6 +38,10 @@ public class BuyListBaseHelper extends SQLiteOpenHelper {
         productTableBuilder.append(ProductTable.Cols.IS_PURCHASED);
         productTableBuilder.append(", ");
         productTableBuilder.append(ProductTable.Cols.CATEGORY);
+        productTableBuilder.append(", ");
+        productTableBuilder.append(ProductTable.Cols.AMOUNT);
+        productTableBuilder.append(", ");
+        productTableBuilder.append(ProductTable.Cols.UNIT);
         productTableBuilder.append(")");
 
         db.execSQL(buyTableBuilder.toString());

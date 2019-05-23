@@ -30,12 +30,16 @@ public class BuyListCursorWrapper extends CursorWrapper {
         String productName = getString(getColumnIndex(ProductTable.Cols.PRODUCT_NAME));
         int isPurchased = getInt(getColumnIndex(ProductTable.Cols.IS_PURCHASED));
         String category = getString(getColumnIndex(ProductTable.Cols.CATEGORY));
+        String amount = getString(getColumnIndex(ProductTable.Cols.AMOUNT));
+        String unit = getString(getColumnIndex(ProductTable.Cols.UNIT));
 
         Product product = new Product();
         product.setBuylistId(buylistId);
         product.setName(productName);
         product.setPurchased(isPurchased != 0);
         product.setCategory(category);
+        product.setAmount(amount);
+        product.setUnit(unit);
         return product;
     }
 }

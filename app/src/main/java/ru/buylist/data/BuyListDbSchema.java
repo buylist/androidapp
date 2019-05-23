@@ -18,6 +18,8 @@ public class BuyListDbSchema {
             public static final String PRODUCT_NAME = "product_name";
             public static final String IS_PURCHASED = "is_purchased";
             public static final String CATEGORY = "category";
+            public static final String AMOUNT = "amount";
+            public static final String UNIT = "unit";
         }
     }
 }

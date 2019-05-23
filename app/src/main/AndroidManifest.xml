@@ -14,7 +14,8 @@
 
         <activity
             android:name=".activity.ProductActivity"
-            android:parentActivityName=".activity.BuyListActivity" />
+            android:parentActivityName=".activity.BuyListActivity"
+            android:windowSoftInputMode="adjustPan" />
 
         <activity android:name=".activity.BuyListActivity">
             <intent-filter>

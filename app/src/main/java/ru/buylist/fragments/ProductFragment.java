@@ -3,15 +3,16 @@ package ru.buylist.fragments;
 import android.content.*;
 
 import android.content.pm.PackageManager;
+import android.graphics.Paint;
 import android.os.Bundle;
-
 import android.support.annotation.*;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.*;
 import android.support.v4.app.ShareCompat.IntentBuilder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.*;
 import android.view.*;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 
 import java.util.*;
@@ -21,23 +22,26 @@ import ru.buylist.models.BuyList;
 import ru.buylist.models.Product;
 import ru.buylist.models.ProductLab;
 
-import static ru.buylist.data.BuyListDbSchema.*;
-
 public class ProductFragment extends Fragment {
 
     private static final String ARG_BUY_LIST_ID = "buy_list_id";
 
     private BuyList buyList;
-    private EditText titleField;
-    private Button patternButton;
+
+    private Button templatesButton;
     private Button recipeButton;
+    private Button shareButton;
+    private FloatingActionButton newProductFab;
+    private ImageButton createProduct;
+
     private EditText productField;
-    private ImageButton addButton;
+    private EditText amountField;
+    private EditText unitField;
+
+    private LinearLayout newProductLayout;
 
     private RecyclerView recyclerView;
     private ProductAdapter adapter;
-
-    private Button shareButton;
 
     private PackageManager packageManager;
 
@@ -81,7 +85,7 @@ public class ProductFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_product, container, false);
+        View view = inflater.inflate(R.layout.fragment_products, container, false);
         initUi(view);
         return view;
     }
@@ -111,20 +115,22 @@ public class ProductFragment extends Fragment {
 
     private void initUi(View view) {
         getActivity().setTitle(buyList.getTitle());
-        titleField = view.findViewById(R.id.list_title);
-        titleField.setText(buyList.getTitle());
-        onTitleFieldChangedListener();
 
-        patternButton = view.findViewById(R.id.pattern_button);
+        templatesButton = view.findViewById(R.id.templates_button);
         recipeButton = view.findViewById(R.id.recipe_button);
-        productField = view.findViewById(R.id.product_name);
+        productField = view.findViewById(R.id.product_field);
+        amountField = view.findViewById(R.id.amount_field);
+        unitField = view.findViewById(R.id.unit_field);
+        createProduct = view.findViewById(R.id.create_product);
+        newProductLayout = view.findViewById(R.id.new_product);
+        newProductFab = view.findViewById(R.id.new_product_fab);
 
-        addButton = view.findViewById(R.id.add_product);
-        onAddButtonListener();
-
-        recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.products_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        onNewProductButtonClick();
         updateProductListUi();
+        onCreateButtonClick();
     }
 
     public void updateProductListUi() {
@@ -140,39 +146,62 @@ public class ProductFragment extends Fragment {
         }
     }
 
-    private void onTitleFieldChangedListener() {
-        titleField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                buyList.setTitle(s.toString());
-                updateList();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-    }
-
-    private void onAddButtonListener() {
-        addButton.setOnClickListener(new View.OnClickListener() {
+    private void onNewProductButtonClick() {
+        newProductFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Product product = new Product();
-                product.setBuylistId(buyList.getId() + buyList.getTitle());
-                product.setName(productField.getText().toString());
-                ProductLab.get(getActivity()).addProducts(product);
-                updateProductListUi();
-                productField.setText("");
+                newProductLayout.setVisibility(View.VISIBLE);
+                newProductFab.hide();
+                showKeyboard(true);
             }
         });
     }
+
+    private void onCreateButtonClick() {
+        createProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (productField.getText().length() != 0) {
+                    addNewProduct();
+                }
+                newProductLayout.setVisibility(View.GONE);
+                newProductFab.show();
+                showKeyboard(false);
+            }
+        });
+
+    }
+
+    private void addNewProduct() {
+        if (productField != null) {
+            Product product = new Product();
+            product.setBuylistId(buyList.getId() + buyList.getTitle());
+            product.setName(productField.getText().toString());
+            product.setAmount(amountField.getText().toString());
+            product.setUnit(unitField.getText().toString());
+            ProductLab.get(getActivity()).addProducts(product);
+            updateProductListUi();
+        }
+        clearFields();
+    }
+
+    private void showKeyboard(boolean flag) {
+        InputMethodManager imm = (InputMethodManager) getActivity()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (flag) {
+            productField.requestFocus();
+            imm.showSoftInput(productField, InputMethodManager.SHOW_IMPLICIT);
+        } else {
+            imm.hideSoftInputFromWindow(productField.getWindowToken(), 0);
+        }
+    }
+
+    private void clearFields() {
+        productField.setText("");
+        amountField.setText("");
+        unitField.setText("");
+    }
+
 
     private void onShareButtonClick() {
         shareButton.setOnClickListener(new View.OnClickListener() {
@@ -197,6 +226,7 @@ public class ProductFragment extends Fragment {
         return report;
     }
 
+
     public interface Callbacks {
         void onProductUpdated(BuyList buyList);
     }
@@ -204,13 +234,19 @@ public class ProductFragment extends Fragment {
 
     private class ProductHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private Product product;
-        private CheckBox isPurchased;
+        private ImageView category;
         private TextView productName;
+        private TextView amount;
+        private ImageButton edit;
+        private ImageButton delete;
 
         ProductHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_product, parent, false));
-            isPurchased = itemView.findViewById(R.id.is_purchased);
+            category = itemView.findViewById(R.id.circle);
             productName = itemView.findViewById(R.id.product_text);
+            amount = itemView.findViewById(R.id.product_amount);
+            edit = itemView.findViewById(R.id.edit_product);
+            delete = itemView.findViewById(R.id.delete_product);
 
             itemView.setOnClickListener(this);
         }
@@ -218,14 +254,23 @@ public class ProductFragment extends Fragment {
         void bind(Product product) {
             this.product = product;
             productName.setText(product.getName());
-            isPurchased.setChecked(product.isPurchased());
+            amount.setText(product.getAmount() + " " + product.getUnit());
+
+            if (product.isPurchased()) productName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
         @Override
         public void onClick(View v) {
-//            callbacks.onProductSelected(product);
-        }
+            if (product.isPurchased()) {
+                productName.setPaintFlags(productName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                product.setPurchased(false);
+            } else {
+                productName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                product.setPurchased(true);
+            }
+            ProductLab.get(getActivity()).updateProduct(product);
 
+        }
     }
 
     private class ProductAdapter extends RecyclerView.Adapter<ProductHolder> {
@@ -259,4 +304,5 @@ public class ProductFragment extends Fragment {
         }
 
     }
+
 }

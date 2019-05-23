@@ -44,6 +44,8 @@ public class ProductLab {
         values.put(ProductTable.Cols.PRODUCT_NAME, product.getName());
         values.put(ProductTable.Cols.IS_PURCHASED, product.isPurchased() ? 1 : 0);
         values.put(ProductTable.Cols.CATEGORY, product.getCategory());
+        values.put(ProductTable.Cols.AMOUNT, product.getAmount());
+        values.put(ProductTable.Cols.UNIT, product.getUnit());
         return values;
     }
 
@@ -125,6 +127,12 @@ public class ProductLab {
         for (BuyList buyList : lists) {
             addBuyList(buyList);
         }
+    }
+
+    public void updateProduct(Product product) {
+        ContentValues values = getProductsContentValues(product);
+        database.update(ProductTable.NAME, values, ProductTable.Cols.PRODUCT_NAME + " = ?",
+                new String[]{product.getName()});
     }
 
     private BuyListCursorWrapper queryList(String whereClause, String[] whereArgs, String tableName) {

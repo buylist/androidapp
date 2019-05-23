@@ -13,7 +13,6 @@
     <string name="buylist_report_subject">BuyList Список покупок</string>
     <string name="send_report">Поделиться через</string>
 
-    <!--Menu-->
     <string name="new_buylist">Новый список</string>
     <string name="show_settings">Настройки</string>
 
@@ -29,4 +28,13 @@
     <string name="create_new_list_collection_description">Создать список</string>
     <string name="new_list_templates_description">Добавить шаблон</string>
     <string name="new_recipe_description">Добавить рецепт</string>
+    <string name="new_product_hint">Название продукта</string>
+    <string name="amount_hint">1</string>
+    <string name="unit_hint">шт</string>
+    <string name="create_product_description">Добавить в список</string>
+    <string name="product_text">Продукт</string>
+    <string name="amount_text">Количество</string>
+    <string name="category_description">Категория</string>
+    <string name="edit_product_description">Изменить продукт</string>
+    <string name="delete_product">Удалить продукт</string>
 </resources>
