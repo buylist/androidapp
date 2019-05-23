@@ -165,7 +165,7 @@ public class BuyListFragment extends Fragment {
     }
 
 
-    private void updateDatabase(final List<BuyList> lists) {
+    private void updateBuyTable(final List<BuyList> lists) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -249,14 +249,14 @@ public class BuyListFragment extends Fragment {
             Collections.swap(lists, fromPosition, toPosition);
             notifyItemMoved(fromPosition, toPosition);
 
-            updateDatabase(lists);
+            updateBuyTable(lists);
         }
 
         @Override
         public void onItemDismiss(int position) {
             Log.d("TAG", "onItemDismiss: ");
             ProductLab productLab = ProductLab.get(getActivity());
-            productLab.deleteFromDb(lists.get(position).getId(), BuyTable.NAME);
+            productLab.deleteFromDb(lists.get(position).getId().toString(), BuyTable.NAME, BuyTable.Cols.UUID);
             notifyItemRemoved(position);
             updateUI();
         }

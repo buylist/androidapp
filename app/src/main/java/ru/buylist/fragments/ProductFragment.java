@@ -3,6 +3,7 @@ package ru.buylist.fragments;
 import android.content.*;
 
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.*;
@@ -11,6 +12,7 @@ import android.support.v4.app.*;
 import android.support.v4.app.ShareCompat.IntentBuilder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.*;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
@@ -18,9 +20,13 @@ import android.widget.*;
 import java.util.*;
 
 import ru.buylist.R;
+import ru.buylist.data.BuyListDbSchema;
 import ru.buylist.models.BuyList;
 import ru.buylist.models.Product;
 import ru.buylist.models.ProductLab;
+import ru.buylist.swipe_helper.ITouchHelperAdapter;
+import ru.buylist.swipe_helper.ITouchHelperHolder;
+import ru.buylist.swipe_helper.TouchHelperCallback;
 
 public class ProductFragment extends Fragment {
 
@@ -131,6 +137,10 @@ public class ProductFragment extends Fragment {
         onNewProductButtonClick();
         updateProductListUi();
         onCreateButtonClick();
+
+        ItemTouchHelper.Callback callback = new TouchHelperCallback(adapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
     }
 
     public void updateProductListUi() {
@@ -226,13 +236,23 @@ public class ProductFragment extends Fragment {
         return report;
     }
 
+    private void updateProductTable(final List<Product> products) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ProductLab productLab = ProductLab.get(getActivity());
+                productLab.updateProductTable(products);
+            }
+        }).start();
+    }
+
 
     public interface Callbacks {
         void onProductUpdated(BuyList buyList);
     }
 
 
-    private class ProductHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class ProductHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ITouchHelperHolder {
         private Product product;
         private ImageView category;
         private TextView productName;
@@ -271,9 +291,19 @@ public class ProductFragment extends Fragment {
             ProductLab.get(getActivity()).updateProduct(product);
 
         }
+
+        @Override
+        public void onItemSelected() {
+            itemView.setBackgroundColor(Color.LTGRAY);
+        }
+
+        @Override
+        public void onItemClear() {
+            itemView.setBackgroundColor(0);
+        }
     }
 
-    private class ProductAdapter extends RecyclerView.Adapter<ProductHolder> {
+    private class ProductAdapter extends RecyclerView.Adapter<ProductHolder> implements ITouchHelperAdapter {
         private List<Product> products;
 
         ProductAdapter(List<Product> products) {
@@ -303,6 +333,23 @@ public class ProductFragment extends Fragment {
             this.products = products;
         }
 
+        @Override
+        public void onItemMove(int fromPosition, int toPosition) {
+            Collections.swap(products, fromPosition, toPosition);
+            notifyItemMoved(fromPosition, toPosition);
+
+            updateProductTable(products);
+        }
+
+        @Override
+        public void onItemDismiss(int position) {
+            ProductLab productLab = ProductLab.get(getActivity());
+            productLab.deleteFromDb(products.get(position).getName(),
+                    BuyListDbSchema.ProductTable.NAME,
+                    BuyListDbSchema.ProductTable.Cols.PRODUCT_NAME);
+            notifyItemRemoved(position);
+            updateProductListUi();
+        }
     }
 
 }

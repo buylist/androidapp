@@ -59,8 +59,8 @@ public class ProductLab {
         database.insert(ProductTable.NAME, null, values);
     }
 
-    public void deleteFromDb(UUID id, String tableName) {
-        database.delete(tableName, BuyTable.Cols.UUID + "=?", new String[]{id.toString()});
+    public void deleteFromDb(String id, String tableName, String tableCols) {
+        database.delete(tableName, tableCols + "=?", new String[]{id});
     }
 
     public List<BuyList> getBuyLists() {
@@ -133,6 +133,14 @@ public class ProductLab {
         ContentValues values = getProductsContentValues(product);
         database.update(ProductTable.NAME, values, ProductTable.Cols.PRODUCT_NAME + " = ?",
                 new String[]{product.getName()});
+    }
+
+    public void updateProductTable(List<Product> products) {
+        database.delete(ProductTable.NAME, null, null);
+
+        for (Product product : products) {
+            addProducts(product);
+        }
     }
 
     private BuyListCursorWrapper queryList(String whereClause, String[] whereArgs, String tableName) {
