@@ -15,6 +15,7 @@ import android.widget.*;
 import java.util.Collections;
 import java.util.List;
 
+import ru.buylist.KeyboardUtils;
 import ru.buylist.R;
 import ru.buylist.models.BuyList;
 import ru.buylist.models.ProductLab;
@@ -146,6 +147,7 @@ public class BuyListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 createCollectionLayout.setVisibility(View.VISIBLE);
+                KeyboardUtils.showKeyboard(nameCollection, getActivity());
             }
         });
     }
@@ -160,6 +162,7 @@ public class BuyListFragment extends Fragment {
                 updateUI();
                 nameCollection.setText("");
                 createCollectionLayout.setVisibility(View.GONE);
+                KeyboardUtils.hideKeyboard(nameCollection, getActivity());
             }
         });
     }

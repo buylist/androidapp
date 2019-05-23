@@ -14,11 +14,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.*;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 
 import java.util.*;
 
+import ru.buylist.KeyboardUtils;
 import ru.buylist.R;
 import ru.buylist.data.BuyListDbSchema;
 import ru.buylist.models.BuyList;
@@ -162,7 +162,7 @@ public class ProductFragment extends Fragment {
             public void onClick(View v) {
                 newProductLayout.setVisibility(View.VISIBLE);
                 newProductFab.hide();
-                showKeyboard(true);
+                KeyboardUtils.showKeyboard(productField, getActivity());
             }
         });
     }
@@ -176,7 +176,7 @@ public class ProductFragment extends Fragment {
                 }
                 newProductLayout.setVisibility(View.GONE);
                 newProductFab.show();
-                showKeyboard(false);
+                KeyboardUtils.hideKeyboard(productField, getActivity());
             }
         });
 
@@ -195,23 +195,11 @@ public class ProductFragment extends Fragment {
         clearFields();
     }
 
-    private void showKeyboard(boolean flag) {
-        InputMethodManager imm = (InputMethodManager) getActivity()
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (flag) {
-            productField.requestFocus();
-            imm.showSoftInput(productField, InputMethodManager.SHOW_IMPLICIT);
-        } else {
-            imm.hideSoftInputFromWindow(productField.getWindowToken(), 0);
-        }
-    }
-
     private void clearFields() {
         productField.setText("");
         amountField.setText("");
         unitField.setText("");
     }
-
 
     private void onShareButtonClick() {
         shareButton.setOnClickListener(new View.OnClickListener() {
