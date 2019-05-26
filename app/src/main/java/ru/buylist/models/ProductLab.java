@@ -135,8 +135,8 @@ public class ProductLab {
                 new String[]{product.getName()});
     }
 
-    public void updateProductTable(List<Product> products) {
-        database.delete(ProductTable.NAME, null, null);
+    public void updateProductTable(List<Product> products, String id) {
+        database.delete(ProductTable.NAME, ProductTable.Cols.BUYLIST_ID + " = ?", new String[]{id});
 
         for (Product product : products) {
             addProducts(product);

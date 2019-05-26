@@ -16,7 +16,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:gravity="start|center"
-            android:text="@string/list_collection" />
+            android:text="@string/list_collection"
+            android:textAllCaps="false"
+            android:textSize="17sp" />
 
         <ImageButton
             android:id="@+id/new_list_collection"
@@ -68,7 +70,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:gravity="start|center"
-            android:text="@string/list_templates" />
+            android:text="@string/list_templates"
+            android:textAllCaps="false"
+            android:textSize="17sp" />
 
         <ImageButton
             android:id="@+id/new_list_templates"
@@ -96,7 +100,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="3"
             android:gravity="start|center"
-            android:text="@string/recipe_list" />
+            android:text="@string/recipe_list"
+            android:textAllCaps="false"
+            android:textSize="17sp" />
 
         <ImageButton
             android:id="@+id/new_recipe_list"

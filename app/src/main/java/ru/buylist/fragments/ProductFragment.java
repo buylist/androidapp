@@ -224,12 +224,12 @@ public class ProductFragment extends Fragment {
         return report;
     }
 
-    private void updateProductTable(final List<Product> products) {
+    private void updateProductTable(final List<Product> products, final int position) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 ProductLab productLab = ProductLab.get(getActivity());
-                productLab.updateProductTable(products);
+                productLab.updateProductTable(products, products.get(position).getBuylistId());
             }
         }).start();
     }
@@ -326,7 +326,7 @@ public class ProductFragment extends Fragment {
             Collections.swap(products, fromPosition, toPosition);
             notifyItemMoved(fromPosition, toPosition);
 
-            updateProductTable(products);
+            updateProductTable(products, fromPosition);
         }
 
         @Override
