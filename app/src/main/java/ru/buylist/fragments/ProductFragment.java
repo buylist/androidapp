@@ -10,11 +10,14 @@ import android.support.annotation.*;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.*;
 import android.support.v4.app.ShareCompat.IntentBuilder;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.*;
 import android.widget.*;
+
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 
 import java.util.*;
 
@@ -24,9 +27,6 @@ import ru.buylist.data.BuyListDbSchema;
 import ru.buylist.models.BuyList;
 import ru.buylist.models.Product;
 import ru.buylist.models.ProductLab;
-import ru.buylist.swipe_helper.ITouchHelperAdapter;
-import ru.buylist.swipe_helper.ITouchHelperHolder;
-import ru.buylist.swipe_helper.TouchHelperCallback;
 
 public class ProductFragment extends Fragment {
 
@@ -137,10 +137,6 @@ public class ProductFragment extends Fragment {
         onNewProductButtonClick();
         updateProductListUi();
         onCreateButtonClick();
-
-        ItemTouchHelper.Callback callback = new TouchHelperCallback(adapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(recyclerView);
     }
 
     public void updateProductListUi() {
@@ -224,47 +220,49 @@ public class ProductFragment extends Fragment {
         return report;
     }
 
-    private void updateProductTable(final List<Product> products, final int position) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                ProductLab productLab = ProductLab.get(getActivity());
-                productLab.updateProductTable(products, products.get(position).getBuylistId());
-            }
-        }).start();
-    }
-
-
     public interface Callbacks {
         void onProductUpdated(BuyList buyList);
     }
 
 
-    private class ProductHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ITouchHelperHolder {
+    private class ProductHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private SwipeLayout swipeLayout;
         private Product product;
         private ImageView category;
         private TextView productName;
         private TextView amount;
         private ImageButton edit;
         private ImageButton delete;
+        private FrameLayout frameLayoutTop;
+        private FrameLayout frameLayoutBottom;
+        private CardView cardView;
 
         ProductHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_product, parent, false));
+            swipeLayout = itemView.findViewById(R.id.swipe_layout);
             category = itemView.findViewById(R.id.circle);
             productName = itemView.findViewById(R.id.product_text);
             amount = itemView.findViewById(R.id.product_amount);
-            edit = itemView.findViewById(R.id.edit_product);
-            delete = itemView.findViewById(R.id.delete_product);
+            edit = itemView.findViewById(R.id.edit_button);
+            delete = itemView.findViewById(R.id.delete_button);
 
-            itemView.setOnClickListener(this);
+            frameLayoutTop = itemView.findViewById(R.id.test_surface);
+            frameLayoutTop.setOnClickListener(this);
+            onDeleteButtonClick();
+
+            frameLayoutBottom = itemView.findViewById(R.id.test_bottom);
+            cardView = itemView.findViewById(R.id.test_card);
         }
 
         void bind(Product product) {
             this.product = product;
             productName.setText(product.getName());
             amount.setText(product.getAmount() + " " + product.getUnit());
-
             if (product.isPurchased()) productName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+
+            swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+            swipeLayout.addDrag(SwipeLayout.DragEdge.Right, swipeLayout.findViewById(R.id.test_bottom));
+            cardView.setBackgroundColor(0);
         }
 
         @Override
@@ -277,21 +275,26 @@ public class ProductFragment extends Fragment {
                 product.setPurchased(true);
             }
             ProductLab.get(getActivity()).updateProduct(product);
-
         }
 
-        @Override
-        public void onItemSelected() {
-            itemView.setBackgroundColor(Color.LTGRAY);
-        }
-
-        @Override
-        public void onItemClear() {
-            itemView.setBackgroundColor(0);
+        private void onDeleteButtonClick() {
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ProductLab productLab = ProductLab.get(getActivity());
+                    productLab.deleteFromDb(product.getName(),
+                            BuyListDbSchema.ProductTable.NAME,
+                            BuyListDbSchema.ProductTable.Cols.PRODUCT_NAME);
+                    adapter.notifyItemRemoved(getAdapterPosition());
+                    adapter.closeAllItems();
+                    updateProductListUi();
+                }
+            });
         }
     }
 
-    private class ProductAdapter extends RecyclerView.Adapter<ProductHolder> implements ITouchHelperAdapter {
+
+    private class ProductAdapter extends RecyclerSwipeAdapter<ProductHolder> {
         private List<Product> products;
 
         ProductAdapter(List<Product> products) {
@@ -306,9 +309,41 @@ public class ProductFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ProductHolder holder, int i) {
+        public void onBindViewHolder(@NonNull final ProductHolder holder, int i) {
             Product product = products.get(i);
             holder.bind(product);
+            mItemManger.bindView(holder.itemView, i);
+
+            holder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+                @Override
+                public void onStartOpen(SwipeLayout layout) {
+                    mItemManger.closeAllExcept(layout);
+                    holder.cardView.setBackgroundColor(Color.WHITE);
+                    holder.frameLayoutBottom.setBackgroundColor(getResources().getColor(R.color.colorLightGray));
+                }
+
+                @Override
+                public void onOpen(SwipeLayout layout) {
+                }
+
+                @Override
+                public void onStartClose(SwipeLayout layout) {
+                }
+
+                @Override
+                public void onClose(SwipeLayout layout) {
+                    holder.cardView.setBackgroundColor(0);
+                    holder.frameLayoutBottom.setBackgroundColor(0);
+                }
+
+                @Override
+                public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+                }
+
+                @Override
+                public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+                }
+            });
         }
 
         @Override
@@ -322,21 +357,8 @@ public class ProductFragment extends Fragment {
         }
 
         @Override
-        public void onItemMove(int fromPosition, int toPosition) {
-            Collections.swap(products, fromPosition, toPosition);
-            notifyItemMoved(fromPosition, toPosition);
-
-            updateProductTable(products, fromPosition);
-        }
-
-        @Override
-        public void onItemDismiss(int position) {
-            ProductLab productLab = ProductLab.get(getActivity());
-            productLab.deleteFromDb(products.get(position).getName(),
-                    BuyListDbSchema.ProductTable.NAME,
-                    BuyListDbSchema.ProductTable.Cols.PRODUCT_NAME);
-            notifyItemRemoved(position);
-            updateProductListUi();
+        public int getSwipeLayoutResourceId(int position) {
+            return R.id.swipe_layout;
         }
     }
 
