@@ -239,19 +239,20 @@ public class ProductFragment extends Fragment {
 
         ProductHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_product, parent, false));
-            swipeLayout = itemView.findViewById(R.id.swipe_layout);
-            category = itemView.findViewById(R.id.circle);
+            swipeLayout = itemView.findViewById(R.id.swipe_layout_product);
+            category = itemView.findViewById(R.id.category);
             productName = itemView.findViewById(R.id.product_text);
             amount = itemView.findViewById(R.id.product_amount);
-            edit = itemView.findViewById(R.id.edit_button);
-            delete = itemView.findViewById(R.id.delete_button);
+            edit = itemView.findViewById(R.id.edit_product);
+            delete = itemView.findViewById(R.id.delete_product);
 
-            frameLayoutTop = itemView.findViewById(R.id.test_surface);
+            frameLayoutTop = itemView.findViewById(R.id.surface_product);
             frameLayoutTop.setOnClickListener(this);
             onDeleteButtonClick();
+            onEditButtonClick();
 
-            frameLayoutBottom = itemView.findViewById(R.id.test_bottom);
-            cardView = itemView.findViewById(R.id.test_card);
+            frameLayoutBottom = itemView.findViewById(R.id.bottom_product);
+            cardView = itemView.findViewById(R.id.card_product);
         }
 
         void bind(Product product) {
@@ -261,7 +262,7 @@ public class ProductFragment extends Fragment {
             if (product.isPurchased()) productName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 
             swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
-            swipeLayout.addDrag(SwipeLayout.DragEdge.Right, swipeLayout.findViewById(R.id.test_bottom));
+            swipeLayout.addDrag(SwipeLayout.DragEdge.Right, swipeLayout.findViewById(R.id.bottom_product));
             cardView.setBackgroundColor(0);
         }
 
@@ -288,6 +289,24 @@ public class ProductFragment extends Fragment {
                     adapter.notifyItemRemoved(getAdapterPosition());
                     adapter.closeAllItems();
                     updateProductListUi();
+                }
+            });
+        }
+
+        private void onEditButtonClick() {
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    newProductLayout.setVisibility(View.VISIBLE);
+                    productField.setText(product.getName());
+                    amountField.setText(product.getAmount());
+                    unitField.setText(product.getUnit());
+
+                    ProductLab productLab = ProductLab.get(getActivity());
+                    productLab.deleteFromDb(product.getName(),
+                            BuyListDbSchema.ProductTable.NAME,
+                            BuyListDbSchema.ProductTable.Cols.PRODUCT_NAME);
+                    adapter.closeAllItems();
                 }
             });
         }
@@ -358,7 +377,7 @@ public class ProductFragment extends Fragment {
 
         @Override
         public int getSwipeLayoutResourceId(int position) {
-            return R.id.swipe_layout;
+            return R.id.swipe_layout_product;
         }
     }
 

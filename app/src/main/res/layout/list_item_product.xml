@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/swipe_layout"
+    android:id="@+id/swipe_layout_product"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_gravity="center_vertical"
-    app:dragFromEdge="right">
+    app:drag_edge="right">
 
     <FrameLayout
-        android:id="@+id/test_bottom"
+        android:id="@+id/bottom_product"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
@@ -19,14 +19,14 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/edit_button"
+                android:id="@+id/edit_product"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@color/colorLightGray"
                 app:srcCompat="@drawable/ic_edit_white" />
 
             <ImageButton
-                android:id="@+id/delete_button"
+                android:id="@+id/delete_product"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@color/colorLightRed"
@@ -36,13 +36,13 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/test_surface"
+        android:id="@+id/surface_product"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/test_card"
+            android:id="@+id/card_product"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
@@ -54,7 +54,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/circle"
+                    android:id="@+id/category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="8dp"
-                    android:layout_toEndOf="@id/circle"
+                    android:layout_toEndOf="@id/category"
                     android:orientation="horizontal">
 
                     <TextView
