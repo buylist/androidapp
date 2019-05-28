@@ -23,14 +23,16 @@ import java.util.*;
 
 import ru.buylist.KeyboardUtils;
 import ru.buylist.R;
-import ru.buylist.data.BuyListDbSchema;
 import ru.buylist.models.BuyList;
 import ru.buylist.models.Product;
 import ru.buylist.models.ProductLab;
 
+import static ru.buylist.data.BuyListDbSchema.*;
+
 public class ProductFragment extends Fragment {
 
     private static final String ARG_BUY_LIST_ID = "buy_list_id";
+    private boolean flag = true;
 
     private BuyList buyList;
 
@@ -38,6 +40,7 @@ public class ProductFragment extends Fragment {
     private Button recipeButton;
     private Button shareButton;
     private FloatingActionButton newProductFab;
+    private FloatingActionButton showProductsFab;
     private ImageButton createProduct;
 
     private EditText productField;
@@ -130,6 +133,7 @@ public class ProductFragment extends Fragment {
         createProduct = view.findViewById(R.id.create_product);
         newProductLayout = view.findViewById(R.id.new_product);
         newProductFab = view.findViewById(R.id.new_product_fab);
+        showProductsFab = view.findViewById(R.id.show_purchased_products_fab);
 
         recyclerView = view.findViewById(R.id.products_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -137,6 +141,7 @@ public class ProductFragment extends Fragment {
         onNewProductButtonClick();
         updateProductListUi();
         onCreateButtonClick();
+        onShowProductsButtonClick();
     }
 
     public void updateProductListUi() {
@@ -173,6 +178,23 @@ public class ProductFragment extends Fragment {
                 newProductLayout.setVisibility(View.GONE);
                 newProductFab.show();
                 KeyboardUtils.hideKeyboard(productField, getActivity());
+            }
+        });
+    }
+
+    private void onShowProductsButtonClick() {
+        showProductsFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (flag) {
+                    showProductsFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_off_black));
+                    updateProductListUi();
+                    flag = false;
+                } else {
+                    showProductsFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_black));
+                    updateProductListUi();
+                    flag = true;
+                }
             }
         });
 
@@ -258,12 +280,30 @@ public class ProductFragment extends Fragment {
         void bind(Product product) {
             this.product = product;
             productName.setText(product.getName());
-            amount.setText(product.getAmount() + " " + product.getUnit());
-            if (product.isPurchased()) productName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+            amount.setText(product.getAmount() + product.getUnit());
+
+            if (product.isPurchased()) {
+                productName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                if (flag) {
+                    hideLayout();
+                } else {
+                    showLayout();
+                }
+            }
 
             swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
             swipeLayout.addDrag(SwipeLayout.DragEdge.Right, swipeLayout.findViewById(R.id.bottom_product));
             cardView.setBackgroundColor(0);
+        }
+
+        private void hideLayout() {
+            itemView.setVisibility(View.GONE);
+            itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+        }
+
+        private void showLayout() {
+            itemView.setVisibility(View.VISIBLE);
+            itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 50));
         }
 
         @Override
@@ -276,6 +316,7 @@ public class ProductFragment extends Fragment {
                 product.setPurchased(true);
             }
             ProductLab.get(getActivity()).updateProduct(product);
+            updateProductListUi();
         }
 
         private void onDeleteButtonClick() {
@@ -284,8 +325,8 @@ public class ProductFragment extends Fragment {
                 public void onClick(View v) {
                     ProductLab productLab = ProductLab.get(getActivity());
                     productLab.deleteFromDb(product.getName(),
-                            BuyListDbSchema.ProductTable.NAME,
-                            BuyListDbSchema.ProductTable.Cols.PRODUCT_NAME);
+                            ProductTable.NAME,
+                            ProductTable.Cols.PRODUCT_NAME);
                     adapter.notifyItemRemoved(getAdapterPosition());
                     adapter.closeAllItems();
                     updateProductListUi();
@@ -304,8 +345,8 @@ public class ProductFragment extends Fragment {
 
                     ProductLab productLab = ProductLab.get(getActivity());
                     productLab.deleteFromDb(product.getName(),
-                            BuyListDbSchema.ProductTable.NAME,
-                            BuyListDbSchema.ProductTable.Cols.PRODUCT_NAME);
+                            ProductTable.NAME,
+                            ProductTable.Cols.PRODUCT_NAME);
                     adapter.closeAllItems();
                 }
             });
@@ -331,6 +372,7 @@ public class ProductFragment extends Fragment {
         public void onBindViewHolder(@NonNull final ProductHolder holder, int i) {
             Product product = products.get(i);
             holder.bind(product);
+
             mItemManger.bindView(holder.itemView, i);
 
             holder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
@@ -338,7 +380,6 @@ public class ProductFragment extends Fragment {
                 public void onStartOpen(SwipeLayout layout) {
                     mItemManger.closeAllExcept(layout);
                     holder.cardView.setBackgroundColor(Color.WHITE);
-                    holder.frameLayoutBottom.setBackgroundColor(getResources().getColor(R.color.colorLightGray));
                 }
 
                 @Override

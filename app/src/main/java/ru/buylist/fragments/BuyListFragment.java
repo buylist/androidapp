@@ -259,6 +259,8 @@ public class BuyListFragment extends Fragment {
         public void onItemDismiss(int position) {
             Log.d("TAG", "onItemDismiss: ");
             ProductLab productLab = ProductLab.get(getActivity());
+            productLab.deleteFromDb(lists.get(position).getId() + lists.get(position).getTitle(),
+                    ProductTable.NAME, ProductTable.Cols.BUYLIST_ID);
             productLab.deleteFromDb(lists.get(position).getId().toString(), BuyTable.NAME, BuyTable.Cols.UUID);
             notifyItemRemoved(position);
             updateUI();

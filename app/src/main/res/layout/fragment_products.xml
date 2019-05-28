@@ -98,7 +98,18 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_add_black"
         app:fabSize="normal"
+        app:useCompatPadding="true" />
 
-        />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/show_purchased_products_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:src="@drawable/ic_visibility_black"
+        app:backgroundTint="@color/colorLightGray"
+        app:fabSize="normal"
+        app:layout_anchor="@id/new_product_fab"
+        app:layout_anchorGravity="top"
+        app:useCompatPadding="true" />
 
 </android.support.design.widget.CoordinatorLayout>
