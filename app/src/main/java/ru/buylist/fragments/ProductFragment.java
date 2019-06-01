@@ -13,6 +13,7 @@ import android.support.v4.app.ShareCompat.IntentBuilder;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
 
@@ -32,6 +33,7 @@ import static ru.buylist.data.BuyListDbSchema.*;
 public class ProductFragment extends Fragment {
 
     private static final String ARG_BUY_LIST_ID = "buy_list_id";
+    private static final int height = 40;
     private boolean flag = true;
 
     private BuyList buyList;
@@ -100,22 +102,22 @@ public class ProductFragment extends Fragment {
     }
 
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_product, menu);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.fragment_product, menu);
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.buylist_edit:
-                return true;
-            default:
-                updateList();
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.buylist_edit:
+//                return true;
+//            default:
+//                updateList();
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     private void updateList() {
         ProductLab.get(getActivity()).updateBuyList(buyList);
@@ -302,8 +304,9 @@ public class ProductFragment extends Fragment {
         }
 
         private void showLayout() {
+            int heightToDp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, height, getResources().getDisplayMetrics());
             itemView.setVisibility(View.VISIBLE);
-            itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 50));
+            itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, heightToDp));
         }
 
         @Override

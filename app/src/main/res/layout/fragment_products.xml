@@ -9,35 +9,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/templates_button"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:background="@android:color/transparent"
-            android:text="@string/pattern_button"
-            android:textAllCaps="false"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/recipe_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:background="@android:color/transparent"
-            android:text="@string/recipe_button"
-            android:textAllCaps="false"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+            <Button
+                android:id="@+id/templates_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:text="@string/pattern_button"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/recipe_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:text="@string/recipe_button"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp" />
+        </LinearLayout>
 
         <View
             android:id="@+id/products_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/templates_button"
+            android:layout_below="@id/button_layout"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@color/colorBlack" />
+            android:background="@color/colorDivider" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/products_list"
@@ -96,7 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_add_black"
+        android:src="@drawable/ic_add_white"
         app:fabSize="normal"
         app:useCompatPadding="true" />
 
@@ -106,7 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
         android:src="@drawable/ic_visibility_black"
-        app:backgroundTint="@color/colorLightGray"
+        app:backgroundTint="@color/colorVisibilityFab"
         app:fabSize="normal"
         app:layout_anchor="@id/new_product_fab"
         app:layout_anchorGravity="top"

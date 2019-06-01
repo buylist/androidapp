@@ -26,7 +26,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@string/new_list_collection_description"
-            android:src="@drawable/ic_add_black" />
+            android:src="@drawable/ic_add_white" />
 
     </LinearLayout>
 
@@ -80,7 +80,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@string/new_list_templates_description"
-            android:src="@drawable/ic_add_black" />
+            android:src="@drawable/ic_add_white" />
 
     </LinearLayout>
 
@@ -110,7 +110,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:contentDescription="@string/new_recipe_description"
-            android:src="@drawable/ic_add_black" />
+            android:src="@drawable/ic_add_white" />
 
     </LinearLayout>
 
