@@ -1,12 +1,23 @@
 package ru.buylist.models;
 
+import java.util.UUID;
+
 public class Product {
     private String buylistId;
+    private UUID productId;
     private String name;
     private boolean isPurchased;
     private String category;
     private String amount;
     private String unit;
+
+    public Product() {
+        this(UUID.randomUUID());
+    }
+
+    public Product(UUID productId) {
+        this.productId = productId;
+    }
 
     public String getBuylistId() {
         return buylistId;
@@ -14,6 +25,10 @@ public class Product {
 
     public void setBuylistId(String buylistId) {
         this.buylistId = buylistId;
+    }
+
+    public UUID getProductId() {
+        return productId;
     }
 
     public String getName() {

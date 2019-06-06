@@ -33,6 +33,8 @@ public class BuyListBaseHelper extends SQLiteOpenHelper {
         productTableBuilder.append(" _id integer primary key autoincrement, ");
         productTableBuilder.append(ProductTable.Cols.BUYLIST_ID);
         productTableBuilder.append(", ");
+        productTableBuilder.append(ProductTable.Cols.PRODUCT_ID);
+        productTableBuilder.append(", ");
         productTableBuilder.append(ProductTable.Cols.PRODUCT_NAME);
         productTableBuilder.append(", ");
         productTableBuilder.append(ProductTable.Cols.IS_PURCHASED);

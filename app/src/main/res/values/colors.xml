@@ -9,4 +9,6 @@
     <color name="colorVisibilityFab">#F1F1F1</color>
     <color name="colorDivider">#1F000000</color>
     <color name="colorWhite">#FFFFFFFF</color>
+    <color name="colorButtonNextText">#007AFF</color>
+    <color name="colorButtonSkipText">#4F4F4F</color>
 </resources>

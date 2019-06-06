@@ -9,6 +9,7 @@ import ru.buylist.R;
 import ru.buylist.fragments.BuyListFragment;
 import ru.buylist.fragments.ProductFragment;
 import ru.buylist.models.BuyList;
+import ru.buylist.models.Product;
 
 public class BuyListActivity extends SingleFragmentActivity implements BuyListFragment.Callbacks, ProductFragment.Callbacks {
     @Override
@@ -38,5 +39,10 @@ public class BuyListActivity extends SingleFragmentActivity implements BuyListFr
         BuyListFragment listFragment = (BuyListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_container);
         listFragment.updateUI();
+    }
+
+    @Override
+    public void onProductCreated(Product product) {
+
     }
 }

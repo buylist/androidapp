@@ -41,6 +41,7 @@ public class ProductLab {
     private static ContentValues getProductsContentValues(Product product) {
         ContentValues values = new ContentValues();
         values.put(ProductTable.Cols.BUYLIST_ID, product.getBuylistId());
+        values.put(ProductTable.Cols.PRODUCT_ID, product.getProductId().toString());
         values.put(ProductTable.Cols.PRODUCT_NAME, product.getName());
         values.put(ProductTable.Cols.IS_PURCHASED, product.isPurchased() ? 1 : 0);
         values.put(ProductTable.Cols.CATEGORY, product.getCategory());
@@ -104,13 +105,26 @@ public class ProductLab {
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                products.add(cursor.getProductList());
+                products.add(cursor.getProduct());
                 cursor.moveToNext();
             }
         } finally {
             cursor.close();
         }
         return products;
+    }
+
+    public Product getProduct(String productId) {
+        Product product = new Product();
+        BuyListCursorWrapper cursor = queryList(
+                ProductTable.Cols.PRODUCT_ID + " = ?", new String[]{productId}, ProductTable.NAME);
+        try {
+            cursor.moveToFirst();
+            product = cursor.getProduct();
+        } finally {
+            cursor.close();
+        }
+        return product;
     }
 
     public void updateBuyList(BuyList buyList) {

@@ -42,7 +42,7 @@ public class ProductFragment extends Fragment {
     private Button recipeButton;
     private Button shareButton;
     private FloatingActionButton newProductFab;
-    private FloatingActionButton showProductsFab;
+    private FloatingActionButton visibilityFab;
     private ImageButton createProduct;
 
     private EditText productField;
@@ -119,10 +119,10 @@ public class ProductFragment extends Fragment {
 //        }
 //    }
 
-    private void updateList() {
-        ProductLab.get(getActivity()).updateBuyList(buyList);
-        callbacks.onProductUpdated(buyList);
-    }
+//    private void updateList() {
+//        ProductLab.get(getActivity()).updateBuyList(buyList);
+//        callbacks.onProductUpdated(buyList);
+//    }
 
     private void initUi(View view) {
         getActivity().setTitle(buyList.getTitle());
@@ -135,7 +135,7 @@ public class ProductFragment extends Fragment {
         createProduct = view.findViewById(R.id.create_product);
         newProductLayout = view.findViewById(R.id.new_product);
         newProductFab = view.findViewById(R.id.new_product_fab);
-        showProductsFab = view.findViewById(R.id.show_purchased_products_fab);
+        visibilityFab = view.findViewById(R.id.show_purchased_products_fab);
 
         recyclerView = view.findViewById(R.id.products_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -185,15 +185,15 @@ public class ProductFragment extends Fragment {
     }
 
     private void onShowProductsButtonClick() {
-        showProductsFab.setOnClickListener(new View.OnClickListener() {
+        visibilityFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (flag) {
-                    showProductsFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_off_black));
+                    visibilityFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_off_black));
                     updateProductListUi();
                     flag = false;
                 } else {
-                    showProductsFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_black));
+                    visibilityFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_black));
                     updateProductListUi();
                     flag = true;
                 }
@@ -203,16 +203,15 @@ public class ProductFragment extends Fragment {
     }
 
     private void addNewProduct() {
-        if (productField != null) {
-            Product product = new Product();
-            product.setBuylistId(buyList.getId() + buyList.getTitle());
-            product.setName(productField.getText().toString());
-            product.setAmount(amountField.getText().toString());
-            product.setUnit(unitField.getText().toString());
-            ProductLab.get(getActivity()).addProducts(product);
-            updateProductListUi();
-        }
+        Product product = new Product();
+        product.setBuylistId(buyList.getId() + buyList.getTitle());
+        product.setName(productField.getText().toString());
+        product.setAmount(amountField.getText().toString());
+        product.setUnit(unitField.getText().toString());
+        ProductLab.get(getActivity()).addProducts(product);
+        updateProductListUi();
         clearFields();
+        callbacks.onProductCreated(product);
     }
 
     private void clearFields() {
@@ -246,6 +245,8 @@ public class ProductFragment extends Fragment {
 
     public interface Callbacks {
         void onProductUpdated(BuyList buyList);
+
+        void onProductCreated(Product product);
     }
 
 
@@ -282,7 +283,8 @@ public class ProductFragment extends Fragment {
         void bind(Product product) {
             this.product = product;
             productName.setText(product.getName());
-            amount.setText(product.getAmount() + product.getUnit());
+            amount.setText(getString(R.string.amount_of_product, product.getAmount(), product.getUnit()))
+            ;
 
             if (product.isPurchased()) {
                 productName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
@@ -304,9 +306,8 @@ public class ProductFragment extends Fragment {
         }
 
         private void showLayout() {
-            int heightToDp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, height, getResources().getDisplayMetrics());
             itemView.setVisibility(View.VISIBLE);
-            itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, heightToDp));
+            itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
 
         @Override
@@ -327,9 +328,9 @@ public class ProductFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     ProductLab productLab = ProductLab.get(getActivity());
-                    productLab.deleteFromDb(product.getName(),
+                    productLab.deleteFromDb(product.getProductId().toString(),
                             ProductTable.NAME,
-                            ProductTable.Cols.PRODUCT_NAME);
+                            ProductTable.Cols.PRODUCT_ID);
                     adapter.notifyItemRemoved(getAdapterPosition());
                     adapter.closeAllItems();
                     updateProductListUi();
@@ -347,9 +348,9 @@ public class ProductFragment extends Fragment {
                     unitField.setText(product.getUnit());
 
                     ProductLab productLab = ProductLab.get(getActivity());
-                    productLab.deleteFromDb(product.getName(),
+                    productLab.deleteFromDb(product.getProductId().toString(),
                             ProductTable.NAME,
-                            ProductTable.Cols.PRODUCT_NAME);
+                            ProductTable.Cols.PRODUCT_ID);
                     adapter.closeAllItems();
                 }
             });
@@ -381,8 +382,8 @@ public class ProductFragment extends Fragment {
             holder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
                 @Override
                 public void onStartOpen(SwipeLayout layout) {
-                    mItemManger.closeAllExcept(layout);
                     holder.cardView.setBackgroundColor(Color.WHITE);
+                    mItemManger.closeAllExcept(layout);
                 }
 
                 @Override
@@ -396,7 +397,6 @@ public class ProductFragment extends Fragment {
                 @Override
                 public void onClose(SwipeLayout layout) {
                     holder.cardView.setBackgroundColor(0);
-                    holder.frameLayoutBottom.setBackgroundColor(0);
                 }
 
                 @Override

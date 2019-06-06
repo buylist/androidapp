@@ -1,10 +1,9 @@
 <resources>
     <string name="app_name">BuyList</string>
 
-    <!--BuyListFragment-->
     <string name="buylist_title">Заголовок</string>
 
-    <!--ProductFragment-->
+
     <string name="pattern_button">По шаблону</string>
     <string name="recipe_button">По рецепту</string>
     <string name="list_title_hint">Введите заголовок списка</string>
@@ -37,4 +36,24 @@
     <string name="category_description">Категория</string>
     <string name="edit_product_description">Изменить продукт</string>
     <string name="delete_product">Удалить продукт</string>
+    <string name="name_of_product">Название продукта</string>
+    <string name="product">товар</string>
+    <string name="spinner_hint">Введите название категории</string>
+    <string name="button_next_text">Далее</string>
+    <string name="button_skip_text">Пропустить</string>
+    <string name="category_spinner_title">Категория товара</string>
+    <string name="category_img_description">Маркер категории</string>
+    <string name="edit_description">Редактировать</string>
+    <string name="delete_description">Удалить</string>
+    <string name="spinner_description">Развернуть список категорий</string>
+    <string name="amount_of_product">%1$s %2$s</string>
+
+    <string-array name="category">
+        <item>Продукты</item>
+        <item>Товары для дома</item>
+        <item>Красота и здоровье</item>
+        <item>Детям и мамам</item>
+        <item>Авто Мото</item>
+        <item>Зоотовары</item>
+    </string-array>
 </resources>
