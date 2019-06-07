@@ -23,4 +23,14 @@ public class BuyListDbSchema {
             public static final String UNIT = "unit";
         }
     }
+
+    public static final class GlobalProductsTable {
+        public static final String NAME = "global_list_of_products";
+
+        public static final class Cols {
+            public static final String PRODUCT_ID = "product_id";
+            public static final String PRODUCT_NAME = "product_name";
+            public static final String CATEGORY = "category";
+        }
+    }
 }

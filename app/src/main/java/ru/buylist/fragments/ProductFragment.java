@@ -13,7 +13,6 @@ import android.support.v4.app.ShareCompat.IntentBuilder;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.*;
 import android.widget.*;
 
@@ -208,10 +207,26 @@ public class ProductFragment extends Fragment {
         product.setName(productField.getText().toString());
         product.setAmount(amountField.getText().toString());
         product.setUnit(unitField.getText().toString());
+
+        if (!isInGlobalDatabase(product)) {
+            ProductLab.get(getActivity()).addGlobalProduct(product);
+            callbacks.onProductCreated(product);
+        }
+
         ProductLab.get(getActivity()).addProducts(product);
         updateProductListUi();
         clearFields();
-        callbacks.onProductCreated(product);
+    }
+
+    private boolean isInGlobalDatabase(Product product) {
+        Product globalProduct = ProductLab.get(getActivity()).getGlobalProduct(product.getName(),
+                GlobalProductsTable.Cols.PRODUCT_NAME,
+                GlobalProductsTable.NAME);
+        if (globalProduct.getName() == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private void clearFields() {
@@ -283,8 +298,7 @@ public class ProductFragment extends Fragment {
         void bind(Product product) {
             this.product = product;
             productName.setText(product.getName());
-            amount.setText(getString(R.string.amount_of_product, product.getAmount(), product.getUnit()))
-            ;
+            amount.setText(getString(R.string.amount_of_product, product.getAmount(), product.getUnit()));
 
             if (product.isPurchased()) {
                 productName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);

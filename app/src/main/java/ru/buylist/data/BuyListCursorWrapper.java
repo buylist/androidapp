@@ -43,4 +43,15 @@ public class BuyListCursorWrapper extends CursorWrapper {
         product.setUnit(unit);
         return product;
     }
+
+    public Product getGlobalProduct() {
+        String productId = getString(getColumnIndex(GlobalProductsTable.Cols.PRODUCT_ID));
+        String productName = getString(getColumnIndex(GlobalProductsTable.Cols.PRODUCT_NAME));
+        String category = getString(getColumnIndex(GlobalProductsTable.Cols.CATEGORY));
+
+        Product product = new Product(UUID.fromString(productId));
+        product.setName(productName);
+        product.setCategory(category);
+        return product;
+    }
 }

@@ -46,8 +46,21 @@ public class BuyListBaseHelper extends SQLiteOpenHelper {
         productTableBuilder.append(ProductTable.Cols.UNIT);
         productTableBuilder.append(")");
 
+        StringBuilder globalTable = new StringBuilder();
+        globalTable.append("create table ");
+        globalTable.append(GlobalProductsTable.NAME);
+        globalTable.append("(");
+        globalTable.append(" _id integer primary key autoincrement, ");
+        globalTable.append(GlobalProductsTable.Cols.PRODUCT_ID);
+        globalTable.append(", ");
+        globalTable.append(GlobalProductsTable.Cols.PRODUCT_NAME);
+        globalTable.append(", ");
+        globalTable.append(GlobalProductsTable.Cols.CATEGORY);
+        globalTable.append(")");
+
         db.execSQL(buyTableBuilder.toString());
         db.execSQL(productTableBuilder.toString());
+        db.execSQL(globalTable.toString());
     }
 
     @Override

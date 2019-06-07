@@ -50,6 +50,14 @@ public class ProductLab {
         return values;
     }
 
+    private static ContentValues getGlobalProductContentValues(Product product) {
+        ContentValues values = new ContentValues();
+        values.put(GlobalProductsTable.Cols.PRODUCT_ID, product.getProductId().toString());
+        values.put(GlobalProductsTable.Cols.PRODUCT_NAME, product.getName());
+        values.put(GlobalProductsTable.Cols.CATEGORY, product.getCategory());
+        return values;
+    }
+
     public void addBuyList(BuyList buyList) {
         ContentValues values = getBuyListContentValues(buyList);
         database.insert(BuyTable.NAME, null, values);
@@ -58,6 +66,11 @@ public class ProductLab {
     public void addProducts(Product product) {
         ContentValues values = getProductsContentValues(product);
         database.insert(ProductTable.NAME, null, values);
+    }
+
+    public void addGlobalProduct(Product product) {
+        ContentValues values = getGlobalProductContentValues(product);
+        database.insert(GlobalProductsTable.NAME, null, values);
     }
 
     public void deleteFromDb(String id, String tableName, String tableCols) {
@@ -114,13 +127,29 @@ public class ProductLab {
         return products;
     }
 
-    public Product getProduct(String productId) {
+    public Product getProduct(String values, String tableCols, String tableName) {
         Product product = new Product();
         BuyListCursorWrapper cursor = queryList(
-                ProductTable.Cols.PRODUCT_ID + " = ?", new String[]{productId}, ProductTable.NAME);
+                tableCols + " = ?", new String[]{values}, tableName);
         try {
             cursor.moveToFirst();
             product = cursor.getProduct();
+        } finally {
+            cursor.close();
+        }
+        return product;
+    }
+
+    public Product getGlobalProduct(String values, String tableCols, String tableName) {
+        Product product = new Product();
+        BuyListCursorWrapper cursor = queryList(
+                tableCols + " = ?", new String[]{values}, tableName);
+        try {
+            cursor.moveToFirst();
+            if (!cursor.isAfterLast()) {
+
+                product = cursor.getGlobalProduct();
+            }
         } finally {
             cursor.close();
         }

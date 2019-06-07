@@ -16,8 +16,11 @@ import android.widget.TextView;
 import java.util.UUID;
 
 import ru.buylist.R;
+import ru.buylist.data.BuyListDbSchema;
 import ru.buylist.models.Product;
 import ru.buylist.models.ProductLab;
+
+import static ru.buylist.data.BuyListDbSchema.*;
 
 public class CategoryFragment extends Fragment {
 
@@ -42,7 +45,9 @@ public class CategoryFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UUID id = (UUID) getArguments().getSerializable(ARG_CATEGORY);
-        product = ProductLab.get(getActivity()).getProduct(id.toString());
+        product = ProductLab.get(getActivity()).getProduct(id.toString(),
+                ProductTable.Cols.PRODUCT_ID,
+                ProductTable.NAME);
     }
 
     @Nullable
@@ -76,4 +81,6 @@ public class CategoryFragment extends Fragment {
         categoryText.setAdapter(adapter);
 
     }
+
+
 }
