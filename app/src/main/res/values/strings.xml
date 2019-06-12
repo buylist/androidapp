@@ -47,6 +47,7 @@
     <string name="delete_description">Удалить</string>
     <string name="spinner_description">Развернуть список категорий</string>
     <string name="amount_of_product">%1$s %2$s</string>
+    <string name="color_marker_description">Цветовой маркер</string>
 
     <string-array name="category">
         <item>Продукты</item>
@@ -55,5 +56,14 @@
         <item>Детям и мамам</item>
         <item>Авто Мото</item>
         <item>Зоотовары</item>
+    </string-array>
+
+    <string-array name="category_color">
+        <item>#56CCF2</item>
+        <item>#4CB5AB</item>
+        <item>#EB5757</item>
+        <item>#F2994A</item>
+        <item>#F2E148</item>
+        <item>#D766FF</item>
     </string-array>
 </resources>

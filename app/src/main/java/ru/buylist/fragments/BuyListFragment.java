@@ -179,7 +179,7 @@ public class BuyListFragment extends Fragment {
     }
 
     public interface Callbacks {
-        void onProductSelected(BuyList buyList);
+        void onBuyListSelected(BuyList buyList);
     }
 
     private class BuyListHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ITouchHelperHolder {
@@ -199,7 +199,7 @@ public class BuyListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            callbacks.onProductSelected(buyList);
+            callbacks.onBuyListSelected(buyList);
         }
 
         @Override
@@ -259,7 +259,7 @@ public class BuyListFragment extends Fragment {
         public void onItemDismiss(int position) {
             Log.d("TAG", "onItemDismiss: ");
             ProductLab productLab = ProductLab.get(getActivity());
-            productLab.deleteFromDb(lists.get(position).getId() + lists.get(position).getTitle(),
+            productLab.deleteFromDb(lists.get(position).getId().toString(),
                     ProductTable.NAME, ProductTable.Cols.BUYLIST_ID);
             productLab.deleteFromDb(lists.get(position).getId().toString(), BuyTable.NAME, BuyTable.Cols.UUID);
             notifyItemRemoved(position);

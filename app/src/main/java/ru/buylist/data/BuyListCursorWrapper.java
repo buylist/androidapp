@@ -6,6 +6,7 @@ import android.database.CursorWrapper;
 import java.util.UUID;
 
 import ru.buylist.models.BuyList;
+import ru.buylist.models.Category;
 import ru.buylist.models.Product;
 
 import static ru.buylist.data.BuyListDbSchema.*;
@@ -53,5 +54,16 @@ public class BuyListCursorWrapper extends CursorWrapper {
         product.setName(productName);
         product.setCategory(category);
         return product;
+    }
+
+    public Category getCategory() {
+        String id = getString(getColumnIndex(CategoryTable.Cols.CATEGORY_ID));
+        String name = getString(getColumnIndex(CategoryTable.Cols.CATEGORY_NAME));
+        String color = getString(getColumnIndex(CategoryTable.Cols.CATEGORY_COLOR));
+
+        Category category = new Category(UUID.fromString(id));
+        category.setName(name);
+        category.setColor(color);
+        return category;
     }
 }

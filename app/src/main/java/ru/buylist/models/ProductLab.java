@@ -50,6 +50,14 @@ public class ProductLab {
         return values;
     }
 
+    private static ContentValues getCategoryContentValues(Category category) {
+        ContentValues values = new ContentValues();
+        values.put(CategoryTable.Cols.CATEGORY_ID, category.getId().toString());
+        values.put(CategoryTable.Cols.CATEGORY_NAME, category.getName());
+        values.put(CategoryTable.Cols.CATEGORY_COLOR, category.getColor());
+        return values;
+    }
+
     private static ContentValues getGlobalProductContentValues(Product product) {
         ContentValues values = new ContentValues();
         values.put(GlobalProductsTable.Cols.PRODUCT_ID, product.getProductId().toString());
@@ -66,6 +74,11 @@ public class ProductLab {
     public void addProducts(Product product) {
         ContentValues values = getProductsContentValues(product);
         database.insert(ProductTable.NAME, null, values);
+    }
+
+    public void addCategory(Category category) {
+        ContentValues values = getCategoryContentValues(category);
+        database.insert(CategoryTable.NAME, null, values);
     }
 
     public void addGlobalProduct(Product product) {
@@ -140,6 +153,38 @@ public class ProductLab {
         return product;
     }
 
+    public Category getCategory(String values, String tableCols, String tableName) {
+        Category category = new Category();
+        BuyListCursorWrapper cursor = queryList(
+                tableCols + " = ?", new String[]{values}, tableName);
+        try {
+            cursor.moveToFirst();
+            if (!cursor.isAfterLast()) {
+                category = cursor.getCategory();
+            }
+        } finally {
+            cursor.close();
+        }
+        return category;
+    }
+
+    public List<Category> getCategories() {
+        List<Category> categories = new ArrayList<>();
+        BuyListCursorWrapper cursor = queryList(
+                null, null, CategoryTable.NAME);
+
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                categories.add(cursor.getCategory());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+        return categories;
+    }
+
     public Product getGlobalProduct(String values, String tableCols, String tableName) {
         Product product = new Product();
         BuyListCursorWrapper cursor = queryList(
@@ -174,8 +219,8 @@ public class ProductLab {
 
     public void updateProduct(Product product) {
         ContentValues values = getProductsContentValues(product);
-        database.update(ProductTable.NAME, values, ProductTable.Cols.PRODUCT_NAME + " = ?",
-                new String[]{product.getName()});
+        database.update(ProductTable.NAME, values, ProductTable.Cols.PRODUCT_ID + " = ?",
+                new String[]{product.getProductId().toString()});
     }
 
     public void updateProductTable(List<Product> products, String id) {

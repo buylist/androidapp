@@ -22,7 +22,6 @@
                 android:id="@+id/edit_product"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@color/colorLightGray"
                 android:contentDescription="@string/edit_description"
                 app:srcCompat="@drawable/ic_edit" />
 
@@ -30,7 +29,6 @@
                 android:id="@+id/delete_product"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@color/colorLightRed"
                 android:contentDescription="@string/delete_description"
                 app:srcCompat="@drawable/ic_delete" />
 

@@ -24,6 +24,16 @@ public class BuyListDbSchema {
         }
     }
 
+    public static final class CategoryTable {
+        public static final String NAME = "category";
+
+        public static final class Cols {
+            public static final String CATEGORY_ID = "category_id";
+            public static final String CATEGORY_NAME = "category_name";
+            public static final String CATEGORY_COLOR = "category_color";
+        }
+    }
+
     public static final class GlobalProductsTable {
         public static final String NAME = "global_list_of_products";
 

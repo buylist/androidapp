@@ -3,16 +3,13 @@ package ru.buylist.fragments;
 import android.content.*;
 
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.Paint;
+import android.graphics.*;
 import android.os.Bundle;
 import android.support.annotation.*;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.*;
 import android.support.v4.app.ShareCompat.IntentBuilder;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.*;
 import android.view.*;
 import android.widget.*;
 
@@ -24,6 +21,7 @@ import java.util.*;
 import ru.buylist.KeyboardUtils;
 import ru.buylist.R;
 import ru.buylist.models.BuyList;
+import ru.buylist.models.Category;
 import ru.buylist.models.Product;
 import ru.buylist.models.ProductLab;
 
@@ -32,7 +30,6 @@ import static ru.buylist.data.BuyListDbSchema.*;
 public class ProductFragment extends Fragment {
 
     private static final String ARG_BUY_LIST_ID = "buy_list_id";
-    private static final int height = 40;
     private boolean flag = true;
 
     private BuyList buyList;
@@ -57,9 +54,9 @@ public class ProductFragment extends Fragment {
 
     private Callbacks callbacks;
 
-    public static ProductFragment newInstance(UUID productId) {
+    public static ProductFragment newInstance(UUID buylistId) {
         Bundle args = new Bundle();
-        args.putSerializable(ARG_BUY_LIST_ID, productId);
+        args.putSerializable(ARG_BUY_LIST_ID, buylistId);
 
         ProductFragment productFragment = new ProductFragment();
         productFragment.setArguments(args);
@@ -100,27 +97,9 @@ public class ProductFragment extends Fragment {
         return view;
     }
 
-
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//        inflater.inflate(R.menu.fragment_product, menu);
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.buylist_edit:
-//                return true;
-//            default:
-//                updateList();
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
-
 //    private void updateList() {
 //        ProductLab.get(getActivity()).updateBuyList(buyList);
-//        callbacks.onProductUpdated(buyList);
+//        callbacks.onBuyListUpdated(buyList);
 //    }
 
     private void initUi(View view) {
@@ -147,7 +126,7 @@ public class ProductFragment extends Fragment {
 
     public void updateProductListUi() {
         ProductLab productLab = ProductLab.get(getActivity());
-        List<Product> products = productLab.getProductList(buyList.getId() + buyList.getTitle());
+        List<Product> products = productLab.getProductList(buyList.getId().toString());
 
         if (adapter == null) {
             adapter = new ProductAdapter(products);
@@ -164,6 +143,7 @@ public class ProductFragment extends Fragment {
             public void onClick(View v) {
                 newProductLayout.setVisibility(View.VISIBLE);
                 newProductFab.hide();
+                visibilityFab.hide();
                 KeyboardUtils.showKeyboard(productField, getActivity());
             }
         });
@@ -178,6 +158,7 @@ public class ProductFragment extends Fragment {
                 }
                 newProductLayout.setVisibility(View.GONE);
                 newProductFab.show();
+                visibilityFab.show();
                 KeyboardUtils.hideKeyboard(productField, getActivity());
             }
         });
@@ -203,13 +184,12 @@ public class ProductFragment extends Fragment {
 
     private void addNewProduct() {
         Product product = new Product();
-        product.setBuylistId(buyList.getId() + buyList.getTitle());
+        product.setBuylistId(buyList.getId().toString());
         product.setName(productField.getText().toString());
         product.setAmount(amountField.getText().toString());
         product.setUnit(unitField.getText().toString());
 
         if (!isInGlobalDatabase(product)) {
-            ProductLab.get(getActivity()).addGlobalProduct(product);
             callbacks.onProductCreated(product);
         }
 
@@ -225,6 +205,7 @@ public class ProductFragment extends Fragment {
         if (globalProduct.getName() == null) {
             return false;
         } else {
+            product.setCategory(globalProduct.getCategory());
             return true;
         }
     }
@@ -253,14 +234,29 @@ public class ProductFragment extends Fragment {
     }
 
     private String getBuyListReport() {
-        List<Product> productList = ProductLab.get(getActivity()).getProductList(buyList.getId() + buyList.getTitle());
+        List<Product> productList = ProductLab.get(getActivity()).getProductList(buyList.getId().toString());
         String report = buyList.getTitle() + productList;
         return report;
     }
 
-    public interface Callbacks {
-        void onProductUpdated(BuyList buyList);
+    private String getColor(Product product) {
+        Product globalProduct = ProductLab.get(getActivity()).getGlobalProduct(
+                product.getName(),
+                GlobalProductsTable.Cols.PRODUCT_NAME,
+                GlobalProductsTable.NAME);
+        if (globalProduct.getCategory() == null) {
+            return "#000000";
+        } else {
+            Category category = ProductLab.get(getActivity()).getCategory(
+                    globalProduct.getCategory(),
+                    CategoryTable.Cols.CATEGORY_NAME,
+                    CategoryTable.NAME);
+            return category.getColor();
+        }
+    }
 
+    public interface Callbacks {
+        void onBuyListUpdated(BuyList buyList);
         void onProductCreated(Product product);
     }
 
@@ -297,6 +293,7 @@ public class ProductFragment extends Fragment {
 
         void bind(Product product) {
             this.product = product;
+            category.setColorFilter(Color.parseColor(getColor(product)));
             productName.setText(product.getName());
             amount.setText(getString(R.string.amount_of_product, product.getAmount(), product.getUnit()));
 

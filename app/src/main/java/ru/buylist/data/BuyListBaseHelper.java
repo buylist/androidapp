@@ -16,35 +16,47 @@ public class BuyListBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        StringBuilder buyTableBuilder = new StringBuilder();
-        buyTableBuilder.append("create table ");
-        buyTableBuilder.append(BuyTable.NAME);
-        buyTableBuilder.append("(");
-        buyTableBuilder.append(" _id integer primary key autoincrement, ");
-        buyTableBuilder.append(BuyTable.Cols.UUID);
-        buyTableBuilder.append(", ");
-        buyTableBuilder.append(BuyTable.Cols.TITLE);
-        buyTableBuilder.append(")");
+        StringBuilder buyTable = new StringBuilder();
+        buyTable.append("create table ");
+        buyTable.append(BuyTable.NAME);
+        buyTable.append("(");
+        buyTable.append(" _id integer primary key autoincrement, ");
+        buyTable.append(BuyTable.Cols.UUID);
+        buyTable.append(", ");
+        buyTable.append(BuyTable.Cols.TITLE);
+        buyTable.append(")");
 
-        StringBuilder productTableBuilder = new StringBuilder();
-        productTableBuilder.append("create table ");
-        productTableBuilder.append(ProductTable.NAME);
-        productTableBuilder.append("(");
-        productTableBuilder.append(" _id integer primary key autoincrement, ");
-        productTableBuilder.append(ProductTable.Cols.BUYLIST_ID);
-        productTableBuilder.append(", ");
-        productTableBuilder.append(ProductTable.Cols.PRODUCT_ID);
-        productTableBuilder.append(", ");
-        productTableBuilder.append(ProductTable.Cols.PRODUCT_NAME);
-        productTableBuilder.append(", ");
-        productTableBuilder.append(ProductTable.Cols.IS_PURCHASED);
-        productTableBuilder.append(", ");
-        productTableBuilder.append(ProductTable.Cols.CATEGORY);
-        productTableBuilder.append(", ");
-        productTableBuilder.append(ProductTable.Cols.AMOUNT);
-        productTableBuilder.append(", ");
-        productTableBuilder.append(ProductTable.Cols.UNIT);
-        productTableBuilder.append(")");
+        StringBuilder productTable = new StringBuilder();
+        productTable.append("create table ");
+        productTable.append(ProductTable.NAME);
+        productTable.append("(");
+        productTable.append(" _id integer primary key autoincrement, ");
+        productTable.append(ProductTable.Cols.BUYLIST_ID);
+        productTable.append(", ");
+        productTable.append(ProductTable.Cols.PRODUCT_ID);
+        productTable.append(", ");
+        productTable.append(ProductTable.Cols.PRODUCT_NAME);
+        productTable.append(", ");
+        productTable.append(ProductTable.Cols.IS_PURCHASED);
+        productTable.append(", ");
+        productTable.append(ProductTable.Cols.CATEGORY);
+        productTable.append(", ");
+        productTable.append(ProductTable.Cols.AMOUNT);
+        productTable.append(", ");
+        productTable.append(ProductTable.Cols.UNIT);
+        productTable.append(")");
+
+        StringBuilder categoryTable = new StringBuilder();
+        categoryTable.append("create table ");
+        categoryTable.append(CategoryTable.NAME);
+        categoryTable.append("(");
+        categoryTable.append(" _id integer primary key autoincrement, ");
+        categoryTable.append(CategoryTable.Cols.CATEGORY_ID);
+        categoryTable.append(", ");
+        categoryTable.append(CategoryTable.Cols.CATEGORY_NAME);
+        categoryTable.append(", ");
+        categoryTable.append(CategoryTable.Cols.CATEGORY_COLOR);
+        categoryTable.append(")");
 
         StringBuilder globalTable = new StringBuilder();
         globalTable.append("create table ");
@@ -58,8 +70,10 @@ public class BuyListBaseHelper extends SQLiteOpenHelper {
         globalTable.append(GlobalProductsTable.Cols.CATEGORY);
         globalTable.append(")");
 
-        db.execSQL(buyTableBuilder.toString());
-        db.execSQL(productTableBuilder.toString());
+
+        db.execSQL(buyTable.toString());
+        db.execSQL(productTable.toString());
+        db.execSQL(categoryTable.toString());
         db.execSQL(globalTable.toString());
     }
 

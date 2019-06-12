@@ -22,7 +22,7 @@ public class BuyListActivity extends SingleFragmentActivity implements BuyListFr
         return R.layout.activity_masterdetail;
     }
 
-    public void onProductSelected(BuyList buyList) {
+    public void onBuyListSelected(BuyList buyList) {
         if (findViewById(R.id.detail_fragment_container) == null) {
             Intent intent = ProductActivity.newIntent(this, buyList.getId());
             startActivity(intent);
@@ -35,7 +35,7 @@ public class BuyListActivity extends SingleFragmentActivity implements BuyListFr
     }
 
     @Override
-    public void onProductUpdated(BuyList buyList) {
+    public void onBuyListUpdated(BuyList buyList) {
         BuyListFragment listFragment = (BuyListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_container);
         listFragment.updateUI();
