@@ -18,8 +18,8 @@
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:elevation">2dp</item>
-        <item name="android:background">@color/colorPrimary</item>
         <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/top_button_bg</item>
     </style>
 
 </resources>

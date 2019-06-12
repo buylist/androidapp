@@ -7,19 +7,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.*;
+import android.widget.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import ru.buylist.IOnBackPressed;
 import ru.buylist.R;
@@ -29,7 +20,7 @@ import ru.buylist.models.ProductLab;
 
 import static ru.buylist.data.BuyListDbSchema.*;
 
-public class CategoryFragment extends Fragment implements IOnBackPressed {
+public class CategoryFragment extends Fragment implements IOnBackPressed, View.OnClickListener {
 
     private static final String ARG_CATEGORY = "args_category";
     private Product product;
@@ -93,18 +84,35 @@ public class CategoryFragment extends Fragment implements IOnBackPressed {
 
         productName.setText(product.getName());
 
-        openSpinner();
         setAdapter();
-        onButtonClick();
+
+        spinnerButton.setOnClickListener(this);
+        buttonNext.setOnClickListener(this);
+        buttonSkip.setOnClickListener(this);
     }
 
-    private void openSpinner() {
-        spinnerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.category_spinner:
                 categoryText.showDropDown();
-            }
-        });
+                break;
+            case R.id.button_next:
+                ProductLab productLab = ProductLab.get(getActivity());
+                Category category = productLab.getCategory(
+                        categoryText.getText().toString(),
+                        CategoryTable.Cols.CATEGORY_NAME,
+                        CategoryTable.NAME);
+
+                product.setCategory(category.getName());
+                productLab.updateProduct(product);
+                productLab.addGlobalProduct(product);
+                callbacks.updateProductsList(product);
+                break;
+            case R.id.button_skip:
+                callbacks.updateProductsList(product);
+                break;
+        }
     }
 
     private List<Category> getCategories() {
@@ -139,30 +147,6 @@ public class CategoryFragment extends Fragment implements IOnBackPressed {
                 getCategories());
         categoryText.setAdapter(adapter);
     }
-
-    private void onButtonClick() {
-        buttonNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Category category = ProductLab.get(getActivity()).getCategory(
-                        categoryText.getText().toString(),
-                        CategoryTable.Cols.CATEGORY_NAME,
-                        CategoryTable.NAME);
-                product.setCategory(category.getName());
-                ProductLab.get(getActivity()).updateProduct(product);
-                ProductLab.get(getActivity()).addGlobalProduct(product);
-                callbacks.updateProductsList(product);
-            }
-        });
-
-        buttonSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callbacks.updateProductsList(product);
-            }
-        });
-    }
-
 
     public interface Callbacks {
         void updateProductsList(Product product);

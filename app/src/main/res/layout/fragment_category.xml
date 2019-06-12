@@ -44,7 +44,7 @@
 
             <ImageButton
                 android:id="@+id/category_spinner"
-                android:layout_width="30dp"
+                android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/spinner_description"
@@ -78,6 +78,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="32dp"
+                android:contentDescription="@string/color_marker_description"
                 android:src="@drawable/circle"
                 android:tint="#EB5757" />
 

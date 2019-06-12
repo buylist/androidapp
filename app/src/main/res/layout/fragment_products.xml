@@ -92,7 +92,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:contentDescription="@string/create_product_description"
-                android:src="@drawable/ic_check_black" />
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_new_product" />
         </LinearLayout>
 
     </RelativeLayout>

@@ -27,7 +27,7 @@ import ru.buylist.models.ProductLab;
 
 import static ru.buylist.data.BuyListDbSchema.*;
 
-public class ProductFragment extends Fragment {
+public class ProductFragment extends Fragment implements View.OnClickListener {
 
     private static final String ARG_BUY_LIST_ID = "buy_list_id";
     private boolean flag = true;
@@ -118,10 +118,40 @@ public class ProductFragment extends Fragment {
         recyclerView = view.findViewById(R.id.products_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        onNewProductButtonClick();
+        createProduct.setOnClickListener(this);
+        newProductFab.setOnClickListener(this);
+        visibilityFab.setOnClickListener(this);
+
         updateProductListUi();
-        onCreateButtonClick();
-        onShowProductsButtonClick();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.create_product:
+                if (productField.getText().length() != 0) addNewProduct();
+                newProductLayout.setVisibility(View.GONE);
+                newProductFab.show();
+                visibilityFab.show();
+                KeyboardUtils.hideKeyboard(productField, getActivity());
+                break;
+            case R.id.new_product_fab:
+                newProductLayout.setVisibility(View.VISIBLE);
+                newProductFab.hide();
+                visibilityFab.hide();
+                KeyboardUtils.showKeyboard(productField, getActivity());
+                break;
+            case R.id.show_purchased_products_fab:
+                if (flag) {
+                    visibilityFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_off_black));
+                    flag = false;
+                } else {
+                    visibilityFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_black));
+                    flag = true;
+                }
+                updateProductListUi();
+                break;
+        }
     }
 
     public void updateProductListUi() {
@@ -135,51 +165,6 @@ public class ProductFragment extends Fragment {
             adapter.setProducts(products);
             adapter.notifyDataSetChanged();
         }
-    }
-
-    private void onNewProductButtonClick() {
-        newProductFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                newProductLayout.setVisibility(View.VISIBLE);
-                newProductFab.hide();
-                visibilityFab.hide();
-                KeyboardUtils.showKeyboard(productField, getActivity());
-            }
-        });
-    }
-
-    private void onCreateButtonClick() {
-        createProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (productField.getText().length() != 0) {
-                    addNewProduct();
-                }
-                newProductLayout.setVisibility(View.GONE);
-                newProductFab.show();
-                visibilityFab.show();
-                KeyboardUtils.hideKeyboard(productField, getActivity());
-            }
-        });
-    }
-
-    private void onShowProductsButtonClick() {
-        visibilityFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (flag) {
-                    visibilityFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_off_black));
-                    updateProductListUi();
-                    flag = false;
-                } else {
-                    visibilityFab.setImageDrawable(getResources().getDrawable(R.drawable.ic_visibility_black));
-                    updateProductListUi();
-                    flag = true;
-                }
-            }
-        });
-
     }
 
     private void addNewProduct() {
@@ -255,8 +240,10 @@ public class ProductFragment extends Fragment {
         }
     }
 
+
     public interface Callbacks {
         void onBuyListUpdated(BuyList buyList);
+
         void onProductCreated(Product product);
     }
 
@@ -270,7 +257,6 @@ public class ProductFragment extends Fragment {
         private ImageButton edit;
         private ImageButton delete;
         private FrameLayout frameLayoutTop;
-        private FrameLayout frameLayoutBottom;
         private CardView cardView;
 
         ProductHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -281,14 +267,12 @@ public class ProductFragment extends Fragment {
             amount = itemView.findViewById(R.id.product_amount);
             edit = itemView.findViewById(R.id.edit_product);
             delete = itemView.findViewById(R.id.delete_product);
-
             frameLayoutTop = itemView.findViewById(R.id.surface_product);
-            frameLayoutTop.setOnClickListener(this);
-            onDeleteButtonClick();
-            onEditButtonClick();
-
-            frameLayoutBottom = itemView.findViewById(R.id.bottom_product);
             cardView = itemView.findViewById(R.id.card_product);
+
+            frameLayoutTop.setOnClickListener(this);
+            delete.setOnClickListener(this);
+            edit.setOnClickListener(this);
         }
 
         void bind(Product product) {
@@ -304,6 +288,9 @@ public class ProductFragment extends Fragment {
                 } else {
                     showLayout();
                 }
+            } else {
+                productName.setPaintFlags(productName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                showLayout();
             }
 
             swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
@@ -312,7 +299,7 @@ public class ProductFragment extends Fragment {
         }
 
         private void hideLayout() {
-            itemView.setVisibility(View.GONE);
+            itemView.setVisibility(View.INVISIBLE);
             itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
         }
 
@@ -323,48 +310,40 @@ public class ProductFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            if (product.isPurchased()) {
-                productName.setPaintFlags(productName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                product.setPurchased(false);
-            } else {
-                productName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                product.setPurchased(true);
-            }
-            ProductLab.get(getActivity()).updateProduct(product);
-            updateProductListUi();
-        }
-
-        private void onDeleteButtonClick() {
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ProductLab productLab = ProductLab.get(getActivity());
+            ProductLab productLab = ProductLab.get(getActivity());
+            switch (v.getId()) {
+                case R.id.surface_product:
+                    if (product.isPurchased()) {
+                        productName.setPaintFlags(productName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                        product.setPurchased(false);
+                    } else {
+                        productName.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                        product.setPurchased(true);
+                    }
+                    productLab.updateProduct(product);
+                    updateProductListUi();
+                    break;
+                case R.id.delete_product:
                     productLab.deleteFromDb(product.getProductId().toString(),
                             ProductTable.NAME,
                             ProductTable.Cols.PRODUCT_ID);
                     adapter.notifyItemRemoved(getAdapterPosition());
                     adapter.closeAllItems();
                     updateProductListUi();
-                }
-            });
-        }
-
-        private void onEditButtonClick() {
-            edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                    break;
+                case R.id.edit_product:
                     newProductLayout.setVisibility(View.VISIBLE);
                     productField.setText(product.getName());
                     amountField.setText(product.getAmount());
                     unitField.setText(product.getUnit());
 
-                    ProductLab productLab = ProductLab.get(getActivity());
                     productLab.deleteFromDb(product.getProductId().toString(),
                             ProductTable.NAME,
                             ProductTable.Cols.PRODUCT_ID);
                     adapter.closeAllItems();
-                }
-            });
+                    break;
+            }
+
         }
     }
 
