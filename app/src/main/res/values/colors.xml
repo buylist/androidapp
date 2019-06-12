@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#E40000</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#333333</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorLightRed">#EB5757</color>
+    <color name="colorLightGray">#C4C4C4</color>
+    <color name="colorVisibilityFab">#F1F1F1</color>
+    <color name="colorDivider">#1F000000</color>
+    <color name="colorWhite">#FFFFFFFF</color>
+    <color name="colorButtonNextText">#007AFF</color>
+    <color name="colorButtonSkipText">#4F4F4F</color>
+</resources>
