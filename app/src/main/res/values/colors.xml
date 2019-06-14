@@ -11,4 +11,7 @@
     <color name="colorWhite">#FFFFFFFF</color>
     <color name="colorButtonNextText">#007AFF</color>
     <color name="colorButtonSkipText">#4F4F4F</color>
+    <color name="color_icon_bn">#4F4F4F</color>
+    <color name="color_bn_primary">#F2F2F2</color>
+    <color name="list_marker_tint">#858E99</color>
 </resources>

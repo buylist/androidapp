@@ -372,7 +372,7 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
             holder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
                 @Override
                 public void onStartOpen(SwipeLayout layout) {
-                    holder.cardView.setBackgroundColor(Color.WHITE);
+                    holder.cardView.setBackgroundColor(Color.LTGRAY);
                     mItemManger.closeAllExcept(layout);
                 }
 
@@ -386,7 +386,7 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
 
                 @Override
                 public void onClose(SwipeLayout layout) {
-                    holder.cardView.setBackgroundColor(0);
+                    holder.cardView.setBackgroundColor(Color.WHITE);
                 }
 
                 @Override

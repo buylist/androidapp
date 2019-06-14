@@ -42,6 +42,14 @@ public class BuyListActivity extends SingleFragmentActivity implements BuyListFr
     }
 
     @Override
+    public void showHome() {
+        BuyListFragment fragment = new BuyListFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
+
+    @Override
     public void onProductCreated(Product product) {
 
     }
