@@ -1,4 +1,4 @@
-package ru.buylist.models;
+package ru.buylist.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import ru.buylist.data.BuyListBaseHelper;
-import ru.buylist.data.BuyListCursorWrapper;
+import ru.buylist.data.db.BuyListBaseHelper;
+import ru.buylist.data.db.BuyListCursorWrapper;
 
-import static ru.buylist.data.BuyListDbSchema.*;
+import static ru.buylist.data.db.BuyListDbSchema.*;
 
 public class ProductLab {
     private static ProductLab productLab;

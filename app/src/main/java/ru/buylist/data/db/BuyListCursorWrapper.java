@@ -1,15 +1,15 @@
-package ru.buylist.data;
+package ru.buylist.data.db;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
 import java.util.UUID;
 
-import ru.buylist.models.BuyList;
-import ru.buylist.models.Category;
-import ru.buylist.models.Product;
+import ru.buylist.data.BuyList;
+import ru.buylist.data.Category;
+import ru.buylist.data.Product;
 
-import static ru.buylist.data.BuyListDbSchema.*;
+import static ru.buylist.data.db.BuyListDbSchema.*;
 
 public class BuyListCursorWrapper extends CursorWrapper {
 

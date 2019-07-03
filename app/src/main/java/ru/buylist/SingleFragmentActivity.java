@@ -1,4 +1,4 @@
-package ru.buylist.activity;
+package ru.buylist;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;

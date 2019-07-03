@@ -1,4 +1,4 @@
-package ru.buylist.fragments;
+package ru.buylist.listcollection;
 
 import android.content.*;
 
@@ -20,14 +20,14 @@ import java.util.*;
 
 import ru.buylist.KeyboardUtils;
 import ru.buylist.R;
-import ru.buylist.models.BuyList;
-import ru.buylist.models.Category;
-import ru.buylist.models.Product;
-import ru.buylist.models.ProductLab;
+import ru.buylist.data.BuyList;
+import ru.buylist.data.Category;
+import ru.buylist.data.Product;
+import ru.buylist.data.ProductLab;
 
-import static ru.buylist.data.BuyListDbSchema.*;
+import static ru.buylist.data.db.BuyListDbSchema.*;
 
-public class ProductFragment extends Fragment implements View.OnClickListener {
+public class ListCollectionFragment extends Fragment implements View.OnClickListener {
 
     private static final String ARG_BUY_LIST_ID = "buy_list_id";
     private boolean flag = true;
@@ -54,11 +54,11 @@ public class ProductFragment extends Fragment implements View.OnClickListener {
 
     private Callbacks callbacks;
 
-    public static ProductFragment newInstance(UUID buylistId) {
+    public static ListCollectionFragment newInstance(UUID buylistId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_BUY_LIST_ID, buylistId);
 
-        ProductFragment productFragment = new ProductFragment();
+        ListCollectionFragment productFragment = new ListCollectionFragment();
         productFragment.setArguments(args);
         return productFragment;
     }

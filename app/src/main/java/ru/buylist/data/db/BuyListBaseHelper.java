@@ -1,10 +1,10 @@
-package ru.buylist.data;
+package ru.buylist.data.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static ru.buylist.data.BuyListDbSchema.*;
+import static ru.buylist.data.db.BuyListDbSchema.*;
 
 public class BuyListBaseHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;

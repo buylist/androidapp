@@ -1,4 +1,4 @@
-package ru.buylist.fragments;
+package ru.buylist.listcollection;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -14,11 +14,11 @@ import java.util.*;
 
 import ru.buylist.IOnBackPressed;
 import ru.buylist.R;
-import ru.buylist.models.Category;
-import ru.buylist.models.Product;
-import ru.buylist.models.ProductLab;
+import ru.buylist.data.Category;
+import ru.buylist.data.Product;
+import ru.buylist.data.ProductLab;
 
-import static ru.buylist.data.BuyListDbSchema.*;
+import static ru.buylist.data.db.BuyListDbSchema.*;
 
 public class CategoryFragment extends Fragment implements IOnBackPressed, View.OnClickListener {
 

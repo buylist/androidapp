@@ -1,4 +1,4 @@
-package ru.buylist.data;
+package ru.buylist.data.db;
 
 public class BuyListDbSchema {
     public static final class BuyTable {

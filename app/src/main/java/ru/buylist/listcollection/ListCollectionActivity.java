@@ -1,4 +1,4 @@
-package ru.buylist.activity;
+package ru.buylist.listcollection;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,19 +9,18 @@ import java.util.UUID;
 
 import ru.buylist.IOnBackPressed;
 import ru.buylist.R;
-import ru.buylist.fragments.CategoryFragment;
-import ru.buylist.fragments.ProductFragment;
-import ru.buylist.models.BuyList;
-import ru.buylist.models.Product;
+import ru.buylist.SingleFragmentActivity;
+import ru.buylist.data.BuyList;
+import ru.buylist.data.Product;
 
 
-public class ProductActivity extends SingleFragmentActivity implements ProductFragment.Callbacks, CategoryFragment.Callbacks {
+public class ListCollectionActivity extends SingleFragmentActivity implements ListCollectionFragment.Callbacks, CategoryFragment.Callbacks {
 
     private static final String EXTRA_BUY_LIST_ID = "buy_list_id";
 
 
     public static Intent newIntent(Context context, UUID productId) {
-        Intent intent = new Intent(context, ProductActivity.class);
+        Intent intent = new Intent(context, ListCollectionActivity.class);
         intent.putExtra(EXTRA_BUY_LIST_ID, productId);
         return intent;
     }
@@ -29,7 +28,7 @@ public class ProductActivity extends SingleFragmentActivity implements ProductFr
     @Override
     protected Fragment createFragment() {
         UUID id = (UUID) getIntent().getSerializableExtra(EXTRA_BUY_LIST_ID);
-        return ProductFragment.newInstance(id);
+        return ListCollectionFragment.newInstance(id);
     }
 
 
@@ -66,7 +65,7 @@ public class ProductActivity extends SingleFragmentActivity implements ProductFr
     @Override
     public void updateProductsList(Product product) {
         UUID id = UUID.fromString(product.getBuylistId());
-        Fragment fragment = ProductFragment.newInstance(id);
+        Fragment fragment = ListCollectionFragment.newInstance(id);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
