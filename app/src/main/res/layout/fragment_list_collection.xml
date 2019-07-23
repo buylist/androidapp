@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="ru.buylist.listcollection.ListCollectionViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="Autofill">
+
+        <LinearLayout
+            android:id="@+id/top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/button_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/templates_button"
+                    style="@style/TopButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/pattern_button" />
+
+                <Button
+                    android:id="@+id/recipe_button"
+                    style="@style/TopButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/recipe_button" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/products_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorDivider" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/products_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/new_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="@{viewmodel.layoutNewProductVisibility ? View.VISIBLE : View.GONE}">
+
+                <EditText
+                    android:id="@+id/product_field"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:hint="@string/new_product_hint"
+                    android:inputType="text"
+                    android:text="@={viewmodel.productName}" />
+
+                <EditText
+                    android:id="@+id/amount_field"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@string/amount_hint"
+                    android:inputType="number"
+                    android:text="@={viewmodel.amount}" />
+
+                <EditText
+                    android:id="@+id/unit_field"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@string/unit_hint"
+                    android:inputType="text"
+                    android:text="@={viewmodel.unit}" />
+
+                <ImageButton
+                    android:id="@+id/create_product"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/create_product_description"
+                    android:src="@drawable/ic_new_product" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

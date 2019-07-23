@@ -40,4 +40,6 @@
         <item name="android:background">@drawable/top_button_bg</item>
     </style>
 
+    <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
 </resources>

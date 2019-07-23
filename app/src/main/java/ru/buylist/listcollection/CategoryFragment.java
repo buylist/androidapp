@@ -32,10 +32,11 @@ public class CategoryFragment extends Fragment implements IOnBackPressed, View.O
     private Button buttonSkip;
 
     private Callbacks callbacks;
+    private ListCollectionViewModel viewModel;
 
-    public static CategoryFragment newInstance(UUID id) {
+    public static CategoryFragment newInstance(UUID productId) {
         Bundle args = new Bundle();
-        args.putSerializable(ARG_CATEGORY, id);
+        args.putSerializable(ARG_CATEGORY, productId);
         CategoryFragment fragment = new CategoryFragment();
         fragment.setArguments(args);
         return fragment;
@@ -67,6 +68,7 @@ public class CategoryFragment extends Fragment implements IOnBackPressed, View.O
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category, container, false);
         initUi(view);
+        viewModel = ListCollectionActivity.obtainViewModel(getActivity());
         return view;
     }
 

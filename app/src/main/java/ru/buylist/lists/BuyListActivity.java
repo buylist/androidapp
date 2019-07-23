@@ -12,7 +12,7 @@ import ru.buylist.listcollection.ListCollectionActivity;
 import ru.buylist.data.BuyList;
 import ru.buylist.data.Product;
 
-public class BuyListActivity extends SingleFragmentActivity implements BuyListFragment.Callbacks, ListCollectionFragment.Callbacks {
+public class BuyListActivity extends SingleFragmentActivity implements BuyListFragment.Callbacks {
     @Override
     protected Fragment createFragment() {
         return new BuyListFragment();
@@ -21,6 +21,11 @@ public class BuyListActivity extends SingleFragmentActivity implements BuyListFr
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_masterdetail;
+    }
+
+    @Override
+    protected void setupViewModel() {
+        setContentView(R.layout.activity_masterdetail);
     }
 
     public void onBuyListSelected(BuyList buyList) {
@@ -35,12 +40,12 @@ public class BuyListActivity extends SingleFragmentActivity implements BuyListFr
         }
     }
 
-    @Override
-    public void onBuyListUpdated(BuyList buyList) {
-        BuyListFragment listFragment = (BuyListFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_container);
-        listFragment.updateUI();
-    }
+//    @Override
+//    public void onBuyListUpdated(BuyList buyList) {
+//        BuyListFragment listFragment = (BuyListFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.fragment_container);
+//        listFragment.updateUI();
+//    }
 
     @Override
     public void showHome() {
@@ -50,8 +55,4 @@ public class BuyListActivity extends SingleFragmentActivity implements BuyListFr
                 .commit();
     }
 
-    @Override
-    public void onProductCreated(Product product) {
-
-    }
 }

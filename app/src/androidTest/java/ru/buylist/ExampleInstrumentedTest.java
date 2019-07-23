@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 
 /**
- * Instrumented list_item_product, which will execute on an Android device.
+ * Instrumented item_product, which will execute on an Android device.
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 public class ExampleInstrumentedTest {
     @Test
     public void useAppContext() {
-        // Context of the app under list_item_product.
+        // Context of the app under item_product.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("ru.buylist", appContext.getPackageName());
