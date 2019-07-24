@@ -15,12 +15,11 @@ import java.util.UUID;
 import ru.buylist.IOnBackPressed;
 import ru.buylist.R;
 import ru.buylist.SingleFragmentActivity;
-import ru.buylist.data.BuyList;
 import ru.buylist.data.Product;
 import ru.buylist.databinding.ActivityListCollectionBinding;
 
 
-public class ListCollectionActivity extends SingleFragmentActivity implements CategoryFragment.Callbacks {
+public class ListCollectionActivity extends SingleFragmentActivity {
 
     private static final String EXTRA_BUY_LIST_ID = "buy_list_id";
 
@@ -52,12 +51,21 @@ public class ListCollectionActivity extends SingleFragmentActivity implements Ca
     protected void setupViewModel() {
         ActivityListCollectionBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_list_collection);
         viewModel = obtainViewModel(this);
-        viewModel.getNewProductEvent().observe(this, new Observer<String>() {
+
+        viewModel.getNewCategoryEvent().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String productId) {
                 createNewProduct(productId);
             }
         });
+
+        viewModel.getAddProductEvent().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String buylistId) {
+                updateProductsList(buylistId);
+            }
+        });
+
         binding.setViewmodel(viewModel);
     }
 
@@ -86,9 +94,8 @@ public class ListCollectionActivity extends SingleFragmentActivity implements Ca
         }
     }
 
-    @Override
-    public void updateProductsList(Product product) {
-        UUID id = UUID.fromString(product.getBuylistId());
+    public void updateProductsList(String buylistId) {
+        UUID id = UUID.fromString(buylistId);
         Fragment fragment = ListCollectionFragment.newInstance(id);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)

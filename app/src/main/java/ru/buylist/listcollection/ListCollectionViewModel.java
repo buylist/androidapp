@@ -22,7 +22,6 @@ import ru.buylist.data.BuyList;
 import ru.buylist.data.Category;
 import ru.buylist.data.Product;
 import ru.buylist.data.ProductLab;
-import ru.buylist.data.db.BuyListDbSchema;
 
 import static ru.buylist.data.db.BuyListDbSchema.*;
 
@@ -43,13 +42,18 @@ public class ListCollectionViewModel extends AndroidViewModel {
     public final ObservableField<String> productName = new ObservableField<>();
     public final ObservableField<String> amount = new ObservableField<>("");
     public final ObservableField<String> unit = new ObservableField<>("");
-    public final String DELETE = "delete";
+
     private final Context context;
+
+    public final String DELETE = "delete";
     private final String ADD = "add";
     private final String UPDATE = "update";
+
     private ProductLab productLab;
+
     //отслеживание нового товара для открытия CategoryFragment
-    private SingleLiveEvent<String> newProductEvent = new SingleLiveEvent<>();
+    private SingleLiveEvent<String> newCategoryEvent = new SingleLiveEvent<>();
+    private SingleLiveEvent<String> addProductEvent = new SingleLiveEvent<>();
 
     public ListCollectionViewModel(Application context) {
         super(context);
@@ -57,12 +61,22 @@ public class ListCollectionViewModel extends AndroidViewModel {
         productLab = ProductLab.get(context);
     }
 
-    SingleLiveEvent<String> getNewProductEvent() {
-        return newProductEvent;
+    SingleLiveEvent<String> getNewCategoryEvent() {
+        return newCategoryEvent;
+    }
+
+    SingleLiveEvent<String> getAddProductEvent() {
+        return addProductEvent;
     }
 
     public BuyList getBuyList(UUID buylistId) {
         return productLab.getBuyList(buylistId);
+    }
+
+    public Product getProduct(String productId) {
+        return productLab.getProduct(productId,
+                ProductTable.Cols.PRODUCT_ID,
+                ProductTable.NAME);
     }
 
     public List<Product> getProducts(UUID id) {
@@ -118,7 +132,7 @@ public class ListCollectionViewModel extends AndroidViewModel {
         if (!productName.get().isEmpty()) {
             Product product = createProduct(buylistId);
             if (!isInGlobalDatabase(product)) {
-                newProductEvent.setValue(product.getProductId().toString());
+                newCategoryEvent.setValue(product.getProductId().toString());
             }
             makeAction(ADD, product);
         }
@@ -204,6 +218,22 @@ public class ListCollectionViewModel extends AndroidViewModel {
         unit.set(product.getUnit());
 
         makeAction(DELETE, product);
+    }
+
+    public void updateCategory(String categoryName, Product product) {
+        Category category = productLab.getCategory(
+                categoryName,
+                CategoryTable.Cols.CATEGORY_NAME,
+                CategoryTable.NAME);
+
+        product.setCategory(category.getName());
+        productLab.updateProduct(product);
+        productLab.addGlobalProduct(product);
+        addProductEvent.setValue(product.getBuylistId());
+    }
+
+    public void skipCategory(String buylistId) {
+        addProductEvent.setValue(buylistId);
     }
 
 }
