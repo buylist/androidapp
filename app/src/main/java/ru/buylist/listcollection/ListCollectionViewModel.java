@@ -49,6 +49,8 @@ public class ListCollectionViewModel extends AndroidViewModel {
     private final String ADD = "add";
     private final String UPDATE = "update";
 
+    public boolean createButtonFlag = true;
+
     private ProductLab productLab;
 
     //отслеживание нового товара для открытия CategoryFragment
@@ -90,18 +92,33 @@ public class ListCollectionViewModel extends AndroidViewModel {
         productLab.updateBuyList(buyList);
     }
 
-    public void showLayout(EditText targetField) {
+    public void showNewProductLayout(EditText targetField) {
+        createButtonFlag = true;
         layoutNewProductVisibility.set(true);
         fabNewProductVisibility.set(false);
         fabProductsVisibility.set(false);
+        bottomNavigationVisibility.set(false);
         KeyboardUtils.showKeyboard(targetField, context);
     }
 
-    public void hideLayout(EditText targetField) {
+    public void hideNewProductLayout(EditText targetField) {
         layoutNewProductVisibility.set(false);
         fabNewProductVisibility.set(true);
         fabProductsVisibility.set(true);
+        bottomNavigationVisibility.set(true);
         KeyboardUtils.hideKeyboard(targetField, context);
+    }
+
+    public void showActivityLayout() {
+        fabProductsVisibility.set(true);
+        fabNewProductVisibility.set(true);
+        bottomNavigationVisibility.set(true);
+    }
+
+    public void hideActivityLayout() {
+        fabProductsVisibility.set(false);
+        fabNewProductVisibility.set(false);
+        bottomNavigationVisibility.set(false);
     }
 
     public void showAllProducts() {
@@ -128,20 +145,21 @@ public class ListCollectionViewModel extends AndroidViewModel {
         }
     }
 
-    public void saveProduct(EditText targetField, String buylistId) {
+    public void saveProduct(EditText targetField, String buylistId, UUID productId) {
         if (!productName.get().isEmpty()) {
-            Product product = createProduct(buylistId);
+            Product product = createProduct(buylistId, productId);
             if (!isInGlobalDatabase(product)) {
                 newCategoryEvent.setValue(product.getProductId().toString());
             }
-            makeAction(ADD, product);
+
+            makeAction(createButtonFlag ? ADD : UPDATE, product);
         }
         clearFields();
-        hideLayout(targetField);
+        hideNewProductLayout(targetField);
     }
 
-    private Product createProduct(String buylistId) {
-        Product product = new Product();
+    private Product createProduct(String buylistId, UUID productId) {
+        Product product = (productId == null ? new Product() : new Product(productId));
         product.setBuylistId(buylistId);
         product.setName(productName.get());
         product.setAmount(amount.get());
@@ -213,11 +231,10 @@ public class ListCollectionViewModel extends AndroidViewModel {
 
     public void editProduct(Product product) {
         layoutNewProductVisibility.set(true);
+        createButtonFlag = false;
         productName.set(product.getName());
         amount.set(product.getAmount());
         unit.set(product.getUnit());
-
-        makeAction(DELETE, product);
     }
 
     public void updateCategory(String categoryName, Product product) {

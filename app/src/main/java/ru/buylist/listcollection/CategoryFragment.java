@@ -47,6 +47,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         viewModel = ListCollectionActivity.obtainViewModel(getActivity());
         UUID productId = (UUID) getArguments().getSerializable(ARG_CATEGORY);
         product = viewModel.getProduct(productId.toString());
+        viewModel.hideActivityLayout();
     }
 
     @Nullable

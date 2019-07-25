@@ -30,7 +30,6 @@ public class ListCollectionFragment extends Fragment {
 
     private Button templatesButton;
     private Button recipeButton;
-    private Button shareButton;
 
     private EditText productField;
 
@@ -58,6 +57,7 @@ public class ListCollectionFragment extends Fragment {
         viewModel = ListCollectionActivity.obtainViewModel(getActivity());
         UUID buylistId = (UUID) getArguments().getSerializable(ARG_BUY_LIST_ID);
         buyList = viewModel.getBuyList(buylistId);
+        viewModel.showActivityLayout();
     }
 
     @Override
@@ -95,8 +95,8 @@ public class ListCollectionFragment extends Fragment {
         newProductFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.showLayout(productField);
-                setupCreateButton();
+                viewModel.showNewProductLayout(productField);
+                setupCreateButton(null);
             }
         });
 
@@ -109,21 +109,16 @@ public class ListCollectionFragment extends Fragment {
         });
     }
 
-    private void setupCreateButton() {
+    private void setupCreateButton(final UUID productId) {
         ImageButton createButton = getActivity().findViewById(R.id.create_product);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.saveProduct(productField, buyList.getId().toString());
+                viewModel.saveProduct(productField, buyList.getId().toString(), productId);
                 updateUi();
             }
         });
     }
-
-    //    private void updateList() {
-//        ProductLab.get(getActivity()).updateBuyList(buyList);
-//        callbacks.onBuyListUpdated(buyList);
-//    }
 
     private void initUi(View view) {
         getActivity().setTitle(buyList.getTitle());
@@ -140,29 +135,16 @@ public class ListCollectionFragment extends Fragment {
 
 
     private class ProductHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private SwipeLayout swipeLayout;
         private Product product;
-        private ImageView category;
-        private ImageButton edit;
-        private ImageButton delete;
-        private FrameLayout frameLayoutTop;
-        private CardView cardView;
-
         private ItemProductBinding binding;
 
         ProductHolder(ItemProductBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-            swipeLayout = itemView.findViewById(R.id.swipe_layout_product);
-            category = itemView.findViewById(R.id.category);
-            edit = itemView.findViewById(R.id.edit_product);
-            delete = itemView.findViewById(R.id.delete_product);
-            frameLayoutTop = itemView.findViewById(R.id.surface_product);
-            cardView = itemView.findViewById(R.id.card_product);
 
-            frameLayoutTop.setOnClickListener(this);
-            delete.setOnClickListener(this);
-            edit.setOnClickListener(this);
+            binding.surfaceProduct.setOnClickListener(this);
+            binding.deleteProduct.setOnClickListener(this);
+            binding.editProduct.setOnClickListener(this);
         }
 
         void bind(Product product) {
@@ -170,13 +152,14 @@ public class ListCollectionFragment extends Fragment {
             binding.setProduct(product);
             binding.executePendingBindings();
 
-            category.setColorFilter(viewModel.getColor(product));
+            binding.category.setColorFilter(viewModel.getColor(product));
 
             viewModel.setViewVisibility(itemView, product);
 
-            swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
-            swipeLayout.addDrag(SwipeLayout.DragEdge.Right, swipeLayout.findViewById(R.id.bottom_product));
-            cardView.setBackgroundColor(0);
+            binding.swipeLayoutProduct.setShowMode(SwipeLayout.ShowMode.PullOut);
+            binding.swipeLayoutProduct.addDrag(SwipeLayout.DragEdge.Right, binding.bottomProduct);
+
+            binding.cardProduct.setBackgroundColor(0);
         }
 
         @Override
@@ -194,6 +177,7 @@ public class ListCollectionFragment extends Fragment {
                     break;
                 case R.id.edit_product:
                     viewModel.editProduct(product);
+                    setupCreateButton(product.getProductId());
                     adapter.closeAllItems();
                     break;
             }
@@ -224,10 +208,10 @@ public class ListCollectionFragment extends Fragment {
 
             mItemManger.bindView(holder.itemView, i);
 
-            holder.swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+            holder.binding.swipeLayoutProduct.addSwipeListener(new SwipeLayout.SwipeListener() {
                 @Override
                 public void onStartOpen(SwipeLayout layout) {
-                    holder.cardView.setBackgroundColor(Color.LTGRAY);
+                    holder.binding.cardProduct.setBackgroundColor(Color.LTGRAY);
                     mItemManger.closeAllExcept(layout);
                 }
 
@@ -241,7 +225,7 @@ public class ListCollectionFragment extends Fragment {
 
                 @Override
                 public void onClose(SwipeLayout layout) {
-                    holder.cardView.setBackgroundColor(Color.WHITE);
+                    holder.binding.cardProduct.setBackgroundColor(0);
                 }
 
                 @Override
