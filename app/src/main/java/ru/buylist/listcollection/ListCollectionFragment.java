@@ -170,7 +170,7 @@ public class ListCollectionFragment extends Fragment {
                     updateUi();
                     break;
                 case R.id.delete_product:
-                    viewModel.makeAction(viewModel.DELETE, product);
+                    viewModel.makeAction(Action.DELETE, product);
                     adapter.notifyItemRemoved(getAdapterPosition());
                     adapter.closeAllItems();
                     updateUi();

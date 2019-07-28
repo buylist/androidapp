@@ -31,30 +31,29 @@ public class ListCollectionViewModel extends AndroidViewModel {
 
     public final ObservableList<Product> products = new ObservableArrayList<>();
 
-    //флаги для отображения/скрытия элементов
+    // Флаги для отображения/скрытия элементов
     public final ObservableBoolean layoutNewProductVisibility = new ObservableBoolean(false);
     public final ObservableBoolean fabNewProductVisibility = new ObservableBoolean(true);
     public final ObservableBoolean fabProductsVisibility = new ObservableBoolean(true);
     public final ObservableBoolean bottomNavigationVisibility = new ObservableBoolean(true);
     public final ObservableBoolean purchasedProductsVisibility = new ObservableBoolean(true);
 
-    //поля ввода данных нового товара
+    // Поля ввода данных нового товара
     public final ObservableField<String> productName = new ObservableField<>();
     public final ObservableField<String> amount = new ObservableField<>("");
     public final ObservableField<String> unit = new ObservableField<>("");
 
     private final Context context;
 
-    public final String DELETE = "delete";
-    private final String ADD = "add";
-    private final String UPDATE = "update";
-
+    // true = Action.ADD, false = Action.UPDATE
     public boolean createButtonFlag = true;
 
     private ProductLab productLab;
 
-    //отслеживание нового товара для открытия CategoryFragment
+    // Отслеживание нового товара для открытия CategoryFragment
     private SingleLiveEvent<String> newCategoryEvent = new SingleLiveEvent<>();
+
+    // Отслеживает нажатие на кнопки "Далее" и "Пропустить" в CategoryFragment для перехода в список
     private SingleLiveEvent<String> addProductEvent = new SingleLiveEvent<>();
 
     public ListCollectionViewModel(Application context) {
@@ -152,7 +151,7 @@ public class ListCollectionViewModel extends AndroidViewModel {
                 newCategoryEvent.setValue(product.getProductId().toString());
             }
 
-            makeAction(createButtonFlag ? ADD : UPDATE, product);
+            makeAction(createButtonFlag ? Action.ADD : Action.UPDATE, product);
         }
         clearFields();
         hideNewProductLayout(targetField);
@@ -208,10 +207,10 @@ public class ListCollectionViewModel extends AndroidViewModel {
         } else {
             product.setPurchased(true);
         }
-        makeAction(UPDATE, product);
+        makeAction(Action.UPDATE, product);
     }
 
-    public void makeAction(String action, Product product) {
+    public void makeAction(Action action, Product product) {
         switch (action) {
             case ADD:
                 productLab.addProducts(product);
