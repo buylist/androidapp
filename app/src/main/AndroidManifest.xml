@@ -13,12 +13,12 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name=".activity.ProductActivity"
-            android:parentActivityName=".activity.BuyListActivity"
+            android:name=".listcollection.ListCollectionActivity"
+            android:parentActivityName=".lists.BuyListActivity"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".activity.BuyListActivity"
+            android:name=".lists.BuyListActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>

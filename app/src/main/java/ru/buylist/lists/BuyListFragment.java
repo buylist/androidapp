@@ -1,4 +1,4 @@
-package ru.buylist.fragments;
+package ru.buylist.lists;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,10 +17,10 @@ import java.util.List;
 
 import ru.buylist.KeyboardUtils;
 import ru.buylist.R;
-import ru.buylist.models.BuyList;
-import ru.buylist.models.ProductLab;
+import ru.buylist.data.BuyList;
+import ru.buylist.data.ProductLab;
 
-import static ru.buylist.data.BuyListDbSchema.*;
+import static ru.buylist.data.db.BuyListDbSchema.*;
 
 public class BuyListFragment extends Fragment {
 

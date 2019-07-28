@@ -1,4 +1,4 @@
-package ru.buylist.activity;
+package ru.buylist;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -15,6 +15,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     protected abstract Fragment createFragment();
 
+    protected abstract void setupViewModel();
+
     @LayoutRes
     protected int getLayoutResId() {
         return R.layout.activity_fragment;
@@ -23,7 +25,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutResId());
+//        setContentView(getLayoutResId());
+        setupViewModel();
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
@@ -33,5 +36,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
                     .add(R.id.fragment_container, fragment)
                     .commit();
         }
+//        setupViewModel();
     }
 }

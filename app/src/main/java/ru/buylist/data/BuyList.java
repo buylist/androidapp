@@ -1,4 +1,4 @@
-package ru.buylist.models;
+package ru.buylist.data;
 
 import java.util.UUID;
 

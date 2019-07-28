@@ -1,4 +1,4 @@
-package ru.buylist.fragments;
+package ru.buylist.listcollection;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -14,13 +14,13 @@ import java.util.*;
 
 import ru.buylist.IOnBackPressed;
 import ru.buylist.R;
-import ru.buylist.models.Category;
-import ru.buylist.models.Product;
-import ru.buylist.models.ProductLab;
+import ru.buylist.data.Category;
+import ru.buylist.data.Product;
+import ru.buylist.data.ProductLab;
 
-import static ru.buylist.data.BuyListDbSchema.*;
+import static ru.buylist.data.db.BuyListDbSchema.*;
 
-public class CategoryFragment extends Fragment implements IOnBackPressed, View.OnClickListener {
+public class CategoryFragment extends Fragment implements View.OnClickListener {
 
     private static final String ARG_CATEGORY = "args_category";
     private Product product;
@@ -31,35 +31,23 @@ public class CategoryFragment extends Fragment implements IOnBackPressed, View.O
     private Button buttonNext;
     private Button buttonSkip;
 
-    private Callbacks callbacks;
+    private ListCollectionViewModel viewModel;
 
-    public static CategoryFragment newInstance(UUID id) {
+    public static CategoryFragment newInstance(UUID productId) {
         Bundle args = new Bundle();
-        args.putSerializable(ARG_CATEGORY, id);
+        args.putSerializable(ARG_CATEGORY, productId);
         CategoryFragment fragment = new CategoryFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        callbacks = (Callbacks) context;
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UUID id = (UUID) getArguments().getSerializable(ARG_CATEGORY);
-        product = ProductLab.get(getActivity()).getProduct(id.toString(),
-                ProductTable.Cols.PRODUCT_ID,
-                ProductTable.NAME);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        callbacks = null;
+        viewModel = ListCollectionActivity.obtainViewModel(getActivity());
+        UUID productId = (UUID) getArguments().getSerializable(ARG_CATEGORY);
+        product = viewModel.getProduct(productId.toString());
+        viewModel.hideActivityLayout();
     }
 
     @Nullable
@@ -67,13 +55,14 @@ public class CategoryFragment extends Fragment implements IOnBackPressed, View.O
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category, container, false);
         initUi(view);
+        viewModel = ListCollectionActivity.obtainViewModel(getActivity());
         return view;
     }
 
-    @Override
-    public void onBackPressed() {
-        callbacks.updateProductsList(product);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        callbacks.updateProductsList(product);
+//    }
 
     private void initUi(View view) {
         productName = view.findViewById(R.id.product_name_text);
@@ -98,19 +87,10 @@ public class CategoryFragment extends Fragment implements IOnBackPressed, View.O
                 categoryText.showDropDown();
                 break;
             case R.id.button_next:
-                ProductLab productLab = ProductLab.get(getActivity());
-                Category category = productLab.getCategory(
-                        categoryText.getText().toString(),
-                        CategoryTable.Cols.CATEGORY_NAME,
-                        CategoryTable.NAME);
-
-                product.setCategory(category.getName());
-                productLab.updateProduct(product);
-                productLab.addGlobalProduct(product);
-                callbacks.updateProductsList(product);
+                viewModel.updateCategory(categoryText.getText().toString(), product);
                 break;
             case R.id.button_skip:
-                callbacks.updateProductsList(product);
+                viewModel.skipCategory(product.getBuylistId());
                 break;
         }
     }
@@ -148,9 +128,6 @@ public class CategoryFragment extends Fragment implements IOnBackPressed, View.O
         categoryText.setAdapter(adapter);
     }
 
-    public interface Callbacks {
-        void updateProductsList(Product product);
-    }
 
 
     public class CategoryAdapter extends ArrayAdapter<Category> {
