@@ -5,6 +5,7 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -14,6 +15,10 @@
 
         <activity
             android:name=".listcollection.ListCollectionActivity"
+            android:parentActivityName=".lists.BuyListActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".listpattern.ListPatternActivity"
             android:parentActivityName=".lists.BuyListActivity"
             android:windowSoftInputMode="adjustPan" />
 
