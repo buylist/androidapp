@@ -12,11 +12,10 @@ import android.widget.*;
 
 import java.util.*;
 
-import ru.buylist.IOnBackPressed;
 import ru.buylist.R;
 import ru.buylist.data.Category;
 import ru.buylist.data.Product;
-import ru.buylist.data.ProductLab;
+import ru.buylist.data.db.ProductLab;
 
 import static ru.buylist.data.db.BuyListDbSchema.*;
 

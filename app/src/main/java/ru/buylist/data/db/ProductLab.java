@@ -1,4 +1,4 @@
-package ru.buylist.data;
+package ru.buylist.data.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import ru.buylist.data.db.BuyListBaseHelper;
-import ru.buylist.data.db.BuyListCursorWrapper;
+import ru.buylist.data.BuyList;
+import ru.buylist.data.Category;
+import ru.buylist.data.Pattern;
+import ru.buylist.data.Product;
 
 import static ru.buylist.data.db.BuyListDbSchema.*;
 
@@ -31,58 +33,28 @@ public class ProductLab {
         return productLab;
     }
 
-    private static ContentValues getBuyListContentValues(BuyList buyList) {
-        ContentValues values = new ContentValues();
-        values.put(BuyTable.Cols.UUID, buyList.getId().toString());
-        values.put(BuyTable.Cols.TITLE, buyList.getTitle());
-        return values;
-    }
-
-    private static ContentValues getProductsContentValues(Product product) {
-        ContentValues values = new ContentValues();
-        values.put(ProductTable.Cols.BUYLIST_ID, product.getBuylistId());
-        values.put(ProductTable.Cols.PRODUCT_ID, product.getProductId().toString());
-        values.put(ProductTable.Cols.PRODUCT_NAME, product.getName());
-        values.put(ProductTable.Cols.IS_PURCHASED, product.isPurchased() ? 1 : 0);
-        values.put(ProductTable.Cols.CATEGORY, product.getCategory());
-        values.put(ProductTable.Cols.AMOUNT, product.getAmount());
-        values.put(ProductTable.Cols.UNIT, product.getUnit());
-        return values;
-    }
-
-    private static ContentValues getCategoryContentValues(Category category) {
-        ContentValues values = new ContentValues();
-        values.put(CategoryTable.Cols.CATEGORY_ID, category.getId().toString());
-        values.put(CategoryTable.Cols.CATEGORY_NAME, category.getName());
-        values.put(CategoryTable.Cols.CATEGORY_COLOR, category.getColor());
-        return values;
-    }
-
-    private static ContentValues getGlobalProductContentValues(Product product) {
-        ContentValues values = new ContentValues();
-        values.put(GlobalProductsTable.Cols.PRODUCT_ID, product.getProductId().toString());
-        values.put(GlobalProductsTable.Cols.PRODUCT_NAME, product.getName());
-        values.put(GlobalProductsTable.Cols.CATEGORY, product.getCategory());
-        return values;
-    }
-
     public void addBuyList(BuyList buyList) {
-        ContentValues values = getBuyListContentValues(buyList);
+        ContentValues values = BuyListContentValues.getBuyListContentValues(buyList);
         database.insert(BuyTable.NAME, null, values);
     }
 
     public void addProducts(Product product) {
-        ContentValues values = getProductsContentValues(product);
+        ContentValues values = BuyListContentValues.getProductsContentValues(product);
         database.insert(ProductTable.NAME, null, values);
     }
 
     public void addCategory(Category category) {
-        ContentValues values = getCategoryContentValues(category);
+        ContentValues values = BuyListContentValues.getCategoryContentValues(category);
         database.insert(CategoryTable.NAME, null, values);
     }
 
+    public void addPattern(Pattern pattern) {
+        ContentValues values = BuyListContentValues.getPatternContentValues(pattern);
+        database.insert(PatternTable.NAME, null, values);
+    }
+
     public void addGlobalProduct(Product product) {
-        ContentValues values = getGlobalProductContentValues(product);
+        ContentValues values = BuyListContentValues.getGlobalProductContentValues(product);
         database.insert(GlobalProductsTable.NAME, null, values);
     }
 
@@ -90,6 +62,7 @@ public class ProductLab {
         database.delete(tableName, tableCols + "=?", new String[]{id});
     }
 
+    // получение списка всех созданных пользователей списков (коллекция списков)
     public List<BuyList> getBuyLists() {
         List<BuyList> lists = new ArrayList<>();
         BuyListCursorWrapper cursor = queryList(null, null, BuyTable.NAME);
@@ -106,6 +79,7 @@ public class ProductLab {
         return lists;
     }
 
+    // получения списка по id (из коллекции списков)
     public BuyList getBuyList(UUID id) {
         BuyListCursorWrapper cursor = queryList(
                 BuyTable.Cols.UUID + " = ?", new String[]{id.toString()}, BuyTable.NAME);
@@ -123,10 +97,11 @@ public class ProductLab {
         }
     }
 
-    public List<Product> getProductList(String id) {
+    // получение всех продуктов для конкретного списка из активной таблицы
+    public List<Product> getProductList(String buylistId) {
         List<Product> products = new ArrayList<>();
         BuyListCursorWrapper cursor = queryList(
-                ProductTable.Cols.BUYLIST_ID + " = ?", new String[]{id}, ProductTable.NAME);
+                ProductTable.Cols.BUYLIST_ID + " = ?", new String[]{buylistId}, ProductTable.NAME);
 
         try {
             cursor.moveToFirst();
@@ -140,6 +115,7 @@ public class ProductLab {
         return products;
     }
 
+    // получение конкретного продукта по заданным параметрам из активной таблицы
     public Product getProduct(String values, String tableCols, String tableName) {
         Product product = new Product();
         BuyListCursorWrapper cursor = queryList(
@@ -153,6 +129,7 @@ public class ProductLab {
         return product;
     }
 
+    // получение конкретной категории по заданным параметрам
     public Category getCategory(String values, String tableCols, String tableName) {
         Category category = new Category();
         BuyListCursorWrapper cursor = queryList(
@@ -168,6 +145,24 @@ public class ProductLab {
         return category;
     }
 
+    // получение списка шаблонов
+    public List<Pattern> getPatterns() {
+        List<Pattern> patterns = new ArrayList<>();
+        BuyListCursorWrapper cursor = queryList(null, null, PatternTable.NAME);
+
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                patterns.add(cursor.getPattern());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+        return patterns;
+    }
+
+    // получение всех существующих категорий
     public List<Category> getCategories() {
         List<Category> categories = new ArrayList<>();
         BuyListCursorWrapper cursor = queryList(
@@ -185,6 +180,7 @@ public class ProductLab {
         return categories;
     }
 
+    // получение конкретного продукта из глобальной таблицы
     public Product getGlobalProduct(String values, String tableCols, String tableName) {
         Product product = new Product();
         BuyListCursorWrapper cursor = queryList(
@@ -201,14 +197,16 @@ public class ProductLab {
         return product;
     }
 
+    // обновление названия конкретного списка
     public void updateBuyList(BuyList buyList) {
-        String uuidString = buyList.getId().toString();
-        ContentValues values = getBuyListContentValues(buyList);
+        String buylistId = buyList.getId().toString();
+        ContentValues values = BuyListContentValues.getBuyListContentValues(buyList);
 
         database.update(BuyTable.NAME, values, BuyTable.Cols.UUID + " = ?",
-                new String[]{uuidString});
+                new String[]{buylistId});
     }
 
+    // полное обновление таблицы с именами списков
     public void updateBuyTable(List<BuyList> lists) {
         database.delete(BuyTable.NAME, null, null);
 
@@ -217,12 +215,14 @@ public class ProductLab {
         }
     }
 
+    // обновление продукта по id
     public void updateProduct(Product product) {
-        ContentValues values = getProductsContentValues(product);
+        ContentValues values = BuyListContentValues.getProductsContentValues(product);
         database.update(ProductTable.NAME, values, ProductTable.Cols.PRODUCT_ID + " = ?",
                 new String[]{product.getProductId().toString()});
     }
 
+    // полное обновление таблицы с активными продуктами
     public void updateProductTable(List<Product> products, String id) {
         database.delete(ProductTable.NAME, ProductTable.Cols.BUYLIST_ID + " = ?", new String[]{id});
 
@@ -231,6 +231,14 @@ public class ProductLab {
         }
     }
 
+    // обновление названия шаблона
+    public void updatePattern(Pattern pattern) {
+        ContentValues values = BuyListContentValues.getPatternContentValues(pattern);
+        database.update(PatternTable.NAME, values, PatternTable.Cols.ID + " = ?",
+                new String[(int) pattern.getId()]);
+    }
+
+    // запрос
     private BuyListCursorWrapper queryList(String whereClause, String[] whereArgs, String tableName) {
         Cursor cursor = database.query(
                 tableName,

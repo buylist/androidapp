@@ -16,6 +16,7 @@ public class BuyListBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // создание таблицы с названиями списков (коллекция списков)
         StringBuilder buyTable = new StringBuilder();
         buyTable.append("create table ");
         buyTable.append(BuyTable.NAME);
@@ -26,6 +27,7 @@ public class BuyListBaseHelper extends SQLiteOpenHelper {
         buyTable.append(BuyTable.Cols.TITLE);
         buyTable.append(")");
 
+        // создание таблицы с продуктами из активных списков
         StringBuilder productTable = new StringBuilder();
         productTable.append("create table ");
         productTable.append(ProductTable.NAME);
@@ -46,6 +48,7 @@ public class BuyListBaseHelper extends SQLiteOpenHelper {
         productTable.append(ProductTable.Cols.UNIT);
         productTable.append(")");
 
+        // создание таблицы с категориями товаров
         StringBuilder categoryTable = new StringBuilder();
         categoryTable.append("create table ");
         categoryTable.append(CategoryTable.NAME);
@@ -58,6 +61,17 @@ public class BuyListBaseHelper extends SQLiteOpenHelper {
         categoryTable.append(CategoryTable.Cols.CATEGORY_COLOR);
         categoryTable.append(")");
 
+        // создание таблицы с именами шаблонов
+        StringBuilder patternTable = new StringBuilder();
+        patternTable.append("create table ");
+        patternTable.append(PatternTable.NAME);
+        patternTable.append("(");
+        patternTable.append(PatternTable.Cols.ID);
+        patternTable.append(" primary key, ");
+        patternTable.append(PatternTable.Cols.TITLE);
+        patternTable.append(")");
+
+        // создание глобальной таблицы продуктов
         StringBuilder globalTable = new StringBuilder();
         globalTable.append("create table ");
         globalTable.append(GlobalProductsTable.NAME);
@@ -74,6 +88,7 @@ public class BuyListBaseHelper extends SQLiteOpenHelper {
         db.execSQL(buyTable.toString());
         db.execSQL(productTable.toString());
         db.execSQL(categoryTable.toString());
+        db.execSQL(patternTable.toString());
         db.execSQL(globalTable.toString());
     }
 

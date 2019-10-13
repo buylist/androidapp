@@ -6,7 +6,7 @@ import android.content.Context;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 
-import ru.buylist.data.ProductLab;
+import ru.buylist.data.db.ProductLab;
 
 public class ListPatternViewModel extends AndroidViewModel {
 

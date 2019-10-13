@@ -18,7 +18,7 @@ import java.util.List;
 import ru.buylist.KeyboardUtils;
 import ru.buylist.R;
 import ru.buylist.data.BuyList;
-import ru.buylist.data.ProductLab;
+import ru.buylist.data.db.ProductLab;
 
 import static ru.buylist.data.db.BuyListDbSchema.*;
 

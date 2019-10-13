@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import ru.buylist.data.BuyList;
 import ru.buylist.data.Category;
+import ru.buylist.data.Pattern;
 import ru.buylist.data.Product;
 
 import static ru.buylist.data.db.BuyListDbSchema.*;
@@ -45,6 +46,26 @@ public class BuyListCursorWrapper extends CursorWrapper {
         return product;
     }
 
+    public Category getCategory() {
+        String id = getString(getColumnIndex(CategoryTable.Cols.CATEGORY_ID));
+        String name = getString(getColumnIndex(CategoryTable.Cols.CATEGORY_NAME));
+        String color = getString(getColumnIndex(CategoryTable.Cols.CATEGORY_COLOR));
+
+        Category category = new Category(UUID.fromString(id));
+        category.setName(name);
+        category.setColor(color);
+        return category;
+    }
+
+    public Pattern getPattern() {
+        long id = getLong(getColumnIndex(PatternTable.Cols.ID));
+        String name = getString(getColumnIndex(PatternTable.Cols.TITLE));
+
+        Pattern pattern = new Pattern(id);
+        pattern.setName(name);
+        return pattern;
+    }
+
     public Product getGlobalProduct() {
         String productId = getString(getColumnIndex(GlobalProductsTable.Cols.PRODUCT_ID));
         String productName = getString(getColumnIndex(GlobalProductsTable.Cols.PRODUCT_NAME));
@@ -56,14 +77,5 @@ public class BuyListCursorWrapper extends CursorWrapper {
         return product;
     }
 
-    public Category getCategory() {
-        String id = getString(getColumnIndex(CategoryTable.Cols.CATEGORY_ID));
-        String name = getString(getColumnIndex(CategoryTable.Cols.CATEGORY_NAME));
-        String color = getString(getColumnIndex(CategoryTable.Cols.CATEGORY_COLOR));
 
-        Category category = new Category(UUID.fromString(id));
-        category.setName(name);
-        category.setColor(color);
-        return category;
-    }
 }
