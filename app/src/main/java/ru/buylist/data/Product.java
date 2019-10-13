@@ -70,4 +70,8 @@ public class Product {
     public void setUnit(String unit) {
         this.unit = unit;
     }
+
+    public boolean isEmpty() {
+        return name == null || name.isEmpty();
+    }
 }

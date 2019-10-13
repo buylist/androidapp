@@ -17,9 +17,9 @@ public class ListPatternFragment extends Fragment {
 
     private ListPatternViewModel viewModel;
 
-    public static ListPatternFragment newInstance(int patternId) {
+    public static ListPatternFragment newInstance(long patternId) {
         Bundle args = new Bundle();
-        args.putInt(ARG_PATTERN_ID, patternId);
+        args.putLong(ARG_PATTERN_ID, patternId);
 
         ListPatternFragment fragment = new ListPatternFragment();
         fragment.setArguments(args);
@@ -31,7 +31,7 @@ public class ListPatternFragment extends Fragment {
         super.onCreate(savedInstanceState);
         viewModel = ListPatternActivity.obtainViewModel(getActivity());
 
-        int patternId = getArguments() != null ? getArguments().getInt(ARG_PATTERN_ID, 0) : 0;
+        long patternId = getArguments() != null ? getArguments().getLong(ARG_PATTERN_ID, 0) : 0;
     }
 
     @Nullable
