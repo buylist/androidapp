@@ -3,19 +3,19 @@ package ru.buylist.data;
 import java.util.UUID;
 
 public class Category {
-    private UUID id;
+    private long id;
     private String name;
     private String color;
 
     public Category() {
-        this(UUID.randomUUID());
+        id = System.currentTimeMillis();
     }
 
-    public Category(UUID id) {
+    public Category(long id) {
         this.id = id;
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 

@@ -21,9 +21,8 @@ public class BuyListBaseHelper extends SQLiteOpenHelper {
         buyTable.append("create table ");
         buyTable.append(BuyTable.NAME);
         buyTable.append("(");
-        buyTable.append(" _id integer primary key autoincrement, ");
         buyTable.append(BuyTable.Cols.UUID);
-        buyTable.append(", ");
+        buyTable.append(" primary key, ");
         buyTable.append(BuyTable.Cols.TITLE);
         buyTable.append(")");
 

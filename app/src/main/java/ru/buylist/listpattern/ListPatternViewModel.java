@@ -75,10 +75,7 @@ public class ListPatternViewModel extends AndroidViewModel {
 
     // проверка на наличие в GlobalProductTable
     private boolean isNewProduct(Product product) {
-        Product globalProduct = productLab.getGlobalProduct(
-                product.getName(),
-                GlobalProductsTable.Cols.PRODUCT_NAME,
-                GlobalProductsTable.NAME);
+        Product globalProduct = productLab.getGlobalProduct(product.getName());
         if (globalProduct.getName() == null) {
             return true;
         } else {

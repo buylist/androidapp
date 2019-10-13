@@ -17,8 +17,6 @@ import ru.buylist.data.Category;
 import ru.buylist.data.Product;
 import ru.buylist.data.db.ProductLab;
 
-import static ru.buylist.data.db.BuyListDbSchema.*;
-
 public class CategoryFragment extends Fragment implements View.OnClickListener {
 
     private static final String ARG_CATEGORY = "args_category";
@@ -32,9 +30,9 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
     private ListCollectionViewModel viewModel;
 
-    public static CategoryFragment newInstance(UUID productId) {
+    public static CategoryFragment newInstance(long productId) {
         Bundle args = new Bundle();
-        args.putSerializable(ARG_CATEGORY, productId);
+        args.putLong(ARG_CATEGORY, productId);
         CategoryFragment fragment = new CategoryFragment();
         fragment.setArguments(args);
         return fragment;
@@ -44,8 +42,8 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ListCollectionActivity.obtainViewModel(getActivity());
-        UUID productId = (UUID) getArguments().getSerializable(ARG_CATEGORY);
-        product = viewModel.getProduct(productId.toString());
+        long productId = getArguments() != null ? getArguments().getLong(ARG_CATEGORY) : 0;
+        product = viewModel.getProduct(productId);
         viewModel.hideActivityLayout();
     }
 
@@ -101,9 +99,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         for (int i = 0; i < standardCategories.length; i++) {
             categories.add(getCategory(i));
             Category baseCategory = ProductLab.get(getActivity()).getCategory(
-                    categories.get(i).getName(),
-                    CategoryTable.Cols.CATEGORY_NAME,
-                    CategoryTable.NAME);
+                    categories.get(i).getName());
             if (baseCategory.getName() == null) {
                 ProductLab.get(getActivity()).addCategory(categories.get(i));
             }
@@ -126,7 +122,6 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                 getCategories());
         categoryText.setAdapter(adapter);
     }
-
 
 
     public class CategoryAdapter extends ArrayAdapter<Category> {

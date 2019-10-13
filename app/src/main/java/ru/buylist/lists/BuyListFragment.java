@@ -7,6 +7,7 @@ import android.support.annotation.*;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.*;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
@@ -205,11 +206,13 @@ public class BuyListFragment extends Fragment {
                     BuyList buyList = new BuyList();
                     buyList.setTitle(nameCollection.getText().toString());
                     ProductLab.get(getActivity()).addBuyList(buyList);
+                    Log.i("TAG", "New list created. Id = " + buyList.getId());
                 }
                 updateUI();
                 nameCollection.setText("");
                 createCollectionLayout.setVisibility(View.GONE);
                 KeyboardUtils.hideKeyboard(nameCollection, getActivity());
+
             }
         });
     }
@@ -220,6 +223,7 @@ public class BuyListFragment extends Fragment {
         void showHome();
     }
 
+    // Holder
     private class BuyListHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView titleTextView;
         private BuyList buyList;
@@ -259,9 +263,9 @@ public class BuyListFragment extends Fragment {
                 public void onClick(View v) {
                     cardView.setBackgroundColor(0);
                     ProductLab productLab = ProductLab.get(getActivity());
-                    productLab.deleteFromDb(buyList.getId().toString(),
+                    productLab.deleteFromDb(buyList.getId(),
                             BuyTable.NAME, BuyTable.Cols.UUID);
-                    productLab.deleteFromDb(buyList.getId().toString(), ProductTable.NAME, ProductTable.Cols.BUYLIST_ID);
+                    productLab.deleteFromDb(buyList.getId(), ProductTable.NAME, ProductTable.Cols.BUYLIST_ID);
                     adapter.closeAllItems();
                     updateUI();
                 }
@@ -277,7 +281,7 @@ public class BuyListFragment extends Fragment {
                     nameCollection.setText(buyList.getTitle());
                     KeyboardUtils.showKeyboard(nameCollection, getActivity());
                     ProductLab productLab = ProductLab.get(getActivity());
-                    productLab.deleteFromDb(buyList.getId().toString(),
+                    productLab.deleteFromDb(buyList.getId(),
                             BuyTable.NAME,
                             BuyTable.Cols.UUID);
                 }
@@ -287,9 +291,11 @@ public class BuyListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             callbacks.onBuyListSelected(buyList);
+            Log.i("TAG", "Click on ID: " + buyList.getId());
         }
     }
 
+    // Adapter
     private class BuyListAdapter extends RecyclerSwipeAdapter<BuyListHolder> {
         private List<BuyList> lists;
 

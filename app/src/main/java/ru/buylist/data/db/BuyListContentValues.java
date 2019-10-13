@@ -13,15 +13,15 @@ public class BuyListContentValues {
 
     protected static ContentValues getBuyListContentValues(BuyList buyList) {
         ContentValues values = new ContentValues();
-        values.put(BuyTable.Cols.UUID, buyList.getId().toString());
+        values.put(BuyTable.Cols.UUID, String.valueOf(buyList.getId()));
         values.put(BuyTable.Cols.TITLE, buyList.getTitle());
         return values;
     }
 
     protected static ContentValues getProductsContentValues(Product product) {
         ContentValues values = new ContentValues();
-        values.put(ProductTable.Cols.BUYLIST_ID, product.getBuylistId());
-        values.put(ProductTable.Cols.PRODUCT_ID, product.getProductId().toString());
+        values.put(ProductTable.Cols.BUYLIST_ID, String.valueOf(product.getBuylistId()));
+        values.put(ProductTable.Cols.PRODUCT_ID, String.valueOf(product.getProductId()));
         values.put(ProductTable.Cols.PRODUCT_NAME, product.getName());
         values.put(ProductTable.Cols.IS_PURCHASED, product.isPurchased() ? 1 : 0);
         values.put(ProductTable.Cols.CATEGORY, product.getCategory());
@@ -32,7 +32,7 @@ public class BuyListContentValues {
 
     protected static ContentValues getCategoryContentValues(Category category) {
         ContentValues values = new ContentValues();
-        values.put(CategoryTable.Cols.CATEGORY_ID, category.getId().toString());
+        values.put(CategoryTable.Cols.CATEGORY_ID, String.valueOf(category.getId()));
         values.put(CategoryTable.Cols.CATEGORY_NAME, category.getName());
         values.put(CategoryTable.Cols.CATEGORY_COLOR, category.getColor());
         return values;
@@ -40,14 +40,14 @@ public class BuyListContentValues {
 
     protected static ContentValues getPatternContentValues(Pattern pattern) {
         ContentValues values = new ContentValues();
-        values.put(PatternTable.Cols.ID, pattern.getId());
+        values.put(PatternTable.Cols.ID, String.valueOf(pattern.getId()));
         values.put(PatternTable.Cols.TITLE, pattern.getName());
         return values;
     }
 
     protected static ContentValues getGlobalProductContentValues(Product product) {
         ContentValues values = new ContentValues();
-        values.put(GlobalProductsTable.Cols.PRODUCT_ID, product.getProductId().toString());
+        values.put(GlobalProductsTable.Cols.PRODUCT_ID, String.valueOf(product.getProductId()));
         values.put(GlobalProductsTable.Cols.PRODUCT_NAME, product.getName());
         values.put(GlobalProductsTable.Cols.CATEGORY, product.getCategory());
         return values;

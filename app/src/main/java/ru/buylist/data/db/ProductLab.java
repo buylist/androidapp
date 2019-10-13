@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +59,9 @@ public class ProductLab {
         database.insert(GlobalProductsTable.NAME, null, values);
     }
 
-    public void deleteFromDb(String id, String tableName, String tableCols) {
-        database.delete(tableName, tableCols + "=?", new String[]{id});
+    // общий метод на удаление одной позиции
+    public void deleteFromDb(long id, String tableName, String tableCols) {
+        database.delete(tableName, tableCols + "=?", new String[]{String.valueOf(id)});
     }
 
     // получение списка всех созданных пользователей списков (коллекция списков)
@@ -80,16 +82,23 @@ public class ProductLab {
     }
 
     // получения списка по id (из коллекции списков)
-    public BuyList getBuyList(UUID id) {
+    public BuyList getBuyList(long id) {
+        String[] stringId = {String.valueOf(id)};
+        Log.i("TAG", "cursor string ID: " + stringId[0]);
         BuyListCursorWrapper cursor = queryList(
-                BuyTable.Cols.UUID + " = ?", new String[]{id.toString()}, BuyTable.NAME);
+                BuyTable.Cols.UUID + " = ?",
+                stringId,
+                BuyTable.NAME);
+
 
         try {
             if (cursor.getCount() == 0) {
+                Log.i("TAG", "cursor can't find ID");
                 return null;
             }
 
             cursor.moveToFirst();
+            Log.i("TAG", "cursor get ID: " + cursor.getBuyList().getId());
             return cursor.getBuyList();
 
         } finally {
@@ -98,10 +107,12 @@ public class ProductLab {
     }
 
     // получение всех продуктов для конкретного списка из активной таблицы
-    public List<Product> getProductList(String buylistId) {
+    public List<Product> getProductList(long buylistId) {
         List<Product> products = new ArrayList<>();
         BuyListCursorWrapper cursor = queryList(
-                ProductTable.Cols.BUYLIST_ID + " = ?", new String[]{buylistId}, ProductTable.NAME);
+                ProductTable.Cols.BUYLIST_ID + " = ?",
+                new String[]{String.valueOf(buylistId)},
+                ProductTable.NAME);
 
         try {
             cursor.moveToFirst();
@@ -112,14 +123,17 @@ public class ProductLab {
         } finally {
             cursor.close();
         }
+        Log.i("TAG", "Find products: " + products.size());
         return products;
     }
 
     // получение конкретного продукта по заданным параметрам из активной таблицы
-    public Product getProduct(String values, String tableCols, String tableName) {
+    public Product getProduct(long values) {
         Product product = new Product();
         BuyListCursorWrapper cursor = queryList(
-                tableCols + " = ?", new String[]{values}, tableName);
+                ProductTable.Cols.PRODUCT_ID + " = ?",
+                new String[]{String.valueOf(values)},
+                ProductTable.NAME);
         try {
             cursor.moveToFirst();
             product = cursor.getProduct();
@@ -130,10 +144,12 @@ public class ProductLab {
     }
 
     // получение конкретной категории по заданным параметрам
-    public Category getCategory(String values, String tableCols, String tableName) {
+    public Category getCategory(String values) {
         Category category = new Category();
         BuyListCursorWrapper cursor = queryList(
-                tableCols + " = ?", new String[]{values}, tableName);
+                CategoryTable.Cols.CATEGORY_NAME + " = ?",
+                new String[]{values},
+                CategoryTable.NAME);
         try {
             cursor.moveToFirst();
             if (!cursor.isAfterLast()) {
@@ -181,10 +197,12 @@ public class ProductLab {
     }
 
     // получение конкретного продукта из глобальной таблицы
-    public Product getGlobalProduct(String values, String tableCols, String tableName) {
+    public Product getGlobalProduct(String values) {
         Product product = new Product();
         BuyListCursorWrapper cursor = queryList(
-                tableCols + " = ?", new String[]{values}, tableName);
+                GlobalProductsTable.Cols.PRODUCT_NAME + " = ?",
+                new String[]{values},
+                GlobalProductsTable.NAME);
         try {
             cursor.moveToFirst();
             if (!cursor.isAfterLast()) {
@@ -199,7 +217,7 @@ public class ProductLab {
 
     // обновление названия конкретного списка
     public void updateBuyList(BuyList buyList) {
-        String buylistId = buyList.getId().toString();
+        String buylistId = String.valueOf(buyList.getId());
         ContentValues values = BuyListContentValues.getBuyListContentValues(buyList);
 
         database.update(BuyTable.NAME, values, BuyTable.Cols.UUID + " = ?",
@@ -218,8 +236,10 @@ public class ProductLab {
     // обновление продукта по id
     public void updateProduct(Product product) {
         ContentValues values = BuyListContentValues.getProductsContentValues(product);
-        database.update(ProductTable.NAME, values, ProductTable.Cols.PRODUCT_ID + " = ?",
-                new String[]{product.getProductId().toString()});
+        database.update(
+                ProductTable.NAME, values,
+                ProductTable.Cols.PRODUCT_ID + " = ?",
+                new String[]{String.valueOf(product.getProductId())});
     }
 
     // полное обновление таблицы с активными продуктами
