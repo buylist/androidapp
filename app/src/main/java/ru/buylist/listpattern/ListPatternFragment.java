@@ -3,11 +3,13 @@ package ru.buylist.listpattern;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import ru.buylist.R;
 import ru.buylist.databinding.FragmentListPatternBinding;
 
 public class ListPatternFragment extends Fragment {
@@ -40,6 +42,17 @@ public class ListPatternFragment extends Fragment {
         FragmentListPatternBinding binding = FragmentListPatternBinding
                 .inflate(inflater, container, false);
         binding.setViewmodel(viewModel);
+        setupFab(binding.getRoot());
         return binding.getRoot();
+    }
+
+    private void setupFab(View view) {
+        FloatingActionButton addItemButton = view.findViewById(R.id.fab_new_product);
+        addItemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.addNewProduct();
+            }
+        });
     }
 }

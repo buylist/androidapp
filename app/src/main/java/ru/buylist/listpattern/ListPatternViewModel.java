@@ -48,21 +48,19 @@ public class ListPatternViewModel extends AndroidViewModel {
 
     // onFabClick
     public void addNewProduct() {
-        buttonMoveVisibility.set(true);
         layoutNewProductVisibility.set(true);
     }
 
     public void saveProduct() {
         Product product = new Product();
         product.setName(itemName.get());
-        product.setAmount(quantity.get());
-        product.setUnit(unit.get());
-
         if (product.isEmpty()) {
             // товар не может быть пустым, ничего не делаем
             return;
         }
         if (isNewProduct(product)) {
+            product.setAmount(quantity.get());
+            product.setUnit(unit.get());
             createProduct(product);
         } else {
             updateProduct(product);
