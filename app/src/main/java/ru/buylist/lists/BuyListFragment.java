@@ -76,31 +76,6 @@ public class BuyListFragment extends Fragment {
                     BuyTable.Cols.UUID);
         }
     };
-    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-            switch (menuItem.getItemId()) {
-                case R.id.action_home:
-                    callbacks.showHome();
-                    return true;
-                case R.id.action_lists:
-
-                    return true;
-                case R.id.action_templates:
-
-                    return true;
-                case R.id.action_recipe:
-
-                    return true;
-                case R.id.action_settings:
-
-                    return true;
-            }
-            return false;
-        }
-    };
 
     @Override
     public void onResume() {
@@ -128,16 +103,6 @@ public class BuyListFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_buy_list, container, false);
-
-        updateUI();
-        initUi(binding.getRoot());
-        return binding.getRoot();
     }
 
     private void initUi(View view) {
@@ -215,6 +180,42 @@ public class BuyListFragment extends Fragment {
 
             }
         });
+    }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+            switch (menuItem.getItemId()) {
+                case R.id.action_home:
+                    callbacks.showHome();
+                    return true;
+                case R.id.action_lists:
+
+                    return true;
+                case R.id.action_templates:
+
+                    return true;
+                case R.id.action_recipe:
+
+                    return true;
+                case R.id.action_settings:
+
+                    return true;
+            }
+            return false;
+        }
+    };
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_buy_list, container, false);
+
+        updateUI();
+        initUi(binding.getRoot());
+        return binding.getRoot();
     }
 
     public interface Callbacks {
