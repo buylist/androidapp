@@ -41,41 +41,15 @@ public class BuyListFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    private final BuyListClickCallback buyListClickCallback = new BuyListClickCallback() {
-        @Override
-        public void onListItemClick(BuyList buyList) {
-            callbacks.onBuyListSelected(buyList);
-        }
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_buy_list, container, false);
 
-        @Override
-        public void onDeleteButtonClick(long itemId) {
-            binding.cardListView.setBackgroundColor(0);
-            ProductLab productLab = ProductLab.get(getActivity());
-            productLab.deleteFromDb(
-                    itemId,
-                    BuyTable.NAME,
-                    BuyTable.Cols.UUID);
-            productLab.deleteFromDb(
-                    itemId,
-                    ProductTable.NAME,
-                    ProductTable.Cols.BUYLIST_ID);
-            adapter.closeAllItems();
-            updateUI();
-        }
-
-        @Override
-        public void onEditButtonClick(BuyList buyList) {
-            binding.setIsLoading(true);
-            adapter.closeAllItems();
-
-            binding.nameNewListCollection.setText(buyList.getTitle());
-            ProductLab productLab = ProductLab.get(getActivity());
-            productLab.deleteFromDb(
-                    buyList.getId(),
-                    BuyTable.NAME,
-                    BuyTable.Cols.UUID);
-        }
-    };
+        updateUI();
+        initUi(binding.getRoot());
+        return binding.getRoot();
+    }
 
     @Override
     public void onResume() {
@@ -208,15 +182,41 @@ public class BuyListFragment extends Fragment {
         }
     };
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_buy_list, container, false);
+    private final BuyListClickCallback buyListClickCallback = new BuyListClickCallback() {
+        @Override
+        public void onListItemClick(BuyList buyList) {
+            callbacks.onBuyListSelected(buyList);
+        }
 
-        updateUI();
-        initUi(binding.getRoot());
-        return binding.getRoot();
-    }
+        @Override
+        public void onDeleteButtonClick(long itemId) {
+            binding.cardListView.setBackgroundColor(0);
+            ProductLab productLab = ProductLab.get(getActivity());
+            productLab.deleteFromDb(
+                    itemId,
+                    BuyTable.NAME,
+                    BuyTable.Cols.UUID);
+            productLab.deleteFromDb(
+                    itemId,
+                    ProductTable.NAME,
+                    ProductTable.Cols.BUYLIST_ID);
+            adapter.closeAllItems();
+            updateUI();
+        }
+
+        @Override
+        public void onEditButtonClick(BuyList buyList) {
+            binding.setIsLoading(true);
+            adapter.closeAllItems();
+
+            binding.nameNewListCollection.setText(buyList.getTitle());
+            ProductLab productLab = ProductLab.get(getActivity());
+            productLab.deleteFromDb(
+                    buyList.getId(),
+                    BuyTable.NAME,
+                    BuyTable.Cols.UUID);
+        }
+    };
 
     public interface Callbacks {
         void onBuyListSelected(BuyList buyList);
