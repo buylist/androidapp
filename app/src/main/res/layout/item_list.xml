@@ -46,7 +46,7 @@
                 android:layout_height="40dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/delete_description"
-                android:onClick="@{()-> callback.onDeleteButtonClick(item.id)}"
+                android:onClick="@{()-> callback.onDeleteButtonClick(item)}"
                 android:src="@drawable/ic_delete" />
 
         </LinearLayout>

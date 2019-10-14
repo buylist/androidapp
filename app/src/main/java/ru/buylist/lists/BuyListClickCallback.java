@@ -5,7 +5,7 @@ import ru.buylist.data.BuyList;
 public interface BuyListClickCallback {
     void onListItemClick(BuyList buyList);
 
-    void onDeleteButtonClick(long itemId);
+    void onDeleteButtonClick(BuyList buyList);
 
     void onEditButtonClick(BuyList buyList);
 }

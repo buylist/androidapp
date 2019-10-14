@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.*;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.*;
 import android.widget.EditText;
 
@@ -19,6 +20,7 @@ import ru.buylist.databinding.FragmentBuyListBinding;
 
 import static ru.buylist.data.db.BuyListDbSchema.BuyTable;
 import static ru.buylist.data.db.BuyListDbSchema.ProductTable;
+import static ru.buylist.lists.ItemListType.*;
 
 public class BuyListFragment extends Fragment {
 
@@ -98,13 +100,34 @@ public class BuyListFragment extends Fragment {
         ProductLab productLab = ProductLab.get(getActivity());
         List<BuyList> lists = productLab.getBuyLists();
 
+        adapter = setupAdapter(adapter, lists, COLLECTION);
+        adapter.notifyDataSetChanged();
+    }
+
+    private BuyListAdapter setupAdapter(BuyListAdapter adapter, List<BuyList> lists, String type) {
         if (adapter == null) {
             adapter = new BuyListAdapter(lists, buyListClickCallback);
-            binding.listCollectionRecyclerView.setAdapter(adapter);
+            if (getRV(type) != null) {
+                getRV(type).setAdapter(adapter);
+            }
+            return adapter;
         } else {
             adapter.setLists(lists);
-            adapter.notifyDataSetChanged();
+            return adapter;
         }
+    }
+
+    private RecyclerView getRV(String type) {
+        RecyclerView recyclerView;
+        switch (type) {
+            case COLLECTION:
+                return binding.listCollectionRecyclerView;
+            case PATTERN:
+                return binding.patternCollectionRecyclerView;
+            case RECIPE:
+                return binding.recipeCollectionRecyclerView;
+        }
+        return null;
     }
 
     private void onNewCollectionButtonClick() {
@@ -145,6 +168,7 @@ public class BuyListFragment extends Fragment {
                 if (nameCollection.getText().length() != 0) {
                     BuyList buyList = new BuyList();
                     buyList.setTitle(nameCollection.getText().toString());
+                    buyList.setType(COLLECTION);
                     ProductLab.get(getActivity()).addBuyList(buyList);
                 }
                 updateUI();
@@ -189,15 +213,16 @@ public class BuyListFragment extends Fragment {
         }
 
         @Override
-        public void onDeleteButtonClick(long itemId) {
+        public void onDeleteButtonClick(BuyList buyList) {
             binding.cardListView.setBackgroundColor(0);
             ProductLab productLab = ProductLab.get(getActivity());
+
             productLab.deleteFromDb(
-                    itemId,
+                    buyList.getId(),
                     BuyTable.NAME,
                     BuyTable.Cols.UUID);
             productLab.deleteFromDb(
-                    itemId,
+                    buyList.getId(),
                     ProductTable.NAME,
                     ProductTable.Cols.BUYLIST_ID);
             adapter.closeAllItems();
