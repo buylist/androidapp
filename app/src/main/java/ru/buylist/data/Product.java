@@ -1,10 +1,8 @@
 package ru.buylist.data;
 
-import java.util.UUID;
-
 public class Product {
-    private String buylistId;
-    private UUID productId;
+    private long buylistId;
+    private long productId;
     private String name;
     private boolean isPurchased;
     private String category;
@@ -12,22 +10,22 @@ public class Product {
     private String unit;
 
     public Product() {
-        this(UUID.randomUUID());
+        productId = System.currentTimeMillis();
     }
 
-    public Product(UUID productId) {
+    public Product(long productId) {
         this.productId = productId;
     }
 
-    public String getBuylistId() {
+    public long getBuylistId() {
         return buylistId;
     }
 
-    public void setBuylistId(String buylistId) {
+    public void setBuylistId(long buylistId) {
         this.buylistId = buylistId;
     }
 
-    public UUID getProductId() {
+    public long getProductId() {
         return productId;
     }
 
@@ -69,5 +67,9 @@ public class Product {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public boolean isEmpty() {
+        return name == null || name.isEmpty();
     }
 }

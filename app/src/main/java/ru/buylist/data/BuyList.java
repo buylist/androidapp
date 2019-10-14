@@ -1,21 +1,19 @@
 package ru.buylist.data;
 
-import java.util.UUID;
-
 public class BuyList {
-    //UUID генерирует  универсально-уникальный идентификатор
-    private UUID id;
+
+    private long id;
     private String title;
 
     public BuyList() {
-        this(UUID.randomUUID());
+        id = System.currentTimeMillis();
     }
 
-    public BuyList(UUID id) {
+    public BuyList(long id) {
         this.id = id;
     }
 
-    public UUID getId() {
+    public long getId() {
         return id;
     }
 
@@ -25,5 +23,9 @@ public class BuyList {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public boolean isEmpty() {
+        return title == null || title.isEmpty();
     }
 }

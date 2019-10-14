@@ -7,6 +7,7 @@ import android.support.annotation.*;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.*;
 import android.support.v7.widget.*;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 
@@ -41,9 +42,9 @@ public class ListCollectionFragment extends Fragment {
     private ListCollectionViewModel viewModel;
 
 
-    public static ListCollectionFragment newInstance(UUID buylistId) {
+    public static ListCollectionFragment newInstance(long buylistId) {
         Bundle args = new Bundle();
-        args.putSerializable(ARG_BUY_LIST_ID, buylistId);
+        args.putLong(ARG_BUY_LIST_ID, buylistId);
 
         ListCollectionFragment fragment = new ListCollectionFragment();
         fragment.setArguments(args);
@@ -55,8 +56,9 @@ public class ListCollectionFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         viewModel = ListCollectionActivity.obtainViewModel(getActivity());
-        UUID buylistId = (UUID) getArguments().getSerializable(ARG_BUY_LIST_ID);
+        long buylistId = getArguments().getLong(ARG_BUY_LIST_ID);
         buyList = viewModel.getBuyList(buylistId);
+        Log.i("TAG", "collection fragment onCreate ID: " + buyList.getId());
         viewModel.showActivityLayout();
     }
 
@@ -77,7 +79,9 @@ public class ListCollectionFragment extends Fragment {
     }
 
     public void updateUi() {
+        Log.i("TAG", "updateUi collection fragment ID: " + buyList.getId());
         List<Product> products = viewModel.getProducts(buyList.getId());
+
 
         if (adapter == null) {
             adapter = new ProductAdapter(products);
@@ -96,7 +100,7 @@ public class ListCollectionFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 viewModel.showNewProductLayout(productField);
-                setupCreateButton(null);
+                setupCreateButton(0);
             }
         });
 
@@ -109,19 +113,19 @@ public class ListCollectionFragment extends Fragment {
         });
     }
 
-    private void setupCreateButton(final UUID productId) {
+    private void setupCreateButton(final long productId) {
         ImageButton createButton = getActivity().findViewById(R.id.create_product);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.saveProduct(productField, buyList.getId().toString(), productId);
+                viewModel.saveProduct(productField, buyList.getId(), productId);
                 updateUi();
             }
         });
     }
 
     private void initUi(View view) {
-        getActivity().setTitle(buyList.getTitle());
+//        getActivity().setTitle(buyList.getTitle());
 
         templatesButton = view.findViewById(R.id.templates_button);
         recipeButton = view.findViewById(R.id.recipe_button);

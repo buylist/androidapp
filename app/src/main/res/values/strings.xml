@@ -37,6 +37,7 @@
     <string name="logo_description">Логотип</string>
     <string name="new_list_description">Создать список</string>
     <string name="new_pattern_description">Создать шаблон</string>
+    <string name="pattern_button_text">Перенести в список</string>
 
     <string-array name="category">
         <item>Продукты</item>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="ru.buylist.listpattern.ListPatternViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="Autofill">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="@{viewmodel.buttonMoveVisibility ? View.VISIBLE : View.GONE}">
+
+            <Button
+                android:id="@+id/button_move"
+                style="@style/TopButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/pattern_button_text" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_new_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="@{viewmodel.layoutNewProductVisibility ? View.VISIBLE : View.GONE}">
+
+            <EditText
+                android:id="@+id/field_product"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:hint="@string/new_product_hint"
+                android:inputType="text"
+                android:text="@={viewmodel.itemName}" />
+
+            <EditText
+                android:id="@+id/field_quantity"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="@string/amount_hint"
+                android:inputType="number"
+                android:text="@={viewmodel.quantity}" />
+
+            <EditText
+                android:id="@+id/field_unit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="@string/unit_hint"
+                android:inputType="text"
+                android:text="@={viewmodel.unit}" />
+
+            <ImageButton
+                android:id="@+id/button_create"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/create_product_description"
+                android:src="@drawable/ic_new_product" />
+        </LinearLayout>
+
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorDivider" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rw_products"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</layout>

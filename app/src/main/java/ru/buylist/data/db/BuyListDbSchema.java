@@ -1,6 +1,8 @@
 package ru.buylist.data.db;
 
 public class BuyListDbSchema {
+
+    // Названия списков (Коллекция списков)
     public static final class BuyTable {
         public static final String NAME = "buylist";
 
@@ -10,6 +12,7 @@ public class BuyListDbSchema {
         }
     }
 
+    // Информация о продуктах в активных списках
     public static final class ProductTable {
         public static final String NAME = "products";
 
@@ -24,6 +27,7 @@ public class BuyListDbSchema {
         }
     }
 
+    // Информация о категориях продуктов
     public static final class CategoryTable {
         public static final String NAME = "category";
 
@@ -34,6 +38,17 @@ public class BuyListDbSchema {
         }
     }
 
+    // Названия шаблонов
+    public static final class PatternTable {
+        public static final String NAME = "patterns";
+
+        public static final class Cols {
+            public static final String ID = "id";
+            public static final String TITLE = "title";
+        }
+    }
+
+    // Глобальная база с информацией о продуктах. Хранится все, что когда-либо пользователь вводил
     public static final class GlobalProductsTable {
         public static final String NAME = "global_list_of_products";
 

@@ -10,7 +10,6 @@ import ru.buylist.SingleFragmentActivity;
 import ru.buylist.listcollection.ListCollectionFragment;
 import ru.buylist.listcollection.ListCollectionActivity;
 import ru.buylist.data.BuyList;
-import ru.buylist.data.Product;
 
 public class BuyListActivity extends SingleFragmentActivity implements BuyListFragment.Callbacks {
     @Override

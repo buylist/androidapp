@@ -9,13 +9,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-
-import java.util.UUID;
+import android.util.Log;
 
 import ru.buylist.IOnBackPressed;
 import ru.buylist.R;
 import ru.buylist.SingleFragmentActivity;
-import ru.buylist.data.Product;
 import ru.buylist.databinding.ActivityListCollectionBinding;
 
 
@@ -25,9 +23,10 @@ public class ListCollectionActivity extends SingleFragmentActivity {
 
     private ListCollectionViewModel viewModel;
 
-    public static Intent newIntent(Context context, UUID productId) {
+    public static Intent newIntent(Context context, long productId) {
         Intent intent = new Intent(context, ListCollectionActivity.class);
         intent.putExtra(EXTRA_BUY_LIST_ID, productId);
+        Log.i("TAG", "Put to collection intent ID: " + productId);
         return intent;
     }
 
@@ -38,7 +37,8 @@ public class ListCollectionActivity extends SingleFragmentActivity {
 
     @Override
     protected Fragment createFragment() {
-        UUID id = (UUID) getIntent().getSerializableExtra(EXTRA_BUY_LIST_ID);
+        long id = getIntent().getLongExtra(EXTRA_BUY_LIST_ID, 0);
+        Log.i("TAG", "collection intent get ID: " + id);
         return ListCollectionFragment.newInstance(id);
     }
 
@@ -52,16 +52,16 @@ public class ListCollectionActivity extends SingleFragmentActivity {
         ActivityListCollectionBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_list_collection);
         viewModel = obtainViewModel(this);
 
-        viewModel.getNewCategoryEvent().observe(this, new Observer<String>() {
+        viewModel.getNewCategoryEvent().observe(this, new Observer<Long>() {
             @Override
-            public void onChanged(@Nullable String productId) {
+            public void onChanged(@Nullable Long productId) {
                 createNewProduct(productId);
             }
         });
 
-        viewModel.getAddProductEvent().observe(this, new Observer<String>() {
+        viewModel.getAddProductEvent().observe(this, new Observer<Long>() {
             @Override
-            public void onChanged(@Nullable String buylistId) {
+            public void onChanged(@Nullable Long buylistId) {
                 updateProductsList(buylistId);
             }
         });
@@ -69,8 +69,8 @@ public class ListCollectionActivity extends SingleFragmentActivity {
         binding.setViewmodel(viewModel);
     }
 
-    private void createNewProduct(String productId) {
-        Fragment fragment = CategoryFragment.newInstance(UUID.fromString(productId));
+    private void createNewProduct(long productId) {
+        Fragment fragment = CategoryFragment.newInstance(productId);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
@@ -94,9 +94,8 @@ public class ListCollectionActivity extends SingleFragmentActivity {
         }
     }
 
-    public void updateProductsList(String buylistId) {
-        UUID id = UUID.fromString(buylistId);
-        Fragment fragment = ListCollectionFragment.newInstance(id);
+    public void updateProductsList(long buylistId) {
+        Fragment fragment = ListCollectionFragment.newInstance(buylistId);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
