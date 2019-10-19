@@ -4,6 +4,7 @@
     package="ru.buylist">
 
     <application
+        android:name=".utils.BuylistApp"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,16 +15,16 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
-            android:name=".listcollection.ListCollectionActivity"
-            android:parentActivityName=".lists.BuyListActivity"
+            android:name=".buy_list.BuyListActivity"
+            android:parentActivityName=".colection_lists.CollectionActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".listpattern.ListPatternActivity"
-            android:parentActivityName=".lists.BuyListActivity"
+            android:name=".pattern_list.PatternListActivity"
+            android:parentActivityName=".colection_lists.CollectionActivity"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".lists.BuyListActivity"
+            android:name=".colection_lists.CollectionActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
