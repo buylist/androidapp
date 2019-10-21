@@ -45,36 +45,6 @@ public class CollectionFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    private final CollectionClickCallback collectionClickCallback = new CollectionClickCallback() {
-        @Override
-        public void onListItemClick(Collection collection) {
-            callbacks.onCollectionSelected(collection);
-            Log.i(TAG, "On collection click: " + collection.getId());
-        }
-
-        @Override
-        public void onDeleteButtonClick(Collection collection) {
-            binding.cardBuyList.setBackgroundColor(0);
-            viewModel.deleteCollection(collection);
-            adapter.closeAllItems();
-            Log.i(TAG, "Delete collection: " + collection.getId());
-        }
-
-        @Override
-        public void onEditButtonClick(Collection collection) {
-            binding.setIsLoading(true);
-            adapter.closeAllItems();
-
-            binding.fieldNameBuyList.setText(collection.getTitle());
-            Log.i(TAG, "Edit collection: " + collection.getId());
-//            ProductLab productLab = ProductLab.get(getActivity());
-//            productLab.deleteFromDb(
-//                    collection.getId(),
-//                    BuyTable.NAME,
-//                    BuyTable.Cols.UUID);
-        }
-    };
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,11 +53,6 @@ public class CollectionFragment extends Fragment {
         setupAdapter();
         initUi(binding.getRoot());
         return binding.getRoot();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -141,47 +106,54 @@ public class CollectionFragment extends Fragment {
     }
 
     private void subscribeUi(LiveData<List<Collection>> liveData) {
-        liveData.observe(this, new Observer<List<Collection>>() {
-            @Override
-            public void onChanged(@Nullable List<Collection> collections) {
-                if (collections != null) {
-                    Log.i(TAG, "Collection livedata new size: " + collections.size());
-                    adapter.setLists(collections);
-                    adapter.notifyDataSetChanged();
-                }
-                binding.executePendingBindings();
+        liveData.observe(this, collections -> {
+            if (collections != null) {
+                Log.i(TAG, "Collection livedata new size: " + collections.size());
+                adapter.setLists(collections);
             }
+            binding.executePendingBindings();
         });
     }
 
     private void onNewBuyListButtonClick() {
-        binding.btnNewBuyList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.setIsLoading(true); // отображение слоя с полями для ввода
-                binding.setShow(true);      // отображение recyclerView
-                adapter.closeAllItems();
-                KeyboardUtils.showKeyboard(nameCollection, getActivity());
-            }
+        binding.btnNewBuyList.setOnClickListener(v -> {
+            binding.setIsLoading(true); // отображение слоя с полями для ввода
+            binding.setShow(true);      // отображение recyclerView
+            adapter.closeAllItems();
+            KeyboardUtils.showKeyboard(nameCollection, getActivity());
         });
     }
 
     private void onCardListViewClick() {
-        binding.cardBuyList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter.closeAllItems();
-                nameCollection.setText("");
-                binding.setIsLoading(false);  // скрытие слоя с полями для ввода
-                KeyboardUtils.hideKeyboard(nameCollection, getActivity());
+        binding.cardBuyList.setOnClickListener(v -> {
+            adapter.closeAllItems();
+            nameCollection.setText("");
+            binding.setIsLoading(false);  // скрытие слоя с полями для ввода
+            KeyboardUtils.hideKeyboard(nameCollection, getActivity());
 
-                // скрытие / отображение элементов списка
-                if (!binding.getShow()) {
-                    binding.setShow(true);
-                } else {
-                    binding.setShow(false);
-                }
+            // скрытие / отображение элементов списка
+            if (!binding.getShow()) {
+                binding.setShow(true);
+            } else {
+                binding.setShow(false);
             }
+        });
+    }
+
+    private void onCreateBuyListButtonClick() {
+        binding.btnCreateBuyList.setOnClickListener(v -> {
+            if (nameCollection.getText().length() != 0) {
+                Collection collection = new Collection();
+                collection.setTitle(nameCollection.getText().toString());
+                collection.setType(BuyList);
+                viewModel.addCollection(collection);
+                Log.i(TAG, "Collection new name: " + collection.getTitle());
+            }
+
+            nameCollection.setText("");
+            binding.setIsLoading(false);  // скрытие слоя с полями для ввода
+            KeyboardUtils.hideKeyboard(nameCollection, getActivity());
+
         });
     }
 
@@ -211,25 +183,30 @@ public class CollectionFragment extends Fragment {
         }
     };
 
-    private void onCreateBuyListButtonClick() {
-        binding.btnCreateBuyList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (nameCollection.getText().length() != 0) {
-                    Collection collection = new Collection();
-                    collection.setTitle(nameCollection.getText().toString());
-                    collection.setType(BuyList);
-                    viewModel.addCollection(collection);
-                    Log.i(TAG, "Collection new name: " + collection.getTitle());
-                }
+    private final CollectionClickCallback collectionClickCallback = new CollectionClickCallback() {
+        @Override
+        public void onListItemClick(Collection collection) {
+            callbacks.onCollectionSelected(collection);
+            Log.i(TAG, "On collection click: " + collection.getId());
+        }
 
-                nameCollection.setText("");
-                binding.setIsLoading(false);  // скрытие слоя с полями для ввода
-                KeyboardUtils.hideKeyboard(nameCollection, getActivity());
+        @Override
+        public void onDeleteButtonClick(Collection collection) {
+            binding.cardBuyList.setBackgroundColor(0);
+            viewModel.deleteCollection(collection);
+            adapter.closeAllItems();
+            Log.i(TAG, "Delete collection: " + collection.getId());
+        }
 
-            }
-        });
-    }
+        @Override
+        public void onEditButtonClick(Collection collection) {
+            binding.setIsLoading(true);
+            adapter.closeAllItems();
+
+            binding.fieldNameBuyList.setText(collection.getTitle());
+            Log.i(TAG, "Edit collection: " + collection.getId());
+        }
+    };
 
     public interface Callbacks {
         void onCollectionSelected(Collection collection);

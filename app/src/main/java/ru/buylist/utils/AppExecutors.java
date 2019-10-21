@@ -3,10 +3,7 @@ package ru.buylist.utils;
 import android.os.Handler;
 import android.os.Looper;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class AppExecutors {
@@ -24,7 +21,7 @@ public class AppExecutors {
     }
 
     public AppExecutors() {
-        this(new DiscIOExecutor(Executors.newSingleThreadScheduledExecutor()), Executors.newFixedThreadPool(THREAD_COUNT),
+        this(Executors.newSingleThreadExecutor(), Executors.newFixedThreadPool(THREAD_COUNT),
                 new MainThreadExecutor());
     }
 
@@ -49,38 +46,5 @@ public class AppExecutors {
             mainThreadHandler.post(command);
         }
     }
-
-    private static class DiscIOExecutor implements Executor {
-
-        final Queue<Runnable> tasks = new ArrayDeque<>();
-        final Executor executor;
-        Runnable active;
-
-        DiscIOExecutor(Executor executor) {
-            this.executor = executor;
-        }
-
-        public synchronized void execute(final Runnable r) {
-            tasks.add(new Runnable() {
-                public void run() {
-                    try {
-                        new Thread(r).start();
-                    } finally {
-                        scheduleNext();
-                    }
-                }
-            });
-            if (active == null) {
-                scheduleNext();
-            }
-        }
-
-        protected synchronized void scheduleNext() {
-            if ((active = tasks.poll()) != null) {
-                executor.execute(active);
-            }
-        }
-    }
-
 }
 

@@ -86,6 +86,7 @@ public class CollectionAdapter extends RecyclerSwipeAdapter<CollectionAdapter.Bu
 
     void setLists(final List<Collection> lists) {
         this.lists = lists;
+        notifyDataSetChanged();
         Log.i(TAG, "Collection update");
     }
 

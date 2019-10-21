@@ -4,7 +4,6 @@ import android.app.Application;
 
 import ru.buylist.data.DataRepository;
 import ru.buylist.data.db.BuyListDatabase;
-import ru.buylist.utils.AppExecutors;
 
 public class BuylistApp extends Application {
     private AppExecutors executors;
