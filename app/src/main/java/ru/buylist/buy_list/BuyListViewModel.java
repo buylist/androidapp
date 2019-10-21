@@ -81,6 +81,7 @@ public class BuyListViewModel extends AndroidViewModel {
     }
 
     public void saveItem(EditText targetField, long collectionId, long itemId) {
+        // id != 0 при редактировании товара, создавать новый не требуется
         Item item = (itemId == 0 ? new Item() : new Item(itemId));
         item.setName(itemName.get());
         if (item.isEmpty()) {
@@ -171,10 +172,11 @@ public class BuyListViewModel extends AndroidViewModel {
         Category category = repository.getCategory(categoryName);
         GlobalItem globalItem = new GlobalItem(
                 item.getId(), item.getName(), item.getCategory(), item.getCategoryColor());
-        Log.i(TAG, "ShoppingViewModel created new global item: " + globalItem.getName());
 
         item.setCategory(category.getName());
         item.setCategoryColor(category.getColor());
+        globalItem.setCategory(category.getName());
+        globalItem.setCategoryColor(category.getColor());
 
         repository.updateItem(item);
         repository.addGlobalItem(globalItem);

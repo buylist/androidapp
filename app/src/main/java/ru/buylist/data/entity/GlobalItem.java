@@ -46,7 +46,7 @@ public class GlobalItem {
         return colorCategory;
     }
 
-    public void setColorCategory(String colorCategory) {
+    public void setCategoryColor(String colorCategory) {
         this.colorCategory = colorCategory;
     }
 }
