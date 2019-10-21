@@ -88,7 +88,9 @@ public class BuyListViewModel extends AndroidViewModel {
         Item item = (itemId == 0 ? new Item() : new Item(itemId));
         item.setName(itemName.get());
         if (item.isEmpty()) {
-            // товар не может быть пустым, ничего не делаем
+            // товар не может быть пустым, обнуляем и скрываем layout
+            clearFields();
+            hideNewProductLayout(targetField);
             return;
         }
 
@@ -216,9 +218,6 @@ public class BuyListViewModel extends AndroidViewModel {
         this.items.clear();
         this.items.addAll(itemsToShow);
     }
-
-//    ==================== старое: доработать видимость объектов
-
 
     public void showNewProductLayout(EditText targetField) {
         layoutNewProductVisibility.set(true);
