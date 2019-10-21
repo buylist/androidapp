@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="ru.buylist.buy_list.BuyListViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="Autofill">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <FrameLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp" />
+
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_new_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_add_white"
+                android:visibility="@{viewmodel.fabNewProductVisibility ? View.VISIBLE : View.GONE}"
+                app:fabSize="normal"
+                app:layout_anchor="@id/fragment_container"
+                app:layout_anchorGravity="bottom|right|end"
+                app:useCompatPadding="true" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_visibility"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:src="@{viewmodel.purchasedProductsVisibility ? @drawable/ic_visibility_black : @drawable/ic_visibility_off_black}"
+                android:visibility="@{viewmodel.fabProductsVisibility ? View.VISIBLE : View.GONE}"
+                app:backgroundTint="@color/colorVisibilityFab"
+                app:fabSize="normal"
+                app:layout_anchor="@id/fab_new_item"
+                app:layout_anchorGravity="top"
+                app:useCompatPadding="true" />
+        </android.support.design.widget.CoordinatorLayout>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewmodel.bottomNavigationVisibility ? View.VISIBLE : View.GONE}"
+            app:itemBackground="@color/color_bn_primary"
+            app:itemIconTint="@color/color_icon_bn"
+            app:itemTextColor="@color/color_icon_bn"
+            app:menu="@menu/bottom_navigation_menu" />
+    </LinearLayout>
+</layout>

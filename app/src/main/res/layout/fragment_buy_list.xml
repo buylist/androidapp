@@ -1,223 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    tools:ignore="Autofill">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v4.widget.NestedScrollView
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="ru.buylist.buy_list.BuyListViewModel" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="Autofill">
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/layout_top"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="16dp">
-
-            <ImageView
-                android:id="@+id/logo_view"
-                android:layout_width="155dp"
-                android:layout_height="48dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="58dp"
-                android:contentDescription="@string/logo_description"
-                android:src="@drawable/ic_logo_normal" />
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_list_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/logo_view"
-                android:layout_margin="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="100">
-
-                    <TextView
-                        style="@style/TitleOfSectionTheme"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="90"
-                        android:drawableStart="@drawable/ic_list"
-                        android:drawablePadding="16dp"
-                        android:gravity="start|center"
-                        android:text="@string/list_collection" />
-
-                    <ImageButton
-                        android:id="@+id/new_list"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="@string/new_list_description"
-                        android:src="@drawable/ic_add_button2" />
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/list_collection_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/card_list_view"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:visibility="gone" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/new_list_collection_layout"
+                android:id="@+id/layout_top_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/list_collection_recycler_view"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:visibility="gone">
+                android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/name_new_list_collection"
+                <Button
+                    android:id="@+id/btn_pattern"
+                    style="@style/TopButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:hint="@string/name_list_collection_hint"
-                    android:inputType="text" />
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/pattern_button" />
+
+                <Button
+                    android:id="@+id/btn_recipe"
+                    style="@style/TopButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/recipe_button" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/products_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorDivider" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                app:items="@{viewmodel.items}"/>
+
+            <LinearLayout
+                android:id="@+id/layout_item_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="@{viewmodel.layoutNewProductVisibility ? View.VISIBLE : View.GONE}">
+
+                <EditText
+                    android:id="@+id/field_name"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:hint="@string/new_product_hint"
+                    android:inputType="text"
+                    android:text="@={viewmodel.itemName}" />
+
+                <EditText
+                    android:id="@+id/field_quantity"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@string/amount_hint"
+                    android:inputType="number"
+                    android:text="@={viewmodel.quantity}" />
+
+                <EditText
+                    android:id="@+id/field_unit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@string/unit_hint"
+                    android:inputType="text"
+                    android:text="@={viewmodel.unit}" />
 
                 <ImageButton
-                    android:id="@+id/create_new_list_collection"
+                    android:id="@+id/btn_create_item"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:contentDescription="@string/create_new_list_collection_description"
+                    android:contentDescription="@string/create_product_description"
                     android:src="@drawable/ic_new_product" />
             </LinearLayout>
 
-            <View
-                android:id="@+id/divider_lists"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/new_list_collection_layout"
-                android:layout_margin="8dp"
-                android:background="@color/colorDivider" />
+        </LinearLayout>
 
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_pattern_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/divider_lists"
-                android:layout_margin="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="100">
-
-                    <TextView
-                        style="@style/TitleOfSectionTheme"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="90"
-                        android:drawableStart="@drawable/ic_pattern"
-                        android:drawablePadding="16dp"
-                        android:gravity="start|center"
-                        android:text="@string/list_templates" />
-
-                    <ImageButton
-                        android:id="@+id/new_pattern"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="10"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="@string/new_pattern_description"
-                        android:src="@drawable/ic_add_button2" />
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/pattern_collection_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/card_pattern_view"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:visibility="gone" />
-
-            <View
-                android:id="@+id/divider_templates"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/pattern_collection_recycler_view"
-                android:layout_margin="8dp"
-                android:background="@color/colorDivider" />
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_recipe_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/divider_templates"
-                android:layout_margin="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="100">
-
-                    <TextView
-                        style="@style/TitleOfSectionTheme"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="90"
-                        android:drawableStart="@drawable/ic_recipe"
-                        android:drawablePadding="16dp"
-                        android:gravity="start|center"
-                        android:text="@string/recipe_list" />
-
-                    <ImageButton
-                        android:id="@+id/new_recipe"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="10"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="@string/new_recipe_description"
-                        android:src="@drawable/ic_add_button2" />
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recipe_collection_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/card_recipe_view"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:visibility="gone" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/recipe_collection_recycler_view"
-                android:layout_margin="8dp"
-                android:background="@color/colorDivider" />
-        </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:itemBackground="@color/color_bn_primary"
-        app:itemIconTint="@color/color_icon_bn"
-        app:itemTextColor="@color/color_icon_bn"
-        app:menu="@menu/bottom_navigation_menu" />
-</LinearLayout>
+    </LinearLayout>
+</layout>
