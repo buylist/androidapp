@@ -80,8 +80,9 @@ public class BuyListAdapter extends RecyclerSwipeAdapter<BuyListAdapter.Shopping
     }
 
 
-    void setItems(List<Item> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
+        notifyDataSetChanged();
         Log.i(TAG, "ShoppingList update item. New size: " + items.size());
     }
 

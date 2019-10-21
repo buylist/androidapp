@@ -11,10 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.buylist.R;
@@ -29,36 +29,14 @@ public class BuyListFragment extends Fragment {
     private static final String ARG_COLLECTION_ID = "buy_list_id";
 
     private Collection collection;
+    private List<Item> items;
+
     private BuyListViewModel viewModel;
     private FragmentBuyListBinding binding;
 
-    private Button templatesButton;
-    private Button recipeButton;
     private EditText productField;
 
     private BuyListAdapter adapter;
-    private final BuyListCallback shoppingListCallback = new BuyListCallback() {
-        @Override
-        public void onItemClick(Item item) {
-            viewModel.checkItem(item);
-            Log.i(TAG, "BuyList on item click: " + item.getId());
-        }
-
-        @Override
-        public void onDeleteButtonClick(Item item) {
-            Log.i(TAG, "BuyList delete item: " + item.getId());
-            viewModel.makeAction(Action.DELETE, item);
-            adapter.closeAllItems();
-        }
-
-        @Override
-        public void onEditButtonClick(Item item) {
-            viewModel.editItem(item);
-            setupCreateButton(item.getId());
-            adapter.closeAllItems();
-            Log.i(TAG, "BuyList edit item: " + item.getId());
-        }
-    };
 
     public static BuyListFragment newInstance(long collectionId) {
         Bundle args = new Bundle();
@@ -73,6 +51,8 @@ public class BuyListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        items = new ArrayList<>();
 
         viewModel = BuyListActivity.obtainViewModel(getActivity());
 
@@ -103,11 +83,18 @@ public class BuyListFragment extends Fragment {
         return binding.getRoot();
     }
 
+    private void initUi(View view) {
+//        getActivity().setTitle(collection.getTitle());
+        productField = view.findViewById(R.id.field_name);
+    }
+
     private void subscribeUi(LiveData<List<Item>> liveData) {
         liveData.observe(this, items -> {
             if (items != null) {
-                adapter.setItems(items);
-                adapter.notifyDataSetChanged();
+//                adapter.setItems(items);
+                this.items.clear();
+                this.items.addAll(items);
+                viewModel.loadItems(items);
             }
             binding.executePendingBindings();
             Log.i(TAG, "ShoppingList get new list livedata: ");
@@ -131,7 +118,10 @@ public class BuyListFragment extends Fragment {
         });
         Log.i(TAG, "ShoppingList newFAB activated");
 
-        visibilityFab.setOnClickListener(v -> viewModel.showAllProducts());
+        visibilityFab.setOnClickListener(v -> {
+            viewModel.updateFiltering();
+            viewModel.loadItems(items);
+        });
         Log.i(TAG, "ShoppingList visFAB activated");
     }
 
@@ -143,11 +133,26 @@ public class BuyListFragment extends Fragment {
         });
     }
 
-    private void initUi(View view) {
-//        getActivity().setTitle(collection.getTitle());
+    private final BuyListCallback shoppingListCallback = new BuyListCallback() {
+        @Override
+        public void onItemClick(Item item) {
+            viewModel.checkItem(item);
+            Log.i(TAG, "BuyList on item click: " + item.getId());
+        }
 
-        templatesButton = view.findViewById(R.id.btn_pattern);
-        recipeButton = view.findViewById(R.id.btn_recipe);
-        productField = view.findViewById(R.id.field_name);
-    }
+        @Override
+        public void onDeleteButtonClick(Item item) {
+            Log.i(TAG, "BuyList delete item: " + item.getId());
+            viewModel.makeAction(Action.DELETE, item);
+            adapter.closeAllItems();
+        }
+
+        @Override
+        public void onEditButtonClick(Item item) {
+            viewModel.editItem(item);
+            setupCreateButton(item.getId());
+            adapter.closeAllItems();
+            Log.i(TAG, "BuyList edit item: " + item.getId());
+        }
+    };
 }

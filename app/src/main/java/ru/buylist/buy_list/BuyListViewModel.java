@@ -4,11 +4,14 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
+import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.databinding.ObservableList;
 import android.util.Log;
 import android.widget.EditText;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.buylist.utils.BuylistApp;
@@ -20,6 +23,9 @@ import ru.buylist.data.entity.*;
 
 public class BuyListViewModel extends AndroidViewModel {
     private static final String TAG = "TAG";
+
+    // отображаемый список
+    public final ObservableList<Item> items = new ObservableArrayList<>();
 
     // Флаги для отображения/скрытия элементов
     public final ObservableBoolean layoutNewProductVisibility = new ObservableBoolean(false);
@@ -34,9 +40,6 @@ public class BuyListViewModel extends AndroidViewModel {
     public final ObservableField<String> unit = new ObservableField<>("");
 
     private final Context context;
-
-    // true = Action.ADD, false = Action.UPDATE
-    public boolean createButtonFlag = true;
 
     private DataRepository repository;
 
@@ -121,6 +124,7 @@ public class BuyListViewModel extends AndroidViewModel {
         unit.set("");
     }
 
+    // true - товар перечеркивается линией, false - линия удаляется
     public void checkItem(Item item) {
         if (item.isPurchased()) {
             item.setPurchased(false);
@@ -151,7 +155,6 @@ public class BuyListViewModel extends AndroidViewModel {
 
     public void editItem(Item item) {
         layoutNewProductVisibility.set(true);
-        createButtonFlag = false;
         itemName.set(item.getName());
         quantity.set(item.getQuantity());
         unit.set(item.getUnit());
@@ -189,11 +192,35 @@ public class BuyListViewModel extends AndroidViewModel {
         Log.i(TAG, "ShoppingViewModel set new product event: skip");
     }
 
+    // true - отображение товаров к покупке, false - отображение всех товаров
+    public void updateFiltering() {
+        if (purchasedProductsVisibility.get()) {
+            purchasedProductsVisibility.set(false);
+        } else {
+            purchasedProductsVisibility.set(true);
+        }
+    }
+
+    // сортировка отображаемых товаров
+    public void loadItems(List<Item> items) {
+        List<Item> itemsToShow = new ArrayList<>();
+        if (!purchasedProductsVisibility.get()) {
+            itemsToShow.addAll(items);
+        } else {
+            for (Item item : items) {
+                if (!item.isPurchased()) {
+                    itemsToShow.add(item);
+                }
+            }
+        }
+        this.items.clear();
+        this.items.addAll(itemsToShow);
+    }
+
 //    ==================== старое: доработать видимость объектов
 
 
     public void showNewProductLayout(EditText targetField) {
-        createButtonFlag = true;
         layoutNewProductVisibility.set(true);
         fabNewProductVisibility.set(false);
         fabProductsVisibility.set(false);
@@ -221,29 +248,6 @@ public class BuyListViewModel extends AndroidViewModel {
         bottomNavigationVisibility.set(false);
     }
 
-    public void showAllProducts() {
-        if (purchasedProductsVisibility.get()) {
-            purchasedProductsVisibility.set(false);
-        } else {
-            purchasedProductsVisibility.set(true);
-        }
-    }
-
-//    //скрытие и отображение купленных продуктов при нажатии на fab
-//    public void setViewVisibility(View itemView, Item item) {
-//        if (product.isPurchased()) {
-//            if (purchasedProductsVisibility.get()) {
-//                itemView.setVisibility(View.GONE);
-//                itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
-//            } else {
-//                itemView.setVisibility(View.VISIBLE);
-//                itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-//            }
-//        } else {
-//            itemView.setVisibility(View.VISIBLE);
-//            itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-//        }
-//    }
 
 
 }
