@@ -15,6 +15,7 @@ import java.util.List;
 import ru.buylist.R;
 import ru.buylist.data.entity.Category;
 import ru.buylist.data.entity.Item;
+import ru.buylist.utils.SnackbarUtils;
 
 public class CategoryFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "TAG";
@@ -85,6 +86,11 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                 categoryText.showDropDown();
                 break;
             case R.id.button_next:
+                if (categoryText.getText().toString().isEmpty()) {
+                    // категория не выбрана, отображаем snackbar
+                    SnackbarUtils.showSnackbar(v, getString(R.string.category_is_empty));
+                    break;
+                }
                 viewModel.updateCategory(categoryText.getText().toString(), item);
                 break;
             case R.id.button_skip:
