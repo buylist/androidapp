@@ -107,10 +107,19 @@ public class BuyListAdapter extends RecyclerSwipeAdapter<BuyListAdapter.Shopping
         void bind(Item item) {
             this.item = item;
             binding.setItem(item);
+            bindColor(item);
             binding.layoutSwipeItem.setShowMode(SwipeLayout.ShowMode.PullOut);
             binding.layoutSwipeItem.addDrag(SwipeLayout.DragEdge.Right, binding.layoutBottomSwipe);
             binding.cardTopItemSwipe.setBackgroundColor(0);
             binding.executePendingBindings();
+        }
+
+        void bindColor(Item item) {
+            if (item.getCategoryColor() == null) {
+                binding.imgCategoryCircle.setColorFilter(Color.parseColor("#8A000000"));
+            } else {
+                binding.imgCategoryCircle.setColorFilter(Color.parseColor(item.getCategoryColor()));
+            }
         }
     }
 }

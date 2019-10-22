@@ -78,7 +78,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="8dp"
                         android:contentDescription="@string/category_description"
-                        android:src="@drawable/circle" />
+                        android:src="@drawable/circle"/>
 
                     <TextView
                         android:id="@+id/text_view_item_name"
