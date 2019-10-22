@@ -99,10 +99,30 @@ public class BuyListViewModel extends AndroidViewModel {
         item.setUnit(unit.get());
 
         if (!isInGlobalDatabase(item)) {
-            repository.addItem(item);
             newCategoryEvent.setValue(item.getId());
         } else {
             repository.addItem(item);
+        }
+        clearFields();
+        hideNewProductLayout(targetField);
+    }
+
+    public void updateItem(EditText targetField, long itemId) {
+        Item item = repository.getItem(itemId);
+        item.setName(itemName.get());
+        if (item.isEmpty()) {
+            // товар не может быть пустым, обнуляем и скрываем layout
+            clearFields();
+            hideNewProductLayout(targetField);
+            return;
+        }
+
+        item.setQuantity(quantity.get());
+        item.setUnit(unit.get());
+        repository.updateItem(item);
+
+        if (!isInGlobalDatabase(item)) {
+            newCategoryEvent.setValue(item.getId());
         }
         clearFields();
         hideNewProductLayout(targetField);

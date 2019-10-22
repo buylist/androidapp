@@ -128,7 +128,11 @@ public class BuyListFragment extends Fragment {
     private void setupCreateButton(final long itemId) {
         ImageButton createButton = getActivity().findViewById(R.id.btn_create_item);
         createButton.setOnClickListener(v -> {
-            viewModel.saveItem(productField, collection.getId(), itemId);
+            if (itemId == 0) {
+                viewModel.saveItem(productField, collection.getId(), itemId);
+            } else {
+                viewModel.updateItem(productField, itemId);
+            }
             Log.i(TAG, "ShoppingList save new item: " + itemId);
         });
     }
