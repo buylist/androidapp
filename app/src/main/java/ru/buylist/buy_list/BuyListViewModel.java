@@ -99,10 +99,30 @@ public class BuyListViewModel extends AndroidViewModel {
         item.setUnit(unit.get());
 
         if (!isInGlobalDatabase(item)) {
-            repository.addItem(item);
             newCategoryEvent.setValue(item.getId());
         } else {
             repository.addItem(item);
+        }
+        clearFields();
+        hideNewProductLayout(targetField);
+    }
+
+    public void updateItem(EditText targetField, long itemId) {
+        Item item = repository.getItem(itemId);
+        item.setName(itemName.get());
+        if (item.isEmpty()) {
+            // товар не может быть пустым, обнуляем и скрываем layout
+            clearFields();
+            hideNewProductLayout(targetField);
+            return;
+        }
+
+        item.setQuantity(quantity.get());
+        item.setUnit(unit.get());
+        repository.updateItem(item);
+
+        if (!isInGlobalDatabase(item)) {
+            newCategoryEvent.setValue(item.getId());
         }
         clearFields();
         hideNewProductLayout(targetField);
@@ -185,8 +205,23 @@ public class BuyListViewModel extends AndroidViewModel {
 
         repository.updateItem(item);
         repository.addGlobalItem(globalItem);
+        updateItemsList(item);
         addProductEvent.setValue(item.getCollectionId());
         Log.i(TAG, "ShoppingViewModel set new productEvent");
+    }
+
+    private void updateItemsList(Item item) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getName().equals(item.getName())) {
+                if (items.get(i).getCategory() == null) {
+                    items.get(i).setCategory(item.getCategory());
+                }
+                if (items.get(i).getCategoryColor() == null) {
+                    items.get(i).setCategoryColor(item.getCategoryColor());
+                }
+                repository.updateItem(items.get(i));
+            }
+        }
     }
 
     public void skipCategory(long collectionId) {
