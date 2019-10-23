@@ -1,4 +1,4 @@
-package ru.buylist.colection_lists;
+package ru.buylist.collection_lists;
 
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;

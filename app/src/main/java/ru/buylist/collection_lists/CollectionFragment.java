@@ -1,7 +1,6 @@
-package ru.buylist.colection_lists;
+package ru.buylist.collection_lists;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -20,7 +19,7 @@ import ru.buylist.utils.KeyboardUtils;
 import ru.buylist.R;
 import ru.buylist.data.entity.Collection;
 
-import static ru.buylist.colection_lists.CollectionType.*;
+import static ru.buylist.collection_lists.CollectionType.*;
 
 public class CollectionFragment extends Fragment {
     private static final String TAG = "TAG";

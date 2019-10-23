@@ -1,4 +1,4 @@
-package ru.buylist.colection_lists;
+package ru.buylist.collection_lists;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;

@@ -1,4 +1,4 @@
-package ru.buylist.colection_lists;
+package ru.buylist.collection_lists;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;

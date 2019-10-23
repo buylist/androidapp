@@ -1,4 +1,4 @@
-package ru.buylist.colection_lists;
+package ru.buylist.collection_lists;
 
 import ru.buylist.data.entity.Collection;
 

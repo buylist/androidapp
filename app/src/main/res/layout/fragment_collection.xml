@@ -86,7 +86,7 @@
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
                 <LinearLayout
-                    android:id="@+id/layout_buy_list_field"
+                    android:id="@+id/layout_buy_list_fields"
                     visibleGone="@{isLoading}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                     android:id="@+id/divider_lists"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_below="@id/layout_buy_list_field"
+                    android:layout_below="@id/layout_buy_list_fields"
                     android:layout_margin="8dp"
                     android:background="@color/colorDivider" />
 
