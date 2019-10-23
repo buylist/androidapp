@@ -165,6 +165,34 @@
                     android:layout_marginEnd="16dp"
                     android:visibility="gone" />
 
+                <LinearLayout
+                    android:id="@+id/layout_pattern_list_fields"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/recycler_buy_list"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:visibility="gone">
+
+                    <EditText
+                        android:id="@+id/field_name_pattern_list"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:hint="@string/name_pattern_hint"
+                        android:inputType="text" />
+
+                    <ImageButton
+                        android:id="@+id/btn_create_pattern_list"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/new_pattern_description"
+                        android:src="@drawable/ic_new_product" />
+                </LinearLayout>
+
                 <View
                     android:id="@+id/divider_templates"
                     android:layout_width="match_parent"
@@ -215,6 +243,34 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/layout_recipe_list_fields"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/recycler_buy_list"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:visibility="gone">
+
+                    <EditText
+                        android:id="@+id/field_name_recipe_list"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:hint="@string/name_recipe_hint"
+                        android:inputType="text" />
+
+                    <ImageButton
+                        android:id="@+id/btn_create_recipe_list"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/new_recipe_description"
+                        android:src="@drawable/ic_new_product" />
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
