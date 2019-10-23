@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import ru.buylist.R;
 
 
+import ru.buylist.pattern_list.PatternListActivity;
+import ru.buylist.pattern_list.PatternListFragment;
 import ru.buylist.utils.SingleFragmentActivity;
 import ru.buylist.data.entity.Collection;
 import ru.buylist.buy_list.BuyListFragment;
@@ -28,23 +30,31 @@ public class CollectionActivity extends SingleFragmentActivity implements Collec
     }
 
     public void onCollectionSelected(Collection collection) {
-        if (findViewById(R.id.detail_fragment_container) == null) {
-            Intent intent = BuyListActivity.newIntent(this, collection.getId());
-            startActivity(intent);
-        } else {
-            Fragment newDetail = BuyListFragment.newInstance(collection.getId());
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.detail_fragment_container, newDetail)
-                    .commit();
+        switch (collection.getType()) {
+            case CollectionType.BuyList:
+                if (findViewById(R.id.detail_fragment_container) == null) {
+                    Intent intent = BuyListActivity.newIntent(this, collection.getId());
+                    startActivity(intent);
+                } else {
+                    Fragment newDetail = BuyListFragment.newInstance(collection.getId());
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.detail_fragment_container, newDetail)
+                            .commit();
+                }
+                break;
+            case CollectionType.PATTERN:
+                if (findViewById(R.id.detail_fragment_container) == null) {
+                    Intent intent = PatternListActivity.newIntent(this, collection.getId());
+                    startActivity(intent);
+                } else {
+                    Fragment newDetail = PatternListFragment.newInstance(collection.getId());
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.detail_fragment_container, newDetail)
+                            .commit();
+                }
+                break;
         }
     }
-
-//    @Override
-//    public void onBuyListUpdated(BuyList buyList) {
-//        CollectionFragment listFragment = (CollectionFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.fragment_container);
-//        listFragment.updateUI();
-//    }
 
     @Override
     public void showHome() {

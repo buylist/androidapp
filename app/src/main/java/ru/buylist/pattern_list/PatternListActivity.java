@@ -30,8 +30,8 @@ public class PatternListActivity extends SingleFragmentActivity {
 
     @Override
     protected Fragment createFragment() {
-        long patterId = getIntent().getLongExtra(EXTRA_PATTERN_ID, 0);
-        return PatternListFragment.newInstance(patterId);
+        long patternId = getIntent().getLongExtra(EXTRA_PATTERN_ID, 0);
+        return PatternListFragment.newInstance(patternId);
     }
 
     @Override

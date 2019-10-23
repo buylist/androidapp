@@ -26,7 +26,8 @@ public class CollectionFragment extends Fragment {
 
     private EditText nameCollection;
 
-    private CollectionAdapter adapter;
+    private CollectionAdapter buyListAdapter;
+    private CollectionAdapter patternAdapter;
     private FragmentCollectionBinding binding;
 
     private Callbacks callbacks;
@@ -81,7 +82,8 @@ public class CollectionFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(CollectionViewModel.class);
-        subscribeUi(viewModel.getCollectionOfList());
+        subscribeBuyList(viewModel.getCollectionOfList());
+        subscribePatternList(viewModel.getCollectionOfPattern());
     }
 
     private void initUi(View view) {
@@ -99,16 +101,29 @@ public class CollectionFragment extends Fragment {
     }
 
     public void setupAdapter() {
-        adapter = new CollectionAdapter(collectionClickCallback);
-        binding.recyclerBuyList.setAdapter(adapter);
-        Log.i(TAG, "Buylist adapter created");
+        buyListAdapter = new CollectionAdapter(collectionClickCallback);
+        binding.recyclerBuyList.setAdapter(buyListAdapter);
+
+        patternAdapter = new CollectionAdapter(collectionClickCallback);
+        binding.recyclerPattern.setAdapter(patternAdapter);
+        Log.i(TAG, "Buylist buyListAdapter created");
     }
 
-    private void subscribeUi(LiveData<List<Collection>> liveData) {
+    private void subscribeBuyList(LiveData<List<Collection>> liveData) {
         liveData.observe(this, collections -> {
             if (collections != null) {
                 Log.i(TAG, "Collection livedata new size: " + collections.size());
-                adapter.setLists(collections);
+                buyListAdapter.setLists(collections);
+            }
+            binding.executePendingBindings();
+        });
+    }
+
+    private void subscribePatternList(LiveData<List<Collection>> liveData) {
+        liveData.observe(this, collections -> {
+            if (collections != null) {
+                Log.i(TAG, "Collection livedata new size: " + collections.size());
+                patternAdapter.setLists(collections);
             }
             binding.executePendingBindings();
         });
@@ -118,14 +133,21 @@ public class CollectionFragment extends Fragment {
         binding.btnNewBuyList.setOnClickListener(v -> {
             binding.setIsLoading(true); // отображение слоя с полями для ввода
             binding.setShow(true);      // отображение recyclerView
-            adapter.closeAllItems();
+            buyListAdapter.closeAllItems();
             KeyboardUtils.showKeyboard(nameCollection, getActivity());
+        });
+
+        binding.btnNewPattern.setOnClickListener(v -> {
+            binding.recyclerPattern.setVisibility(View.VISIBLE);
+            binding.layoutPatternListFields.setVisibility(View.VISIBLE);
+            patternAdapter.closeAllItems();
+            KeyboardUtils.showKeyboard(binding.fieldNamePatternList, getActivity());
         });
     }
 
     private void onCardListViewClick() {
         binding.cardBuyList.setOnClickListener(v -> {
-            adapter.closeAllItems();
+            buyListAdapter.closeAllItems();
             nameCollection.setText("");
             binding.setIsLoading(false);  // скрытие слоя с полями для ввода
             KeyboardUtils.hideKeyboard(nameCollection, getActivity());
@@ -135,6 +157,19 @@ public class CollectionFragment extends Fragment {
                 binding.setShow(true);
             } else {
                 binding.setShow(false);
+            }
+        });
+
+        binding.cardPattern.setOnClickListener(v -> {
+            patternAdapter.closeAllItems();
+            binding.fieldNamePatternList.setText("");
+            binding.layoutPatternListFields.setVisibility(View.GONE);
+            KeyboardUtils.hideKeyboard(binding.fieldNamePatternList, getActivity());
+
+            if (binding.recyclerPattern.getVisibility() == View.GONE) {
+                binding.recyclerPattern.setVisibility(View.VISIBLE);
+            } else {
+                binding.recyclerPattern.setVisibility(View.GONE);
             }
         });
     }
@@ -153,6 +188,19 @@ public class CollectionFragment extends Fragment {
             binding.setIsLoading(false);  // скрытие слоя с полями для ввода
             KeyboardUtils.hideKeyboard(nameCollection, getActivity());
 
+        });
+
+        binding.btnCreatePatternList.setOnClickListener(v -> {
+            if (binding.fieldNamePatternList.getText().length() != 0) {
+                Collection collection = new Collection();
+                collection.setTitle(binding.fieldNamePatternList.getText().toString());
+                collection.setType(PATTERN);
+                viewModel.addCollection(collection);
+            }
+
+            binding.fieldNamePatternList.setText("");
+            binding.layoutPatternListFields.setVisibility(View.GONE);
+            KeyboardUtils.hideKeyboard(binding.fieldNamePatternList, getActivity());
         });
     }
 
@@ -193,14 +241,14 @@ public class CollectionFragment extends Fragment {
         public void onDeleteButtonClick(Collection collection) {
             binding.cardBuyList.setBackgroundColor(0);
             viewModel.deleteCollection(collection);
-            adapter.closeAllItems();
+            buyListAdapter.closeAllItems();
             Log.i(TAG, "Delete collection: " + collection.getId());
         }
 
         @Override
         public void onEditButtonClick(Collection collection) {
             binding.setIsLoading(true);
-            adapter.closeAllItems();
+            buyListAdapter.closeAllItems();
 
             binding.fieldNameBuyList.setText(collection.getTitle());
             Log.i(TAG, "Edit collection: " + collection.getId());
