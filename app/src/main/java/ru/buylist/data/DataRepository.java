@@ -77,7 +77,7 @@ public class DataRepository {
      **/
 
     public void addItem(final Item item) {
-//        database.itemDao().addItem(item);
+        Log.i(TAG, "Repository try to add new item: " + item.getId());
         Runnable addRunnable = () -> database.itemDao().addItem(item);
         executors.discIO().execute(addRunnable);
         Log.i(TAG, "Repository add new item: " + item.getId());

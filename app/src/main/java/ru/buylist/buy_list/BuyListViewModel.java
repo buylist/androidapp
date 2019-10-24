@@ -97,12 +97,12 @@ public class BuyListViewModel extends AndroidViewModel {
         item.setCollectionId(collectionId);
         item.setQuantity(quantity.get());
         item.setUnit(unit.get());
+        repository.addItem(item);
 
         if (!isInGlobalDatabase(item)) {
             newCategoryEvent.setValue(item.getId());
-        } else {
-            repository.addItem(item);
         }
+
         clearFields();
         hideNewProductLayout(targetField);
     }
