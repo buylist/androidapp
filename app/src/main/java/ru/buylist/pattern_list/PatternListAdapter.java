@@ -1,9 +1,8 @@
-package ru.buylist.buy_list;
+package ru.buylist.pattern_list;
 
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -13,37 +12,35 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import java.util.List;
 
 import ru.buylist.R;
+import ru.buylist.buy_list.BuyListCallback;
 import ru.buylist.data.entity.Item;
 import ru.buylist.databinding.ItemProductBinding;
 
-public class BuyListAdapter extends RecyclerSwipeAdapter<BuyListAdapter.BuyListHolder> {
-
-    private static final String TAG = "TAG";
+public class PatternListAdapter extends RecyclerSwipeAdapter<PatternListAdapter.PatternListHolder> {
 
     private final BuyListCallback callback;
     private List<Item> items;
 
-    public BuyListAdapter(BuyListCallback callback) {
+    public PatternListAdapter(BuyListCallback callback) {
         this.callback = callback;
     }
 
     @Override
-    public BuyListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PatternListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemProductBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
                 R.layout.item_product,
                 parent, false);
-        binding.setCallback(callback);  // отслеживание кликов
-        return new BuyListHolder(binding);
+        binding.setCallback(callback);
+        return new PatternListHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(final BuyListHolder holder, int position) {
+    public void onBindViewHolder(PatternListHolder holder, int position) {
         Item item = items.get(position);
         holder.bind(item);
 
         mItemManger.bindView(holder.itemView, position);
-
         holder.binding.layoutSwipeItem.addSwipeListener(new SwipeLayout.SwipeListener() {
             @Override
             public void onStartOpen(SwipeLayout layout) {
@@ -79,27 +76,25 @@ public class BuyListAdapter extends RecyclerSwipeAdapter<BuyListAdapter.BuyListH
         return items == null ? 0 : items.size();
     }
 
+    @Override
+    public int getSwipeLayoutResourceId(int position) {
+        return R.id.layout_swipe_item;
+    }
 
     public void setItems(List<Item> items) {
         this.items = items;
         notifyDataSetChanged();
-        Log.i(TAG, "ShoppingList update item. New size: " + items.size());
-    }
-
-    @Override
-    public int getSwipeLayoutResourceId(int position) {
-        return R.id.layout_swipe_item;
     }
 
 
     /**
      * Holder
      */
-    static class BuyListHolder extends RecyclerView.ViewHolder {
+    static class PatternListHolder extends RecyclerView.ViewHolder {
         ItemProductBinding binding;
         Item item;
 
-        BuyListHolder(ItemProductBinding binding) {
+        PatternListHolder(ItemProductBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -107,19 +102,11 @@ public class BuyListAdapter extends RecyclerSwipeAdapter<BuyListAdapter.BuyListH
         void bind(Item item) {
             this.item = item;
             binding.setItem(item);
-            bindColor(item);
+            binding.imgCategoryCircle.setImageResource(R.drawable.circle_empty);
             binding.layoutSwipeItem.setShowMode(SwipeLayout.ShowMode.PullOut);
             binding.layoutSwipeItem.addDrag(SwipeLayout.DragEdge.Right, binding.layoutBottomSwipe);
             binding.cardTopItemSwipe.setBackgroundColor(0);
             binding.executePendingBindings();
-        }
-
-        void bindColor(Item item) {
-            if (item.getCategoryColor() == null) {
-                binding.imgCategoryCircle.setColorFilter(Color.parseColor("#8A000000"));
-            } else {
-                binding.imgCategoryCircle.setColorFilter(Color.parseColor(item.getCategoryColor()));
-            }
         }
     }
 }

@@ -2,9 +2,15 @@ package ru.buylist.pattern_list;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
+import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.databinding.ObservableList;
 
+import java.util.List;
+
+import ru.buylist.data.entity.Collection;
 import ru.buylist.utils.BuylistApp;
 import ru.buylist.data.DataRepository;
 import ru.buylist.utils.SingleLiveEvent;
@@ -14,9 +20,13 @@ import ru.buylist.data.entity.Item;
 
 public class PatternListViewModel extends AndroidViewModel {
 
+    // отображаемый список
+    public final ObservableList<Item> items = new ObservableArrayList<>();
+
     // Флаги для отображения/скрытия элементов разметки
-    public final ObservableBoolean buttonMoveVisibility = new ObservableBoolean(false);
-    public final ObservableBoolean layoutNewProductVisibility = new ObservableBoolean(false);
+    public final ObservableBoolean btnToMoveShow = new ObservableBoolean(false);
+    public final ObservableBoolean layoutFieldsShow = new ObservableBoolean(false);
+    public final ObservableBoolean bottomShow = new ObservableBoolean(true);
 
     // Поля для ввода нового товара
     public final ObservableField<String> itemName = new ObservableField<>();
@@ -44,25 +54,42 @@ public class PatternListViewModel extends AndroidViewModel {
         return categoryAdded;
     }
 
-    // onFabClick
-    public void addNewItem() {
-        layoutNewProductVisibility.set(true);
+    LiveData<Collection> getCollection(long id) {
+        return repository.getCollection(id);
     }
 
-    public void saveItem() {
+    LiveData<List<Item>> getItems(long id) {
+        return repository.getLiveItems(id);
+    }
+
+    // onFabClick
+    public void addNewItem() {
+        layoutFieldsShow.set(true);
+        bottomShow.set(false);
+    }
+
+    public void saveItem(long collectionId) {
         Item item = new Item();
         item.setName(itemName.get());
         if (item.isEmpty()) {
             // товар не может быть пустым, ничего не делаем
+            layoutFieldsShow.set(false);
+            bottomShow.set(true);
             return;
         }
+
+        item.setCollectionId(collectionId);
+        item.setQuantity(quantity.get());
+        item.setUnit(unit.get());
+
         if (isNewItem(item)) {
-            item.setQuantity(quantity.get());
-            item.setUnit(unit.get());
             createItem(item);
         } else {
             updateItem(item);
         }
+
+        layoutFieldsShow.set(false);
+        bottomShow.set(true);
     }
 
     public void savecategory(long productId) {
@@ -75,15 +102,16 @@ public class PatternListViewModel extends AndroidViewModel {
         if (globalItem == null || globalItem.getName() == null) {
             return true;
         } else {
-            item.setCategory(item.getCategory());
+            item.setCategory(globalItem.getCategory());
+            item.setCategoryColor(globalItem.getColorCategory());
             return false;
         }
     }
 
     // добавление в базу и т.к. товар новый - вызов event для открытия фрагмента с выбором категории
     private void createItem(Item item) {
-        repository.updateItem(item);
-        itemCreated.call();
+        repository.addItem(item);
+//        itemCreated.call();
     }
 
     // обновление товара в базе
@@ -91,5 +119,9 @@ public class PatternListViewModel extends AndroidViewModel {
         repository.updateItem(item);
     }
 
+    public void loadItems(List<Item> items) {
+        this.items.clear();
+        this.items.addAll(items);
+    }
 
 }

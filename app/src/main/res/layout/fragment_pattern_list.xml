@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,6 +10,9 @@
         <variable
             name="viewmodel"
             type="ru.buylist.pattern_list.PatternListViewModel" />
+        <variable
+            name="callback"
+            type="ru.buylist.pattern_list.PatternListCallback" />
     </data>
 
     <LinearLayout
@@ -23,7 +27,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:visibility="@{viewmodel.buttonMoveVisibility ? View.VISIBLE : View.GONE}">
+            android:visibility="@{viewmodel.btnToMoveShow ? View.VISIBLE : View.GONE}">
 
             <Button
                 android:id="@+id/btn_move_to_list"
@@ -31,7 +35,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="@string/pattern_button_text" />
+                android:text="@string/pattern_button_text"
+                android:onClick="@{()-> callback.onToMoveButtonClick(viewmodel.items)}"/>
 
         </LinearLayout>
 
@@ -40,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="@{viewmodel.layoutNewProductVisibility ? View.VISIBLE : View.GONE}">
+            android:visibility="@{viewmodel.layoutFieldsShow ? View.VISIBLE : View.GONE}">
 
             <EditText
                 android:id="@+id/field_name"
@@ -93,7 +98,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_items"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:items="@{viewmodel.items}"/>
 
     </LinearLayout>
 </layout>

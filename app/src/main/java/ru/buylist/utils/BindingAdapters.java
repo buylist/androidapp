@@ -8,6 +8,7 @@ import java.util.List;
 
 import ru.buylist.buy_list.BuyListAdapter;
 import ru.buylist.data.entity.Item;
+import ru.buylist.pattern_list.PatternListAdapter;
 
 
 public class BindingAdapters {
@@ -28,6 +29,15 @@ public class BindingAdapters {
     @BindingAdapter("app:items")
     public static void setItems(RecyclerView recyclerView, List<Item> items) {
         BuyListAdapter adapter = (BuyListAdapter) recyclerView.getAdapter();
+        if (adapter != null) {
+            adapter.setItems(items);
+        }
+    }
+
+    // устанавливает список товаров в шаблоне
+    @BindingAdapter("app:items")
+    public static void setPatternItems(RecyclerView recyclerView, List<Item> items) {
+        PatternListAdapter adapter = (PatternListAdapter) recyclerView.getAdapter();
         if (adapter != null) {
             adapter.setItems(items);
         }
