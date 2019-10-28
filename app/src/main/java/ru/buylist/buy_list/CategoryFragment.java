@@ -103,7 +103,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                 viewModel.updateCategory(categoryText.getText().toString(), item, type);
                 break;
             case R.id.button_skip:
-                viewModel.skipCategory(item.getCollectionId(), type);
+                viewModel.skipCategory(item, type);
                 break;
         }
     }

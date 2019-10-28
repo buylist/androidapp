@@ -144,6 +144,7 @@ public class BuyListViewModel extends AndroidViewModel {
         } else {
             item.setCategory(globalItem.getCategory());
             item.setCategoryColor(globalItem.getColorCategory());
+            repository.updateItem(item);
             return true;
         }
     }
@@ -221,6 +222,7 @@ public class BuyListViewModel extends AndroidViewModel {
                 Log.i(TAG, "ShoppingViewModel set new productEvent");
                 break;
             case CollectionType.PATTERN:
+                updateItemsList(item);
                 categoryUpdated.setValue(item.getCollectionId());
                 break;
         }
@@ -240,14 +242,14 @@ public class BuyListViewModel extends AndroidViewModel {
         }
     }
 
-    public void skipCategory(long collectionId, String type) {
+    public void skipCategory(Item item, String type) {
         switch (type) {
             case CollectionType.BuyList:
-                addProductEvent.setValue(collectionId);
+                addProductEvent.setValue(item.getCollectionId());
                 Log.i(TAG, "ShoppingViewModel set new product event: skip");
                 break;
             case CollectionType.PATTERN:
-                categoryUpdated.setValue(collectionId);
+                categoryUpdated.setValue(item.getCollectionId());
                 break;
         }
     }

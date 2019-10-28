@@ -104,6 +104,7 @@ public class PatternListViewModel extends AndroidViewModel {
         } else {
             item.setCategory(globalItem.getCategory());
             item.setCategoryColor(globalItem.getColorCategory());
+            repository.updateItem(item);
             return false;
         }
     }

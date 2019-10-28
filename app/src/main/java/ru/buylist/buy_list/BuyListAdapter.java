@@ -116,7 +116,7 @@ public class BuyListAdapter extends RecyclerSwipeAdapter<BuyListAdapter.BuyListH
 
         void bindColor(Item item) {
             if (item.getCategoryColor() == null) {
-                binding.imgCategoryCircle.setColorFilter(Color.parseColor("#8A000000"));
+                binding.imgCategoryCircle.setColorFilter(Color.parseColor(CategoryInfo.COLOR));
             } else {
                 binding.imgCategoryCircle.setColorFilter(Color.parseColor(item.getCategoryColor()));
             }
