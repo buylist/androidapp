@@ -26,7 +26,7 @@ public class BindingAdapters {
     }
 
     // устанавливает список товаров
-    @BindingAdapter("app:items")
+    @BindingAdapter("app:buyItems")
     public static void setItems(RecyclerView recyclerView, List<Item> items) {
         BuyListAdapter adapter = (BuyListAdapter) recyclerView.getAdapter();
         if (adapter != null) {
@@ -35,7 +35,7 @@ public class BindingAdapters {
     }
 
     // устанавливает список товаров в шаблоне
-    @BindingAdapter("app:items")
+    @BindingAdapter("app:patternItems")
     public static void setPatternItems(RecyclerView recyclerView, List<Item> items) {
         PatternListAdapter adapter = (PatternListAdapter) recyclerView.getAdapter();
         if (adapter != null) {
