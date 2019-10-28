@@ -14,6 +14,7 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.utils.BuylistApp;
 import ru.buylist.data.DataRepository;
 import ru.buylist.utils.KeyboardUtils;
@@ -49,6 +50,9 @@ public class BuyListViewModel extends AndroidViewModel {
     // Отслеживает нажатие на кнопки "Далее" и "Пропустить" в CategoryFragment для перехода в список
     private SingleLiveEvent<Long> addProductEvent = new SingleLiveEvent<>();
 
+    //временный event - для возврата к шаблону
+    private SingleLiveEvent<Long> categoryUpdated = new SingleLiveEvent<>();
+
     public BuyListViewModel(Application context) {
         super(context);
         this.context = context.getApplicationContext();
@@ -61,6 +65,10 @@ public class BuyListViewModel extends AndroidViewModel {
 
     SingleLiveEvent<Long> getAddProductEvent() {
         return addProductEvent;
+    }
+
+    public SingleLiveEvent<Long> getCategoryUpdated() {
+        return categoryUpdated;
     }
 
     public LiveData<Collection> getCollection(long collectionId) {
@@ -193,7 +201,7 @@ public class BuyListViewModel extends AndroidViewModel {
         return repository.getCategory(name);
     }
 
-    public void updateCategory(String categoryName, Item item) {
+    public void updateCategory(String categoryName, Item item, String type) {
         Category category = repository.getCategory(categoryName);
         GlobalItem globalItem = new GlobalItem(
                 item.getId(), item.getName(), item.getCategory(), item.getCategoryColor());
@@ -205,9 +213,17 @@ public class BuyListViewModel extends AndroidViewModel {
 
         repository.updateItem(item);
         repository.addGlobalItem(globalItem);
-        updateItemsList(item);
-        addProductEvent.setValue(item.getCollectionId());
-        Log.i(TAG, "ShoppingViewModel set new productEvent");
+
+        switch (type) {
+            case CollectionType.BuyList:
+                updateItemsList(item);
+                addProductEvent.setValue(item.getCollectionId());
+                Log.i(TAG, "ShoppingViewModel set new productEvent");
+                break;
+            case CollectionType.PATTERN:
+                categoryUpdated.setValue(item.getCollectionId());
+                break;
+        }
     }
 
     private void updateItemsList(Item item) {
@@ -224,9 +240,16 @@ public class BuyListViewModel extends AndroidViewModel {
         }
     }
 
-    public void skipCategory(long collectionId) {
-        addProductEvent.setValue(collectionId);
-        Log.i(TAG, "ShoppingViewModel set new product event: skip");
+    public void skipCategory(long collectionId, String type) {
+        switch (type) {
+            case CollectionType.BuyList:
+                addProductEvent.setValue(collectionId);
+                Log.i(TAG, "ShoppingViewModel set new product event: skip");
+                break;
+            case CollectionType.PATTERN:
+                categoryUpdated.setValue(collectionId);
+                break;
+        }
     }
 
     // true - отображение товаров к покупке, false - отображение всех товаров
@@ -281,7 +304,6 @@ public class BuyListViewModel extends AndroidViewModel {
         fabNewProductVisibility.set(false);
         bottomNavigationVisibility.set(false);
     }
-
 
 
 }

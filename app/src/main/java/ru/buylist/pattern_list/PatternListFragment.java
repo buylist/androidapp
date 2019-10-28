@@ -33,9 +33,9 @@ public class PatternListFragment extends Fragment {
     private FragmentPatternListBinding binding;
     private PatternListAdapter adapter;
 
-    public static PatternListFragment newInstance(long patternId) {
+    public static PatternListFragment newInstance(long collectionId) {
         Bundle args = new Bundle();
-        args.putLong(ARG_PATTERN_ID, patternId);
+        args.putLong(ARG_PATTERN_ID, collectionId);
 
         PatternListFragment fragment = new PatternListFragment();
         fragment.setArguments(args);
@@ -47,10 +47,11 @@ public class PatternListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         items = new ArrayList<>();
         viewModel = PatternListActivity.obtainViewModel(getActivity());
+        viewModel.bottomShow.set(true);
 
-        long patternId = getArguments() != null ? getArguments().getLong(ARG_PATTERN_ID, 0) : 0;
-        subscribeUi(viewModel.getItems(patternId));
-        subscribeCollection(viewModel.getCollection(patternId));
+        long collectionId = getArguments() != null ? getArguments().getLong(ARG_PATTERN_ID, 0) : 0;
+        subscribeUi(viewModel.getItems(collectionId));
+        subscribeCollection(viewModel.getCollection(collectionId));
     }
 
     @Nullable

@@ -51,6 +51,6 @@
             app:itemIconTint="@color/color_icon_bn"
             app:itemTextColor="@color/color_icon_bn"
             app:menu="@menu/bottom_navigation_menu"
-            android:visibility="@{viewmodel.bottomShow ? View.VISIBLE : View.GONE}"/>/>
+            android:visibility="@{viewmodel.bottomShow ? View.VISIBLE : View.GONE}"/>
     </LinearLayout>
 </layout>

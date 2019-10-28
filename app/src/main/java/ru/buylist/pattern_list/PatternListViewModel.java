@@ -34,10 +34,10 @@ public class PatternListViewModel extends AndroidViewModel {
     public final ObservableField<String> unit = new ObservableField<>("");
 
     // Отслеживание нового товара для открытия CategoryFragment
-    private SingleLiveEvent<Long> itemCreated;
+    private SingleLiveEvent<Long> itemCreated = new SingleLiveEvent<>();
 
     // Отслеживает нажатие на кнопки "Далее" и "Пропустить" в CategoryFragment для перехода в список
-    private SingleLiveEvent<Long> categoryAdded;
+    public SingleLiveEvent<Long> categoryAdded = new SingleLiveEvent<>();
 
     private DataRepository repository;
 
@@ -46,7 +46,7 @@ public class PatternListViewModel extends AndroidViewModel {
         repository = ((BuylistApp) context.getApplicationContext()).getRepository();
     }
 
-    SingleLiveEvent<Long> getProductCreated() {
+    SingleLiveEvent<Long> getItemCreated() {
         return itemCreated;
     }
 
@@ -81,15 +81,15 @@ public class PatternListViewModel extends AndroidViewModel {
         item.setCollectionId(collectionId);
         item.setQuantity(quantity.get());
         item.setUnit(unit.get());
+        repository.addItem(item);
 
         if (isNewItem(item)) {
             createItem(item);
-        } else {
-            updateItem(item);
         }
 
         layoutFieldsShow.set(false);
         bottomShow.set(true);
+        clearFields();
     }
 
     public void savecategory(long productId) {
@@ -110,8 +110,7 @@ public class PatternListViewModel extends AndroidViewModel {
 
     // добавление в базу и т.к. товар новый - вызов event для открытия фрагмента с выбором категории
     private void createItem(Item item) {
-        repository.addItem(item);
-//        itemCreated.call();
+        itemCreated.setValue(item.getId());
     }
 
     // обновление товара в базе
@@ -123,5 +122,12 @@ public class PatternListViewModel extends AndroidViewModel {
         this.items.clear();
         this.items.addAll(items);
     }
+
+    private void clearFields() {
+        itemName.set("");
+        quantity.set("");
+        unit.set("");
+    }
+
 
 }
