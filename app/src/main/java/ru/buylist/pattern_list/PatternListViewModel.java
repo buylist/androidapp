@@ -7,6 +7,7 @@ import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableList;
+import android.widget.EditText;
 
 import java.util.List;
 
@@ -115,8 +116,27 @@ public class PatternListViewModel extends AndroidViewModel {
     }
 
     // обновление товара в базе
-    private void updateItem(Item item) {
+    public void updateItem(long itemId) {
+        Item item = repository.getItem(itemId);
+        item.setName(itemName.get());
+        if (item.isEmpty()) {
+            // товар не может быть пустым, обнуляем и скрываем layout
+            clearFields();
+            layoutFieldsShow.set(false);
+            bottomShow.set(true);
+            return;
+        }
+
+        item.setQuantity(quantity.get());
+        item.setUnit(unit.get());
         repository.updateItem(item);
+
+        if (isNewItem(item)) {
+            itemCreated.setValue(item.getId());
+        }
+        clearFields();
+        layoutFieldsShow.set(false);
+        bottomShow.set(true);
     }
 
     public void loadItems(List<Item> items) {
@@ -130,5 +150,15 @@ public class PatternListViewModel extends AndroidViewModel {
         unit.set("");
     }
 
+    public void editItem(Item item) {
+        layoutFieldsShow.set(true);
+        bottomShow.set(false);
+        itemName.set(item.getName());
+        quantity.set(item.getQuantity());
+        unit.set(item.getUnit());
+    }
 
+    public void deleteItem(Item item) {
+        repository.deleteItem(item);
+    }
 }

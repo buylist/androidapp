@@ -90,12 +90,11 @@ public class PatternListFragment extends Fragment {
     }
 
     private void setupCreateButton(final long itemId) {
-        ImageButton createButton = getActivity().findViewById(R.id.btn_create_item);
-        createButton.setOnClickListener(v -> {
+        binding.btnCreateItem.setOnClickListener(v -> {
             if (itemId == 0) {
                 viewModel.saveItem(collection.getId());
             } else {
-                return;
+                viewModel.updateItem(itemId);
             }
         });
     }
@@ -116,12 +115,15 @@ public class PatternListFragment extends Fragment {
 
         @Override
         public void onDeleteButtonClick(Item item) {
-
+            viewModel.deleteItem(item);
+            adapter.closeAllItems();
         }
 
         @Override
         public void onEditButtonClick(Item item) {
+            viewModel.editItem(item);
             setupCreateButton(item.getId());
+            adapter.closeAllItems();
         }
     };
 
