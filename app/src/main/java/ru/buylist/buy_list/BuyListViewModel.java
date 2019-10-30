@@ -205,7 +205,7 @@ public class BuyListViewModel extends AndroidViewModel {
     public void updateCategory(String categoryName, Item item, String type) {
         Category category = repository.getCategory(categoryName);
         GlobalItem globalItem = new GlobalItem(
-                item.getId(), item.getName(), item.getCategory(), item.getCategoryColor());
+                item.getName(), item.getCategory(), item.getCategoryColor());
 
         item.setCategory(category.getName());
         item.setCategoryColor(category.getColor());
