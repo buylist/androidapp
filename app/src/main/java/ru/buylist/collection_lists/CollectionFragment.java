@@ -15,7 +15,6 @@ import android.widget.EditText;
 import java.util.List;
 
 import ru.buylist.databinding.FragmentCollectionBinding;
-import ru.buylist.utils.KeyboardUtils;
 import ru.buylist.R;
 import ru.buylist.data.entity.Collection;
 
@@ -24,8 +23,6 @@ import static ru.buylist.utils.ItemClickCallback.*;
 
 public class CollectionFragment extends Fragment {
     private static final String TAG = "TAG";
-
-    private EditText nameCollection;
 
     private CollectionAdapter buyListAdapter;
     private CollectionAdapter patternAdapter;
@@ -53,7 +50,7 @@ public class CollectionFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_collection, container, false);
 
         setupAdapter();
-        initUi(binding.getRoot());
+        initUi();
         return binding.getRoot();
     }
 
@@ -91,16 +88,11 @@ public class CollectionFragment extends Fragment {
         subscribeRecipeList(viewModel.getCollectionOfRecipe());
     }
 
-    private void initUi(View view) {
-        nameCollection = view.findViewById(R.id.field_name_buy_list);
-
+    private void initUi() {
         binding.cardBuyList.setBackgroundColor(0);
         binding.cardPattern.setBackgroundColor(0);
         binding.cardRecipe.setBackgroundColor(0);
-
         binding.bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
-
-        onCreateBuyListButtonClick();
     }
 
     public void setupAdapter() {
@@ -146,46 +138,20 @@ public class CollectionFragment extends Fragment {
         });
     }
 
-    private void onCreateBuyListButtonClick() {
+    private void setupCreateButton(final long collectionId) {
         binding.btnCreateBuyList.setOnClickListener(v -> {
-            if (nameCollection.getText().length() != 0) {
-                Collection collection = new Collection();
-                collection.setTitle(nameCollection.getText().toString());
-                collection.setType(BuyList);
-                viewModel.addCollection(collection);
-                Log.i(TAG, "Collection new name: " + collection.getTitle());
-            }
-
-            nameCollection.setText("");
-            viewModel.layoutBuyListShow.set(false);
-            KeyboardUtils.hideKeyboard(nameCollection, getActivity());
-
+            viewModel.saveCollection(collectionId, BuyList);
+            Log.i(TAG, "CollectionFragment save BuyList.");
         });
 
         binding.btnCreatePatternList.setOnClickListener(v -> {
-            if (binding.fieldNamePatternList.getText().length() != 0) {
-                Collection collection = new Collection();
-                collection.setTitle(binding.fieldNamePatternList.getText().toString());
-                collection.setType(PATTERN);
-                viewModel.addCollection(collection);
-            }
-
-            binding.fieldNamePatternList.setText("");
-            binding.layoutPatternListFields.setVisibility(View.GONE);
-            KeyboardUtils.hideKeyboard(binding.fieldNamePatternList, getActivity());
+            viewModel.saveCollection(collectionId, PATTERN);
+            Log.i(TAG, "CollectionFragment save PatternList.");
         });
 
         binding.btnCreateRecipeList.setOnClickListener(v -> {
-            if (binding.fieldNameRecipeList.getText().length() != 0) {
-                Collection collection = new Collection();
-                collection.setTitle(binding.fieldNameRecipeList.getText().toString());
-                collection.setType(RECIPE);
-                viewModel.addCollection(collection);
-            }
-
-            binding.fieldNameRecipeList.setText("");
-            binding.layoutRecipeListFields.setVisibility(View.GONE);
-            KeyboardUtils.hideKeyboard(binding.fieldNameRecipeList, getActivity());
+            viewModel.saveCollection(collectionId, RECIPE);
+            Log.i(TAG, "CollectionFragment save RecipeList.");
         });
     }
 
@@ -241,19 +207,22 @@ public class CollectionFragment extends Fragment {
 
         @Override
         public void onNewBuyListButtonClick() {
-            viewModel.newCollection(BuyList);
+            viewModel.addCollection(BuyList);
+            setupCreateButton(0);
             closeAllItems();
         }
 
         @Override
         public void onNewPatternListButtonClick() {
-            viewModel.newCollection(PATTERN);
+            viewModel.addCollection(PATTERN);
+            setupCreateButton(0);
             closeAllItems();
         }
 
         @Override
         public void onNewRecipeListButtonClick() {
-            viewModel.newCollection(RECIPE);
+            viewModel.addCollection(RECIPE);
+            setupCreateButton(0);
             closeAllItems();
         }
     };
@@ -276,7 +245,7 @@ public class CollectionFragment extends Fragment {
         public void onEditButtonClick(Collection collection) {
             closeAllItems();
             viewModel.editCollection(collection);
-
+            setupCreateButton(collection.getId());
             Log.i(TAG, "Edit collection: " + collection.getId());
         }
     };

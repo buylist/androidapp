@@ -101,21 +101,19 @@ public class CollectionViewModel extends AndroidViewModel {
     public void openOrCloseCards(String type) {
         switch (type) {
             case CollectionType.BuyList:
-                buyListName.set("");
                 layoutBuyListShow.set(false);
                 changeRecyclerVisibility(recyclerBuyListShow);
                 break;
             case CollectionType.PATTERN:
-                patterName.set("");
                 layoutPatternListShow.set(false);
                 changeRecyclerVisibility(recyclerPatternListShow);
                 break;
             case CollectionType.RECIPE:
-                recipeName.set("");
                 layoutRecipeListShow.set(false);
                 changeRecyclerVisibility(recyclerRecipeListShow);
                 break;
         }
+        clearFields();
     }
 
     private void changeRecyclerVisibility(ObservableBoolean show) {
@@ -126,7 +124,7 @@ public class CollectionViewModel extends AndroidViewModel {
         }
     }
 
-    public void newCollection(String type) {
+    public void addCollection(String type) {
         switch (type) {
             case CollectionType.BuyList:
                 layoutBuyListShow.set(true);
@@ -141,5 +139,48 @@ public class CollectionViewModel extends AndroidViewModel {
                 recyclerRecipeListShow.set(true);
                 break;
         }
+    }
+
+    public void saveCollection(long collectionId, String type) {
+        Collection collection = (collectionId == 0 ? new Collection() : new Collection(collectionId));
+        switch (type) {
+            case CollectionType.BuyList:
+                collection.setTitle(buyListName.get());
+                collection.setType(CollectionType.BuyList);
+                break;
+            case CollectionType.PATTERN:
+                collection.setTitle(patterName.get());
+                collection.setType(CollectionType.PATTERN);
+                break;
+            case CollectionType.RECIPE:
+                collection.setTitle(recipeName.get());
+                collection.setType(CollectionType.RECIPE);
+                break;
+        }
+
+        if (collection.isEmpty()) {
+            clearFields();
+            layoutBuyListShow.set(false);
+            layoutPatternListShow.set(false);
+            layoutRecipeListShow.set(false);
+            return;
+        }
+
+        if (collectionId == 0) {
+            repository.addCollection(collection);
+        } else {
+            repository.updateCollection(collection);
+        }
+
+        clearFields();
+        layoutBuyListShow.set(false);
+        layoutPatternListShow.set(false);
+        layoutRecipeListShow.set(false);
+    }
+
+    private void clearFields() {
+        buyListName.set("");
+        patterName.set("");
+        recipeName.set("");
     }
 }
