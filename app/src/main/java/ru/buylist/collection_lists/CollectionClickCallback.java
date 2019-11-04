@@ -1,11 +1,17 @@
 package ru.buylist.collection_lists;
 
-import ru.buylist.data.entity.Collection;
-
 public interface CollectionClickCallback {
-    void onListItemClick(Collection collection);
 
-    void onDeleteButtonClick(Collection collection);
+    void onBuyListCardClick();
 
-    void onEditButtonClick(Collection collection);
+    void onPatternListCardClick();
+
+    void onRecipeListCardClick();
+
+    void onNewBuyListButtonClick();
+
+    void onNewPatternListButtonClick();
+
+    void onNewRecipeListButtonClick();
+
 }

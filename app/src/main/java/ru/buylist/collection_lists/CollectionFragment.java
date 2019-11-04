@@ -20,6 +20,7 @@ import ru.buylist.R;
 import ru.buylist.data.entity.Collection;
 
 import static ru.buylist.collection_lists.CollectionType.*;
+import static ru.buylist.utils.ItemClickCallback.*;
 
 public class CollectionFragment extends Fragment {
     private static final String TAG = "TAG";
@@ -84,6 +85,7 @@ public class CollectionFragment extends Fragment {
 
         viewModel = ViewModelProviders.of(this).get(CollectionViewModel.class);
         binding.setViewmodel(viewModel);
+        binding.setCallback(collectionCallback);
         subscribeBuyList(viewModel.getCollectionOfList());
         subscribePatternList(viewModel.getCollectionOfPattern());
         subscribeRecipeList(viewModel.getCollectionOfRecipe());
@@ -100,17 +102,16 @@ public class CollectionFragment extends Fragment {
 
         onNewCollectionButtonClick();
         onCreateBuyListButtonClick();
-        onCardListViewClick();
     }
 
     public void setupAdapter() {
-        buyListAdapter = new CollectionAdapter(collectionClickCallback);
+        buyListAdapter = new CollectionAdapter(itemClickCallback);
         binding.recyclerBuyList.setAdapter(buyListAdapter);
 
-        patternAdapter = new CollectionAdapter(collectionClickCallback);
+        patternAdapter = new CollectionAdapter(itemClickCallback);
         binding.recyclerPattern.setAdapter(patternAdapter);
 
-        recipeAdapter = new CollectionAdapter(collectionClickCallback);
+        recipeAdapter = new CollectionAdapter(itemClickCallback);
         binding.recyclerRecipe.setAdapter(recipeAdapter);
 
         Log.i(TAG, "Collection adapters created");
@@ -148,68 +149,25 @@ public class CollectionFragment extends Fragment {
 
     private void onNewCollectionButtonClick() {
         binding.btnNewBuyList.setOnClickListener(v -> {
-            binding.setIsLoading(true); // отображение слоя с полями для ввода
-            binding.setShow(true);      // отображение recyclerView
-            buyListAdapter.closeAllItems();
+            viewModel.layoutBuyListShow.set(true);
+            viewModel.recyclerBuyListShow.set(true);
             KeyboardUtils.showKeyboard(nameCollection, getActivity());
         });
 
         binding.btnNewPattern.setOnClickListener(v -> {
-            binding.recyclerPattern.setVisibility(View.VISIBLE);
-            binding.layoutPatternListFields.setVisibility(View.VISIBLE);
-            patternAdapter.closeAllItems();
+            viewModel.layoutPatternListShow.set(true);
+            viewModel.recyclerPatternListShow.set(true);
             KeyboardUtils.showKeyboard(binding.fieldNamePatternList, getActivity());
         });
 
         binding.btnNewRecipe.setOnClickListener(v -> {
-            binding.recyclerRecipe.setVisibility(View.VISIBLE);
-            binding.layoutRecipeListFields.setVisibility(View.VISIBLE);
-            recipeAdapter.closeAllItems();
+            viewModel.layoutRecipeListShow.set(true);
+            viewModel.recyclerRecipeListShow.set(true);
             KeyboardUtils.showKeyboard(binding.fieldNameRecipeList, getActivity());
 
         });
-    }
 
-    private void onCardListViewClick() {
-        binding.cardBuyList.setOnClickListener(v -> {
-            buyListAdapter.closeAllItems();
-            nameCollection.setText("");
-            binding.setIsLoading(false);  // скрытие слоя с полями для ввода
-            KeyboardUtils.hideKeyboard(nameCollection, getActivity());
-
-            // скрытие / отображение элементов списка
-            if (!binding.getShow()) {
-                binding.setShow(true);
-            } else {
-                binding.setShow(false);
-            }
-        });
-
-        binding.cardPattern.setOnClickListener(v -> {
-            patternAdapter.closeAllItems();
-            binding.fieldNamePatternList.setText("");
-            binding.layoutPatternListFields.setVisibility(View.GONE);
-            KeyboardUtils.hideKeyboard(binding.fieldNamePatternList, getActivity());
-
-            if (binding.recyclerPattern.getVisibility() == View.GONE) {
-                binding.recyclerPattern.setVisibility(View.VISIBLE);
-            } else {
-                binding.recyclerPattern.setVisibility(View.GONE);
-            }
-        });
-
-        binding.cardRecipe.setOnClickListener(v -> {
-            recipeAdapter.closeAllItems();
-            binding.fieldNameRecipeList.setText("");
-            binding.layoutRecipeListFields.setVisibility(View.GONE);
-            KeyboardUtils.hideKeyboard(binding.fieldNameRecipeList, getActivity());
-
-            if (binding.recyclerRecipe.getVisibility() == View.GONE) {
-                binding.recyclerRecipe.setVisibility(View.VISIBLE);
-            } else {
-                binding.recyclerRecipe.setVisibility(View.GONE);
-            }
-        });
+        closeAllItems();
     }
 
     private void onCreateBuyListButtonClick() {
@@ -223,7 +181,7 @@ public class CollectionFragment extends Fragment {
             }
 
             nameCollection.setText("");
-            binding.setIsLoading(false);  // скрытие слоя с полями для ввода
+            viewModel.layoutBuyListShow.set(false);
             KeyboardUtils.hideKeyboard(nameCollection, getActivity());
 
         });
@@ -286,8 +244,42 @@ public class CollectionFragment extends Fragment {
             return false;
         }
     };
+    private final CollectionClickCallback collectionCallback = new CollectionClickCallback() {
+        @Override
+        public void onBuyListCardClick() {
+            viewModel.openOrCloseCards(BuyList);
+            closeAllItems();
+        }
 
-    private final CollectionClickCallback collectionClickCallback = new CollectionClickCallback() {
+        @Override
+        public void onPatternListCardClick() {
+            viewModel.openOrCloseCards(PATTERN);
+            closeAllItems();
+        }
+
+        @Override
+        public void onRecipeListCardClick() {
+            viewModel.openOrCloseCards(RECIPE);
+            closeAllItems();
+        }
+
+        @Override
+        public void onNewBuyListButtonClick() {
+
+        }
+
+        @Override
+        public void onNewPatternListButtonClick() {
+
+        }
+
+        @Override
+        public void onNewRecipeListButtonClick() {
+
+        }
+    };
+
+    private final ItemCollectionCallback itemClickCallback = new ItemCollectionCallback() {
         @Override
         public void onListItemClick(Collection collection) {
             callbacks.onCollectionSelected(collection);
@@ -296,9 +288,8 @@ public class CollectionFragment extends Fragment {
 
         @Override
         public void onDeleteButtonClick(Collection collection) {
-            binding.cardBuyList.setBackgroundColor(0);
             viewModel.deleteCollection(collection);
-            buyListAdapter.closeAllItems();
+            closeAllItems();
             Log.i(TAG, "Delete collection: " + collection.getId());
         }
 

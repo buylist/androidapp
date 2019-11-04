@@ -6,7 +6,7 @@
 
         <variable
             name="callback"
-            type="ru.buylist.collection_lists.CollectionClickCallback" />
+            type="ru.buylist.utils.ItemClickCallback.ItemCollectionCallback" />
 
         <variable
             name="item"

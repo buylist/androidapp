@@ -7,16 +7,12 @@
         <import type="android.view.View"/>
 
         <variable
-            name="isLoading"
-            type="boolean" />
-
-        <variable
-            name="show"
-            type="boolean" />
-
-        <variable
             name="viewmodel"
             type="ru.buylist.collection_lists.CollectionViewModel" />
+
+        <variable
+            name="callback"
+            type="ru.buylist.collection_lists.CollectionClickCallback" />
     </data>
 
     <LinearLayout
@@ -50,7 +46,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/logo_view"
-                    android:layout_margin="16dp">
+                    android:layout_margin="16dp"
+                    android:onClick="@{()-> callback.onBuyListCardClick()}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -77,19 +74,20 @@
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/new_list_description"
-                            android:src="@drawable/ic_add_button2" />
+                            android:src="@drawable/ic_add_button2"
+                            android:onClick="@{()-> callback.onNewBuyListButtonClick()}"/>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_buy_list"
-                    recyclerVisible="@{show}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/card_buy_list"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    android:visibility="@{viewmodel.recyclerBuyListShow ? View.VISIBLE : View.GONE}"/>
 
                 <LinearLayout
                     android:id="@+id/layout_buy_list_fields"
@@ -134,7 +132,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/divider_lists"
-                    android:layout_margin="16dp">
+                    android:layout_margin="16dp"
+                    android:onClick="@{()-> callback.onPatternListCardClick()}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -159,7 +158,8 @@
                             android:layout_weight="10"
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/new_pattern_description"
-                            android:src="@drawable/ic_add_button2" />
+                            android:src="@drawable/ic_add_button2"
+                            android:onClick="@{()-> callback.onNewPatternListButtonClick()}"/>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
@@ -170,8 +170,8 @@
                     android:layout_below="@id/card_pattern"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:visibility="gone"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    android:visibility="@{viewmodel.recyclerPatternListShow ? View.VISIBLE : View.GONE}"/>
 
                 <LinearLayout
                     android:id="@+id/layout_pattern_list_fields"
@@ -215,7 +215,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/divider_templates"
-                    android:layout_margin="16dp">
+                    android:layout_margin="16dp"
+                    android:onClick="@{()-> callback.onRecipeListCardClick()}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -240,7 +241,8 @@
                             android:layout_weight="10"
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/new_recipe_description"
-                            android:src="@drawable/ic_add_button2" />
+                            android:src="@drawable/ic_add_button2"
+                            android:onClick="@{()-> callback.onNewRecipeListButtonClick()}"/>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
@@ -251,8 +253,8 @@
                     android:layout_below="@id/card_recipe"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:visibility="gone"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    android:visibility="@{viewmodel.recyclerRecipeListShow ? View.VISIBLE : View.GONE}"/>
 
                 <LinearLayout
                     android:id="@+id/layout_recipe_list_fields"

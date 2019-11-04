@@ -28,6 +28,12 @@ public class CollectionViewModel extends AndroidViewModel {
     public final ObservableBoolean layoutPatternListShow = new ObservableBoolean(false);
     public final ObservableBoolean layoutRecipeListShow = new ObservableBoolean(false);
 
+    // Флаги для отображения / скрытия recyclerView
+    public final ObservableBoolean recyclerBuyListShow = new ObservableBoolean(false);
+    public final ObservableBoolean recyclerPatternListShow = new ObservableBoolean(false);
+    public final ObservableBoolean recyclerRecipeListShow = new ObservableBoolean(false);
+
+
     private final DataRepository repository;
     private LiveData<List<Collection>> collectionOfList;
     private LiveData<List<Collection>> collectionOfPattern;
@@ -88,6 +94,38 @@ public class CollectionViewModel extends AndroidViewModel {
                 recipeName.set(collection.getTitle());
                 break;
             default:
+                break;
+        }
+    }
+
+    public void openOrCloseCards(String type) {
+        switch (type) {
+            case CollectionType.BuyList:
+                buyListName.set("");
+                layoutBuyListShow.set(false);
+                if (!recyclerBuyListShow.get()) {
+                    recyclerBuyListShow.set(true);
+                } else {
+                    recyclerBuyListShow.set(false);
+                }
+                break;
+            case CollectionType.PATTERN:
+                patterName.set("");
+                layoutPatternListShow.set(false);
+                if (!recyclerPatternListShow.get()) {
+                    recyclerPatternListShow.set(true);
+                } else {
+                    recyclerPatternListShow.set(false);
+                }
+                break;
+            case CollectionType.RECIPE:
+                recipeName.set("");
+                layoutRecipeListShow.set(false);
+                if (!recyclerRecipeListShow.get()) {
+                    recyclerRecipeListShow.set(true);
+                } else {
+                    recyclerRecipeListShow.set(false);
+                }
                 break;
         }
     }
