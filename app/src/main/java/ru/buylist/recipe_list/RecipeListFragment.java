@@ -35,7 +35,7 @@ public class RecipeListFragment extends Fragment {
 
     private RecipeListViewModel viewModel;
     private FragmentRecipeListBinding binding;
-//    private PatternListAdapter adapter;
+    private PatternListAdapter adapter;
 
     public static RecipeListFragment newInstance(long collectionId) {
         Bundle args = new Bundle();
@@ -65,8 +65,8 @@ public class RecipeListFragment extends Fragment {
         binding.setViewmodel(viewModel);
         binding.setCallback(callback);
 
-//        adapter = new PatternListAdapter(itemCallback);
-//        binding.recyclerIngredients.setAdapter(adapter);
+        adapter = new PatternListAdapter(itemCallback);
+        binding.recyclerIngredients.setAdapter(adapter);
         return binding.getRoot();
     }
 
@@ -113,24 +113,24 @@ public class RecipeListFragment extends Fragment {
         }
     };
 
-//    private final BuyListCallback itemCallback = new BuyListCallback() {
-//        @Override
-//        public void onItemClick(Item item) {
-//            viewModel.btnToMoveShow.set(true);
-//        }
-//
-//        @Override
-//        public void onDeleteButtonClick(Item item) {
-//            viewModel.deleteItem(item);
-//            adapter.closeAllItems();
-//        }
-//
-//        @Override
-//        public void onEditButtonClick(Item item) {
-//            viewModel.editItem(item);
-//            setupCreateButton(item.getId());
-//            adapter.closeAllItems();
-//        }
-//    };
+    private final BuyListCallback itemCallback = new BuyListCallback() {
+        @Override
+        public void onItemClick(Item item) {
+            viewModel.btnToMoveShow.set(true);
+        }
+
+        @Override
+        public void onDeleteButtonClick(Item item) {
+            viewModel.deleteItem(item);
+            adapter.closeAllItems();
+        }
+
+        @Override
+        public void onEditButtonClick(Item item) {
+            viewModel.editItem(item);
+            setupCreateButton(item.getId());
+            adapter.closeAllItems();
+        }
+    };
 
 }
