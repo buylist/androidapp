@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.buylist.R;
-import ru.buylist.buy_list.BuyListCallback;
 import ru.buylist.data.entity.Collection;
 import ru.buylist.data.entity.Item;
-import ru.buylist.databinding.FragmentPatternListBinding;
 import ru.buylist.databinding.FragmentRecipeListBinding;
-import ru.buylist.pattern_list.PatternListActivity;
 import ru.buylist.pattern_list.PatternListAdapter;
-import ru.buylist.pattern_list.PatternListCallback;
-import ru.buylist.pattern_list.PatternListViewModel;
+
+import static ru.buylist.utils.ItemClickCallback.*;
 
 public class RecipeListFragment extends Fragment {
 
@@ -120,7 +116,7 @@ public class RecipeListFragment extends Fragment {
         }
     };
 
-    private final BuyListCallback itemCallback = new BuyListCallback() {
+    private final ItemCallback itemCallback = new ItemCallback() {
         @Override
         public void onItemClick(Item item) {
             viewModel.btnToMoveShow.set(true);

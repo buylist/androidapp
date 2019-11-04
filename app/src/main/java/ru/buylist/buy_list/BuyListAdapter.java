@@ -16,14 +16,16 @@ import ru.buylist.R;
 import ru.buylist.data.entity.Item;
 import ru.buylist.databinding.ItemProductBinding;
 
+import static ru.buylist.utils.ItemClickCallback.*;
+
 public class BuyListAdapter extends RecyclerSwipeAdapter<BuyListAdapter.BuyListHolder> {
 
     private static final String TAG = "TAG";
 
-    private final BuyListCallback callback;
+    private final ItemCallback callback;
     private List<Item> items;
 
-    public BuyListAdapter(BuyListCallback callback) {
+    public BuyListAdapter(ItemCallback callback) {
         this.callback = callback;
     }
 

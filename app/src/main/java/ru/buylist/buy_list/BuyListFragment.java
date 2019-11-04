@@ -22,6 +22,8 @@ import ru.buylist.data.entity.Collection;
 import ru.buylist.data.entity.Item;
 import ru.buylist.databinding.FragmentBuyListBinding;
 
+import static ru.buylist.utils.ItemClickCallback.*;
+
 
 public class BuyListFragment extends Fragment {
     private static final String TAG = "TAG";
@@ -91,7 +93,6 @@ public class BuyListFragment extends Fragment {
     private void subscribeUi(LiveData<List<Item>> liveData) {
         liveData.observe(this, items -> {
             if (items != null) {
-//                adapter.setItems(items);
                 this.items.clear();
                 this.items.addAll(items);
                 viewModel.loadItems(items);
@@ -137,7 +138,7 @@ public class BuyListFragment extends Fragment {
         });
     }
 
-    private final BuyListCallback shoppingListCallback = new BuyListCallback() {
+    private final ItemCallback shoppingListCallback = new ItemCallback() {
         @Override
         public void onItemClick(Item item) {
             viewModel.checkItem(item);

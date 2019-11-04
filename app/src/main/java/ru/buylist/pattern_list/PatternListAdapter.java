@@ -12,16 +12,17 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import java.util.List;
 
 import ru.buylist.R;
-import ru.buylist.buy_list.BuyListCallback;
 import ru.buylist.data.entity.Item;
 import ru.buylist.databinding.ItemProductBinding;
 
+import static ru.buylist.utils.ItemClickCallback.*;
+
 public class PatternListAdapter extends RecyclerSwipeAdapter<PatternListAdapter.PatternListHolder> {
 
-    private final BuyListCallback callback;
+    private final ItemCallback callback;
     private List<Item> items;
 
-    public PatternListAdapter(BuyListCallback callback) {
+    public PatternListAdapter(ItemCallback callback) {
         this.callback = callback;
     }
 

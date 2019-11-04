@@ -15,10 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.buylist.R;
-import ru.buylist.buy_list.BuyListCallback;
 import ru.buylist.data.entity.Collection;
 import ru.buylist.data.entity.Item;
 import ru.buylist.databinding.FragmentPatternListBinding;
+
+import static ru.buylist.utils.ItemClickCallback.*;
 
 public class PatternListFragment extends Fragment {
 
@@ -106,7 +107,7 @@ public class PatternListFragment extends Fragment {
         }
     };
 
-    private final BuyListCallback itemCallback = new BuyListCallback() {
+    private final ItemCallback itemCallback = new ItemCallback() {
         @Override
         public void onItemClick(Item item) {
             viewModel.btnToMoveShow.set(true);
