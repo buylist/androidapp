@@ -16,21 +16,25 @@ import ru.buylist.buy_list.BuyListFragment;
 import ru.buylist.buy_list.BuyListActivity;
 
 public class CollectionActivity extends SingleFragmentActivity implements CollectionFragment.Callbacks {
+
     @Override
     protected Fragment createFragment() {
         return new CollectionFragment();
     }
 
+    // ничего не делает, надо удалить или откорректировать
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_masterdetail;
     }
 
+    // устанавливает макет
     @Override
     protected void setupViewModel() {
         setContentView(R.layout.activity_masterdetail);
     }
 
+    // открывает соответствующие activity/fragments в зависимости от типа
     public void onCollectionSelected(Collection collection) {
         switch (collection.getType()) {
             case CollectionType.BuyList:
@@ -69,6 +73,7 @@ public class CollectionActivity extends SingleFragmentActivity implements Collec
         }
     }
 
+    // возврат на главный экран (клик в bottomNavigation)
     @Override
     public void showHome() {
         CollectionFragment fragment = new CollectionFragment();

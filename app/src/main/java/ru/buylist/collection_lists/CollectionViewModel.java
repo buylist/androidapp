@@ -39,6 +39,7 @@ public class CollectionViewModel extends AndroidViewModel {
     private LiveData<List<Collection>> collectionOfPattern;
     private LiveData<List<Collection>> collectionOfRecipe;
 
+
     public CollectionViewModel(@NonNull Application context) {
         super(context);
         repository = ((BuylistApp) context).getRepository();
@@ -48,8 +49,10 @@ public class CollectionViewModel extends AndroidViewModel {
         collectionOfRecipe = repository.getCollection(CollectionType.RECIPE);
     }
 
+    /**
+     *  get LiveData
+    * */
     public LiveData<List<Collection>> getCollectionOfList() {
-        Log.i(TAG, "CollectionViewModel get list");
         return collectionOfList;
     }
 
@@ -61,15 +64,54 @@ public class CollectionViewModel extends AndroidViewModel {
         return collectionOfRecipe;
     }
 
-    public void addCollection(Collection collection) {
-        repository.addCollection(collection);
-        Log.i(TAG, "CollectionViewModel add new collection: " + collection.getId());
+    /**
+     *  Основные методы
+    * */
+
+    // новый список / шаблон / рецепт добавляет в базу, существующий - обновляет
+    public void saveCollection(long collectionId, String type) {
+        // id != 0 при редактировании коллекции, создавать новую не требуется
+        Collection collection = (collectionId == 0 ? new Collection() : new Collection(collectionId));
+
+        // в зависимости от типа присваивается заголовок и тип
+        switch (type) {
+            case CollectionType.BuyList:
+                collection.setTitle(buyListName.get());
+                collection.setType(CollectionType.BuyList);
+                break;
+            case CollectionType.PATTERN:
+                collection.setTitle(patterName.get());
+                collection.setType(CollectionType.PATTERN);
+                break;
+            case CollectionType.RECIPE:
+                collection.setTitle(recipeName.get());
+                collection.setType(CollectionType.RECIPE);
+                break;
+        }
+
+        if (collection.isEmpty()) {
+            // коллекция не может быть пуста, обнуляем и скрываем поля
+            clearFields();
+            layoutBuyListShow.set(false);
+            layoutPatternListShow.set(false);
+            layoutRecipeListShow.set(false);
+            return;
+        }
+
+        // новая коллекция добавляется в базу, редактируемая - обновляется
+        if (collectionId == 0) {
+            repository.addCollection(collection);
+        } else {
+            repository.updateCollection(collection);
+        }
+
+        clearFields();
+        layoutBuyListShow.set(false);
+        layoutPatternListShow.set(false);
+        layoutRecipeListShow.set(false);
     }
 
-    public void updateCollection(Collection collection) {
-        repository.updateCollection(collection);
-    }
-
+    // удаление коллекции вместе со всеми закрепленными  за ней товарами
     public void deleteCollection(Collection collection) {
         repository.deleteCollection(collection);
         List<Item> items = repository.getItems(collection.getId());
@@ -79,6 +121,7 @@ public class CollectionViewModel extends AndroidViewModel {
         Log.i(TAG, "CollectionViewModel delete collection: " + collection.getId());
     }
 
+    // отображение полей для редактирования коллекции
     public void editCollection(Collection collection) {
         switch (collection.getType()) {
             case CollectionType.BuyList:
@@ -98,6 +141,7 @@ public class CollectionViewModel extends AndroidViewModel {
         }
     }
 
+    // скрытие / отображение recyclerView при клике
     public void openOrCloseCards(String type) {
         switch (type) {
             case CollectionType.BuyList:
@@ -124,6 +168,7 @@ public class CollectionViewModel extends AndroidViewModel {
         }
     }
 
+    // отображение полей для добавления новой коллекции
     public void addCollection(String type) {
         switch (type) {
             case CollectionType.BuyList:
@@ -139,43 +184,6 @@ public class CollectionViewModel extends AndroidViewModel {
                 recyclerRecipeListShow.set(true);
                 break;
         }
-    }
-
-    public void saveCollection(long collectionId, String type) {
-        Collection collection = (collectionId == 0 ? new Collection() : new Collection(collectionId));
-        switch (type) {
-            case CollectionType.BuyList:
-                collection.setTitle(buyListName.get());
-                collection.setType(CollectionType.BuyList);
-                break;
-            case CollectionType.PATTERN:
-                collection.setTitle(patterName.get());
-                collection.setType(CollectionType.PATTERN);
-                break;
-            case CollectionType.RECIPE:
-                collection.setTitle(recipeName.get());
-                collection.setType(CollectionType.RECIPE);
-                break;
-        }
-
-        if (collection.isEmpty()) {
-            clearFields();
-            layoutBuyListShow.set(false);
-            layoutPatternListShow.set(false);
-            layoutRecipeListShow.set(false);
-            return;
-        }
-
-        if (collectionId == 0) {
-            repository.addCollection(collection);
-        } else {
-            repository.updateCollection(collection);
-        }
-
-        clearFields();
-        layoutBuyListShow.set(false);
-        layoutPatternListShow.set(false);
-        layoutRecipeListShow.set(false);
     }
 
     private void clearFields() {

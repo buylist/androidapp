@@ -10,7 +10,6 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.*;
-import android.widget.EditText;
 
 import java.util.List;
 
@@ -27,6 +26,7 @@ public class CollectionFragment extends Fragment {
     private CollectionAdapter buyListAdapter;
     private CollectionAdapter patternAdapter;
     private CollectionAdapter recipeAdapter;
+
     private FragmentCollectionBinding binding;
 
     private Callbacks callbacks;
@@ -80,9 +80,12 @@ public class CollectionFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        // получаем ViewModel, передаем в макет ее и callback'и
         viewModel = ViewModelProviders.of(this).get(CollectionViewModel.class);
         binding.setViewmodel(viewModel);
         binding.setCallback(collectionCallback);
+
+        // подписываемся на изменения в списках
         subscribeBuyList(viewModel.getCollectionOfList());
         subscribePatternList(viewModel.getCollectionOfPattern());
         subscribeRecipeList(viewModel.getCollectionOfRecipe());
@@ -138,6 +141,9 @@ public class CollectionFragment extends Fragment {
         });
     }
 
+    // устанавливаем кнопку создания
+    // для создания новой коллекции передаем в метод 0
+    // для обновления существующей коллекции - ее идентификатор
     private void setupCreateButton(final long collectionId) {
         binding.btnCreateBuyList.setOnClickListener(v -> {
             viewModel.saveCollection(collectionId, BuyList);
@@ -155,6 +161,7 @@ public class CollectionFragment extends Fragment {
         });
     }
 
+    // закрывает все свайпы
     private void closeAllItems() {
         buyListAdapter.closeAllItems();
         patternAdapter.closeAllItems();
@@ -186,6 +193,8 @@ public class CollectionFragment extends Fragment {
             return false;
         }
     };
+
+    // callback'и кликов по карточкам и по newButton
     private final CollectionClickCallback collectionCallback = new CollectionClickCallback() {
         @Override
         public void onBuyListCardClick() {
@@ -227,6 +236,7 @@ public class CollectionFragment extends Fragment {
         }
     };
 
+    // callback'и для адаптеров, возвращают клики по кнопкам в свайпе
     private final ItemCollectionCallback itemClickCallback = new ItemCollectionCallback() {
         @Override
         public void onListItemClick(Collection collection) {
@@ -250,6 +260,7 @@ public class CollectionFragment extends Fragment {
         }
     };
 
+    // callback'и для activity
     public interface Callbacks {
         void onCollectionSelected(Collection collection);
 
