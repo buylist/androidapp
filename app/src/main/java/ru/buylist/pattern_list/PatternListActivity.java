@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
+import ru.buylist.PatternDialog;
 import ru.buylist.R;
 import ru.buylist.buy_list.BuyListViewModel;
 import ru.buylist.buy_list.CategoryFragment;

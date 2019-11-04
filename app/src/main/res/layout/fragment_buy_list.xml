@@ -10,6 +10,9 @@
         <variable
             name="viewmodel"
             type="ru.buylist.buy_list.BuyListViewModel" />
+        <variable
+            name="callback"
+            type="ru.buylist.buy_list.BuyListCallback" />
     </data>
 
     <LinearLayout
@@ -38,7 +41,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:text="@string/pattern_button" />
+                    android:text="@string/pattern_button"
+                    android:onClick="@{()-> callback.onPatternButtonClick()}"/>
 
                 <Button
                     android:id="@+id/btn_recipe"
@@ -47,7 +51,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="@string/recipe_button" />
+                    android:text="@string/recipe_button"
+                    android:onClick="@{()-> callback.onRecipeButtonClick()}"/>
             </LinearLayout>
 
             <View

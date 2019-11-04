@@ -50,7 +50,10 @@ public class BuyListViewModel extends AndroidViewModel {
     // Отслеживает нажатие на кнопки "Далее" и "Пропустить" в CategoryFragment для перехода в список
     private SingleLiveEvent<Long> addProductEvent = new SingleLiveEvent<>();
 
-    //временный event - для возврата к шаблону
+    // Отвечает за открытие диалогового окна
+    private SingleLiveEvent<Void> dialogEvent = new SingleLiveEvent<>();
+
+    //временный event - для возврата к шаблону/рецепту
     private SingleLiveEvent<Long> categoryUpdated = new SingleLiveEvent<>();
 
     public BuyListViewModel(Application context) {
@@ -59,16 +62,20 @@ public class BuyListViewModel extends AndroidViewModel {
         repository = ((BuylistApp) context).getRepository();
     }
 
-    SingleLiveEvent<Long> getNewCategoryEvent() {
+    public SingleLiveEvent<Long> getNewCategoryEvent() {
         return newCategoryEvent;
     }
 
-    SingleLiveEvent<Long> getAddProductEvent() {
+    public SingleLiveEvent<Long> getAddProductEvent() {
         return addProductEvent;
     }
 
     public SingleLiveEvent<Long> getCategoryUpdated() {
         return categoryUpdated;
+    }
+
+    public SingleLiveEvent<Void> getDialogEvent() {
+        return dialogEvent;
     }
 
     public LiveData<Collection> getCollection(long collectionId) {
@@ -307,6 +314,10 @@ public class BuyListViewModel extends AndroidViewModel {
         fabProductsVisibility.set(false);
         fabNewProductVisibility.set(false);
         bottomNavigationVisibility.set(false);
+    }
+
+    public void openDialog() {
+        dialogEvent.call();
     }
 
 

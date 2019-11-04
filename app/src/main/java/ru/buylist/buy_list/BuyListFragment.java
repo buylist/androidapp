@@ -77,8 +77,9 @@ public class BuyListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_buy_list, container, false);
         binding.setViewmodel(viewModel);
+        binding.setCallback(buyListCallback);
 
-        adapter = new BuyListAdapter(shoppingListCallback);
+        adapter = new BuyListAdapter(itemCallback);
         binding.recyclerItems.setAdapter(adapter);
         initUi(binding.getRoot());
         setupFab();
@@ -138,7 +139,19 @@ public class BuyListFragment extends Fragment {
         });
     }
 
-    private final ItemCallback shoppingListCallback = new ItemCallback() {
+    private final BuyListCallback buyListCallback = new BuyListCallback() {
+        @Override
+        public void onPatternButtonClick() {
+            viewModel.openDialog();
+        }
+
+        @Override
+        public void onRecipeButtonClick() {
+            viewModel.openDialog();
+        }
+    };
+
+    private final ItemCallback itemCallback = new ItemCallback() {
         @Override
         public void onItemClick(Item item) {
             viewModel.checkItem(item);

@@ -1,14 +1,17 @@
 package ru.buylist.buy_list;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
+import ru.buylist.PatternDialog;
 import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.databinding.ActivityBuyListBinding;
 import ru.buylist.utils.IOnBackPressed;
@@ -59,6 +62,13 @@ public class BuyListActivity extends SingleFragmentActivity {
         viewModel.getAddProductEvent().observe(this, collectionId -> {
             Log.i(TAG, "ShoppingActivity: update product list event");
             updateProductsList(collectionId);
+        });
+
+        viewModel.getDialogEvent().observe(this, new Observer<Void>() {
+            @Override
+            public void onChanged(@Nullable Void aVoid) {
+                PatternDialog.newInstance().show(getSupportFragmentManager(), "dialog");
+            }
         });
 
         binding.setViewmodel(viewModel);

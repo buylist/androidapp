@@ -1,4 +1,4 @@
-package ru.buylist.pattern_list;
+package ru.buylist;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 
+import ru.buylist.pattern_list.PatternListActivity;
+import ru.buylist.pattern_list.PatternListViewModel;
 
 
 public class PatternDialog extends DialogFragment {
