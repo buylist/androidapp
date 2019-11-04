@@ -41,6 +41,8 @@
     <string name="category_is_empty">Категория не выбрана</string>
     <string name="name_recipe_hint">Введите название рецепта</string>
     <string name="name_pattern_hint">Введите название шаблона</string>
+    <string name="ingredient_title">Ингредиенты</string>
+    <string name="instruction_title">Инструкция</string>
 
     <string-array name="category">
         <item>Продукты</item>
