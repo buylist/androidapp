@@ -83,6 +83,7 @@ public class CollectionFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(CollectionViewModel.class);
+        binding.setViewmodel(viewModel);
         subscribeBuyList(viewModel.getCollectionOfList());
         subscribePatternList(viewModel.getCollectionOfPattern());
         subscribeRecipeList(viewModel.getCollectionOfRecipe());
@@ -254,6 +255,12 @@ public class CollectionFragment extends Fragment {
         });
     }
 
+    private void closeAllItems() {
+        buyListAdapter.closeAllItems();
+        patternAdapter.closeAllItems();
+        recipeAdapter.closeAllItems();
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -297,10 +304,9 @@ public class CollectionFragment extends Fragment {
 
         @Override
         public void onEditButtonClick(Collection collection) {
-            binding.setIsLoading(true);
-            buyListAdapter.closeAllItems();
+            closeAllItems();
+            viewModel.editCollection(collection);
 
-            binding.fieldNameBuyList.setText(collection.getTitle());
             Log.i(TAG, "Edit collection: " + collection.getId());
         }
     };

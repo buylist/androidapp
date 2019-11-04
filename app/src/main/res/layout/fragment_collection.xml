@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
 
         <variable
             name="isLoading"
@@ -12,6 +13,10 @@
         <variable
             name="show"
             type="boolean" />
+
+        <variable
+            name="viewmodel"
+            type="ru.buylist.collection_lists.CollectionViewModel" />
     </data>
 
     <LinearLayout
@@ -88,13 +93,13 @@
 
                 <LinearLayout
                     android:id="@+id/layout_buy_list_fields"
-                    visibleGone="@{isLoading}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/recycler_buy_list"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp">
+                    android:layout_marginEnd="16dp"
+                    android:visibility="@{viewmodel.layoutBuyListShow ? View.VISIBLE : View.GONE}">
 
                     <EditText
                         android:id="@+id/field_name_buy_list"
@@ -102,7 +107,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:hint="@string/name_list_collection_hint"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:text="@={viewmodel.buyListName}"/>
 
                     <ImageButton
                         android:id="@+id/btn_create_buy_list"
@@ -175,7 +181,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:visibility="gone">
+                    android:visibility="@{viewmodel.layoutPatternListShow ? View.VISIBLE : View.GONE}">
 
                     <EditText
                         android:id="@+id/field_name_pattern_list"
@@ -183,7 +189,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:hint="@string/name_pattern_hint"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:text="@={viewmodel.patterName}"/>
 
                     <ImageButton
                         android:id="@+id/btn_create_pattern_list"
@@ -255,7 +262,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
-                    android:visibility="gone">
+                    android:visibility="@{viewmodel.layoutRecipeListShow ? View.VISIBLE : View.GONE}">
 
                     <EditText
                         android:id="@+id/field_name_recipe_list"
@@ -263,7 +270,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:hint="@string/name_recipe_hint"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:text="@={viewmodel.recipeName}"/>
 
                     <ImageButton
                         android:id="@+id/btn_create_recipe_list"

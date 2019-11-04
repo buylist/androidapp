@@ -3,6 +3,8 @@ package ru.buylist.collection_lists;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -15,6 +17,16 @@ import ru.buylist.data.entity.Item;
 
 public class CollectionViewModel extends AndroidViewModel {
     private static final String TAG = "TAG";
+
+    // Поля ввода имени листа / шаблона / рецепта
+    public final ObservableField<String> buyListName = new ObservableField<>();
+    public final ObservableField<String> patterName = new ObservableField<>();
+    public final ObservableField<String> recipeName = new ObservableField<>();
+
+    // Флаги для отображения / скрытия полей ввода
+    public final ObservableBoolean layoutBuyListShow = new ObservableBoolean(false);
+    public final ObservableBoolean layoutPatternListShow = new ObservableBoolean(false);
+    public final ObservableBoolean layoutRecipeListShow = new ObservableBoolean(false);
 
     private final DataRepository repository;
     private LiveData<List<Collection>> collectionOfList;
@@ -48,6 +60,10 @@ public class CollectionViewModel extends AndroidViewModel {
         Log.i(TAG, "CollectionViewModel add new collection: " + collection.getId());
     }
 
+    public void updateCollection(Collection collection) {
+        repository.updateCollection(collection);
+    }
+
     public void deleteCollection(Collection collection) {
         repository.deleteCollection(collection);
         List<Item> items = repository.getItems(collection.getId());
@@ -55,5 +71,24 @@ public class CollectionViewModel extends AndroidViewModel {
             repository.deleteItems(items);
         }
         Log.i(TAG, "CollectionViewModel delete collection: " + collection.getId());
+    }
+
+    public void editCollection(Collection collection) {
+        switch (collection.getType()) {
+            case CollectionType.BuyList:
+                layoutBuyListShow.set(true);
+                buyListName.set(collection.getTitle());
+                break;
+            case CollectionType.PATTERN:
+                layoutPatternListShow.set(true);
+                patterName.set(collection.getTitle());
+                break;
+            case CollectionType.RECIPE:
+                layoutRecipeListShow.set(true);
+                recipeName.set(collection.getTitle());
+                break;
+            default:
+                break;
+        }
     }
 }
