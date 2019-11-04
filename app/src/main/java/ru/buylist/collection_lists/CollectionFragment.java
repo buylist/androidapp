@@ -100,7 +100,6 @@ public class CollectionFragment extends Fragment {
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
-        onNewCollectionButtonClick();
         onCreateBuyListButtonClick();
     }
 
@@ -145,29 +144,6 @@ public class CollectionFragment extends Fragment {
             }
             binding.executePendingBindings();
         });
-    }
-
-    private void onNewCollectionButtonClick() {
-        binding.btnNewBuyList.setOnClickListener(v -> {
-            viewModel.layoutBuyListShow.set(true);
-            viewModel.recyclerBuyListShow.set(true);
-            KeyboardUtils.showKeyboard(nameCollection, getActivity());
-        });
-
-        binding.btnNewPattern.setOnClickListener(v -> {
-            viewModel.layoutPatternListShow.set(true);
-            viewModel.recyclerPatternListShow.set(true);
-            KeyboardUtils.showKeyboard(binding.fieldNamePatternList, getActivity());
-        });
-
-        binding.btnNewRecipe.setOnClickListener(v -> {
-            viewModel.layoutRecipeListShow.set(true);
-            viewModel.recyclerRecipeListShow.set(true);
-            KeyboardUtils.showKeyboard(binding.fieldNameRecipeList, getActivity());
-
-        });
-
-        closeAllItems();
     }
 
     private void onCreateBuyListButtonClick() {
@@ -265,17 +241,20 @@ public class CollectionFragment extends Fragment {
 
         @Override
         public void onNewBuyListButtonClick() {
-
+            viewModel.newCollection(BuyList);
+            closeAllItems();
         }
 
         @Override
         public void onNewPatternListButtonClick() {
-
+            viewModel.newCollection(PATTERN);
+            closeAllItems();
         }
 
         @Override
         public void onNewRecipeListButtonClick() {
-
+            viewModel.newCollection(RECIPE);
+            closeAllItems();
         }
     };
 

@@ -125,4 +125,21 @@ public class CollectionViewModel extends AndroidViewModel {
             show.set(false);
         }
     }
+
+    public void newCollection(String type) {
+        switch (type) {
+            case CollectionType.BuyList:
+                layoutBuyListShow.set(true);
+                recyclerBuyListShow.set(true);
+                break;
+            case CollectionType.PATTERN:
+                layoutPatternListShow.set(true);
+                recyclerPatternListShow.set(true);
+                break;
+            case CollectionType.RECIPE:
+                layoutRecipeListShow.set(true);
+                recyclerRecipeListShow.set(true);
+                break;
+        }
+    }
 }
