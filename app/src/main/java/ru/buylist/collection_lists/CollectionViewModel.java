@@ -103,30 +103,26 @@ public class CollectionViewModel extends AndroidViewModel {
             case CollectionType.BuyList:
                 buyListName.set("");
                 layoutBuyListShow.set(false);
-                if (!recyclerBuyListShow.get()) {
-                    recyclerBuyListShow.set(true);
-                } else {
-                    recyclerBuyListShow.set(false);
-                }
+                changeRecyclerVisibility(recyclerBuyListShow);
                 break;
             case CollectionType.PATTERN:
                 patterName.set("");
                 layoutPatternListShow.set(false);
-                if (!recyclerPatternListShow.get()) {
-                    recyclerPatternListShow.set(true);
-                } else {
-                    recyclerPatternListShow.set(false);
-                }
+                changeRecyclerVisibility(recyclerPatternListShow);
                 break;
             case CollectionType.RECIPE:
                 recipeName.set("");
                 layoutRecipeListShow.set(false);
-                if (!recyclerRecipeListShow.get()) {
-                    recyclerRecipeListShow.set(true);
-                } else {
-                    recyclerRecipeListShow.set(false);
-                }
+                changeRecyclerVisibility(recyclerRecipeListShow);
                 break;
+        }
+    }
+
+    private void changeRecyclerVisibility(ObservableBoolean show) {
+        if (!show.get()) {
+            show.set(true);
+        } else {
+            show.set(false);
         }
     }
 }
