@@ -22,6 +22,8 @@ import ru.buylist.data.entity.Collection;
 import ru.buylist.data.entity.Item;
 import ru.buylist.databinding.FragmentBuyListBinding;
 
+import static ru.buylist.utils.ItemClickCallback.*;
+
 
 public class BuyListFragment extends Fragment {
     private static final String TAG = "TAG";
@@ -75,8 +77,9 @@ public class BuyListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_buy_list, container, false);
         binding.setViewmodel(viewModel);
+        binding.setCallback(buyListCallback);
 
-        adapter = new BuyListAdapter(shoppingListCallback);
+        adapter = new BuyListAdapter(itemCallback);
         binding.recyclerItems.setAdapter(adapter);
         initUi(binding.getRoot());
         setupFab();
@@ -91,7 +94,6 @@ public class BuyListFragment extends Fragment {
     private void subscribeUi(LiveData<List<Item>> liveData) {
         liveData.observe(this, items -> {
             if (items != null) {
-//                adapter.setItems(items);
                 this.items.clear();
                 this.items.addAll(items);
                 viewModel.loadItems(items);
@@ -113,7 +115,7 @@ public class BuyListFragment extends Fragment {
         FloatingActionButton visibilityFab = getActivity().findViewById(R.id.fab_visibility);
 
         newItemFab.setOnClickListener(v -> {
-            viewModel.showNewProductLayout(productField);
+            viewModel.showLayoutFields(productField);
             setupCreateButton(0);
         });
         Log.i(TAG, "ShoppingList newFAB activated");
@@ -128,16 +130,24 @@ public class BuyListFragment extends Fragment {
     private void setupCreateButton(final long itemId) {
         ImageButton createButton = getActivity().findViewById(R.id.btn_create_item);
         createButton.setOnClickListener(v -> {
-            if (itemId == 0) {
-                viewModel.saveItem(productField, collection.getId(), itemId);
-            } else {
-                viewModel.updateItem(productField, itemId);
-            }
+            viewModel.saveItem(productField, collection.getId(), itemId);
             Log.i(TAG, "ShoppingList save new item: " + itemId);
         });
     }
 
-    private final BuyListCallback shoppingListCallback = new BuyListCallback() {
+    private final BuyListCallback buyListCallback = new BuyListCallback() {
+        @Override
+        public void onPatternButtonClick() {
+            viewModel.openDialog();
+        }
+
+        @Override
+        public void onRecipeButtonClick() {
+            viewModel.openDialog();
+        }
+    };
+
+    private final ItemCallback itemCallback = new ItemCallback() {
         @Override
         public void onItemClick(Item item) {
             viewModel.checkItem(item);
@@ -147,7 +157,7 @@ public class BuyListFragment extends Fragment {
         @Override
         public void onDeleteButtonClick(Item item) {
             Log.i(TAG, "BuyList delete item: " + item.getId());
-            viewModel.makeAction(Action.DELETE, item);
+            viewModel.deleteItem(item);
             adapter.closeAllItems();
         }
 

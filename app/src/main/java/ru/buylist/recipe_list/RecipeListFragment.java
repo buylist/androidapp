@@ -1,11 +1,10 @@
-package ru.buylist.pattern_list;
+package ru.buylist.recipe_list;
 
 import android.arch.lifecycle.LiveData;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,27 +16,28 @@ import java.util.List;
 import ru.buylist.R;
 import ru.buylist.data.entity.Collection;
 import ru.buylist.data.entity.Item;
-import ru.buylist.databinding.FragmentPatternListBinding;
+import ru.buylist.databinding.FragmentRecipeListBinding;
+import ru.buylist.pattern_list.PatternListAdapter;
 
 import static ru.buylist.utils.ItemClickCallback.*;
 
-public class PatternListFragment extends Fragment {
+public class RecipeListFragment extends Fragment {
 
     // ключ для передачи идентификатора шаблона
-    private static final String ARG_PATTERN_ID = "pattern_id";
+    private static final String ARG_RECIPE_ID = "recipe_id";
 
     private Collection collection;
     private List<Item> items;
 
-    private PatternListViewModel viewModel;
-    private FragmentPatternListBinding binding;
+    private RecipeListViewModel viewModel;
+    private FragmentRecipeListBinding binding;
     private PatternListAdapter adapter;
 
-    public static PatternListFragment newInstance(long collectionId) {
+    public static RecipeListFragment newInstance(long collectionId) {
         Bundle args = new Bundle();
-        args.putLong(ARG_PATTERN_ID, collectionId);
+        args.putLong(ARG_RECIPE_ID, collectionId);
 
-        PatternListFragment fragment = new PatternListFragment();
+        RecipeListFragment fragment = new RecipeListFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,10 +46,10 @@ public class PatternListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         items = new ArrayList<>();
-        viewModel = PatternListActivity.obtainViewModel(getActivity());
+        viewModel = RecipeListActivity.obtainViewModel(getActivity());
         viewModel.bottomShow.set(true);
 
-        long collectionId = getArguments() != null ? getArguments().getLong(ARG_PATTERN_ID, 0) : 0;
+        long collectionId = getArguments() != null ? getArguments().getLong(ARG_RECIPE_ID, 0) : 0;
         subscribeUi(viewModel.getItems(collectionId));
         subscribeCollection(viewModel.getCollection(collectionId));
     }
@@ -57,17 +57,16 @@ public class PatternListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_pattern_list, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recipe_list, container, false);
         binding.setViewmodel(viewModel);
         binding.setCallback(callback);
 
         adapter = new PatternListAdapter(itemCallback);
-        binding.recyclerItems.setAdapter(adapter);
-        setupFab();
+        binding.recyclerIngredients.setAdapter(adapter);
         return binding.getRoot();
     }
 
-    // подписка на изменения списка товаров
+    // подписка на изменения спика для обновления
     private void subscribeUi(LiveData<List<Item>> liveData) {
         liveData.observe(this, newItems -> {
             if (newItems != null) {
@@ -83,32 +82,42 @@ public class PatternListFragment extends Fragment {
         liveData.observe(this, newCollection -> collection = newCollection);
     }
 
-    private void setupFab() {
-        FloatingActionButton addItemButton = getActivity().findViewById(R.id.fab_new_item);
-        addItemButton.setOnClickListener(v -> {
-            viewModel.addNewItem();
-            setupCreateButton(0);
-        });
-    }
-
     // устанавливаем кнопку создания товара
     // для создания нового товара передаем в метод 0
-    // для обновления существующего товара - его идентификатор
+    // для редактирования существующего товара - его индентификатор
     private void setupCreateButton(final long itemId) {
         binding.btnCreateItem.setOnClickListener(v -> {
             viewModel.saveItem(collection.getId(), itemId);
         });
     }
 
-    // callback кликов по кнопке переноса товаров в список
-    private final PatternListCallback callback = new PatternListCallback() {
+    // callback'и кликов по кнопкам создания товара, инструкции, сохранение инструкции
+    private final RecipeListCallback callback = new RecipeListCallback() {
         @Override
-        public void onToMoveButtonClick(List<Item> items) {
+        public void onNewIngredientButtonClick() {
+            viewModel.addNewItem();
+            setupCreateButton(0);
+        }
+
+        @Override
+        public void onNewInstructionButtonClick() {
+            viewModel.fieldInstructionShow.set(true);
+        }
+
+        @Override
+        public void onSaveInstructionButtonClick() {
+            String newInstruction = viewModel.instruction.get();
+            binding.textViewInstruction.setText(newInstruction);
+            viewModel.fieldInstructionShow.set(false);
+        }
+
+        @Override
+        public void onToMoveButtonClick() {
             viewModel.openDialog();
         }
     };
 
-    // callback'и для адаптера, возвращает клики по кнопкам свайпа
+    // callback'и для адаптера, возвращает клики по кнопка свайпа
     private final ItemCallback itemCallback = new ItemCallback() {
         @Override
         public void onItemClick(Item item) {

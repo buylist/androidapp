@@ -30,5 +30,8 @@ public interface CollectionDao {
     LiveData<Collection> getCollection(long id);
 
     @Query("SELECT * FROM collections WHERE type = :type")
-    LiveData<List<Collection>> getCollection(String type);
+    LiveData<List<Collection>> getLiveCollection(String type);
+
+    @Query("SELECT * FROM collections WHERE type = :type")
+    List<Collection> getCollection(String type);
 }

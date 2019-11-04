@@ -43,4 +43,8 @@ public class Collection {
     public void setType(String type) {
         this.type = type;
     }
+
+    public boolean isEmpty() {
+        return title == null || title.isEmpty();
+    }
 }

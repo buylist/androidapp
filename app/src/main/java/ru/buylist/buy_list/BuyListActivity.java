@@ -1,16 +1,16 @@
 package ru.buylist.buy_list;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
+import ru.buylist.PatternDialog;
+import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.databinding.ActivityBuyListBinding;
 import ru.buylist.utils.IOnBackPressed;
 import ru.buylist.R;
@@ -51,31 +51,23 @@ public class BuyListActivity extends SingleFragmentActivity {
     protected void setupViewModel() {
         ActivityBuyListBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_buy_list);
         viewModel = obtainViewModel(this);
-
-        viewModel.getNewCategoryEvent().observe(this, new Observer<Long>() {
-            @Override
-            public void onChanged(@Nullable Long itemId) {
-                Log.i(TAG, "ShoppingActivity: new category event");
-                createNewItem(itemId);
-            }
-        });
-
-        viewModel.getAddProductEvent().observe(this, new Observer<Long>() {
-            @Override
-            public void onChanged(@Nullable Long collectionId) {
-                Log.i(TAG, "ShoppingActivity: update product list event");
-                updateProductsList(collectionId);
-            }
-        });
-
         binding.setViewmodel(viewModel);
-    }
 
-    private void createNewItem(long itemId) {
-        Fragment fragment = CategoryFragment.newInstance(itemId);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
+        // открытие CategoryFragment
+        viewModel.getNewCategoryEvent().observe(this, itemId -> {
+            Log.i(TAG, "ShoppingActivity: new category event");
+            setCategory(itemId);
+        });
+
+        // Возврат к BuyList
+        viewModel.getReturnToListEvent().observe(this, collectionId -> {
+            Log.i(TAG, "ShoppingActivity: update product list event");
+            returnToBuyList(collectionId);
+        });
+
+        // открытие диалога
+        viewModel.getDialogEvent().observe(this, aVoid ->
+                PatternDialog.newInstance().show(getSupportFragmentManager(), "dialog"));
     }
 
     @Override
@@ -96,7 +88,14 @@ public class BuyListActivity extends SingleFragmentActivity {
         }
     }
 
-    public void updateProductsList(long collectionId) {
+    private void setCategory(long itemId) {
+        Fragment fragment = CategoryFragment.newInstance(itemId, CollectionType.BuyList);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
+
+    public void returnToBuyList(long collectionId) {
         Fragment fragment = BuyListFragment.newInstance(collectionId);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)

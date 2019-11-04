@@ -1,4 +1,4 @@
-package ru.buylist.pattern_list;
+package ru.buylist.recipe_list;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -7,41 +7,41 @@ import android.databinding.DataBindingUtil;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
-import ru.buylist.PatternDialog;
 import ru.buylist.R;
 import ru.buylist.buy_list.BuyListViewModel;
 import ru.buylist.buy_list.CategoryFragment;
 import ru.buylist.collection_lists.CollectionType;
-import ru.buylist.databinding.ActivityPatternListBinding;
+import ru.buylist.databinding.ActivityRecipeListBinding;
+import ru.buylist.PatternDialog;
 import ru.buylist.utils.SingleFragmentActivity;
 
-public class PatternListActivity extends SingleFragmentActivity {
+public class RecipeListActivity extends SingleFragmentActivity {
 
     // ключ для передачи идентификатора шаблона
-    private static final String EXTRA_PATTERN_ID = "pattern_id";
+    private static final String EXTRA_RECIPE_ID = "recipe_id";
 
-    private PatternListViewModel viewModel;
+    private RecipeListViewModel viewModel;
 
-    public static Intent newIntent(Context context, long patternId) {
-        Intent intent = new Intent(context, PatternListActivity.class);
-        intent.putExtra(EXTRA_PATTERN_ID, patternId);
+    public static Intent newIntent(Context context, long recipeId) {
+        Intent intent = new Intent(context, RecipeListActivity.class);
+        intent.putExtra(EXTRA_RECIPE_ID, recipeId);
         return intent;
     }
 
-    public static PatternListViewModel obtainViewModel(FragmentActivity activity) {
-        return ViewModelProviders.of(activity).get(PatternListViewModel.class);
+    public static RecipeListViewModel obtainViewModel(FragmentActivity activity) {
+        return ViewModelProviders.of(activity).get(RecipeListViewModel.class);
     }
 
     @Override
     protected Fragment createFragment() {
-        long patternId = getIntent().getLongExtra(EXTRA_PATTERN_ID, 0);
-        return PatternListFragment.newInstance(patternId);
+        long recipeId = getIntent().getLongExtra(EXTRA_RECIPE_ID, 0);
+        return RecipeListFragment.newInstance(recipeId);
     }
 
     @Override
     protected void setupViewModel() {
-        ActivityPatternListBinding binding = DataBindingUtil.setContentView(
-                this, R.layout.activity_pattern_list);
+        ActivityRecipeListBinding binding = DataBindingUtil.setContentView(
+                this, R.layout.activity_recipe_list);
 
         viewModel = obtainViewModel(this);
         binding.setViewmodel(viewModel);
@@ -49,27 +49,28 @@ public class PatternListActivity extends SingleFragmentActivity {
         // открытие CategoryFragment
         viewModel.getNewCategoryEvent().observe(this, itemId -> setCategory(itemId));
 
+        // открытие диалогового окна
         viewModel.getDialogEvent().observe(this, aVoid ->
                 PatternDialog.newInstance().show(getSupportFragmentManager(), "custom"));
 
         // временное решение
         BuyListViewModel buyViewmodel = ViewModelProviders.of(this).get(BuyListViewModel.class);
         buyViewmodel.getReturnToListEvent().observe(this, collectionId ->
-                returnToPattern(collectionId));
+                returnToRecipe(collectionId));
     }
 
     // вызов CategoryFragment
     private void setCategory(long itemId) {
-        Fragment fragment = CategoryFragment.newInstance(itemId, CollectionType.PATTERN);
+        Fragment fragment = CategoryFragment.newInstance(itemId, CollectionType.RECIPE);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
         viewModel.bottomShow.set(false);
     }
 
-    // возврат к PatternListFragment
-    private void returnToPattern(long collectionId) {
-        Fragment fragment = PatternListFragment.newInstance(collectionId);
+    // возврат к RecipeListFragment
+    private void returnToRecipe(long collectionId) {
+        Fragment fragment = RecipeListFragment.newInstance(collectionId);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();

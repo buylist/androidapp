@@ -1,4 +1,4 @@
-package ru.buylist.pattern_list;
+package ru.buylist.recipe_list;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
@@ -10,28 +10,32 @@ import android.databinding.ObservableList;
 
 import java.util.List;
 
-import ru.buylist.data.entity.Collection;
-import ru.buylist.utils.BuylistApp;
 import ru.buylist.data.DataRepository;
-import ru.buylist.utils.SingleLiveEvent;
+import ru.buylist.data.entity.Collection;
 import ru.buylist.data.entity.GlobalItem;
 import ru.buylist.data.entity.Item;
+import ru.buylist.utils.BuylistApp;
+import ru.buylist.utils.SingleLiveEvent;
 
 
-public class PatternListViewModel extends AndroidViewModel {
+public class RecipeListViewModel extends AndroidViewModel {
 
-    // отображаемый список
+    // ингридиенты
     public final ObservableList<Item> items = new ObservableArrayList<>();
 
     // Флаги для отображения/скрытия элементов разметки
     public final ObservableBoolean btnToMoveShow = new ObservableBoolean(false);
     public final ObservableBoolean layoutFieldsShow = new ObservableBoolean(false);
+    public final ObservableBoolean fieldInstructionShow = new ObservableBoolean(false);
     public final ObservableBoolean bottomShow = new ObservableBoolean(true);
 
-    // Поля для ввода нового товара
+    // Поля для ввода нового ингредиента
     public final ObservableField<String> itemName = new ObservableField<>();
     public final ObservableField<String> quantity = new ObservableField<>("");
     public final ObservableField<String> unit = new ObservableField<>("");
+
+    //Поле инструкции
+    public final ObservableField<String> instruction = new ObservableField<>("");
 
     // Отслеживание нового товара для открытия CategoryFragment
     private SingleLiveEvent<Long> newCategoryEvent = new SingleLiveEvent<>();
@@ -43,15 +47,15 @@ public class PatternListViewModel extends AndroidViewModel {
 
 
 
-    public PatternListViewModel(Application context) {
+    public RecipeListViewModel(Application context) {
         super(context);
         repository = ((BuylistApp) context.getApplicationContext()).getRepository();
     }
 
+
     /**
      *  get Event
     * */
-
     SingleLiveEvent<Long> getNewCategoryEvent() {
         return newCategoryEvent;
     }
@@ -86,20 +90,20 @@ public class PatternListViewModel extends AndroidViewModel {
      *  main
     * */
 
-    // onFabClick
+    // отображение полей для ввода товара
     public void addNewItem() {
         layoutFieldsShow.set(true);
-        bottomShow.set(false);
     }
 
+    // новый товар добавляет в базу, существующий - обновляет
     public void saveItem(long collectionId, long itemId) {
+        // id != 0 при редактировании товара, создавать новый не требуется
         Item item = (itemId == 0 ? new Item() : new Item(itemId));
         item.setName(itemName.get());
         if (item.isEmpty()) {
-            // товар не может быть пустым, обнуляем и скрываем поля
+            // товар не может быть пустым, обнуляем и скрываем layout
             clearFields();
             layoutFieldsShow.set(false);
-            bottomShow.set(true);
             return;
         }
 
@@ -107,20 +111,19 @@ public class PatternListViewModel extends AndroidViewModel {
         item.setQuantity(quantity.get());
         item.setUnit(unit.get());
 
-        // новый товар добавляем в базу, редактируемый - обновляем
+        // новый товар добавляется в базу, редактируемый - обновляется
         if (itemId == 0) {
             repository.addItem(item);
         } else {
             repository.updateItem(item);
         }
 
-        // если товар новый - открытие фрагмента для выбора категории
+        // если товар новый - открывается CategoryFragment для выбора категории
         if (isNewItem(item)) {
             newCategoryEvent.setValue(item.getId());
         }
 
         layoutFieldsShow.set(false);
-        bottomShow.set(true);
         clearFields();
     }
 
@@ -153,7 +156,6 @@ public class PatternListViewModel extends AndroidViewModel {
     // отображение полей для редактирования товара
     public void editItem(Item item) {
         layoutFieldsShow.set(true);
-        bottomShow.set(false);
         itemName.set(item.getName());
         quantity.set(item.getQuantity());
         unit.set(item.getUnit());

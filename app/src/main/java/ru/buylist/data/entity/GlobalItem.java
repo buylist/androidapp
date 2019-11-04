@@ -11,8 +11,8 @@ public class GlobalItem {
     private String category;
     private String colorCategory;
 
-    public GlobalItem(long id, String name, String category, String colorCategory) {
-        this.id = id;
+    public GlobalItem(String name, String category, String colorCategory) {
+        id = System.currentTimeMillis();
         this.name = name;
         this.category = category;
         this.colorCategory = colorCategory;

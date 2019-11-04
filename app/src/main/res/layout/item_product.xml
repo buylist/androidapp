@@ -8,7 +8,7 @@
 
         <variable
             name="callback"
-            type="ru.buylist.buy_list.BuyListCallback" />
+            type="ru.buylist.utils.ItemClickCallback.ItemCallback" />
         <variable
             name="item"
             type="ru.buylist.data.entity.Item" />

@@ -1,4 +1,4 @@
-package ru.buylist.colection_lists;
+package ru.buylist.collection_lists;
 
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -16,6 +16,8 @@ import ru.buylist.R;
 import ru.buylist.data.entity.Collection;
 import ru.buylist.databinding.ItemCollectionListBinding;
 
+import static ru.buylist.utils.ItemClickCallback.*;
+
 /**
  * Адаптер для коллекции списков
  **/
@@ -23,10 +25,10 @@ import ru.buylist.databinding.ItemCollectionListBinding;
 public class CollectionAdapter extends RecyclerSwipeAdapter<CollectionAdapter.BuyListHolder> {
     private static final String TAG = "TAG";
 
-    private final CollectionClickCallback callback;
+    private final ItemCollectionCallback callback;
     private List<Collection> lists;
 
-    CollectionAdapter(CollectionClickCallback callback) {
+    CollectionAdapter(ItemCollectionCallback callback) {
         this.callback = callback;
     }
 

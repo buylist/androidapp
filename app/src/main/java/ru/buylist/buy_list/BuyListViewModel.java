@@ -28,11 +28,11 @@ public class BuyListViewModel extends AndroidViewModel {
     public final ObservableList<Item> items = new ObservableArrayList<>();
 
     // Флаги для отображения/скрытия элементов
-    public final ObservableBoolean layoutNewProductVisibility = new ObservableBoolean(false);
-    public final ObservableBoolean fabNewProductVisibility = new ObservableBoolean(true);
-    public final ObservableBoolean fabProductsVisibility = new ObservableBoolean(true);
-    public final ObservableBoolean bottomNavigationVisibility = new ObservableBoolean(true);
-    public final ObservableBoolean purchasedProductsVisibility = new ObservableBoolean(true);
+    public final ObservableBoolean layoutFieldsShow = new ObservableBoolean(false);
+    public final ObservableBoolean fabAddItemShow = new ObservableBoolean(true);
+    public final ObservableBoolean fabVisibilityShow = new ObservableBoolean(true);
+    public final ObservableBoolean bottomShow = new ObservableBoolean(true);
+    public final ObservableBoolean purchasedItemShow = new ObservableBoolean(true);
 
     // Поля ввода данных нового товара
     public final ObservableField<String> itemName = new ObservableField<>();
@@ -47,7 +47,11 @@ public class BuyListViewModel extends AndroidViewModel {
     private SingleLiveEvent<Long> newCategoryEvent = new SingleLiveEvent<>();
 
     // Отслеживает нажатие на кнопки "Далее" и "Пропустить" в CategoryFragment для перехода в список
-    private SingleLiveEvent<Long> addProductEvent = new SingleLiveEvent<>();
+    private SingleLiveEvent<Long> returnToListEvent = new SingleLiveEvent<>();
+
+    // Отвечает за открытие диалогового окна
+    private SingleLiveEvent<Void> dialogEvent = new SingleLiveEvent<>();
+
 
     public BuyListViewModel(Application context) {
         super(context);
@@ -55,22 +59,31 @@ public class BuyListViewModel extends AndroidViewModel {
         repository = ((BuylistApp) context).getRepository();
     }
 
-    SingleLiveEvent<Long> getNewCategoryEvent() {
+
+    /**
+     *  get Event
+    * */
+
+    public SingleLiveEvent<Long> getNewCategoryEvent() {
         return newCategoryEvent;
     }
 
-    SingleLiveEvent<Long> getAddProductEvent() {
-        return addProductEvent;
+    public SingleLiveEvent<Long> getReturnToListEvent() {
+        return returnToListEvent;
     }
+
+    public SingleLiveEvent<Void> getDialogEvent() {
+        return dialogEvent;
+    }
+
+
+    /**
+     *  get LiveData / work with repository
+    * */
 
     public LiveData<Collection> getCollection(long collectionId) {
         Log.i(TAG, "ShoppingViewModel get live collection: " + collectionId);
         return repository.getCollection(collectionId);
-    }
-
-    public Item getItem(long id) {
-        Log.i(TAG, "ShoppingViewModel get item: " + id);
-        return repository.getItem(id);
     }
 
     public LiveData<List<Item>> getItems(long id) {
@@ -78,11 +91,36 @@ public class BuyListViewModel extends AndroidViewModel {
         return repository.getLiveItems(id);
     }
 
+    public Item getItem(long id) {
+        Log.i(TAG, "ShoppingViewModel get item: " + id);
+        return repository.getItem(id);
+    }
+
     public void updateCollection(Collection collection) {
         repository.updateCollection(collection);
         Log.i(TAG, "ShoppingViewModel update collection: " + collection.getId());
     }
 
+    public void deleteItem(Item item) {
+        repository.deleteItem(item);
+    }
+
+    public void addCategory(Category category) {
+        repository.addCategory(category);
+        Log.i(TAG, "ShoppingViewModel add category: " + category.getName());
+    }
+
+    public Category getCategory(String name) {
+        Log.i(TAG, "ShoppingViewModel return category: " + name);
+        return repository.getCategory(name);
+    }
+
+
+    /**
+     *  main
+    * */
+
+    // новый товар добавляет в базу, существующий - обновляет
     public void saveItem(EditText targetField, long collectionId, long itemId) {
         // id != 0 при редактировании товара, создавать новый не требуется
         Item item = (itemId == 0 ? new Item() : new Item(itemId));
@@ -98,37 +136,24 @@ public class BuyListViewModel extends AndroidViewModel {
         item.setQuantity(quantity.get());
         item.setUnit(unit.get());
 
-        if (!isInGlobalDatabase(item)) {
-            newCategoryEvent.setValue(item.getId());
-        } else {
+        // новый товар добавляется в базу, редактируемый - обновляется
+        if (itemId == 0) {
             repository.addItem(item);
-        }
-        clearFields();
-        hideNewProductLayout(targetField);
-    }
-
-    public void updateItem(EditText targetField, long itemId) {
-        Item item = repository.getItem(itemId);
-        item.setName(itemName.get());
-        if (item.isEmpty()) {
-            // товар не может быть пустым, обнуляем и скрываем layout
-            clearFields();
-            hideNewProductLayout(targetField);
-            return;
+        } else {
+            repository.updateItem(item);
         }
 
-        item.setQuantity(quantity.get());
-        item.setUnit(unit.get());
-        repository.updateItem(item);
-
+        // открывает CategoryFragment, если товара нет в глобальной базе
         if (!isInGlobalDatabase(item)) {
             newCategoryEvent.setValue(item.getId());
         }
+
         clearFields();
         hideNewProductLayout(targetField);
     }
 
-    //проверка на наличие товара в глобальной базе
+    // проверка на наличие товара в глобальной базе
+    // если товар есть в глобальной базе - цепляем категорию и цвет категории
     private boolean isInGlobalDatabase(Item item) {
         GlobalItem globalItem = repository.getGlobalItem(item.getName());
         if (globalItem == null || globalItem.getName() == null) {
@@ -136,14 +161,9 @@ public class BuyListViewModel extends AndroidViewModel {
         } else {
             item.setCategory(globalItem.getCategory());
             item.setCategoryColor(globalItem.getColorCategory());
+            repository.updateItem(item);
             return true;
         }
-    }
-
-    private void clearFields() {
-        itemName.set("");
-        quantity.set("");
-        unit.set("");
     }
 
     // true - товар перечеркивается линией, false - линия удаляется
@@ -153,50 +173,25 @@ public class BuyListViewModel extends AndroidViewModel {
         } else {
             item.setPurchased(true);
         }
-        makeAction(Action.UPDATE, item);
+        repository.updateItem(item);
     }
 
-    public void makeAction(Action action, Item item) {
-        switch (action) {
-            case ADD:
-                repository.addItem(item);
-                Log.i(TAG, "ShoppingViewModel add new item: " + item.getId());
-                break;
-            case UPDATE:
-                repository.updateItem(item);
-                Log.i(TAG, "ShoppingViewModel update item: " + item.getId());
-                break;
-            case DELETE:
-                Log.i(TAG, "ShoppingViewModel delete item: " + item.getId());
-                repository.deleteItem(item);
-                break;
-            default:
-                break;
-        }
-    }
-
+    // отображение полей для редактирования товара
     public void editItem(Item item) {
-        layoutNewProductVisibility.set(true);
+        layoutFieldsShow.set(true);
         itemName.set(item.getName());
         quantity.set(item.getQuantity());
         unit.set(item.getUnit());
         Log.i(TAG, "ShoppingViewModel edit item: " + item.getId());
     }
 
-    public void addCategory(Category category) {
-        repository.addCategory(category);
-        Log.i(TAG, "ShoppingViewModel add category: " + category.getName());
-    }
-
-    public Category getCategory(String name) {
-        Log.i(TAG, "ShoppingViewModel return category: " + name);
-        return repository.getCategory(name);
-    }
-
+    // используется, когда пользователем была выбрана категория для нового товара
+    // товару присваивается категория, цвет категории и обновляется в БД
+    // создается новый глобальный товар и добавляется в БД
     public void updateCategory(String categoryName, Item item) {
         Category category = repository.getCategory(categoryName);
         GlobalItem globalItem = new GlobalItem(
-                item.getId(), item.getName(), item.getCategory(), item.getCategoryColor());
+                item.getName(), item.getCategory(), item.getCategoryColor());
 
         item.setCategory(category.getName());
         item.setCategoryColor(category.getColor());
@@ -206,10 +201,13 @@ public class BuyListViewModel extends AndroidViewModel {
         repository.updateItem(item);
         repository.addGlobalItem(globalItem);
         updateItemsList(item);
-        addProductEvent.setValue(item.getCollectionId());
-        Log.i(TAG, "ShoppingViewModel set new productEvent");
+
+        // возврат в список / шаблон / рецепт
+        returnToListEvent.setValue(item.getCollectionId());
     }
 
+    // проверка на наличие в общем списке товаров товара с идентичным именем
+    // при совпадении и при отсутствии у такого товара категории - цепляет у только что созданного
     private void updateItemsList(Item item) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getName().equals(item.getName())) {
@@ -224,24 +222,24 @@ public class BuyListViewModel extends AndroidViewModel {
         }
     }
 
-    public void skipCategory(long collectionId) {
-        addProductEvent.setValue(collectionId);
-        Log.i(TAG, "ShoppingViewModel set new product event: skip");
+    // используется, когда пользователь не установил категорию для товара (кнопка Пропустить)
+    public void skipCategory(Item item) {
+        returnToListEvent.setValue(item.getCollectionId());
     }
 
     // true - отображение товаров к покупке, false - отображение всех товаров
     public void updateFiltering() {
-        if (purchasedProductsVisibility.get()) {
-            purchasedProductsVisibility.set(false);
+        if (purchasedItemShow.get()) {
+            purchasedItemShow.set(false);
         } else {
-            purchasedProductsVisibility.set(true);
+            purchasedItemShow.set(true);
         }
     }
 
     // сортировка отображаемых товаров
     public void loadItems(List<Item> items) {
         List<Item> itemsToShow = new ArrayList<>();
-        if (!purchasedProductsVisibility.get()) {
+        if (!purchasedItemShow.get()) {
             itemsToShow.addAll(items);
         } else {
             for (Item item : items) {
@@ -254,34 +252,46 @@ public class BuyListViewModel extends AndroidViewModel {
         this.items.addAll(itemsToShow);
     }
 
-    public void showNewProductLayout(EditText targetField) {
-        layoutNewProductVisibility.set(true);
-        fabNewProductVisibility.set(false);
-        fabProductsVisibility.set(false);
-        bottomNavigationVisibility.set(false);
+    // отображение полей для ввода товара
+    public void showLayoutFields(EditText targetField) {
+        layoutFieldsShow.set(true);
+        fabAddItemShow.set(false);
+        fabVisibilityShow.set(false);
+        bottomShow.set(false);
         KeyboardUtils.showKeyboard(targetField, context);
     }
 
+    // скрытие полей для ввода товара
     public void hideNewProductLayout(EditText targetField) {
-        layoutNewProductVisibility.set(false);
-        fabNewProductVisibility.set(true);
-        fabProductsVisibility.set(true);
-        bottomNavigationVisibility.set(true);
+        layoutFieldsShow.set(false);
+        fabAddItemShow.set(true);
+        fabVisibilityShow.set(true);
+        bottomShow.set(true);
         KeyboardUtils.hideKeyboard(targetField, context);
     }
 
+    // отображение bottomNavigation + fab
     public void showActivityLayout() {
-        fabProductsVisibility.set(true);
-        fabNewProductVisibility.set(true);
-        bottomNavigationVisibility.set(true);
+        fabVisibilityShow.set(true);
+        fabAddItemShow.set(true);
+        bottomShow.set(true);
     }
 
+    // скрытие bottomNavigation + fab
     public void hideActivityLayout() {
-        fabProductsVisibility.set(false);
-        fabNewProductVisibility.set(false);
-        bottomNavigationVisibility.set(false);
+        fabVisibilityShow.set(false);
+        fabAddItemShow.set(false);
+        bottomShow.set(false);
     }
 
+    public void openDialog() {
+        dialogEvent.call();
+    }
 
+    private void clearFields() {
+        itemName.set("");
+        quantity.set("");
+        unit.set("");
+    }
 
 }
