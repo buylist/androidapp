@@ -21,12 +21,14 @@ public class BuyListActivity extends SingleFragmentActivity {
     private static final String TAG = "TAG";
 
     private static final String EXTRA_COLLECTION_ID = "buy_list_id";
+    private static final String EXTRA_COLLECTION_TITLE = "buy_list_title";
 
     private BuyListViewModel viewModel;
 
-    public static Intent newIntent(Context context, long collectionId) {
+    public static Intent newIntent(Context context, long collectionId, String collectioTitle) {
         Intent intent = new Intent(context, BuyListActivity.class);
         intent.putExtra(EXTRA_COLLECTION_ID, collectionId);
+        intent.putExtra(EXTRA_COLLECTION_TITLE, collectioTitle);
         Log.i("TAG", "Put to collection intent ID: " + collectionId);
         return intent;
     }
@@ -68,6 +70,8 @@ public class BuyListActivity extends SingleFragmentActivity {
         // открытие диалога
         viewModel.getDialogEvent().observe(this, aVoid ->
                 PatternDialog.newInstance().show(getSupportFragmentManager(), "dialog"));
+
+        setTitle(getIntent().getStringExtra(EXTRA_COLLECTION_TITLE));
     }
 
     @Override

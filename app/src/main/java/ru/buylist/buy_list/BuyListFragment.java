@@ -87,7 +87,6 @@ public class BuyListFragment extends Fragment {
     }
 
     private void initUi(View view) {
-//        getActivity().setTitle(collection.getTitle());
         productField = view.findViewById(R.id.field_name);
     }
 

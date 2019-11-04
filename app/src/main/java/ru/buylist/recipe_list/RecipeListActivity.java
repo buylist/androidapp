@@ -19,12 +19,14 @@ public class RecipeListActivity extends SingleFragmentActivity {
 
     // ключ для передачи идентификатора шаблона
     private static final String EXTRA_RECIPE_ID = "recipe_id";
+    private static final String EXTRA_RECIPE_TITLE = "recipe_title";
 
     private RecipeListViewModel viewModel;
 
-    public static Intent newIntent(Context context, long recipeId) {
+    public static Intent newIntent(Context context, long recipeId, String recipeTitle) {
         Intent intent = new Intent(context, RecipeListActivity.class);
         intent.putExtra(EXTRA_RECIPE_ID, recipeId);
+        intent.putExtra(EXTRA_RECIPE_TITLE, recipeTitle);
         return intent;
     }
 
@@ -57,6 +59,8 @@ public class RecipeListActivity extends SingleFragmentActivity {
         BuyListViewModel buyViewmodel = ViewModelProviders.of(this).get(BuyListViewModel.class);
         buyViewmodel.getReturnToListEvent().observe(this, collectionId ->
                 returnToRecipe(collectionId));
+
+        setTitle(getIntent().getStringExtra(EXTRA_RECIPE_TITLE));
     }
 
     // вызов CategoryFragment

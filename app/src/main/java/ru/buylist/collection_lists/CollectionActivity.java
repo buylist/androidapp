@@ -39,7 +39,7 @@ public class CollectionActivity extends SingleFragmentActivity implements Collec
         switch (collection.getType()) {
             case CollectionType.BuyList:
                 if (findViewById(R.id.detail_fragment_container) == null) {
-                    Intent intent = BuyListActivity.newIntent(this, collection.getId());
+                    Intent intent = BuyListActivity.newIntent(this, collection.getId(), collection.getTitle());
                     startActivity(intent);
                 } else {
                     Fragment newDetail = BuyListFragment.newInstance(collection.getId());
@@ -50,7 +50,7 @@ public class CollectionActivity extends SingleFragmentActivity implements Collec
                 break;
             case CollectionType.PATTERN:
                 if (findViewById(R.id.detail_fragment_container) == null) {
-                    Intent intent = PatternListActivity.newIntent(this, collection.getId());
+                    Intent intent = PatternListActivity.newIntent(this, collection.getId(), collection.getTitle());
                     startActivity(intent);
                 } else {
                     Fragment newDetail = PatternListFragment.newInstance(collection.getId());
@@ -61,7 +61,7 @@ public class CollectionActivity extends SingleFragmentActivity implements Collec
                 break;
             case CollectionType.RECIPE:
                 if (findViewById(R.id.detail_fragment_container) == null) {
-                    Intent intent = RecipeListActivity.newIntent(this, collection.getId());
+                    Intent intent = RecipeListActivity.newIntent(this, collection.getId(), collection.getTitle());
                     startActivity(intent);
                 } else {
                     Fragment newDetail = RecipeListFragment.newInstance(collection.getId());

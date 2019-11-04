@@ -19,12 +19,14 @@ public class PatternListActivity extends SingleFragmentActivity {
 
     // ключ для передачи идентификатора шаблона
     private static final String EXTRA_PATTERN_ID = "pattern_id";
+    private static final String EXTRA_PATTERN_TITLE = "pattern_title";
 
     private PatternListViewModel viewModel;
 
-    public static Intent newIntent(Context context, long patternId) {
+    public static Intent newIntent(Context context, long patternId, String patternTitle) {
         Intent intent = new Intent(context, PatternListActivity.class);
         intent.putExtra(EXTRA_PATTERN_ID, patternId);
+        intent.putExtra(EXTRA_PATTERN_TITLE, patternTitle);
         return intent;
     }
 
@@ -56,6 +58,8 @@ public class PatternListActivity extends SingleFragmentActivity {
         BuyListViewModel buyViewmodel = ViewModelProviders.of(this).get(BuyListViewModel.class);
         buyViewmodel.getReturnToListEvent().observe(this, collectionId ->
                 returnToPattern(collectionId));
+
+        setTitle(getIntent().getStringExtra(EXTRA_PATTERN_TITLE));
     }
 
     // вызов CategoryFragment
