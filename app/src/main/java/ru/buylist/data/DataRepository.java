@@ -63,7 +63,7 @@ public class DataRepository {
 
     public LiveData<List<Collection>> getCollection(String type) {
         Log.i(TAG, "Repository return Collection type: " + type);
-        return database.collectionDao().getCollection(type);
+        return database.collectionDao().getLiveCollection(type);
     }
 
     public LiveData<Collection> getCollection(final long id) {
@@ -77,7 +77,7 @@ public class DataRepository {
      **/
 
     public void addItem(final Item item) {
-//        database.itemDao().addItem(item);
+        Log.i(TAG, "Repository try to add new item: " + item.getId());
         Runnable addRunnable = () -> database.itemDao().addItem(item);
         executors.discIO().execute(addRunnable);
         Log.i(TAG, "Repository add new item: " + item.getId());

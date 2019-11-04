@@ -1,16 +1,15 @@
 package ru.buylist.buy_list;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
+import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.databinding.ActivityBuyListBinding;
 import ru.buylist.utils.IOnBackPressed;
 import ru.buylist.R;
@@ -52,27 +51,21 @@ public class BuyListActivity extends SingleFragmentActivity {
         ActivityBuyListBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_buy_list);
         viewModel = obtainViewModel(this);
 
-        viewModel.getNewCategoryEvent().observe(this, new Observer<Long>() {
-            @Override
-            public void onChanged(@Nullable Long itemId) {
-                Log.i(TAG, "ShoppingActivity: new category event");
-                createNewItem(itemId);
-            }
+        viewModel.getNewCategoryEvent().observe(this, itemId -> {
+            Log.i(TAG, "ShoppingActivity: new category event");
+            createNewItem(itemId);
         });
 
-        viewModel.getAddProductEvent().observe(this, new Observer<Long>() {
-            @Override
-            public void onChanged(@Nullable Long collectionId) {
-                Log.i(TAG, "ShoppingActivity: update product list event");
-                updateProductsList(collectionId);
-            }
+        viewModel.getAddProductEvent().observe(this, collectionId -> {
+            Log.i(TAG, "ShoppingActivity: update product list event");
+            updateProductsList(collectionId);
         });
 
         binding.setViewmodel(viewModel);
     }
 
     private void createNewItem(long itemId) {
-        Fragment fragment = CategoryFragment.newInstance(itemId);
+        Fragment fragment = CategoryFragment.newInstance(itemId, CollectionType.BuyList);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();

@@ -15,12 +15,16 @@ import java.util.List;
 import ru.buylist.R;
 import ru.buylist.data.entity.Category;
 import ru.buylist.data.entity.Item;
+import ru.buylist.pattern_list.PatternListActivity;
+import ru.buylist.pattern_list.PatternListViewModel;
 import ru.buylist.utils.SnackbarUtils;
 
 public class CategoryFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "TAG";
 
     private static final String ARG_CATEGORY = "args_category";
+    private static final String ARG_TYPE = "args_type";
+    private String type;
     private Item item;
 
     private TextView productName;
@@ -31,9 +35,10 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
     private BuyListViewModel viewModel;
 
-    public static CategoryFragment newInstance(long itemId) {
+    public static CategoryFragment newInstance(long itemId, String type) {
         Bundle args = new Bundle();
         args.putLong(ARG_CATEGORY, itemId);
+        args.putString(ARG_TYPE, type);
         CategoryFragment fragment = new CategoryFragment();
         fragment.setArguments(args);
         Log.i(TAG, "CategoryFragment set ars: " + args.getLong(ARG_CATEGORY));
@@ -46,12 +51,16 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
         viewModel = BuyListActivity.obtainViewModel(getActivity());
         long itemId = getArguments().getLong(ARG_CATEGORY);
-        Log.i(TAG, "CategoryFragment get args: " + itemId);
+        type = getArguments().getString(ARG_TYPE);
+        Log.i(TAG, "CategoryFragment get args: " + itemId + " " + type);
         do {
             item = viewModel.getItem(itemId);
         } while (item == null);
 
 
+        // скрытие кнопки fab и bottomNavigation
+        PatternListViewModel patternViewmodel = PatternListActivity.obtainViewModel(getActivity());
+        patternViewmodel.bottomShow.set(false);
         viewModel.hideActivityLayout();
     }
 
@@ -91,10 +100,10 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                     SnackbarUtils.showSnackbar(v, getString(R.string.category_is_empty));
                     break;
                 }
-                viewModel.updateCategory(categoryText.getText().toString(), item);
+                viewModel.updateCategory(categoryText.getText().toString(), item, type);
                 break;
             case R.id.button_skip:
-                viewModel.skipCategory(item.getCollectionId());
+                viewModel.skipCategory(item, type);
                 break;
         }
     }
