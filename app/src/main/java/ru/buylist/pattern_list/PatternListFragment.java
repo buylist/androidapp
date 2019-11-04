@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +58,7 @@ public class PatternListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_pattern_list, container, false);
         binding.setViewmodel(viewModel);
+        binding.setCallback(callback);
 
         adapter = new PatternListAdapter(itemCallback);
         binding.recyclerItems.setAdapter(adapter);
@@ -100,17 +100,16 @@ public class PatternListFragment extends Fragment {
     }
 
     private final PatternListCallback callback = new PatternListCallback() {
-
         @Override
         public void onToMoveButtonClick(List<Item> items) {
-
+            viewModel.openDialog();
         }
     };
 
     private final BuyListCallback itemCallback = new BuyListCallback() {
         @Override
         public void onItemClick(Item item) {
-
+            viewModel.btnToMoveShow.set(true);
         }
 
         @Override

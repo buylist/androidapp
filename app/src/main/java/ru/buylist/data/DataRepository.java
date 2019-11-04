@@ -63,7 +63,7 @@ public class DataRepository {
 
     public LiveData<List<Collection>> getCollection(String type) {
         Log.i(TAG, "Repository return Collection type: " + type);
-        return database.collectionDao().getCollection(type);
+        return database.collectionDao().getLiveCollection(type);
     }
 
     public LiveData<Collection> getCollection(final long id) {

@@ -1,9 +1,11 @@
 package ru.buylist.pattern_list;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
@@ -46,6 +48,13 @@ public class PatternListActivity extends SingleFragmentActivity {
 
         // открытие CategoryFragment
         viewModel.getItemCreated().observe(this, itemId -> setCategory(itemId));
+
+        viewModel.getDialogEvent().observe(this, new Observer<Void>() {
+            @Override
+            public void onChanged(@Nullable Void aVoid) {
+                PatternDialog.newInstance().show(getSupportFragmentManager(), "custom");
+            }
+        });
 
         // временное решение
         BuyListViewModel buyViewmodel = ViewModelProviders.of(this).get(BuyListViewModel.class);

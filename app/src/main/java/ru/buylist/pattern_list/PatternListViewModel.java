@@ -7,7 +7,6 @@ import android.databinding.ObservableArrayList;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableList;
-import android.widget.EditText;
 
 import java.util.List;
 
@@ -40,7 +39,14 @@ public class PatternListViewModel extends AndroidViewModel {
     // Отслеживает нажатие на кнопки "Далее" и "Пропустить" в CategoryFragment для перехода в список
     public SingleLiveEvent<Long> categoryAdded = new SingleLiveEvent<>();
 
+    // Открытие диалогового окна
+    private SingleLiveEvent<Void> dialogEvent = new SingleLiveEvent<>();
+
     private DataRepository repository;
+
+
+
+
 
     public PatternListViewModel(Application context) {
         super(context);
@@ -55,8 +61,16 @@ public class PatternListViewModel extends AndroidViewModel {
         return categoryAdded;
     }
 
+    public SingleLiveEvent<Void> getDialogEvent() {
+        return dialogEvent;
+    }
+
     LiveData<Collection> getCollection(long id) {
         return repository.getCollection(id);
+    }
+
+    LiveData<List<Collection>> getCollections(String type) {
+        return repository.getCollection(type);
     }
 
     LiveData<List<Item>> getItems(long id) {
@@ -160,5 +174,10 @@ public class PatternListViewModel extends AndroidViewModel {
 
     public void deleteItem(Item item) {
         repository.deleteItem(item);
+    }
+
+    public void openDialog() {
+        dialogEvent.call();
+        btnToMoveShow.set(false);
     }
 }
