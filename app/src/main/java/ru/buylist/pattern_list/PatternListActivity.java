@@ -1,11 +1,9 @@
 package ru.buylist.pattern_list;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
@@ -46,21 +44,18 @@ public class PatternListActivity extends SingleFragmentActivity {
                 this, R.layout.activity_pattern_list);
 
         viewModel = obtainViewModel(this);
+        binding.setViewmodel(viewModel);
 
         // открытие CategoryFragment
-        viewModel.getItemCreated().observe(this, itemId -> setCategory(itemId));
+        viewModel.getNewCategoryEvent().observe(this, itemId -> setCategory(itemId));
 
-        viewModel.getDialogEvent().observe(this, new Observer<Void>() {
-            @Override
-            public void onChanged(@Nullable Void aVoid) {
-                PatternDialog.newInstance().show(getSupportFragmentManager(), "custom");
-            }
-        });
+        viewModel.getDialogEvent().observe(this, aVoid ->
+                PatternDialog.newInstance().show(getSupportFragmentManager(), "custom"));
 
         // временное решение
         BuyListViewModel buyViewmodel = ViewModelProviders.of(this).get(BuyListViewModel.class);
-        buyViewmodel.getCategoryUpdated().observe(this, collectionId -> saveCategory(collectionId));
-        binding.setViewmodel(viewModel);
+        buyViewmodel.getReturnToListEvent().observe(this, collectionId ->
+                returnToPattern(collectionId));
     }
 
     // вызов CategoryFragment
@@ -73,7 +68,7 @@ public class PatternListActivity extends SingleFragmentActivity {
     }
 
     // возврат к PatternListFragment
-    private void saveCategory(long collectionId) {
+    private void returnToPattern(long collectionId) {
         Fragment fragment = PatternListFragment.newInstance(collectionId);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)

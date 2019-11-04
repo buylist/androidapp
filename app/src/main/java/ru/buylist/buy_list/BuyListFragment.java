@@ -115,7 +115,7 @@ public class BuyListFragment extends Fragment {
         FloatingActionButton visibilityFab = getActivity().findViewById(R.id.fab_visibility);
 
         newItemFab.setOnClickListener(v -> {
-            viewModel.showNewProductLayout(productField);
+            viewModel.showLayoutFields(productField);
             setupCreateButton(0);
         });
         Log.i(TAG, "ShoppingList newFAB activated");
@@ -130,11 +130,7 @@ public class BuyListFragment extends Fragment {
     private void setupCreateButton(final long itemId) {
         ImageButton createButton = getActivity().findViewById(R.id.btn_create_item);
         createButton.setOnClickListener(v -> {
-            if (itemId == 0) {
-                viewModel.saveItem(productField, collection.getId(), itemId);
-            } else {
-                viewModel.updateItem(productField, itemId);
-            }
+            viewModel.saveItem(productField, collection.getId(), itemId);
             Log.i(TAG, "ShoppingList save new item: " + itemId);
         });
     }
@@ -161,7 +157,7 @@ public class BuyListFragment extends Fragment {
         @Override
         public void onDeleteButtonClick(Item item) {
             Log.i(TAG, "BuyList delete item: " + item.getId());
-            viewModel.makeAction(Action.DELETE, item);
+            viewModel.deleteItem(item);
             adapter.closeAllItems();
         }
 

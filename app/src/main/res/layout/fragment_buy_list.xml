@@ -76,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="@{viewmodel.layoutNewProductVisibility ? View.VISIBLE : View.GONE}">
+                android:visibility="@{viewmodel.layoutFieldsShow ? View.VISIBLE : View.GONE}">
 
                 <EditText
                     android:id="@+id/field_name"

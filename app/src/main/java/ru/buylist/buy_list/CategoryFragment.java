@@ -100,10 +100,10 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                     SnackbarUtils.showSnackbar(v, getString(R.string.category_is_empty));
                     break;
                 }
-                viewModel.updateCategory(categoryText.getText().toString(), item, type);
+                viewModel.updateCategory(categoryText.getText().toString(), item);
                 break;
             case R.id.button_skip:
-                viewModel.skipCategory(item, type);
+                viewModel.skipCategory(item);
                 break;
         }
     }

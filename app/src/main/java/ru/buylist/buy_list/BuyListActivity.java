@@ -1,11 +1,9 @@
 package ru.buylist.buy_list;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -53,32 +51,23 @@ public class BuyListActivity extends SingleFragmentActivity {
     protected void setupViewModel() {
         ActivityBuyListBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_buy_list);
         viewModel = obtainViewModel(this);
+        binding.setViewmodel(viewModel);
 
+        // открытие CategoryFragment
         viewModel.getNewCategoryEvent().observe(this, itemId -> {
             Log.i(TAG, "ShoppingActivity: new category event");
-            createNewItem(itemId);
+            setCategory(itemId);
         });
 
-        viewModel.getAddProductEvent().observe(this, collectionId -> {
+        // Возврат к BuyList
+        viewModel.getReturnToListEvent().observe(this, collectionId -> {
             Log.i(TAG, "ShoppingActivity: update product list event");
-            updateProductsList(collectionId);
+            returnToBuyList(collectionId);
         });
 
-        viewModel.getDialogEvent().observe(this, new Observer<Void>() {
-            @Override
-            public void onChanged(@Nullable Void aVoid) {
-                PatternDialog.newInstance().show(getSupportFragmentManager(), "dialog");
-            }
-        });
-
-        binding.setViewmodel(viewModel);
-    }
-
-    private void createNewItem(long itemId) {
-        Fragment fragment = CategoryFragment.newInstance(itemId, CollectionType.BuyList);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
+        // открытие диалога
+        viewModel.getDialogEvent().observe(this, aVoid ->
+                PatternDialog.newInstance().show(getSupportFragmentManager(), "dialog"));
     }
 
     @Override
@@ -99,7 +88,14 @@ public class BuyListActivity extends SingleFragmentActivity {
         }
     }
 
-    public void updateProductsList(long collectionId) {
+    private void setCategory(long itemId) {
+        Fragment fragment = CategoryFragment.newInstance(itemId, CollectionType.BuyList);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
+
+    public void returnToBuyList(long collectionId) {
         Fragment fragment = BuyListFragment.newInstance(collectionId);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)

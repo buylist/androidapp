@@ -66,6 +66,7 @@ public class RecipeListFragment extends Fragment {
         return binding.getRoot();
     }
 
+    // подписка на изменения спика для обновления
     private void subscribeUi(LiveData<List<Item>> liveData) {
         liveData.observe(this, newItems -> {
             if (newItems != null) {
@@ -81,16 +82,16 @@ public class RecipeListFragment extends Fragment {
         liveData.observe(this, newCollection -> collection = newCollection);
     }
 
+    // устанавливаем кнопку создания товара
+    // для создания нового товара передаем в метод 0
+    // для редактирования существующего товара - его индентификатор
     private void setupCreateButton(final long itemId) {
         binding.btnCreateItem.setOnClickListener(v -> {
-            if (itemId == 0) {
-                viewModel.saveItem(collection.getId());
-            } else {
-                viewModel.updateItem(itemId);
-            }
+            viewModel.saveItem(collection.getId(), itemId);
         });
     }
 
+    // callback'и кликов по кнопкам создания товара, инструкции, сохранение инструкции
     private final RecipeListCallback callback = new RecipeListCallback() {
         @Override
         public void onNewIngredientButtonClick() {
@@ -116,6 +117,7 @@ public class RecipeListFragment extends Fragment {
         }
     };
 
+    // callback'и для адаптера, возвращает клики по кнопка свайпа
     private final ItemCallback itemCallback = new ItemCallback() {
         @Override
         public void onItemClick(Item item) {

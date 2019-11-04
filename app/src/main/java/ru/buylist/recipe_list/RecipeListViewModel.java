@@ -38,10 +38,7 @@ public class RecipeListViewModel extends AndroidViewModel {
     public final ObservableField<String> instruction = new ObservableField<>("");
 
     // Отслеживание нового товара для открытия CategoryFragment
-    private SingleLiveEvent<Long> itemCreated = new SingleLiveEvent<>();
-
-    // Отслеживает нажатие на кнопки "Далее" и "Пропустить" в CategoryFragment для перехода в список
-    public SingleLiveEvent<Long> categoryAdded = new SingleLiveEvent<>();
+    private SingleLiveEvent<Long> newCategoryEvent = new SingleLiveEvent<>();
 
     // Открытие диалогового окна
     private SingleLiveEvent<Void> dialogEvent = new SingleLiveEvent<>();
@@ -50,24 +47,27 @@ public class RecipeListViewModel extends AndroidViewModel {
 
 
 
-
-
     public RecipeListViewModel(Application context) {
         super(context);
         repository = ((BuylistApp) context.getApplicationContext()).getRepository();
     }
 
-    SingleLiveEvent<Long> getItemCreated() {
-        return itemCreated;
+
+    /**
+     *  get Event
+    * */
+    SingleLiveEvent<Long> getNewCategoryEvent() {
+        return newCategoryEvent;
     }
 
-    SingleLiveEvent<Long> getCategoryAdded() {
-        return categoryAdded;
-    }
-
-    public SingleLiveEvent<Void> getDialogEvent() {
+    SingleLiveEvent<Void> getDialogEvent() {
         return dialogEvent;
     }
+
+
+    /**
+     *  get LiveData / work with repository
+    * */
 
     LiveData<Collection> getCollection(long id) {
         return repository.getCollection(id);
@@ -81,16 +81,28 @@ public class RecipeListViewModel extends AndroidViewModel {
         return repository.getLiveItems(id);
     }
 
-    // onFabClick
+    public void deleteItem(Item item) {
+        repository.deleteItem(item);
+    }
+
+
+    /**
+     *  main
+    * */
+
+    // отображение полей для ввода товара
     public void addNewItem() {
         layoutFieldsShow.set(true);
     }
 
-    public void saveItem(long collectionId) {
-        Item item = new Item();
+    // новый товар добавляет в базу, существующий - обновляет
+    public void saveItem(long collectionId, long itemId) {
+        // id != 0 при редактировании товара, создавать новый не требуется
+        Item item = (itemId == 0 ? new Item() : new Item(itemId));
         item.setName(itemName.get());
         if (item.isEmpty()) {
-            // товар не может быть пустым, ничего не делаем
+            // товар не может быть пустым, обнуляем и скрываем layout
+            clearFields();
             layoutFieldsShow.set(false);
             return;
         }
@@ -98,21 +110,25 @@ public class RecipeListViewModel extends AndroidViewModel {
         item.setCollectionId(collectionId);
         item.setQuantity(quantity.get());
         item.setUnit(unit.get());
-        repository.addItem(item);
 
+        // новый товар добавляется в базу, редактируемый - обновляется
+        if (itemId == 0) {
+            repository.addItem(item);
+        } else {
+            repository.updateItem(item);
+        }
+
+        // если товар новый - открывается CategoryFragment для выбора категории
         if (isNewItem(item)) {
-            createItem(item);
+            newCategoryEvent.setValue(item.getId());
         }
 
         layoutFieldsShow.set(false);
         clearFields();
     }
 
-    public void savecategory(long productId) {
-
-    }
-
     // проверка на наличие в GlobalProductTable
+    // если товар уже есть в глобальной базе - цепляем категорию и цвет
     private boolean isNewItem(Item item) {
         GlobalItem globalItem = repository.getGlobalItem(item.getName());
         if (globalItem == null || globalItem.getName() == null) {
@@ -125,33 +141,7 @@ public class RecipeListViewModel extends AndroidViewModel {
         }
     }
 
-    // добавление в базу и т.к. товар новый - вызов event для открытия фрагмента с выбором категории
-    private void createItem(Item item) {
-        itemCreated.setValue(item.getId());
-    }
-
-    // обновление товара в базе
-    public void updateItem(long itemId) {
-        Item item = repository.getItem(itemId);
-        item.setName(itemName.get());
-        if (item.isEmpty()) {
-            // товар не может быть пустым, обнуляем и скрываем layout
-            clearFields();
-            layoutFieldsShow.set(false);
-            return;
-        }
-
-        item.setQuantity(quantity.get());
-        item.setUnit(unit.get());
-        repository.updateItem(item);
-
-        if (isNewItem(item)) {
-            itemCreated.setValue(item.getId());
-        }
-        clearFields();
-        layoutFieldsShow.set(false);
-    }
-
+    // при добавлении нового товара список обновляется
     public void loadItems(List<Item> items) {
         this.items.clear();
         this.items.addAll(items);
@@ -163,15 +153,12 @@ public class RecipeListViewModel extends AndroidViewModel {
         unit.set("");
     }
 
+    // отображение полей для редактирования товара
     public void editItem(Item item) {
         layoutFieldsShow.set(true);
         itemName.set(item.getName());
         quantity.set(item.getQuantity());
         unit.set(item.getUnit());
-    }
-
-    public void deleteItem(Item item) {
-        repository.deleteItem(item);
     }
 
     public void openDialog() {

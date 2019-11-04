@@ -67,6 +67,7 @@ public class PatternListFragment extends Fragment {
         return binding.getRoot();
     }
 
+    // подписка на изменения списка товаров
     private void subscribeUi(LiveData<List<Item>> liveData) {
         liveData.observe(this, newItems -> {
             if (newItems != null) {
@@ -90,16 +91,16 @@ public class PatternListFragment extends Fragment {
         });
     }
 
+    // устанавливаем кнопку создания товара
+    // для создания нового товара передаем в метод 0
+    // для обновления существующего товара - его идентификатор
     private void setupCreateButton(final long itemId) {
         binding.btnCreateItem.setOnClickListener(v -> {
-            if (itemId == 0) {
-                viewModel.saveItem(collection.getId());
-            } else {
-                viewModel.updateItem(itemId);
-            }
+            viewModel.saveItem(collection.getId(), itemId);
         });
     }
 
+    // callback кликов по кнопке переноса товаров в список
     private final PatternListCallback callback = new PatternListCallback() {
         @Override
         public void onToMoveButtonClick(List<Item> items) {
@@ -107,6 +108,7 @@ public class PatternListFragment extends Fragment {
         }
     };
 
+    // callback'и для адаптера, возвращает клики по кнопкам свайпа
     private final ItemCallback itemCallback = new ItemCallback() {
         @Override
         public void onItemClick(Item item) {
