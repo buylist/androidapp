@@ -22,6 +22,10 @@
             android:name=".pattern_list.PatternListActivity"
             android:parentActivityName=".collection_lists.CollectionActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".recipe_list.RecipeListActivity"
+            android:parentActivityName=".collection_lists.CollectionActivity"
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".collection_lists.CollectionActivity"

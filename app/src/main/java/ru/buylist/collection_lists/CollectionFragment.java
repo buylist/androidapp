@@ -28,6 +28,7 @@ public class CollectionFragment extends Fragment {
 
     private CollectionAdapter buyListAdapter;
     private CollectionAdapter patternAdapter;
+    private CollectionAdapter recipeAdapter;
     private FragmentCollectionBinding binding;
 
     private Callbacks callbacks;
@@ -84,6 +85,7 @@ public class CollectionFragment extends Fragment {
         viewModel = ViewModelProviders.of(this).get(CollectionViewModel.class);
         subscribeBuyList(viewModel.getCollectionOfList());
         subscribePatternList(viewModel.getCollectionOfPattern());
+        subscribeRecipeList(viewModel.getCollectionOfRecipe());
     }
 
     private void initUi(View view) {
@@ -95,7 +97,7 @@ public class CollectionFragment extends Fragment {
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
-        onNewBuyListButtonClick();
+        onNewCollectionButtonClick();
         onCreateBuyListButtonClick();
         onCardListViewClick();
     }
@@ -106,13 +108,17 @@ public class CollectionFragment extends Fragment {
 
         patternAdapter = new CollectionAdapter(collectionClickCallback);
         binding.recyclerPattern.setAdapter(patternAdapter);
-        Log.i(TAG, "Buylist buyListAdapter created");
+
+        recipeAdapter = new CollectionAdapter(collectionClickCallback);
+        binding.recyclerRecipe.setAdapter(recipeAdapter);
+
+        Log.i(TAG, "Collection adapters created");
     }
 
     private void subscribeBuyList(LiveData<List<Collection>> liveData) {
         liveData.observe(this, collections -> {
             if (collections != null) {
-                Log.i(TAG, "Collection livedata new size: " + collections.size());
+                Log.i(TAG, "BuyList updated.");
                 buyListAdapter.setLists(collections);
             }
             binding.executePendingBindings();
@@ -122,14 +128,24 @@ public class CollectionFragment extends Fragment {
     private void subscribePatternList(LiveData<List<Collection>> liveData) {
         liveData.observe(this, collections -> {
             if (collections != null) {
-                Log.i(TAG, "Collection livedata new size: " + collections.size());
+                Log.i(TAG, "Pattern updated.");
                 patternAdapter.setLists(collections);
             }
             binding.executePendingBindings();
         });
     }
 
-    private void onNewBuyListButtonClick() {
+    private void subscribeRecipeList(LiveData<List<Collection>> liveData) {
+        liveData.observe(this, collections -> {
+            if (collections != null) {
+                Log.i(TAG, "Recipe updated.");
+                recipeAdapter.setLists(collections);
+            }
+            binding.executePendingBindings();
+        });
+    }
+
+    private void onNewCollectionButtonClick() {
         binding.btnNewBuyList.setOnClickListener(v -> {
             binding.setIsLoading(true); // отображение слоя с полями для ввода
             binding.setShow(true);      // отображение recyclerView
@@ -142,6 +158,14 @@ public class CollectionFragment extends Fragment {
             binding.layoutPatternListFields.setVisibility(View.VISIBLE);
             patternAdapter.closeAllItems();
             KeyboardUtils.showKeyboard(binding.fieldNamePatternList, getActivity());
+        });
+
+        binding.btnNewRecipe.setOnClickListener(v -> {
+            binding.recyclerRecipe.setVisibility(View.VISIBLE);
+            binding.layoutRecipeListFields.setVisibility(View.VISIBLE);
+            recipeAdapter.closeAllItems();
+            KeyboardUtils.showKeyboard(binding.fieldNameRecipeList, getActivity());
+
         });
     }
 
@@ -170,6 +194,19 @@ public class CollectionFragment extends Fragment {
                 binding.recyclerPattern.setVisibility(View.VISIBLE);
             } else {
                 binding.recyclerPattern.setVisibility(View.GONE);
+            }
+        });
+
+        binding.cardRecipe.setOnClickListener(v -> {
+            recipeAdapter.closeAllItems();
+            binding.fieldNameRecipeList.setText("");
+            binding.layoutRecipeListFields.setVisibility(View.GONE);
+            KeyboardUtils.hideKeyboard(binding.fieldNameRecipeList, getActivity());
+
+            if (binding.recyclerRecipe.getVisibility() == View.GONE) {
+                binding.recyclerRecipe.setVisibility(View.VISIBLE);
+            } else {
+                binding.recyclerRecipe.setVisibility(View.GONE);
             }
         });
     }
@@ -201,6 +238,19 @@ public class CollectionFragment extends Fragment {
             binding.fieldNamePatternList.setText("");
             binding.layoutPatternListFields.setVisibility(View.GONE);
             KeyboardUtils.hideKeyboard(binding.fieldNamePatternList, getActivity());
+        });
+
+        binding.btnCreateRecipeList.setOnClickListener(v -> {
+            if (binding.fieldNameRecipeList.getText().length() != 0) {
+                Collection collection = new Collection();
+                collection.setTitle(binding.fieldNameRecipeList.getText().toString());
+                collection.setType(RECIPE);
+                viewModel.addCollection(collection);
+            }
+
+            binding.fieldNameRecipeList.setText("");
+            binding.layoutRecipeListFields.setVisibility(View.GONE);
+            KeyboardUtils.hideKeyboard(binding.fieldNameRecipeList, getActivity());
         });
     }
 

@@ -27,6 +27,7 @@ public class RecipeListViewModel extends AndroidViewModel {
     public final ObservableBoolean btnToMoveShow = new ObservableBoolean(false);
     public final ObservableBoolean layoutFieldsShow = new ObservableBoolean(false);
     public final ObservableBoolean fieldInstructionShow = new ObservableBoolean(false);
+    public final ObservableBoolean bottomShow = new ObservableBoolean(true);
 
     // Поля для ввода нового товара
     public final ObservableField<String> itemName = new ObservableField<>();

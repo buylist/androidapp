@@ -1,27 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:ignore="Autofill">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_margin="16dp" />
+    <data>
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation"
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="ru.buylist.recipe_list.RecipeListViewModel" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:itemBackground="@color/color_bn_primary"
-        app:itemIconTint="@color/color_icon_bn"
-        app:itemTextColor="@color/color_icon_bn"
-        app:menu="@menu/bottom_navigation_menu" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="Autofill">
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="16dp" />
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:itemBackground="@color/color_bn_primary"
+            app:itemIconTint="@color/color_icon_bn"
+            app:itemTextColor="@color/color_icon_bn"
+            app:menu="@menu/bottom_navigation_menu"
+            android:visibility="@{viewmodel.bottomShow ? View.VISIBLE : View.GONE}"/>
+    </LinearLayout>
+</layout>

@@ -8,6 +8,8 @@ import ru.buylist.R;
 
 import ru.buylist.pattern_list.PatternListActivity;
 import ru.buylist.pattern_list.PatternListFragment;
+import ru.buylist.recipe_list.RecipeListActivity;
+import ru.buylist.recipe_list.RecipeListFragment;
 import ru.buylist.utils.SingleFragmentActivity;
 import ru.buylist.data.entity.Collection;
 import ru.buylist.buy_list.BuyListFragment;
@@ -48,6 +50,17 @@ public class CollectionActivity extends SingleFragmentActivity implements Collec
                     startActivity(intent);
                 } else {
                     Fragment newDetail = PatternListFragment.newInstance(collection.getId());
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.detail_fragment_container, newDetail)
+                            .commit();
+                }
+                break;
+            case CollectionType.RECIPE:
+                if (findViewById(R.id.detail_fragment_container) == null) {
+                    Intent intent = RecipeListActivity.newIntent(this, collection.getId());
+                    startActivity(intent);
+                } else {
+                    Fragment newDetail = RecipeListFragment.newInstance(collection.getId());
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.detail_fragment_container, newDetail)
                             .commit();

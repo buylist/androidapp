@@ -222,6 +222,7 @@ public class BuyListViewModel extends AndroidViewModel {
                 Log.i(TAG, "ShoppingViewModel set new productEvent");
                 break;
             case CollectionType.PATTERN:
+            case CollectionType.RECIPE:
                 updateItemsList(item);
                 categoryUpdated.setValue(item.getCollectionId());
                 break;
@@ -249,6 +250,7 @@ public class BuyListViewModel extends AndroidViewModel {
                 Log.i(TAG, "ShoppingViewModel set new product event: skip");
                 break;
             case CollectionType.PATTERN:
+            case CollectionType.RECIPE:
                 categoryUpdated.setValue(item.getCollectionId());
                 break;
         }
