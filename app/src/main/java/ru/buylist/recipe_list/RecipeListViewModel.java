@@ -29,10 +29,13 @@ public class RecipeListViewModel extends AndroidViewModel {
     public final ObservableBoolean fieldInstructionShow = new ObservableBoolean(false);
     public final ObservableBoolean bottomShow = new ObservableBoolean(true);
 
-    // Поля для ввода нового товара
+    // Поля для ввода нового ингредиента
     public final ObservableField<String> itemName = new ObservableField<>();
     public final ObservableField<String> quantity = new ObservableField<>("");
     public final ObservableField<String> unit = new ObservableField<>("");
+
+    //Поле инструкции
+    public final ObservableField<String> instruction = new ObservableField<>("");
 
     // Отслеживание нового товара для открытия CategoryFragment
     private SingleLiveEvent<Long> itemCreated = new SingleLiveEvent<>();

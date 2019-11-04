@@ -50,7 +50,8 @@
             <!--Layout с кнопкой добавления нового ингредиента-->
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="@{viewmodel.layoutFieldsShow ? View.GONE : View.VISIBLE}">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -151,19 +152,31 @@
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_add_recipe"
+                    android:visibility="@{viewmodel.fieldInstructionShow ? View.GONE : View.VISIBLE}"
                     android:onClick="@{()-> callback.onNewInstructionButtonClick()}"/>
+                <ImageButton
+                    android:id="@+id/btn_save_instruction"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_new_product"
+                    android:background="@android:color/transparent"
+                    android:visibility="@{viewmodel.fieldInstructionShow ? View.VISIBLE : View.GONE}"
+                    android:onClick="@{()-> callback.onSaveInstructionButtonClick()}"/>
             </RelativeLayout>
 
             <EditText
                 android:id="@+id/field_instruction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="5"
+                android:text="@={viewmodel.instruction}"
                 android:visibility="@{viewmodel.fieldInstructionShow ? View.VISIBLE : View.GONE}"/>
             <TextView
                 android:id="@+id/text_view_instruction"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@color/colorTextSecondary"/>
 
         </LinearLayout>
 

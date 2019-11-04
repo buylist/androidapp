@@ -104,7 +104,14 @@ public class RecipeListFragment extends Fragment {
 
         @Override
         public void onNewInstructionButtonClick() {
+            viewModel.fieldInstructionShow.set(true);
+        }
 
+        @Override
+        public void onSaveInstructionButtonClick() {
+            String newInstruction = viewModel.instruction.get();
+            binding.textViewInstruction.setText(newInstruction);
+            viewModel.fieldInstructionShow.set(false);
         }
 
         @Override

@@ -20,4 +20,6 @@ public interface RecipeListCallback {
     void onNewIngredientButtonClick();
 
     void onNewInstructionButtonClick();
+
+    void onSaveInstructionButtonClick();
 }
