@@ -58,6 +58,7 @@ public class CollectionFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         callbacks = null;
+        viewModel.clearTemporaryStorage();
     }
 
     @Override
@@ -116,6 +117,7 @@ public class CollectionFragment extends Fragment {
             if (collections != null) {
                 Log.i(TAG, "BuyList updated.");
                 buyListAdapter.setLists(collections);
+                viewModel.saveToTemporaryStorage(collections, BuyList);
             }
             binding.executePendingBindings();
         });
@@ -126,6 +128,7 @@ public class CollectionFragment extends Fragment {
             if (collections != null) {
                 Log.i(TAG, "Pattern updated.");
                 patternAdapter.setLists(collections);
+                viewModel.saveToTemporaryStorage(collections, PATTERN);
             }
             binding.executePendingBindings();
         });
@@ -136,6 +139,7 @@ public class CollectionFragment extends Fragment {
             if (collections != null) {
                 Log.i(TAG, "Recipe updated.");
                 recipeAdapter.setLists(collections);
+                viewModel.saveToTemporaryStorage(collections, RECIPE);
             }
             binding.executePendingBindings();
         });

@@ -10,6 +10,7 @@ import android.util.Log;
 
 import java.util.List;
 
+import ru.buylist.data.TemporaryDataStorage;
 import ru.buylist.utils.BuylistApp;
 import ru.buylist.data.DataRepository;
 import ru.buylist.data.entity.Collection;
@@ -35,6 +36,7 @@ public class CollectionViewModel extends AndroidViewModel {
 
 
     private final DataRepository repository;
+    private final TemporaryDataStorage storage;
     private LiveData<List<Collection>> collectionOfList;
     private LiveData<List<Collection>> collectionOfPattern;
     private LiveData<List<Collection>> collectionOfRecipe;
@@ -43,6 +45,7 @@ public class CollectionViewModel extends AndroidViewModel {
     public CollectionViewModel(@NonNull Application context) {
         super(context);
         repository = ((BuylistApp) context).getRepository();
+        storage = ((BuylistApp) context).getStorage();
 
         collectionOfList = repository.getCollection(CollectionType.BuyList);
         collectionOfPattern = repository.getCollection(CollectionType.PATTERN);
@@ -184,6 +187,14 @@ public class CollectionViewModel extends AndroidViewModel {
                 recyclerRecipeListShow.set(true);
                 break;
         }
+    }
+
+    public void saveToTemporaryStorage(List<Collection> collection, String type) {
+        storage.saveCollection(collection, type);
+    }
+
+    public void clearTemporaryStorage() {
+        storage.clearStorage();
     }
 
     private void clearFields() {

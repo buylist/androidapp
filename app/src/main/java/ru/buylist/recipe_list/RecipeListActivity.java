@@ -52,8 +52,8 @@ public class RecipeListActivity extends SingleFragmentActivity {
         viewModel.getNewCategoryEvent().observe(this, itemId -> setCategory(itemId));
 
         // открытие диалогового окна
-        viewModel.getDialogEvent().observe(this, aVoid ->
-                PatternDialog.newInstance().show(getSupportFragmentManager(), "custom"));
+        viewModel.getDialogEvent().observe(this, type ->
+                PatternDialog.newInstance(type).show(getSupportFragmentManager(), "custom"));
 
         // временное решение
         BuyListViewModel buyViewmodel = ViewModelProviders.of(this).get(BuyListViewModel.class);

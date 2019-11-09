@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.buylist.R;
+import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.data.entity.Collection;
 import ru.buylist.data.entity.Item;
 import ru.buylist.databinding.FragmentBuyListBinding;
@@ -137,12 +138,12 @@ public class BuyListFragment extends Fragment {
     private final BuyListCallback buyListCallback = new BuyListCallback() {
         @Override
         public void onPatternButtonClick() {
-            viewModel.openDialog();
+            viewModel.openDialog(CollectionType.PATTERN);
         }
 
         @Override
         public void onRecipeButtonClick() {
-            viewModel.openDialog();
+            viewModel.openDialog(CollectionType.RECIPE);
         }
     };
 

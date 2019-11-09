@@ -14,6 +14,8 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.buylist.collection_lists.CollectionType;
+import ru.buylist.data.TemporaryDataStorage;
 import ru.buylist.utils.BuylistApp;
 import ru.buylist.data.DataRepository;
 import ru.buylist.utils.KeyboardUtils;
@@ -42,6 +44,7 @@ public class BuyListViewModel extends AndroidViewModel {
     private final Context context;
 
     private DataRepository repository;
+    private TemporaryDataStorage storage;
 
     // Отслеживание нового товара для открытия CategoryFragment
     private SingleLiveEvent<Long> newCategoryEvent = new SingleLiveEvent<>();
@@ -50,19 +53,20 @@ public class BuyListViewModel extends AndroidViewModel {
     private SingleLiveEvent<Long> returnToListEvent = new SingleLiveEvent<>();
 
     // Отвечает за открытие диалогового окна
-    private SingleLiveEvent<Void> dialogEvent = new SingleLiveEvent<>();
+    private SingleLiveEvent<String> dialogEvent = new SingleLiveEvent<>();
 
 
     public BuyListViewModel(Application context) {
         super(context);
         this.context = context.getApplicationContext();
         repository = ((BuylistApp) context).getRepository();
+        storage = ((BuylistApp) context).getStorage();
     }
 
 
     /**
-     *  get Event
-    * */
+     * get Event
+     */
 
     public SingleLiveEvent<Long> getNewCategoryEvent() {
         return newCategoryEvent;
@@ -72,14 +76,14 @@ public class BuyListViewModel extends AndroidViewModel {
         return returnToListEvent;
     }
 
-    public SingleLiveEvent<Void> getDialogEvent() {
+    public SingleLiveEvent<String> getDialogEvent() {
         return dialogEvent;
     }
 
 
     /**
-     *  get LiveData / work with repository
-    * */
+     * get LiveData / work with repository
+     */
 
     public LiveData<Collection> getCollection(long collectionId) {
         Log.i(TAG, "ShoppingViewModel get live collection: " + collectionId);
@@ -117,8 +121,8 @@ public class BuyListViewModel extends AndroidViewModel {
 
 
     /**
-     *  main
-    * */
+     * main
+     */
 
     // новый товар добавляет в базу, существующий - обновляет
     public void saveItem(EditText targetField, long collectionId, long itemId) {
@@ -284,8 +288,8 @@ public class BuyListViewModel extends AndroidViewModel {
         bottomShow.set(false);
     }
 
-    public void openDialog() {
-        dialogEvent.call();
+    public void openDialog(String type) {
+        dialogEvent.setValue(type);
     }
 
     private void clearFields() {

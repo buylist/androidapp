@@ -1,9 +1,11 @@
 package ru.buylist.buy_list;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -68,8 +70,9 @@ public class BuyListActivity extends SingleFragmentActivity {
         });
 
         // открытие диалога
-        viewModel.getDialogEvent().observe(this, aVoid ->
-                PatternDialog.newInstance().show(getSupportFragmentManager(), "dialog"));
+        viewModel.getDialogEvent().observe(this, type ->
+                PatternDialog.newInstance(type)
+                        .show(BuyListActivity.this.getSupportFragmentManager(), "dialog"));
 
         setTitle(getIntent().getStringExtra(EXTRA_COLLECTION_TITLE));
     }

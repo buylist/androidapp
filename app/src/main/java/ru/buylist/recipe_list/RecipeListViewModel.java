@@ -41,7 +41,7 @@ public class RecipeListViewModel extends AndroidViewModel {
     private SingleLiveEvent<Long> newCategoryEvent = new SingleLiveEvent<>();
 
     // Открытие диалогового окна
-    private SingleLiveEvent<Void> dialogEvent = new SingleLiveEvent<>();
+    private SingleLiveEvent<String> dialogEvent = new SingleLiveEvent<>();
 
     private DataRepository repository;
 
@@ -60,7 +60,7 @@ public class RecipeListViewModel extends AndroidViewModel {
         return newCategoryEvent;
     }
 
-    SingleLiveEvent<Void> getDialogEvent() {
+    SingleLiveEvent<String> getDialogEvent() {
         return dialogEvent;
     }
 
