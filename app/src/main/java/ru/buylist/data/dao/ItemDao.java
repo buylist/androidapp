@@ -32,6 +32,9 @@ public interface ItemDao {
     @Query("SELECT * FROM items WHERE collectionId = :collectionId")
     List<Item> getItems(long collectionId);
 
+    @Query("SELECT * FROM items")
+    List<Item> getAllItems();
+
     @Query("SELECT * FROM items WHERE id = :id")
     LiveData<Item> getLiveItem(long id);
 

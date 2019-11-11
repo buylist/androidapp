@@ -25,6 +25,19 @@ public class Item {
         this.id = id;
     }
 
+    @Ignore
+    public Item(int count, long collectionId, String name, String category, String categoryColor, String quantity,
+                String unit) {
+        // для уникальности, т.к. при переносе нескольких позиций генерируемые id начинают совпадать
+        this.id = System.currentTimeMillis() + count;
+        this.collectionId = collectionId;
+        this.name = name;
+        this.category = category;
+        this.categoryColor = categoryColor;
+        this.quantity = quantity;
+        this.unit = unit;
+    }
+
     public long getId() {
         return id;
     }

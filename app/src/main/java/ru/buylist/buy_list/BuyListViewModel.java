@@ -14,7 +14,6 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.data.TemporaryDataStorage;
 import ru.buylist.utils.BuylistApp;
 import ru.buylist.data.DataRepository;
@@ -52,8 +51,11 @@ public class BuyListViewModel extends AndroidViewModel {
     // Отслеживает нажатие на кнопки "Далее" и "Пропустить" в CategoryFragment для перехода в список
     private SingleLiveEvent<Long> returnToListEvent = new SingleLiveEvent<>();
 
-    // Отвечает за открытие диалогового окна
-    private SingleLiveEvent<String> dialogEvent = new SingleLiveEvent<>();
+    // Отвечает за открытие диалогового окна "по шаблонам"
+    private SingleLiveEvent<Long> patternDialogEvent = new SingleLiveEvent<>();
+
+    // Отвечает за открытие диалогового окна "по рецептам"
+    private SingleLiveEvent<Long> recipeDialogEvent = new SingleLiveEvent<>();
 
 
     public BuyListViewModel(Application context) {
@@ -76,10 +78,13 @@ public class BuyListViewModel extends AndroidViewModel {
         return returnToListEvent;
     }
 
-    public SingleLiveEvent<String> getDialogEvent() {
-        return dialogEvent;
+    public SingleLiveEvent<Long> getPatternDialogEvent() {
+        return patternDialogEvent;
     }
 
+    public SingleLiveEvent<Long> getRecipeDialogEvent() {
+        return recipeDialogEvent;
+    }
 
     /**
      * get LiveData / work with repository
@@ -90,19 +95,23 @@ public class BuyListViewModel extends AndroidViewModel {
         return repository.getCollection(collectionId);
     }
 
+    public void updateCollection(Collection collection) {
+        repository.updateCollection(collection);
+        Log.i(TAG, "ShoppingViewModel update collection: " + collection.getId());
+    }
+
     public LiveData<List<Item>> getItems(long id) {
         Log.i(TAG, "ShoppingViewModel get live items of collectionId: " + id);
         return repository.getLiveItems(id);
     }
 
+    public List<Item> getAllItems() {
+        return repository.getAllItems();
+    }
+
     public Item getItem(long id) {
         Log.i(TAG, "ShoppingViewModel get item: " + id);
         return repository.getItem(id);
-    }
-
-    public void updateCollection(Collection collection) {
-        repository.updateCollection(collection);
-        Log.i(TAG, "ShoppingViewModel update collection: " + collection.getId());
     }
 
     public void deleteItem(Item item) {
@@ -288,8 +297,21 @@ public class BuyListViewModel extends AndroidViewModel {
         bottomShow.set(false);
     }
 
-    public void openDialog(String type) {
-        dialogEvent.setValue(type);
+    public void openPatternDialog(long collectionId) {
+        patternDialogEvent.setValue(collectionId);
+    }
+
+    public void openRecipeDialog(long collectionId) {
+        recipeDialogEvent.setValue(collectionId);
+    }
+
+    public void transferItems(List<Item> items, long collectionId) {
+        for (int i = 0; i < items.size(); i++) {
+            Item item = new Item(i, collectionId, items.get(i).getName(), items.get(i).getCategory(),
+                    items.get(i).getCategoryColor(), items.get(i).getQuantity(),
+                    items.get(i).getUnit());
+            repository.addItem(item);
+        }
     }
 
     private void clearFields() {
@@ -297,5 +319,4 @@ public class BuyListViewModel extends AndroidViewModel {
         quantity.set("");
         unit.set("");
     }
-
 }

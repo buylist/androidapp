@@ -58,7 +58,6 @@ public class CollectionFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         callbacks = null;
-        viewModel.clearTemporaryStorage();
     }
 
     @Override

@@ -130,6 +130,17 @@ public class DataRepository {
         return database.itemDao().getLiveItems(collectionId);
     }
 
+    public List<Item> getAllItems() {
+        FutureTask<List<Item>> task = new FutureTask<>(() -> database.itemDao().getAllItems());
+        executors.discIO().execute(task);
+        try {
+            return task.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     /**
      * Методы для работы с товарами из глобальной базы

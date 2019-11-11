@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.buylist.R;
-import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.data.entity.Collection;
 import ru.buylist.data.entity.Item;
 import ru.buylist.databinding.FragmentBuyListBinding;
@@ -33,6 +32,7 @@ public class BuyListFragment extends Fragment {
 
     private Collection collection;
     private List<Item> items;
+    private long collectionId;
 
     private BuyListViewModel viewModel;
     private FragmentBuyListBinding binding;
@@ -59,7 +59,7 @@ public class BuyListFragment extends Fragment {
 
         viewModel = BuyListActivity.obtainViewModel(getActivity());
 
-        long collectionId = getArguments().getLong(ARG_COLLECTION_ID);
+        collectionId = getArguments().getLong(ARG_COLLECTION_ID);
         Log.i(TAG, "BuyListFragment get collectionId: " + collectionId);
 
         viewModel.showActivityLayout();
@@ -138,12 +138,12 @@ public class BuyListFragment extends Fragment {
     private final BuyListCallback buyListCallback = new BuyListCallback() {
         @Override
         public void onPatternButtonClick() {
-            viewModel.openDialog(CollectionType.PATTERN);
+            viewModel.openPatternDialog(collection.getId());
         }
 
         @Override
         public void onRecipeButtonClick() {
-            viewModel.openDialog(CollectionType.RECIPE);
+            viewModel.openRecipeDialog(collection.getId());
         }
     };
 
