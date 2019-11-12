@@ -210,6 +210,10 @@ public class BuyListViewModel extends AndroidViewModel {
     // создается новый глобальный товар и добавляется в БД
     public void updateCategory(String categoryName, Item item) {
         Category category = repository.getCategory(categoryName);
+        if (category == null) {
+            return;
+        }
+
         GlobalItem globalItem = new GlobalItem(
                 item.getName(), item.getCategory(), item.getCategoryColor());
 
