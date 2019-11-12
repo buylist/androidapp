@@ -2,14 +2,12 @@ package ru.buylist.buy_list;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ru.buylist.data.TemporaryDataStorage;
@@ -21,8 +19,8 @@ import ru.buylist.utils.BuylistApp;
 public class BuyListDialog extends DialogFragment {
 
     private static final String TAG = "BuyListDialog";
-    private static final String ARG_BUY_LIST_DIALOG_TYPE = "arg_buy_list_dialog_type";
-    private static final String ARG_BUY_LIST_DIALOG_ID = "arg_buy_list_dialog_id";
+    private static final String ARG_COLLECTION_TYPE = "arg_buy_list_dialog_type";
+    private static final String ARG_COLLECTION_ID = "arg_buy_list_dialog_id";
 
     private TemporaryDataStorage storage;
     private BuyListViewModel viewModel;
@@ -32,8 +30,8 @@ public class BuyListDialog extends DialogFragment {
 
     public static BuyListDialog newInstance(String type, long collectionId) {
         Bundle args = new Bundle();
-        args.putString(ARG_BUY_LIST_DIALOG_TYPE, type);
-        args.putLong(ARG_BUY_LIST_DIALOG_ID, collectionId);
+        args.putString(ARG_COLLECTION_TYPE, type);
+        args.putLong(ARG_COLLECTION_ID, collectionId);
 
         BuyListDialog dialog = new BuyListDialog();
         dialog.setArguments(args);
@@ -57,13 +55,10 @@ public class BuyListDialog extends DialogFragment {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         dialog.setTitle("Коллекция списков")
                 .setCancelable(false)
-                .setPositiveButton("Готово", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setPositiveButton("Готово", (dialog12, which) -> {
 //                        transferItems();
-                        chooseItemsFrom();
-                        dialog.cancel();
-                    }
+                    chooseItemsFrom();
+                    dialog12.cancel();
                 });
 
         dialog.setSingleChoiceItems(collectionTitle, -1, (dialog1, which) -> {
@@ -73,9 +68,16 @@ public class BuyListDialog extends DialogFragment {
         return dialog.create();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        storage.saveSelectedCollection(getArguments().getLong(ARG_COLLECTION_ID));
+    }
+
     private String[] getCollectionTitle() {
         List<Collection> collection = storage
-                .loadCollection(getArguments().getString(ARG_BUY_LIST_DIALOG_TYPE));
+                .loadCollection(getArguments().getString(ARG_COLLECTION_TYPE));
 
         String[] titles = new String[collection.size()];
         for (int i = 0; i < collection.size(); i++) {
@@ -86,26 +88,8 @@ public class BuyListDialog extends DialogFragment {
 
     private void chooseItemsFrom() {
         List<Collection> collection = storage
-                .loadCollection(getArguments().getString(ARG_BUY_LIST_DIALOG_TYPE));
+                .loadCollection(getArguments().getString(ARG_COLLECTION_TYPE));
 
         viewModel.chooseItemsFrom(collection.get(count));
-    }
-
-    private void transferItems() {
-        if (count < 0) {
-            return;
-        }
-
-        List<Collection> collection = storage
-                .loadCollection(getArguments().getString(ARG_BUY_LIST_DIALOG_TYPE));
-        long collectionId = getArguments().getLong(ARG_BUY_LIST_DIALOG_ID);
-
-        List<Item> itemsToTransfer = new ArrayList<>();
-        for (Item item : items) {
-            if (item.getCollectionId() == collection.get(count).getId()) {
-                itemsToTransfer.add(item);
-            }
-        }
-        viewModel.transferItems(itemsToTransfer, collectionId);
     }
 }

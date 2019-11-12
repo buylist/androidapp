@@ -10,6 +10,8 @@ import android.databinding.ObservableList;
 
 import java.util.List;
 
+import ru.buylist.collection_lists.CollectionType;
+import ru.buylist.data.TemporaryDataStorage;
 import ru.buylist.data.entity.Collection;
 import ru.buylist.utils.BuylistApp;
 import ru.buylist.data.DataRepository;
@@ -39,13 +41,17 @@ public class PatternListViewModel extends AndroidViewModel {
     // Открытие диалогового окна
     private SingleLiveEvent<String> dialogEvent = new SingleLiveEvent<>();
 
+    private SingleLiveEvent<Long> returnToBuyListEvent = new SingleLiveEvent<>();
+
     private DataRepository repository;
+    private TemporaryDataStorage storage;
 
 
 
     public PatternListViewModel(Application context) {
         super(context);
         repository = ((BuylistApp) context.getApplicationContext()).getRepository();
+        storage = ((BuylistApp) context.getApplicationContext()).getStorage();
     }
 
     /**
@@ -60,6 +66,9 @@ public class PatternListViewModel extends AndroidViewModel {
         return dialogEvent;
     }
 
+    public SingleLiveEvent<Long> getReturnToBuyListEvent() {
+        return returnToBuyListEvent;
+    }
 
     /**
      *  get LiveData / work with repository
@@ -160,7 +169,28 @@ public class PatternListViewModel extends AndroidViewModel {
     }
 
     public void openDialog() {
-        dialogEvent.call();
+        dialogEvent.setValue(CollectionType.BuyList);
+        btnToMoveShow.set(false);
+    }
+
+    public void deleteSelectedCollection() {
+        storage.deleteSelectedCollection();
+    }
+
+    public void transfer(List<Item> items) {
+        long collectionId = storage.loadSelectedCollection();
+        if (collectionId == 0) {
+            openDialog();
+            return;
+        }
+
+        for (int i = 0; i < items.size(); i++) {
+            Item item = new Item(i, collectionId, items.get(i).getName(), items.get(i).getCategory(),
+                    items.get(i).getCategoryColor(), items.get(i).getQuantity(),
+                    items.get(i).getUnit());
+            repository.addItem(item);
+        }
+
         btnToMoveShow.set(false);
     }
 }

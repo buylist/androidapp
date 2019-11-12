@@ -10,9 +10,10 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import ru.buylist.collection_lists.CollectionType;
+import ru.buylist.data.entity.Collection;
 import ru.buylist.databinding.ActivityBuyListBinding;
-import ru.buylist.pattern_list.PatternListFragment;
-import ru.buylist.recipe_list.RecipeListFragment;
+import ru.buylist.pattern_list.PatternListActivity;
+import ru.buylist.recipe_list.RecipeListActivity;
 import ru.buylist.utils.IOnBackPressed;
 import ru.buylist.R;
 import ru.buylist.utils.SingleFragmentActivity;
@@ -26,10 +27,10 @@ public class BuyListActivity extends SingleFragmentActivity {
 
     private BuyListViewModel viewModel;
 
-    public static Intent newIntent(Context context, long collectionId, String collectioTitle) {
+    public static Intent newIntent(Context context, long collectionId, String collectionTitle) {
         Intent intent = new Intent(context, BuyListActivity.class);
         intent.putExtra(EXTRA_COLLECTION_ID, collectionId);
-        intent.putExtra(EXTRA_COLLECTION_TITLE, collectioTitle);
+        intent.putExtra(EXTRA_COLLECTION_TITLE, collectionTitle);
         Log.i("TAG", "Put to collection intent ID: " + collectionId);
         return intent;
     }
@@ -82,10 +83,10 @@ public class BuyListActivity extends SingleFragmentActivity {
         viewModel.getChooseItemsEvent().observe(this, collection -> {
             switch (collection.getType()) {
                 case CollectionType.PATTERN:
-                    chooseFromPattern(collection.getId());
+                    chooseFromPattern(collection);
                     break;
                 case CollectionType.RECIPE:
-                    chooseFromRecipe(collection.getId());
+                    chooseFromRecipe(collection);
                     break;
                 default:
                     break;
@@ -132,17 +133,13 @@ public class BuyListActivity extends SingleFragmentActivity {
                 .commit();
     }
 
-    private void chooseFromPattern(long patternId) {
-        Fragment fragment = PatternListFragment.newInstance(patternId);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
+    private void chooseFromPattern(Collection collection) {
+        Intent intent = PatternListActivity.newIntent(this, collection.getId(), collection.getTitle());
+        startActivity(intent);
     }
 
-    private void chooseFromRecipe(long recipeId) {
-        Fragment fragment = RecipeListFragment.newInstance(recipeId);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
+    private void chooseFromRecipe(Collection collection) {
+        Intent intent = RecipeListActivity.newIntent(this, collection.getId(), collection.getTitle());
+        startActivity(intent);
     }
 }

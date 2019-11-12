@@ -56,8 +56,7 @@ public class PatternListActivity extends SingleFragmentActivity {
 
         // временное решение
         BuyListViewModel buyViewmodel = ViewModelProviders.of(this).get(BuyListViewModel.class);
-        buyViewmodel.getReturnToListEvent().observe(this, collectionId ->
-                returnToPattern(collectionId));
+        buyViewmodel.getReturnToListEvent().observe(this, this::returnToPattern);
 
         setTitle(getIntent().getStringExtra(EXTRA_PATTERN_TITLE));
     }

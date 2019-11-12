@@ -28,6 +28,7 @@ public class PatternListFragment extends Fragment {
 
     private Collection collection;
     private List<Item> items;
+    private List<Item> selectedItems;
 
     private PatternListViewModel viewModel;
     private FragmentPatternListBinding binding;
@@ -46,6 +47,8 @@ public class PatternListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         items = new ArrayList<>();
+        selectedItems = new ArrayList<>();
+
         viewModel = PatternListActivity.obtainViewModel(getActivity());
         viewModel.bottomShow.set(true);
 
@@ -65,6 +68,13 @@ public class PatternListFragment extends Fragment {
         binding.recyclerItems.setAdapter(adapter);
         setupFab();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        viewModel.deleteSelectedCollection();
     }
 
     // подписка на изменения списка товаров
@@ -100,11 +110,28 @@ public class PatternListFragment extends Fragment {
         });
     }
 
+    private void saveSelectedItem(Item selectedItem) {
+        if (selectedItems.isEmpty()) {
+            selectedItems.add(selectedItem);
+            return;
+        }
+
+        for (Item item : selectedItems) {
+            if (item.getId() == selectedItem.getId()) {
+                selectedItems.remove(item);
+                return;
+            }
+        }
+
+        selectedItems.add(selectedItem);
+    }
+
     // callback кликов по кнопке переноса товаров в список
     private final PatternListCallback callback = new PatternListCallback() {
         @Override
         public void onToMoveButtonClick(List<Item> items) {
-            viewModel.openDialog();
+            viewModel.transfer(selectedItems);
+            selectedItems.clear();
         }
     };
 
@@ -112,7 +139,8 @@ public class PatternListFragment extends Fragment {
     private final ItemCallback itemCallback = new ItemCallback() {
         @Override
         public void onItemClick(Item item) {
-            viewModel.btnToMoveShow.set(true);
+            saveSelectedItem(item);
+            viewModel.btnToMoveShow.set(!selectedItems.isEmpty());
         }
 
         @Override

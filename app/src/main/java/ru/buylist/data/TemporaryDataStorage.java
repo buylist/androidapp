@@ -10,18 +10,18 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import ru.buylist.data.entity.Collection;
-import ru.buylist.data.entity.Item;
 
 public class TemporaryDataStorage {
 
-    private final String PREF_FILE_NAME = "pref_buy_list";
-    private final String SELECTED_ITEMS = "selected_items";
+    private final String PREF_FILE_ALL_COLLECTION = "pref_buy_list_collection";
+    private final String SELECTED_COLLECTION = "selected_collection";
 
     private static TemporaryDataStorage storage;
+
     private SharedPreferences preferences;
 
     private TemporaryDataStorage(Context context) {
-        preferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
+        preferences = context.getSharedPreferences(PREF_FILE_ALL_COLLECTION, Context.MODE_PRIVATE);
     }
 
     public static TemporaryDataStorage instance(Context context) {
@@ -54,22 +54,23 @@ public class TemporaryDataStorage {
         return gson.fromJson(jsonCollection, listType);
     }
 
-    public void saveItems(List<Item> items) {
-        Gson gson = new Gson();
-        String jsonItems = gson.toJson(items);
-
+    public void saveSelectedCollection(long id) {
         preferences
                 .edit()
-                .putString(SELECTED_ITEMS, jsonItems)
+                .remove(SELECTED_COLLECTION)
+                .putLong(SELECTED_COLLECTION, id)
                 .apply();
     }
 
-    public List<Item> loadItems() {
-        Gson gson = new Gson();
-        Type listType = new TypeToken<List<Item>>(){}.getType();
+    public long loadSelectedCollection() {
+        return preferences.getLong(SELECTED_COLLECTION, 0);
+    }
 
-        String jsonItems = preferences.getString(SELECTED_ITEMS, null);
-        return gson.fromJson(jsonItems, listType);
+    public void deleteSelectedCollection() {
+        preferences
+                .edit()
+                .remove(SELECTED_COLLECTION)
+                .apply();
     }
 
     public void clearStorage() {
