@@ -1,8 +1,7 @@
-package ru.buylist;
+package ru.buylist.recipe_list;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,19 +17,20 @@ import ru.buylist.pattern_list.PatternListViewModel;
 import ru.buylist.utils.BuylistApp;
 
 
-public class PatternDialog extends DialogFragment {
+public class RecipeDialog extends DialogFragment {
 
     private static final String TAG = "PatternDialog";
     private static final String ARG_PATTERN_DIALOG = "arg_pattern_dialog";
 
-    private int count;
+    private int count = -1;
     private TemporaryDataStorage storage;
+    private PatternListViewModel viewModel;
 
-    public static PatternDialog newInstance(String type) {
+    public static RecipeDialog newInstance(String type) {
         Bundle args = new Bundle();
         args.putString(ARG_PATTERN_DIALOG, type);
 
-        PatternDialog dialog = new PatternDialog();
+        RecipeDialog dialog = new RecipeDialog();
         dialog.setArguments(args);
         return dialog;
     }
@@ -40,7 +40,7 @@ public class PatternDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         storage = BuylistApp.instance().getStorage();
-        PatternListViewModel viewModel = PatternListActivity.obtainViewModel(getActivity());
+        viewModel = PatternListActivity.obtainViewModel(getActivity());
     }
 
     @NonNull
@@ -51,19 +51,14 @@ public class PatternDialog extends DialogFragment {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         dialog.setTitle("Коллекция списков")
                 .setCancelable(false)
-                .setPositiveButton("Готово", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
+                .setPositiveButton("Готово", (dialog1, which) -> {
+                    transferItems();
+                    dialog1.cancel();
                 });
 
-        dialog.setSingleChoiceItems(collectionTitle, -1, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                count = which;
-                Log.i(TAG, "SingleChoiceItem: " + which);
-            }
+        dialog.setSingleChoiceItems(collectionTitle, -1, (dialog12, which) -> {
+            count = which;
+            Log.i(TAG, "SingleChoiceItem: " + which);
         });
         return dialog.create();
     }
@@ -80,7 +75,13 @@ public class PatternDialog extends DialogFragment {
     }
 
     private void transferItems() {
+        if (count < 0) {
+            return;
+        }
 
+        List<Collection> collections = storage
+                .loadCollection(getArguments().getString(ARG_PATTERN_DIALOG));
+        viewModel.transferTo(collections.get(count).getId(), viewModel.loadSelectedItems());
     }
 
 }

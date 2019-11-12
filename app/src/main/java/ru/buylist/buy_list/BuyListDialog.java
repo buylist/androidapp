@@ -87,6 +87,10 @@ public class BuyListDialog extends DialogFragment {
     }
 
     private void chooseItemsFrom() {
+        if (count < 0) {
+            return;
+        }
+
         List<Collection> collection = storage
                 .loadCollection(getArguments().getString(ARG_COLLECTION_TYPE));
 

@@ -12,7 +12,7 @@ import ru.buylist.buy_list.BuyListViewModel;
 import ru.buylist.buy_list.CategoryFragment;
 import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.databinding.ActivityRecipeListBinding;
-import ru.buylist.PatternDialog;
+import ru.buylist.pattern_list.PatternDialog;
 import ru.buylist.utils.SingleFragmentActivity;
 
 public class RecipeListActivity extends SingleFragmentActivity {

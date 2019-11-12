@@ -74,7 +74,7 @@ public class PatternListFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-        viewModel.deleteSelectedCollection();
+        viewModel.deleteSelected();
     }
 
     // подписка на изменения списка товаров

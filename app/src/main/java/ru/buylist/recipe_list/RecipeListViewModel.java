@@ -171,7 +171,7 @@ public class RecipeListViewModel extends AndroidViewModel {
     }
 
     public void deleteSelectedCollection() {
-        storage.deleteSelectedCollection();
+        storage.deleteSelectedObjects();
     }
 
     public void transfer(List<Item> items) {

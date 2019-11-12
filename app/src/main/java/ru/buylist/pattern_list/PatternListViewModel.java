@@ -173,24 +173,38 @@ public class PatternListViewModel extends AndroidViewModel {
         btnToMoveShow.set(false);
     }
 
-    public void deleteSelectedCollection() {
-        storage.deleteSelectedCollection();
-    }
-
     public void transfer(List<Item> items) {
+        storage.saveSelectedItems(items);
+
         long collectionId = storage.loadSelectedCollection();
         if (collectionId == 0) {
             openDialog();
             return;
         }
 
+        transferTo(collectionId, items);
+    }
+
+    public void transferTo(long buyListId, List<Item> items) {
         for (int i = 0; i < items.size(); i++) {
-            Item item = new Item(i, collectionId, items.get(i).getName(), items.get(i).getCategory(),
+            Item item = new Item(i, buyListId, items.get(i).getName(), items.get(i).getCategory(),
                     items.get(i).getCategoryColor(), items.get(i).getQuantity(),
                     items.get(i).getUnit());
             repository.addItem(item);
         }
 
         btnToMoveShow.set(false);
+    }
+
+    public void saveSelectedItems(List<Item> selectedItems) {
+        storage.saveSelectedItems(selectedItems);
+    }
+
+    public List<Item> loadSelectedItems() {
+        return storage.loadSelectedItems();
+    }
+
+    public void deleteSelected() {
+        storage.deleteSelectedObjects();
     }
 }

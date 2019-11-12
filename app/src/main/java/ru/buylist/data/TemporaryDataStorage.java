@@ -10,11 +10,13 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import ru.buylist.data.entity.Collection;
+import ru.buylist.data.entity.Item;
 
 public class TemporaryDataStorage {
 
     private final String PREF_FILE_ALL_COLLECTION = "pref_buy_list_collection";
     private final String SELECTED_COLLECTION = "selected_collection";
+    private final String SELECTED_ITEMS = "selected_items";
 
     private static TemporaryDataStorage storage;
 
@@ -66,15 +68,46 @@ public class TemporaryDataStorage {
         return preferences.getLong(SELECTED_COLLECTION, 0);
     }
 
-    public void deleteSelectedCollection() {
+    public void saveSelectedItems(List<Item> items) {
+        Gson gson = new Gson();
+        String jsonItems = gson.toJson(items);
+
         preferences
                 .edit()
-                .remove(SELECTED_COLLECTION)
+                .remove(SELECTED_ITEMS)
+                .putString(SELECTED_ITEMS, jsonItems)
                 .apply();
+    }
+
+    public List<Item> loadSelectedItems() {
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Item>>(){}.getType();
+
+        String jsonItems = preferences.getString(SELECTED_ITEMS, null);
+        return gson.fromJson(jsonItems, listType);
     }
 
     public void clearStorage() {
         preferences.edit().clear().apply();
+    }
+
+    public void deleteSelectedObjects() {
+        deleteSelectedCollection();
+        deleteSelectedItems();
+    }
+
+    private void deleteSelectedItems() {
+        preferences
+                .edit()
+                .remove(SELECTED_ITEMS)
+                .apply();
+    }
+
+    private void deleteSelectedCollection() {
+        preferences
+                .edit()
+                .remove(SELECTED_COLLECTION)
+                .apply();
     }
 
 }
