@@ -12,23 +12,21 @@ import java.util.List;
 
 import ru.buylist.data.TemporaryDataStorage;
 import ru.buylist.data.entity.Collection;
-import ru.buylist.pattern_list.PatternListActivity;
-import ru.buylist.pattern_list.PatternListViewModel;
 import ru.buylist.utils.BuylistApp;
 
 
 public class RecipeDialog extends DialogFragment {
 
-    private static final String TAG = "PatternDialog";
-    private static final String ARG_PATTERN_DIALOG = "arg_pattern_dialog";
+    private static final String TAG = "RecipeDialog";
+    private static final String ARG_RECIPE_DIALOG = "arg_recipe_dialog";
 
     private int count = -1;
     private TemporaryDataStorage storage;
-    private PatternListViewModel viewModel;
+    private RecipeListViewModel viewModel;
 
     public static RecipeDialog newInstance(String type) {
         Bundle args = new Bundle();
-        args.putString(ARG_PATTERN_DIALOG, type);
+        args.putString(ARG_RECIPE_DIALOG, type);
 
         RecipeDialog dialog = new RecipeDialog();
         dialog.setArguments(args);
@@ -40,7 +38,7 @@ public class RecipeDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         storage = BuylistApp.instance().getStorage();
-        viewModel = PatternListActivity.obtainViewModel(getActivity());
+        viewModel = RecipeListActivity.obtainViewModel(getActivity());
     }
 
     @NonNull
@@ -65,7 +63,7 @@ public class RecipeDialog extends DialogFragment {
 
     private String[] getCollectionTitle() {
         List<Collection> collections = storage
-                .loadCollection(getArguments().getString(ARG_PATTERN_DIALOG));
+                .loadCollection(getArguments().getString(ARG_RECIPE_DIALOG));
 
         String[] titles = new String[collections.size()];
         for (int i = 0; i < collections.size(); i++) {
@@ -80,7 +78,7 @@ public class RecipeDialog extends DialogFragment {
         }
 
         List<Collection> collections = storage
-                .loadCollection(getArguments().getString(ARG_PATTERN_DIALOG));
+                .loadCollection(getArguments().getString(ARG_RECIPE_DIALOG));
         viewModel.transferTo(collections.get(count).getId(), viewModel.loadSelectedItems());
     }
 

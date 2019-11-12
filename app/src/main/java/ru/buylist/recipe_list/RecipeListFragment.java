@@ -73,7 +73,7 @@ public class RecipeListFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-        viewModel.deleteSelectedCollection();
+        viewModel.deleteSelected();
     }
 
     // подписка на изменения спика для обновления
