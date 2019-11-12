@@ -10,6 +10,7 @@
         <variable
             name="viewmodel"
             type="ru.buylist.buy_list.BuyListViewModel" />
+
         <variable
             name="callback"
             type="ru.buylist.buy_list.BuyListCallback" />
@@ -42,7 +43,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:text="@string/pattern_button"
-                    android:onClick="@{()-> callback.onPatternButtonClick()}"/>
+                    android:onClick="@{()-> callback.onPatternButtonClick()}" />
 
                 <Button
                     android:id="@+id/btn_recipe"
@@ -52,7 +53,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:text="@string/recipe_button"
-                    android:onClick="@{()-> callback.onRecipeButtonClick()}"/>
+                    android:onClick="@{()-> callback.onRecipeButtonClick()}" />
             </LinearLayout>
 
             <View
@@ -62,14 +63,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:background="@color/colorDivider" />
-
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_items"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                app:buyItems="@{viewmodel.items}"/>
 
             <LinearLayout
                 android:id="@+id/layout_item_field"
@@ -116,6 +109,13 @@
                     android:contentDescription="@string/create_product_description"
                     android:src="@drawable/ic_new_product" />
             </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                app:buyItems="@{viewmodel.items}" />
 
         </LinearLayout>
 
