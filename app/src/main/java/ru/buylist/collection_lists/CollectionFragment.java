@@ -49,8 +49,8 @@ public class CollectionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_collection, container, false);
 
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         setupAdapter();
-        initUi();
         return binding.getRoot();
     }
 
@@ -89,13 +89,6 @@ public class CollectionFragment extends Fragment {
         subscribeBuyList(viewModel.getCollectionOfList());
         subscribePatternList(viewModel.getCollectionOfPattern());
         subscribeRecipeList(viewModel.getCollectionOfRecipe());
-    }
-
-    private void initUi() {
-        binding.cardBuyList.setBackgroundColor(0);
-        binding.cardPattern.setBackgroundColor(0);
-        binding.cardRecipe.setBackgroundColor(0);
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
     }
 
     public void setupAdapter() {
