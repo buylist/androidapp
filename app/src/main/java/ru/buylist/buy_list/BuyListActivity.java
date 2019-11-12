@@ -11,6 +11,8 @@ import android.util.Log;
 
 import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.databinding.ActivityBuyListBinding;
+import ru.buylist.pattern_list.PatternListFragment;
+import ru.buylist.recipe_list.RecipeListFragment;
 import ru.buylist.utils.IOnBackPressed;
 import ru.buylist.R;
 import ru.buylist.utils.SingleFragmentActivity;
@@ -76,6 +78,20 @@ public class BuyListActivity extends SingleFragmentActivity {
                 BuyListDialog.newInstance(CollectionType.RECIPE, collectionId)
                         .show(BuyListActivity.this.getSupportFragmentManager(), "dialog"));
 
+        // открытие шаблона / рецепта (для переноса товаров)
+        viewModel.getChooseItemsEvent().observe(this, collection -> {
+            switch (collection.getType()) {
+                case CollectionType.PATTERN:
+                    chooseFromPattern(collection.getId());
+                    break;
+                case CollectionType.RECIPE:
+                    chooseFromRecipe(collection.getId());
+                    break;
+                default:
+                    break;
+            }
+        });
+
         setTitle(getIntent().getStringExtra(EXTRA_COLLECTION_TITLE));
     }
 
@@ -109,8 +125,22 @@ public class BuyListActivity extends SingleFragmentActivity {
                 .commit();
     }
 
-    public void returnToBuyList(long collectionId) {
+    private void returnToBuyList(long collectionId) {
         Fragment fragment = BuyListFragment.newInstance(collectionId);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
+
+    private void chooseFromPattern(long patternId) {
+        Fragment fragment = PatternListFragment.newInstance(patternId);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
+
+    private void chooseFromRecipe(long recipeId) {
+        Fragment fragment = RecipeListFragment.newInstance(recipeId);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();

@@ -57,6 +57,9 @@ public class BuyListViewModel extends AndroidViewModel {
     // Отвечает за открытие диалогового окна "по рецептам"
     private SingleLiveEvent<Long> recipeDialogEvent = new SingleLiveEvent<>();
 
+    // Открытие
+    private SingleLiveEvent<Collection> chooseItemsEvent = new SingleLiveEvent<>();
+
 
     public BuyListViewModel(Application context) {
         super(context);
@@ -84,6 +87,10 @@ public class BuyListViewModel extends AndroidViewModel {
 
     public SingleLiveEvent<Long> getRecipeDialogEvent() {
         return recipeDialogEvent;
+    }
+
+    public SingleLiveEvent<Collection> getChooseItemsEvent() {
+        return chooseItemsEvent;
     }
 
     /**
@@ -303,6 +310,10 @@ public class BuyListViewModel extends AndroidViewModel {
 
     public void openRecipeDialog(long collectionId) {
         recipeDialogEvent.setValue(collectionId);
+    }
+
+    public void chooseItemsFrom(Collection collection) {
+        chooseItemsEvent.setValue(collection);
     }
 
     public void transferItems(List<Item> items, long collectionId) {

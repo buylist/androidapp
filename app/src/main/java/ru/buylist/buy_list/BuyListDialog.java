@@ -60,7 +60,8 @@ public class BuyListDialog extends DialogFragment {
                 .setPositiveButton("Готово", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        transferItems();
+//                        transferItems();
+                        chooseItemsFrom();
                         dialog.cancel();
                     }
                 });
@@ -81,6 +82,13 @@ public class BuyListDialog extends DialogFragment {
             titles[i] = collection.get(i).getTitle();
         }
         return titles;
+    }
+
+    private void chooseItemsFrom() {
+        List<Collection> collection = storage
+                .loadCollection(getArguments().getString(ARG_BUY_LIST_DIALOG_TYPE));
+
+        viewModel.chooseItemsFrom(collection.get(count));
     }
 
     private void transferItems() {
