@@ -86,6 +86,16 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         spinnerButton.setOnClickListener(this);
         buttonNext.setOnClickListener(this);
         buttonSkip.setOnClickListener(this);
+
+        setupSnackbar();
+    }
+
+    private void setupSnackbar() {
+        viewModel.getSnackbarMessage().observe(this, msg -> {
+            if (msg != null) {
+                SnackbarUtils.showSnackbar(getView(), getString(msg));
+            }
+        });
     }
 
     @Override

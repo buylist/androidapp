@@ -21,6 +21,7 @@ import ru.buylist.R;
 import ru.buylist.data.entity.Collection;
 import ru.buylist.data.entity.Item;
 import ru.buylist.databinding.FragmentBuyListBinding;
+import ru.buylist.utils.SnackbarUtils;
 
 import static ru.buylist.utils.ItemClickCallback.*;
 
@@ -65,6 +66,7 @@ public class BuyListFragment extends Fragment {
         viewModel.showActivityLayout();
         subscribeCollection(viewModel.getCollection(collectionId));
         subscribeUi(viewModel.getItems(collectionId));
+        setupSnackbar();
     }
 
     @Override
@@ -132,6 +134,14 @@ public class BuyListFragment extends Fragment {
         createButton.setOnClickListener(v -> {
             viewModel.saveItem(productField, collection.getId(), itemId);
             Log.i(TAG, "ShoppingList save new item: " + itemId);
+        });
+    }
+
+    private void setupSnackbar() {
+        viewModel.getSnackbarMessage().observe(this, msg -> {
+            if (msg != null) {
+                SnackbarUtils.showSnackbar(getView(), getString(msg));
+            }
         });
     }
 

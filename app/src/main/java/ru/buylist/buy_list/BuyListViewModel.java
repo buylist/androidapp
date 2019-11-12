@@ -14,6 +14,7 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.buylist.R;
 import ru.buylist.data.TemporaryDataStorage;
 import ru.buylist.utils.BuylistApp;
 import ru.buylist.data.DataRepository;
@@ -60,6 +61,8 @@ public class BuyListViewModel extends AndroidViewModel {
     // Открытие
     private SingleLiveEvent<Collection> chooseItemsEvent = new SingleLiveEvent<>();
 
+    private SingleLiveEvent<Integer> snackbarText = new SingleLiveEvent<>();
+
 
     public BuyListViewModel(Application context) {
         super(context);
@@ -91,6 +94,10 @@ public class BuyListViewModel extends AndroidViewModel {
 
     public SingleLiveEvent<Collection> getChooseItemsEvent() {
         return chooseItemsEvent;
+    }
+
+    public SingleLiveEvent<Integer> getSnackbarMessage() {
+        return snackbarText;
     }
 
     /**
@@ -149,6 +156,7 @@ public class BuyListViewModel extends AndroidViewModel {
             // товар не может быть пустым, обнуляем и скрываем layout
             clearFields();
             hideNewProductLayout(targetField);
+            snackbarText.setValue(R.string.item_name_is_empty);
             return;
         }
 
@@ -161,6 +169,7 @@ public class BuyListViewModel extends AndroidViewModel {
             repository.addItem(item);
         } else {
             repository.updateItem(item);
+            snackbarText.setValue(R.string.item_name_edited);
         }
 
         // открывает CategoryFragment, если товара нет в глобальной базе
@@ -211,6 +220,7 @@ public class BuyListViewModel extends AndroidViewModel {
     public void updateCategory(String categoryName, Item item) {
         Category category = repository.getCategory(categoryName);
         if (category == null) {
+            snackbarText.setValue(R.string.category_name_is_invalid);
             return;
         }
 
@@ -318,15 +328,6 @@ public class BuyListViewModel extends AndroidViewModel {
 
     public void chooseItemsFrom(Collection collection) {
         chooseItemsEvent.setValue(collection);
-    }
-
-    public void transferItems(List<Item> items, long collectionId) {
-        for (int i = 0; i < items.size(); i++) {
-            Item item = new Item(i, collectionId, items.get(i).getName(), items.get(i).getCategory(),
-                    items.get(i).getCategoryColor(), items.get(i).getQuantity(),
-                    items.get(i).getUnit());
-            repository.addItem(item);
-        }
     }
 
     private void clearFields() {

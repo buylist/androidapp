@@ -96,7 +96,7 @@ public class TemporaryDataStorage {
         deleteSelectedItems();
     }
 
-    private void deleteSelectedItems() {
+    public void deleteSelectedItems() {
         preferences
                 .edit()
                 .remove(SELECTED_ITEMS)

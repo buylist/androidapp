@@ -10,6 +10,7 @@ import android.databinding.ObservableList;
 
 import java.util.List;
 
+import ru.buylist.R;
 import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.data.DataRepository;
 import ru.buylist.data.TemporaryDataStorage;
@@ -45,6 +46,8 @@ public class RecipeListViewModel extends AndroidViewModel {
     // Открытие диалогового окна
     private SingleLiveEvent<String> dialogEvent = new SingleLiveEvent<>();
 
+    private SingleLiveEvent<Integer> snackbarText = new SingleLiveEvent<>();
+
     private DataRepository repository;
     private TemporaryDataStorage storage;
 
@@ -68,6 +71,9 @@ public class RecipeListViewModel extends AndroidViewModel {
         return dialogEvent;
     }
 
+    public SingleLiveEvent<Integer> getSnackbarMessage() {
+        return snackbarText;
+    }
 
     /**
      *  get LiveData / work with repository
@@ -108,6 +114,7 @@ public class RecipeListViewModel extends AndroidViewModel {
             // товар не может быть пустым, обнуляем и скрываем layout
             clearFields();
             layoutFieldsShow.set(false);
+            snackbarText.setValue(R.string.item_name_is_empty);
             return;
         }
 
@@ -120,6 +127,7 @@ public class RecipeListViewModel extends AndroidViewModel {
             repository.addItem(item);
         } else {
             repository.updateItem(item);
+            snackbarText.setValue(R.string.item_name_edited);
         }
 
         // если товар новый - открывается CategoryFragment для выбора категории
@@ -191,6 +199,8 @@ public class RecipeListViewModel extends AndroidViewModel {
         }
 
         btnToMoveShow.set(false);
+        snackbarText.setValue(R.string.items_moved);
+        storage.deleteSelectedItems();
     }
 
     public List<Item> loadSelectedItems() {

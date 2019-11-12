@@ -1,5 +1,19 @@
 <resources>
     <string name="app_name">BuyList</string>
+    
+<!--Snackbar text-->
+    <!--Collection-->
+    <string name="collection_is_empty">Имя не может быть пустым</string>
+    <string name="collection_deleted">Удалено</string>
+    <string name="collection_edited">Имя изменено</string>
+    
+    <!--BuyList / Pattern / Recipe-->
+    <string name="item_name_is_empty">Имя товара не может быть пустым</string>
+    <string name="item_name_edited">Имя товара изменено</string>
+    <string name="items_moved">Выбранные товары перенесены в список</string>
+
+    <!--Category-->
+    <string name="category_name_is_invalid">Имя категории указано неверно</string>
 
     <string name="buylist_title">Заголовок</string>
     <string name="pattern_button">По шаблону</string>

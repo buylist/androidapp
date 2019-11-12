@@ -18,6 +18,7 @@ import ru.buylist.data.entity.Collection;
 import ru.buylist.data.entity.Item;
 import ru.buylist.databinding.FragmentRecipeListBinding;
 import ru.buylist.pattern_list.PatternListAdapter;
+import ru.buylist.utils.SnackbarUtils;
 
 import static ru.buylist.utils.ItemClickCallback.*;
 
@@ -55,6 +56,7 @@ public class RecipeListFragment extends Fragment {
         long collectionId = getArguments() != null ? getArguments().getLong(ARG_RECIPE_ID, 0) : 0;
         subscribeUi(viewModel.getItems(collectionId));
         subscribeCollection(viewModel.getCollection(collectionId));
+        setupSnackbar();
     }
 
     @Nullable
@@ -98,6 +100,14 @@ public class RecipeListFragment extends Fragment {
     private void setupCreateButton(final long itemId) {
         binding.btnCreateItem.setOnClickListener(v -> {
             viewModel.saveItem(collection.getId(), itemId);
+        });
+    }
+
+    private void setupSnackbar() {
+        viewModel.getSnackbarMessage().observe(this, msg -> {
+            if (msg != null) {
+                SnackbarUtils.showSnackbar(getView(), getString(msg));
+            }
         });
     }
 

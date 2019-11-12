@@ -10,6 +10,7 @@ import android.databinding.ObservableList;
 
 import java.util.List;
 
+import ru.buylist.R;
 import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.data.TemporaryDataStorage;
 import ru.buylist.data.entity.Collection;
@@ -43,6 +44,8 @@ public class PatternListViewModel extends AndroidViewModel {
 
     private SingleLiveEvent<Long> returnToBuyListEvent = new SingleLiveEvent<>();
 
+    private SingleLiveEvent<Integer> snackbarText = new SingleLiveEvent<>();
+
     private DataRepository repository;
     private TemporaryDataStorage storage;
 
@@ -68,6 +71,10 @@ public class PatternListViewModel extends AndroidViewModel {
 
     public SingleLiveEvent<Long> getReturnToBuyListEvent() {
         return returnToBuyListEvent;
+    }
+
+    public SingleLiveEvent<Integer> getSnackbarMessage() {
+        return snackbarText;
     }
 
     /**
@@ -109,6 +116,7 @@ public class PatternListViewModel extends AndroidViewModel {
             clearFields();
             layoutFieldsShow.set(false);
             bottomShow.set(true);
+            snackbarText.setValue(R.string.item_name_is_empty);
             return;
         }
 
@@ -121,6 +129,7 @@ public class PatternListViewModel extends AndroidViewModel {
             repository.addItem(item);
         } else {
             repository.updateItem(item);
+            snackbarText.setValue(R.string.item_name_edited);
         }
 
         // если товар новый - открытие фрагмента для выбора категории
@@ -194,10 +203,8 @@ public class PatternListViewModel extends AndroidViewModel {
         }
 
         btnToMoveShow.set(false);
-    }
-
-    public void saveSelectedItems(List<Item> selectedItems) {
-        storage.saveSelectedItems(selectedItems);
+        snackbarText.setValue(R.string.items_moved);
+        storage.deleteSelectedItems();
     }
 
     public List<Item> loadSelectedItems() {

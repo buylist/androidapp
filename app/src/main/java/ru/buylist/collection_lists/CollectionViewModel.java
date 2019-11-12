@@ -3,6 +3,7 @@ package ru.buylist.collection_lists;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
@@ -10,11 +11,13 @@ import android.util.Log;
 
 import java.util.List;
 
+import ru.buylist.R;
 import ru.buylist.data.TemporaryDataStorage;
 import ru.buylist.utils.BuylistApp;
 import ru.buylist.data.DataRepository;
 import ru.buylist.data.entity.Collection;
 import ru.buylist.data.entity.Item;
+import ru.buylist.utils.SingleLiveEvent;
 
 public class CollectionViewModel extends AndroidViewModel {
     private static final String TAG = "TAG";
@@ -34,6 +37,7 @@ public class CollectionViewModel extends AndroidViewModel {
     public final ObservableBoolean recyclerPatternListShow = new ObservableBoolean(false);
     public final ObservableBoolean recyclerRecipeListShow = new ObservableBoolean(false);
 
+    private SingleLiveEvent<Integer> snackbarText = new SingleLiveEvent<>();
 
     private final DataRepository repository;
     private final TemporaryDataStorage storage;
@@ -67,6 +71,10 @@ public class CollectionViewModel extends AndroidViewModel {
         return collectionOfRecipe;
     }
 
+    public SingleLiveEvent<Integer> getSnackbarMessage() {
+        return snackbarText;
+    }
+
     /**
      *  Основные методы
     * */
@@ -98,6 +106,7 @@ public class CollectionViewModel extends AndroidViewModel {
             layoutBuyListShow.set(false);
             layoutPatternListShow.set(false);
             layoutRecipeListShow.set(false);
+            snackbarText.setValue(R.string.collection_is_empty);
             return;
         }
 
@@ -106,6 +115,7 @@ public class CollectionViewModel extends AndroidViewModel {
             repository.addCollection(collection);
         } else {
             repository.updateCollection(collection);
+            snackbarText.setValue(R.string.collection_edited);
         }
 
         clearFields();
@@ -121,6 +131,8 @@ public class CollectionViewModel extends AndroidViewModel {
         if (items != null) {
             repository.deleteItems(items);
         }
+
+        snackbarText.setValue(R.string.collection_deleted);
         Log.i(TAG, "CollectionViewModel delete collection: " + collection.getId());
     }
 

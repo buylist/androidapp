@@ -16,6 +16,7 @@ import java.util.List;
 import ru.buylist.databinding.FragmentCollectionBinding;
 import ru.buylist.R;
 import ru.buylist.data.entity.Collection;
+import ru.buylist.utils.SnackbarUtils;
 
 import static ru.buylist.collection_lists.CollectionType.*;
 import static ru.buylist.utils.ItemClickCallback.*;
@@ -89,6 +90,7 @@ public class CollectionFragment extends Fragment {
         subscribeBuyList(viewModel.getCollectionOfList());
         subscribePatternList(viewModel.getCollectionOfPattern());
         subscribeRecipeList(viewModel.getCollectionOfRecipe());
+        setupSnackbar();
     }
 
     public void setupAdapter() {
@@ -134,6 +136,14 @@ public class CollectionFragment extends Fragment {
                 viewModel.saveToTemporaryStorage(collections, RECIPE);
             }
             binding.executePendingBindings();
+        });
+    }
+
+    private void setupSnackbar() {
+        viewModel.getSnackbarMessage().observe(this, msg -> {
+            if (msg != null) {
+                SnackbarUtils.showSnackbar(getView(), getString(msg));
+            }
         });
     }
 
