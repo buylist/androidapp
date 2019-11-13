@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="@string/pattern_button_text"
+                android:text="@string/btn_move_to_list_description"
                 android:onClick="@{()-> callback.onToMoveButtonClick(viewmodel.items)}"/>
 
         </LinearLayout>
@@ -52,7 +52,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:hint="@string/new_product_hint"
+                android:hint="@string/item_name_default_text"
                 android:inputType="text"
                 android:text="@={viewmodel.itemName}" />
 
@@ -62,7 +62,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:hint="@string/amount_hint"
+                android:hint="@string/field_quantity_hint"
                 android:inputType="text"
                 android:text="@={viewmodel.quantity}" />
 
@@ -72,7 +72,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:hint="@string/unit_hint"
+                android:hint="@string/field_unit_hint"
                 android:inputType="text"
                 android:text="@={viewmodel.unit}" />
 
@@ -82,7 +82,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:contentDescription="@string/create_product_description"
+                android:contentDescription="@string/btn_create_item_description"
                 android:src="@drawable/button_create" />
         </LinearLayout>
 

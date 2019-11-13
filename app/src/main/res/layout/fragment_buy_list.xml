@@ -23,101 +23,93 @@
         tools:ignore="Autofill">
 
         <LinearLayout
-            android:id="@+id/layout_top"
+            android:id="@+id/layout_top_btn"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/layout_top_btn"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/btn_pattern"
+                style="@style/TopButtonStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="@string/btn_pattern_text"
+                android:onClick="@{()-> callback.onPatternButtonClick()}" />
 
-                <Button
-                    android:id="@+id/btn_pattern"
-                    style="@style/TopButtonStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:text="@string/pattern_button"
-                    android:onClick="@{()-> callback.onPatternButtonClick()}" />
-
-                <Button
-                    android:id="@+id/btn_recipe"
-                    style="@style/TopButtonStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:text="@string/recipe_button"
-                    android:onClick="@{()-> callback.onRecipeButtonClick()}" />
-            </LinearLayout>
-
-            <View
-                android:id="@+id/products_divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@color/colorDivider" />
-
-            <LinearLayout
-                android:id="@+id/layout_item_field"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/btn_recipe"
+                style="@style/TopButtonStyle"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="@{viewmodel.layoutFieldsShow ? View.VISIBLE : View.GONE}">
-
-                <EditText
-                    android:id="@+id/field_name"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:hint="@string/new_product_hint"
-                    android:inputType="text"
-                    android:text="@={viewmodel.itemName}" />
-
-                <EditText
-                    android:id="@+id/field_quantity"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:hint="@string/amount_hint"
-                    android:inputType="text"
-                    android:text="@={viewmodel.quantity}" />
-
-                <EditText
-                    android:id="@+id/field_unit"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:hint="@string/unit_hint"
-                    android:inputType="text"
-                    android:text="@={viewmodel.unit}" />
-
-                <ImageButton
-                    android:id="@+id/btn_create_item"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/create_product_description"
-                    android:src="@drawable/button_create" />
-            </LinearLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_items"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                app:buyItems="@{viewmodel.items}" />
-
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="@string/btn_recipe_text"
+                android:onClick="@{()-> callback.onRecipeButtonClick()}" />
         </LinearLayout>
 
+        <View
+            android:id="@+id/products_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorDivider" />
+
+        <LinearLayout
+            android:id="@+id/layout_item_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="@{viewmodel.layoutFieldsShow ? View.VISIBLE : View.GONE}">
+
+            <EditText
+                android:id="@+id/field_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:hint="@string/item_name_default_text"
+                android:inputType="text"
+                android:text="@={viewmodel.itemName}" />
+
+            <EditText
+                android:id="@+id/field_quantity"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="@string/field_quantity_hint"
+                android:inputType="text"
+                android:text="@={viewmodel.quantity}" />
+
+            <EditText
+                android:id="@+id/field_unit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="@string/field_unit_hint"
+                android:inputType="text"
+                android:text="@={viewmodel.unit}" />
+
+            <ImageButton
+                android:id="@+id/btn_create_item"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/btn_create_item_description"
+                android:src="@drawable/button_create" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:buyItems="@{viewmodel.items}" />
+
     </LinearLayout>
+
 </layout>

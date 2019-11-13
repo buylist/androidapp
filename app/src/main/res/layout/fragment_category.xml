@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/name_of_product"
+            android:text="@string/item_name_default_text"
             android:textSize="38sp" />
 
         <TextView
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:gravity="center"
-            android:text="@string/product"
+            android:text="@string/product_text"
             android:textSize="16sp" />
 
         <LinearLayout
@@ -46,14 +46,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:hint="@string/spinner_hint" />
+                android:hint="@string/new_category_name_hint" />
 
             <ImageButton
                 android:id="@+id/category_spinner"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@android:color/transparent"
-                android:contentDescription="@string/spinner_description"
+                android:contentDescription="@string/category_spinner_description"
                 android:src="@drawable/ic_spinner_arrow" />
 
         </LinearLayout>
@@ -70,7 +70,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
-                android:contentDescription="@string/color_marker_description"
+                android:contentDescription="@string/category_marker_description"
                 android:src="@drawable/circle"
                 android:tint="#56CCF2" />
 
@@ -78,7 +78,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
-                android:contentDescription="@string/color_marker_description"
+                android:contentDescription="@string/category_marker_description"
                 android:src="@drawable/circle"
                 android:tint="#27AE60" />
 
@@ -86,7 +86,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
-                android:contentDescription="@string/color_marker_description"
+                android:contentDescription="@string/category_marker_description"
                 android:src="@drawable/circle"
                 android:tint="#EB5757" />
 
@@ -94,7 +94,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
-                android:contentDescription="@string/color_marker_description"
+                android:contentDescription="@string/category_marker_description"
                 android:src="@drawable/circle"
                 android:tint="#F2994A" />
 
@@ -102,7 +102,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
-                android:contentDescription="@string/color_marker_description"
+                android:contentDescription="@string/category_marker_description"
                 android:src="@drawable/circle"
                 android:tint="#F2E148" />
 

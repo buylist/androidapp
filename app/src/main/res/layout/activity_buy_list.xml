@@ -40,7 +40,8 @@
                 app:fabSize="normal"
                 app:layout_anchor="@id/fragment_container"
                 app:layout_anchorGravity="bottom|right|end"
-                app:useCompatPadding="true" />
+                app:useCompatPadding="true"
+                android:contentDescription="@string/fab_new_item_description"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_visibility"
@@ -53,7 +54,8 @@
                 app:fabSize="normal"
                 app:layout_anchor="@id/fab_new_item"
                 app:layout_anchorGravity="top"
-                app:useCompatPadding="true" />
+                app:useCompatPadding="true"
+                android:contentDescription="@string/fab_visibility_description"/>
         </android.support.design.widget.CoordinatorLayout>
 
         <android.support.design.widget.BottomNavigationView

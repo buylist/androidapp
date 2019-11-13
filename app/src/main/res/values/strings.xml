@@ -6,61 +6,97 @@
     <string name="collection_is_empty">Имя не может быть пустым</string>
     <string name="collection_deleted">Удалено</string>
     <string name="collection_edited">Имя изменено</string>
-    
     <!--BuyList / Pattern / Recipe-->
     <string name="item_name_is_empty">Имя товара не может быть пустым</string>
     <string name="item_name_edited">Имя товара изменено</string>
     <string name="items_moved">Выбранные товары перенесены в список</string>
-
     <!--Category-->
     <string name="category_name_is_invalid">Имя категории указано неверно</string>
+    <string name="category_is_empty">Категория не выбрана</string>
 
-    <string name="buylist_title">Заголовок</string>
-    <string name="pattern_button">По шаблону</string>
-    <string name="recipe_button">По рецепту</string>
-    <string name="buylist_report_subject">BuyList Список покупок</string>
-    <string name="send_report">Поделиться через</string>
-    <string name="show_settings">Настройки</string>
-    <string name="show_home">На главную</string>
-    <string name="products_edit">Редактировать</string>
+<!--Collection-->
     <string name="list_collection">Cписки</string>
-    <string name="list_templates">Шаблоны</string>
+    <string name="list_pattern">Шаблоны</string>
     <string name="recipe_list">Рецепты</string>
-    <string name="name_list_collection_hint">Введите название списка</string>
-    <string name="create_new_list_collection_description">Создать список</string>
-    <string name="new_recipe_description">Создать рецепт</string>
-    <string name="new_product_hint">Название продукта</string>
-    <string name="amount_hint">1</string>
-    <string name="unit_hint">шт</string>
-    <string name="create_product_description">Добавить в список</string>
-    <string name="product_text">Продукт</string>
-    <string name="amount_text">Количество</string>
-    <string name="category_description">Категория</string>
-    <string name="name_of_product">Название продукта</string>
-    <string name="product">товар</string>
-    <string name="spinner_hint">Введите название категории</string>
+    <string name="buy_list_default_text">Список</string>
+    <!--ContentDescription-->
+    <string name="logo_description">Логотип</string>
+    <string name="btn_new_buy_list_description">Создать список</string>
+    <string name="btn_create_buy_list_description">Сохранить список</string>
+    <string name="btn_new_pattern_description">Создать шаблон</string>
+    <string name="btn_create_pattern_description">Сохранить шаблон</string>
+    <string name="btn_new_recipe_description">Создать рецепт</string>
+    <string name="btn_create_recipe_description">Сохранить рецепт</string>
+    <string name="btn_edit_collection_description">Редактировать список</string>
+    <string name="btn_delete_collection_description">Удалить список</string>
+    <string name="img_circle_description">Маркер</string>
+    <!--hint-->
+    <string name="field_name_list_hint">Введите название списка</string>
+    <string name="field_name_pattern_hint">Введите название шаблона</string>
+    <string name="field_name_recipe_hint">Введите название рецепта</string>
+
+<!--BuyList-->
+    <string name="btn_pattern_text">По шаблону</string>
+    <string name="btn_recipe_text">По рецепту</string>
+    <!--ContentDescription-->
+    <string name="fab_visibility_description">Показать или скрыть купленные товары</string>
+    <!--hint-->
+
+<!--Category-->
+    <string name="product_text">товар</string>
     <string name="button_next_text">Далее</string>
     <string name="button_skip_text">Пропустить</string>
-    <string name="category_img_description">Маркер категории</string>
-    <string name="edit_description">Редактировать</string>
-    <string name="delete_description">Удалить</string>
-    <string name="spinner_description">Развернуть список категорий</string>
-    <string name="amount_of_product">%1$s %2$s</string>
-    <string name="color_marker_description">Цветовой маркер</string>
-    <string name="item_list_text">Список</string>
-    <string name="logo_description">Логотип</string>
-    <string name="new_list_description">Создать список</string>
-    <string name="new_pattern_description">Создать шаблон</string>
-    <string name="pattern_button_text">Перенести в список</string>
-    <string name="category_is_empty">Категория не выбрана</string>
-    <string name="name_recipe_hint">Введите название рецепта</string>
-    <string name="name_pattern_hint">Введите название шаблона</string>
-    <string name="ingredient_title">Ингредиенты</string>
-    <string name="instruction_title">Инструкция</string>
-    <string name="btn_new_ingredient_description">Добавить ингридиент</string>
-    <string name="btn_new_instruction">Добавить инструкцию</string>
+    <string name="new_category_name_hint">Введите название категории</string>
+    <string name="category_spinner_description">Развернуть список категорий</string>
+    <string name="category_marker_description">Цвет категории</string>
+
+<!--RecipeList-->
+    <string name="ingredient_text">Ингредиенты</string>
+    <string name="instruction_text">Инструкция</string>
+    <!--ContentDescription-->
+    <string name="btn_new_ingredient_description">Добавить ингредиент</string>
+    <string name="btn_new_instruction_description">Добавить инструкцию</string>
     <string name="btn_save_instruction_description">Сохранить инструкцию</string>
+    <!--hint-->
     <string name="field_instruction_hint">Введите текст инструкции</string>
+
+<!--Общее-->
+    <string name="fab_new_item_description">Добавить товар</string>
+    <string name="btn_create_item_description">Сохранить товар</string>
+    <string name="btn_move_to_list_description">Перенести в список</string>
+    <string name="item_name_default_text">Название продукта</string>
+    <string name="field_quantity_hint">1</string>
+    <string name="field_unit_hint">шт</string>
+    <string name="btn_edit_item_description">Редактировать товар</string>
+    <string name="btn_delete_item_description">Удалить товар</string>
+
+<!--Bottom navigation-->
+    <string name="action_home_text">На главную</string>
+    <string name="action_buy_list_text">Списки</string>
+    <string name="action_pattern_text">Шаблоны</string>
+    <string name="action_recipe_text">Рецепты</string>
+    <string name="action_settings_text">Настройки</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <string-array name="category">
         <item>Продукты</item>

@@ -36,7 +36,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@android:color/transparent"
-                    android:contentDescription="@string/edit_description"
+                    android:contentDescription="@string/btn_edit_collection_description"
                     android:onClick="@{()-> callback.onEditButtonClick(item)}"
                     android:src="@drawable/button_edit" />
 
@@ -45,7 +45,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@android:color/transparent"
-                    android:contentDescription="@string/delete_description"
+                    android:contentDescription="@string/btn_delete_collection_description"
                     android:onClick="@{()-> callback.onDeleteButtonClick(item)}"
                     android:src="@drawable/button_delete" />
 
@@ -78,7 +78,7 @@
                         android:layout_height="9dp"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:contentDescription="@string/color_marker_description"
+                        android:contentDescription="@string/img_circle_description"
                         android:src="@drawable/circle"
                         android:tint="@color/colorMarkerDefault" />
 
@@ -90,7 +90,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="16dp"
                         android:layout_toEndOf="@id/img_circle"
-                        android:text="@string/item_list_text" />
+                        android:text="@string/buy_list_default_text" />
 
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
