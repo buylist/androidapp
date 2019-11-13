@@ -47,9 +47,9 @@
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:itemBackground="@color/color_bn_primary"
-            app:itemIconTint="@color/color_icon_bn"
-            app:itemTextColor="@color/color_icon_bn"
+            app:itemBackground="@color/colorNavBackground"
+            app:itemIconTint="@color/colorNavIcon"
+            app:itemTextColor="@color/colorNavIcon"
             app:menu="@menu/bottom_navigation_menu"
             android:visibility="@{viewmodel.bottomShow ? View.VISIBLE : View.GONE}"/>
     </LinearLayout>

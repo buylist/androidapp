@@ -57,6 +57,10 @@
     <string name="name_pattern_hint">Введите название шаблона</string>
     <string name="ingredient_title">Ингредиенты</string>
     <string name="instruction_title">Инструкция</string>
+    <string name="btn_new_ingredient_description">Добавить ингридиент</string>
+    <string name="btn_new_instruction">Добавить инструкцию</string>
+    <string name="btn_save_instruction_description">Сохранить инструкцию</string>
+    <string name="field_instruction_hint">Введите текст инструкции</string>
 
     <string-array name="category">
         <item>Продукты</item>

@@ -3,16 +3,17 @@
     <color name="colorPrimary">#E40000</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#333333</color>
+
     <color name="colorBlack">#000000</color>
-    <color name="colorLightRed">#EB5757</color>
-    <color name="colorLightGray">#C4C4C4</color>
+    <color name="colorWhite">#FFFFFFFF</color>
+
+    <color name="colorText">#4F4F4F</color>
+
     <color name="colorVisibilityFab">#F1F1F1</color>
     <color name="colorDivider">#1F000000</color>
-    <color name="colorWhite">#FFFFFFFF</color>
     <color name="colorButtonNextText">#007AFF</color>
     <color name="colorButtonSkipText">#4F4F4F</color>
-    <color name="color_icon_bn">#4F4F4F</color>
-    <color name="colorTextSecondary">#4F4F4F</color>
-    <color name="color_bn_primary">#F2F2F2</color>
-    <color name="list_marker_tint">#858E99</color>
+    <color name="colorNavIcon">#4F4F4F</color>
+    <color name="colorNavBackground">#F2F2F2</color>
+    <color name="colorMarkerDefault">#858E99</color>
 </resources>
