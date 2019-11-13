@@ -63,7 +63,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:hint="@string/amount_hint"
-                android:inputType="number"
+                android:inputType="text"
                 android:text="@={viewmodel.quantity}" />
 
             <EditText
