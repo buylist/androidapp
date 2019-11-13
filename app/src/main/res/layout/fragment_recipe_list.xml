@@ -65,7 +65,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_add_recipe"
+                    android:src="@drawable/button_add_recipe"
                     android:onClick="@{()-> callback.onNewIngredientButtonClick()}"/>
             </RelativeLayout>
 
@@ -113,7 +113,7 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/create_product_description"
-                    android:src="@drawable/ic_new_product" />
+                    android:src="@drawable/button_create" />
             </LinearLayout>
 
             <!--Список ингредиентов-->
@@ -151,7 +151,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_add_recipe"
+                    android:src="@drawable/button_add_recipe"
                     android:visibility="@{viewmodel.fieldInstructionShow ? View.GONE : View.VISIBLE}"
                     android:onClick="@{()-> callback.onNewInstructionButtonClick()}"/>
                 <ImageButton
@@ -159,7 +159,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_new_product"
+                    android:src="@drawable/button_create"
                     android:background="@android:color/transparent"
                     android:visibility="@{viewmodel.fieldInstructionShow ? View.VISIBLE : View.GONE}"
                     android:onClick="@{()-> callback.onSaveInstructionButtonClick()}"/>
