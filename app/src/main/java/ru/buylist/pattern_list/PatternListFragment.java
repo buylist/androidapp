@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.daimajia.swipe.SwipeLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +54,7 @@ public class PatternListFragment extends Fragment {
 
         viewModel = PatternListActivity.obtainViewModel(getActivity());
         viewModel.bottomShow.set(true);
+        viewModel.fabShow.set(true);
 
         long collectionId = getArguments() != null ? getArguments().getLong(ARG_PATTERN_ID, 0) : 0;
         subscribeUi(viewModel.getItems(collectionId));
@@ -66,7 +69,7 @@ public class PatternListFragment extends Fragment {
         binding.setViewmodel(viewModel);
         binding.setCallback(callback);
 
-        adapter = new PatternListAdapter(itemCallback);
+        adapter = new PatternListAdapter(itemCallback, swipeListener);
         binding.recyclerItems.setAdapter(adapter);
         setupFab();
         return binding.getRoot();
@@ -164,6 +167,40 @@ public class PatternListFragment extends Fragment {
             viewModel.editItem(item);
             setupCreateButton(item.getId());
             adapter.closeAllItems();
+        }
+    };
+
+    private final SwipeLayout.SwipeListener swipeListener = new SwipeLayout.SwipeListener() {
+        @Override
+        public void onStartOpen(SwipeLayout layout) {
+            layout.setBackgroundResource(R.drawable.horizontal_border);
+            viewModel.fabShow.set(false);
+        }
+
+        @Override
+        public void onOpen(SwipeLayout layout) {
+
+        }
+
+        @Override
+        public void onStartClose(SwipeLayout layout) {
+
+        }
+
+        @Override
+        public void onClose(SwipeLayout layout) {
+            layout.setBackground(null);
+            viewModel.fabShow.set(true);
+        }
+
+        @Override
+        public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+
+        }
+
+        @Override
+        public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+
         }
     };
 

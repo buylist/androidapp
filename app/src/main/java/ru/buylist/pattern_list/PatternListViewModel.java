@@ -29,6 +29,7 @@ public class PatternListViewModel extends AndroidViewModel {
     // Флаги для отображения/скрытия элементов разметки
     public final ObservableBoolean btnToMoveShow = new ObservableBoolean(false);
     public final ObservableBoolean layoutFieldsShow = new ObservableBoolean(false);
+    public final ObservableBoolean fabShow = new ObservableBoolean(true);
     public final ObservableBoolean bottomShow = new ObservableBoolean(true);
 
     // Поля для ввода нового товара
@@ -106,6 +107,7 @@ public class PatternListViewModel extends AndroidViewModel {
     public void addNewItem() {
         layoutFieldsShow.set(true);
         bottomShow.set(false);
+        fabShow.set(false);
     }
 
     public void saveItem(long collectionId, long itemId) {
@@ -116,6 +118,7 @@ public class PatternListViewModel extends AndroidViewModel {
             clearFields();
             layoutFieldsShow.set(false);
             bottomShow.set(true);
+            fabShow.set(true);
             snackbarText.setValue(R.string.item_name_is_empty);
             return;
         }
@@ -139,6 +142,7 @@ public class PatternListViewModel extends AndroidViewModel {
 
         layoutFieldsShow.set(false);
         bottomShow.set(true);
+        fabShow.set(true);
         clearFields();
     }
 
@@ -172,6 +176,7 @@ public class PatternListViewModel extends AndroidViewModel {
     public void editItem(Item item) {
         layoutFieldsShow.set(true);
         bottomShow.set(false);
+        fabShow.set(false);
         itemName.set(item.getName());
         quantity.set(item.getQuantity());
         unit.set(item.getUnit());

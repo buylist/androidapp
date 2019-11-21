@@ -39,7 +39,7 @@
                 app:layout_anchor="@id/fragment_container"
                 app:layout_anchorGravity="bottom|right|end"
                 app:useCompatPadding="true"
-                android:visibility="@{viewmodel.bottomShow ? View.VISIBLE : View.GONE}"
+                fabVisibility="@{viewmodel.fabShow}"
                 android:contentDescription="@string/fab_new_item_description"/>
 
         </android.support.design.widget.CoordinatorLayout>

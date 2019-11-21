@@ -67,6 +67,7 @@ public class PatternListActivity extends SingleFragmentActivity {
                 .replace(R.id.fragment_container, fragment)
                 .commit();
         viewModel.bottomShow.set(false);
+        viewModel.fabShow.set(false);
     }
 
     // возврат к PatternListFragment
