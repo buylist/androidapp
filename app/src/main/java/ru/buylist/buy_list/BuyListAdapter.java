@@ -48,35 +48,6 @@ public class BuyListAdapter extends RecyclerSwipeAdapter<BuyListAdapter.BuyListH
 
         mItemManger.bindView(holder.itemView, position);
         holder.binding.layoutSwipeItem.addSwipeListener(swipeListener);
-
-//        holder.binding.layoutSwipeItem.addSwipeListener(new SwipeLayout.SwipeListener() {
-//            @Override
-//            public void onStartOpen(SwipeLayout layout) {
-//                mItemManger.closeAllExcept(layout);
-//                holder.binding.layoutSwipeItem.setBackgroundResource(R.drawable.horizontal_border);
-//            }
-//
-//            @Override
-//            public void onOpen(SwipeLayout layout) {
-//            }
-//
-//            @Override
-//            public void onStartClose(SwipeLayout layout) {
-//            }
-//
-//            @Override
-//            public void onClose(SwipeLayout layout) {
-//                holder.binding.layoutSwipeItem.setBackground(null);
-//            }
-//
-//            @Override
-//            public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
-//            }
-//
-//            @Override
-//            public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
-//            }
-//        });
     }
 
     @Override
