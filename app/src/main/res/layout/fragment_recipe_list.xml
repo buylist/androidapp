@@ -35,7 +35,7 @@
                 style="@style/TopButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/small_layout_margin"
                 android:text="@string/btn_move_to_list_description"
                 android:onClick="@{()-> callback.onToMoveButtonClick()}"/>
         </LinearLayout>
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="@dimen/ingredients_top_margin">
 
             <!--Layout с кнопкой добавления нового ингредиента-->
             <RelativeLayout
@@ -56,15 +56,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorText"
-                    android:textSize="22sp"
+                    android:textSize="@dimen/default_text_size"
                     android:layout_centerVertical="true"
                     android:text="@string/ingredient_text"
                     android:layout_alignParentStart="true"
                     android:layout_toStartOf="@+id/btn_new_ingredient"/>
                 <ImageButton
                     android:id="@+id/btn_new_ingredient"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/btn_recipe_size"
+                    android:layout_height="@dimen/btn_recipe_size"
                     android:contentDescription="@string/btn_new_ingredient_description"
                     android:layout_alignParentEnd="true"
                     android:src="@drawable/button_add_recipe"
@@ -77,6 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:background="@drawable/field_border"
                 android:visibility="@{viewmodel.layoutFieldsShow ? View.VISIBLE : View.GONE}">
 
                 <EditText
@@ -86,6 +87,7 @@
                     android:layout_weight="4"
                     android:hint="@string/item_name_default_text"
                     android:inputType="text"
+                    android:background="@android:color/transparent"
                     android:text="@={viewmodel.itemName}" />
 
                 <EditText
@@ -93,9 +95,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/field_quantity_margin_end"
                     android:gravity="center"
                     android:hint="@string/field_quantity_hint"
                     android:inputType="text"
+                    android:background="@drawable/field_bg"
                     android:text="@={viewmodel.quantity}" />
 
                 <EditText
@@ -106,6 +110,7 @@
                     android:gravity="center"
                     android:hint="@string/field_unit_hint"
                     android:inputType="text"
+                    android:background="@drawable/field_bg"
                     android:text="@={viewmodel.unit}" />
 
                 <ImageButton
@@ -123,7 +128,7 @@
                 android:id="@+id/recycler_ingredients"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/ingredients_top_margin"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 app:patternItems="@{viewmodel.items}"/>
         </LinearLayout>
@@ -133,26 +138,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="@dimen/instruction_top_margin">
 
             <!--Layout с кнопкой добавления инструкции-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="@dimen/instruction_bottom_margin">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorText"
-                    android:textSize="22sp"
+                    android:textSize="@dimen/default_text_size"
                     android:layout_centerVertical="true"
                     android:text="@string/instruction_text"
                     android:layout_alignParentStart="true"
                     android:layout_toStartOf="@+id/btn_new_instruction"/>
                 <ImageButton
                     android:id="@+id/btn_new_instruction"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/btn_recipe_size"
+                    android:layout_height="@dimen/btn_recipe_size"
                     android:contentDescription="@string/btn_new_instruction_description"
                     android:layout_alignParentEnd="true"
                     android:src="@drawable/button_add_recipe"
@@ -160,8 +165,8 @@
                     android:onClick="@{()-> callback.onNewInstructionButtonClick()}"/>
                 <ImageButton
                     android:id="@+id/btn_save_instruction"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/btn_recipe_size"
+                    android:layout_height="@dimen/btn_recipe_size"
                     android:contentDescription="@string/btn_save_instruction_description"
                     android:layout_alignParentEnd="true"
                     android:src="@drawable/button_create"
@@ -174,15 +179,20 @@
                 android:id="@+id/field_instruction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
+                android:inputType="text|textMultiLine"
+                android:minLines="5"
+                android:maxLines="10"
+                android:gravity="top|start"
+                android:scrollbars="vertical"
                 android:hint="@string/field_instruction_hint"
+                android:background="@drawable/field_border"
                 android:text="@={viewmodel.instruction}"
                 android:visibility="@{viewmodel.fieldInstructionShow ? View.VISIBLE : View.GONE}"/>
             <TextView
                 android:id="@+id/text_view_instruction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="@dimen/instruction_text_size"
                 android:textColor="@color/colorText"/>
 
         </LinearLayout>

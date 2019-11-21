@@ -6,7 +6,6 @@
     <dimen name="default_text_size">22sp</dimen>
     <dimen name="card_corner_radius">8dp</dimen>
 
-    <!--Collection-->
     <dimen name="drawable_padding">16dp</dimen>
 
     <dimen name="btn_new_list_size">35dp</dimen>
@@ -19,11 +18,16 @@
 
     <dimen name="divider_size">1dp</dimen>
 
-    <!--Collection item-->
     <dimen name="btn_swipe_size">40dp</dimen>
 
     <dimen name="field_quantity_margin_end">10dp</dimen>
 
     <dimen name="img_category_circle">16dp</dimen>
     <dimen name="category_item_margin_start">24dp</dimen>
+
+    <dimen name="ingredients_top_margin">20dp</dimen>
+    <dimen name="btn_recipe_size">40dp</dimen>
+    <dimen name="instruction_top_margin">30dp</dimen>
+    <dimen name="instruction_bottom_margin">20dp</dimen>
+    <dimen name="instruction_text_size">18sp</dimen>
 </resources>

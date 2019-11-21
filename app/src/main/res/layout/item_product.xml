@@ -93,8 +93,7 @@
                         android:layout_toStartOf="@+id/text_view_item_quantity"
                         android:background="@{item.purchased ? @drawable/strike_through : null}"
                         android:text="@{item.name}"
-                        android:textSize="@dimen/default_text_size"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/default_text_size"/>
 
 
                     <TextView
