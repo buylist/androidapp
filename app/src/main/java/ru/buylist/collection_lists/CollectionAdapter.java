@@ -54,7 +54,7 @@ public class CollectionAdapter extends RecyclerSwipeAdapter<CollectionAdapter.Bu
             @Override
             public void onStartOpen(SwipeLayout layout) {
                 mItemManger.closeAllExcept(layout);
-                holder.binding.cardTopSwipe.setBackgroundColor(Color.LTGRAY);
+                holder.binding.layoutSwipe.setBackgroundResource(R.drawable.horizontal_border);
             }
 
             @Override
@@ -67,8 +67,7 @@ public class CollectionAdapter extends RecyclerSwipeAdapter<CollectionAdapter.Bu
 
             @Override
             public void onClose(SwipeLayout layout) {
-                holder.binding.cardTopSwipe.setBackgroundColor(Color.WHITE);
-                holder.binding.layoutBottomSwipe.setBackgroundColor(Color.WHITE);
+                holder.binding.layoutSwipe.setBackground(null);
             }
 
             @Override

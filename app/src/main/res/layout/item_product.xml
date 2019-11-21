@@ -38,7 +38,8 @@
                     android:layout_height="40dp"
                     android:contentDescription="@string/btn_edit_item_description"
                     android:onClick="@{()-> callback.onEditButtonClick(item)}"
-                    app:srcCompat="@drawable/button_edit" />
+                    app:srcCompat="@drawable/button_edit"
+                    android:background="@android:color/transparent"/>
 
                 <ImageButton
                     android:id="@+id/btn_delete_item"
@@ -46,7 +47,8 @@
                     android:layout_height="40dp"
                     android:contentDescription="@string/btn_delete_item_description"
                     android:onClick="@{()-> callback.onDeleteButtonClick(item)}"
-                    app:srcCompat="@drawable/button_delete" />
+                    app:srcCompat="@drawable/button_delete"
+                    android:background="@android:color/transparent"/>
 
             </LinearLayout>
         </FrameLayout>

@@ -47,7 +47,7 @@ public class PatternListAdapter extends RecyclerSwipeAdapter<PatternListAdapter.
             @Override
             public void onStartOpen(SwipeLayout layout) {
                 mItemManger.closeAllExcept(layout);
-                holder.binding.cardTopItemSwipe.setBackgroundColor(Color.LTGRAY);
+                holder.binding.layoutSwipeItem.setBackgroundResource(R.drawable.horizontal_border);
             }
 
             @Override
@@ -60,7 +60,7 @@ public class PatternListAdapter extends RecyclerSwipeAdapter<PatternListAdapter.
 
             @Override
             public void onClose(SwipeLayout layout) {
-                holder.binding.cardTopItemSwipe.setBackgroundColor(0);
+                holder.binding.layoutSwipeItem.setBackground(null);
             }
 
             @Override
