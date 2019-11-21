@@ -33,7 +33,7 @@
                 style="@style/TopButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/small_layout_margin"
                 android:layout_weight="1"
                 android:text="@string/btn_pattern_text"
                 android:onClick="@{()-> callback.onPatternButtonClick()}" />
@@ -43,7 +43,7 @@
                 style="@style/TopButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/small_layout_margin"
                 android:layout_weight="1"
                 android:text="@string/btn_recipe_text"
                 android:onClick="@{()-> callback.onRecipeButtonClick()}" />
@@ -52,9 +52,9 @@
         <View
             android:id="@+id/products_divider"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="@dimen/divider_size"
+            android:layout_marginTop="@dimen/small_layout_margin"
+            android:layout_marginBottom="@dimen/small_layout_margin"
             android:background="@color/colorDivider" />
 
         <LinearLayout
@@ -62,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@drawable/field_border"
             android:visibility="@{viewmodel.layoutFieldsShow ? View.VISIBLE : View.GONE}">
 
             <EditText
@@ -71,6 +72,7 @@
                 android:layout_weight="4"
                 android:hint="@string/item_name_default_text"
                 android:inputType="text"
+                android:background="@android:color/transparent"
                 android:text="@={viewmodel.itemName}" />
 
             <EditText
@@ -78,9 +80,11 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:layout_marginEnd="@dimen/field_quantity_margin_end"
                 android:gravity="center"
                 android:hint="@string/field_quantity_hint"
                 android:inputType="text"
+                android:background="@drawable/field_bg"
                 android:text="@={viewmodel.quantity}" />
 
             <EditText
@@ -91,6 +95,7 @@
                 android:gravity="center"
                 android:hint="@string/field_unit_hint"
                 android:inputType="text"
+                android:background="@drawable/field_bg"
                 android:text="@={viewmodel.unit}" />
 
             <ImageButton

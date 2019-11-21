@@ -3,6 +3,8 @@
     <dimen name="default_layout_margin">16dp</dimen>
     <dimen name="default_horizontal_margin">16dp</dimen>
     <dimen name="small_layout_margin">8dp</dimen>
+    <dimen name="default_text_size">22sp</dimen>
+    <dimen name="card_corner_radius">8dp</dimen>
 
     <!--Collection-->
     <dimen name="drawable_padding">16dp</dimen>
@@ -19,4 +21,6 @@
 
     <!--Collection item-->
     <dimen name="btn_swipe_size">40dp</dimen>
+
+    <dimen name="field_quantity_margin_end">10dp</dimen>
 </resources>
