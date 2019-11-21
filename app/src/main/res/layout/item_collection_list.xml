@@ -33,8 +33,8 @@
 
                 <ImageButton
                     android:id="@+id/btn_edit_collection"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/btn_swipe_size"
+                    android:layout_height="@dimen/btn_swipe_size"
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/btn_edit_collection_description"
                     android:onClick="@{()-> callback.onEditButtonClick(item)}"
@@ -42,8 +42,8 @@
 
                 <ImageButton
                     android:id="@+id/btn_delete_collection"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/btn_swipe_size"
+                    android:layout_height="@dimen/btn_swipe_size"
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/btn_delete_collection_description"
                     android:onClick="@{()-> callback.onDeleteButtonClick(item)}"

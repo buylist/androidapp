@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_layout_margin">16dp</dimen>
+    <dimen name="default_horizontal_margin">16dp</dimen>
+    <dimen name="small_layout_margin">8dp</dimen>
+
+    <!--Collection-->
+    <dimen name="drawable_padding">16dp</dimen>
+
+    <dimen name="btn_new_list_size">35dp</dimen>
+    <dimen name="btn_new_list_margin_end">8dp</dimen>
+
+    <dimen name="field_margin_vertical">8dp</dimen>
+
+    <dimen name="btn_create_size">24dp</dimen>
+    <dimen name="btn_create_margin_end">5dp</dimen>
+
+    <dimen name="divider_size">1dp</dimen>
+
+    <!--Collection item-->
+    <dimen name="btn_swipe_size">40dp</dimen>
+</resources>

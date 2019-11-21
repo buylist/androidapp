@@ -31,7 +31,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_margin="@dimen/default_layout_margin"
                 android:orientation="vertical">
 
                 <!--Контейнер с логотипом-->
@@ -55,7 +55,7 @@
                     android:id="@+id/card_buy_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/default_layout_margin"
                     android:onClick="@{()-> callback.onBuyListCardClick()}">
 
                     <TextView
@@ -65,16 +65,16 @@
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/btn_new_buy_list"
                         android:drawableStart="@drawable/ic_list"
-                        android:drawablePadding="16dp"
+                        android:drawablePadding="@dimen/drawable_padding"
                         android:gravity="start|center"
                         android:text="@string/list_collection" />
 
                     <ImageButton
                         android:id="@+id/btn_new_buy_list"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="@dimen/btn_new_list_size"
+                        android:layout_height="@dimen/btn_new_list_size"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="@dimen/btn_new_list_margin_end"
                         android:layout_centerVertical="true"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_new_buy_list_description"
@@ -87,10 +87,11 @@
                     android:id="@+id/layout_buy_list_fields"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:visibility="@{viewmodel.layoutBuyListShow ? View.VISIBLE : View.GONE}">
+                    android:layout_marginStart="@dimen/default_horizontal_margin"
+                    android:layout_marginTop="@dimen/field_margin_vertical"
+                    android:layout_marginEnd="@dimen/default_horizontal_margin"
+                    android:visibility="@{viewmodel.layoutBuyListShow ? View.VISIBLE : View.GONE}"
+                    android:background="@drawable/field_border">
 
                     <EditText
                         android:id="@+id/field_name_buy_list"
@@ -100,15 +101,16 @@
                         android:layout_toStartOf="@+id/btn_create_buy_list"
                         android:hint="@string/field_name_list_hint"
                         android:inputType="text"
-                        android:text="@={viewmodel.buyListName}" />
+                        android:background="@android:color/transparent"
+                        android:text="@={viewmodel.buyListName}"/>
 
                     <ImageButton
                         android:id="@+id/btn_create_buy_list"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="@dimen/btn_create_size"
+                        android:layout_height="@dimen/btn_create_size"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="14dp"
+                        android:layout_marginEnd="@dimen/btn_create_margin_end"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_create_buy_list_description"
                         android:src="@drawable/button_create" />
@@ -118,8 +120,8 @@
                     android:id="@+id/recycler_buy_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="@dimen/default_horizontal_margin"
+                    android:layout_marginEnd="@dimen/default_horizontal_margin"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                     android:visibility="@{viewmodel.recyclerBuyListShow ? View.VISIBLE : View.GONE}" />
 
@@ -127,8 +129,8 @@
                 <View
                     android:id="@+id/divider_lists"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_margin="8dp"
+                    android:layout_height="@dimen/divider_size"
+                    android:layout_margin="@dimen/small_layout_margin"
                     android:background="@color/colorDivider" />
 
                 <!--Создание шаблонов-->
@@ -136,7 +138,7 @@
                     android:id="@+id/card_pattern"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/default_layout_margin"
                     android:onClick="@{()-> callback.onPatternListCardClick()}">
 
                     <TextView
@@ -146,17 +148,17 @@
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/btn_new_pattern"
                         android:drawableStart="@drawable/ic_pattern"
-                        android:drawablePadding="16dp"
+                        android:drawablePadding="@dimen/drawable_padding"
                         android:gravity="start|center"
                         android:text="@string/list_pattern" />
 
                     <ImageButton
                         android:id="@+id/btn_new_pattern"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="@dimen/btn_new_list_size"
+                        android:layout_height="@dimen/btn_new_list_size"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="@dimen/btn_new_list_margin_end"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_new_pattern_description"
                         android:src="@drawable/button_add_collection"
@@ -169,10 +171,11 @@
                     android:id="@+id/layout_pattern_list_fields"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:visibility="@{viewmodel.layoutPatternListShow ? View.VISIBLE : View.GONE}">
+                    android:layout_marginStart="@dimen/default_horizontal_margin"
+                    android:layout_marginTop="@dimen/field_margin_vertical"
+                    android:layout_marginEnd="@dimen/default_horizontal_margin"
+                    android:visibility="@{viewmodel.layoutPatternListShow ? View.VISIBLE : View.GONE}"
+                    android:background="@drawable/field_border">
 
                     <EditText
                         android:id="@+id/field_name_pattern_list"
@@ -182,15 +185,16 @@
                         android:layout_toStartOf="@+id/btn_create_pattern_list"
                         android:hint="@string/field_name_pattern_hint"
                         android:inputType="text"
+                        android:background="@android:color/transparent"
                         android:text="@={viewmodel.patterName}" />
 
                     <ImageButton
                         android:id="@+id/btn_create_pattern_list"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="@dimen/btn_create_size"
+                        android:layout_height="@dimen/btn_create_size"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="14dp"
+                        android:layout_marginEnd="@dimen/btn_create_margin_end"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_create_pattern_description"
                         android:src="@drawable/button_create" />
@@ -200,16 +204,16 @@
                     android:id="@+id/recycler_pattern"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="@dimen/default_horizontal_margin"
+                    android:layout_marginEnd="@dimen/default_horizontal_margin"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                     android:visibility="@{viewmodel.recyclerPatternListShow ? View.VISIBLE : View.GONE}" />
 
                 <View
                     android:id="@+id/divider_templates"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_margin="8dp"
+                    android:layout_height="@dimen/divider_size"
+                    android:layout_margin="@dimen/small_layout_margin"
                     android:background="@color/colorDivider" />
 
                 <!--Создание рецептов-->
@@ -217,7 +221,7 @@
                     android:id="@+id/card_recipe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="@dimen/default_layout_margin"
                     android:onClick="@{()-> callback.onRecipeListCardClick()}">
 
                     <TextView
@@ -227,17 +231,17 @@
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/btn_new_recipe"
                         android:drawableStart="@drawable/ic_recipe"
-                        android:drawablePadding="16dp"
+                        android:drawablePadding="@dimen/drawable_padding"
                         android:gravity="start|center"
                         android:text="@string/recipe_list" />
 
                     <ImageButton
                         android:id="@+id/btn_new_recipe"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="@dimen/btn_new_list_size"
+                        android:layout_height="@dimen/btn_new_list_size"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="@dimen/btn_new_list_margin_end"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_new_recipe_description"
                         android:src="@drawable/button_add_collection"
@@ -249,9 +253,10 @@
                     android:id="@+id/layout_recipe_list_fields"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="@dimen/default_horizontal_margin"
+                    android:layout_marginTop="@dimen/small_layout_margin"
+                    android:layout_marginEnd="@dimen/default_horizontal_margin"
+                    android:background="@drawable/field_border"
                     android:visibility="@{viewmodel.layoutRecipeListShow ? View.VISIBLE : View.GONE}">
 
                     <EditText
@@ -262,15 +267,16 @@
                         android:layout_toStartOf="@+id/btn_create_recipe_list"
                         android:hint="@string/field_name_recipe_hint"
                         android:inputType="text"
+                        android:background="@android:color/transparent"
                         android:text="@={viewmodel.recipeName}" />
 
                     <ImageButton
                         android:id="@+id/btn_create_recipe_list"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="@dimen/btn_create_size"
+                        android:layout_height="@dimen/btn_create_size"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="14dp"
+                        android:layout_marginEnd="@dimen/btn_create_margin_end"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_create_recipe_description"
                         android:src="@drawable/button_create" />
@@ -280,16 +286,16 @@
                     android:id="@+id/recycler_recipe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="@dimen/default_horizontal_margin"
+                    android:layout_marginEnd="@dimen/default_horizontal_margin"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                     android:visibility="@{viewmodel.recyclerRecipeListShow ? View.VISIBLE : View.GONE}" />
 
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_margin="8dp"
+                    android:layout_height="@dimen/divider_size"
+                    android:layout_margin="@dimen/small_layout_margin"
                     android:background="@color/colorDivider" />
 
             </LinearLayout>

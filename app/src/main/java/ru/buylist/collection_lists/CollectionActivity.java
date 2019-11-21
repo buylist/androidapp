@@ -38,37 +38,37 @@ public class CollectionActivity extends SingleFragmentActivity implements Collec
     public void onCollectionSelected(Collection collection) {
         switch (collection.getType()) {
             case CollectionType.BuyList:
-                if (findViewById(R.id.detail_fragment_container) == null) {
-                    Intent intent = BuyListActivity.newIntent(this, collection.getId(), collection.getTitle());
-                    startActivity(intent);
-                } else {
-                    Fragment newDetail = BuyListFragment.newInstance(collection.getId());
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.detail_fragment_container, newDetail)
-                            .commit();
-                }
+//                if (findViewById(R.id.detail_fragment_container) == null) {
+                    Intent buyIntent = BuyListActivity.newIntent(this, collection.getId(), collection.getTitle());
+                    startActivity(buyIntent);
+//                } else {
+//                    Fragment newDetail = BuyListFragment.newInstance(collection.getId());
+//                    getSupportFragmentManager().beginTransaction()
+//                            .replace(R.id.detail_fragment_container, newDetail)
+//                            .commit();
+//                }
                 break;
             case CollectionType.PATTERN:
-                if (findViewById(R.id.detail_fragment_container) == null) {
-                    Intent intent = PatternListActivity.newIntent(this, collection.getId(), collection.getTitle());
-                    startActivity(intent);
-                } else {
-                    Fragment newDetail = PatternListFragment.newInstance(collection.getId());
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.detail_fragment_container, newDetail)
-                            .commit();
-                }
+//                if (findViewById(R.id.detail_fragment_container) == null) {
+                    Intent patternIntent = PatternListActivity.newIntent(this, collection.getId(), collection.getTitle());
+                    startActivity(patternIntent);
+//                } else {
+//                    Fragment newDetail = PatternListFragment.newInstance(collection.getId());
+//                    getSupportFragmentManager().beginTransaction()
+//                            .replace(R.id.detail_fragment_container, newDetail)
+//                            .commit();
+//                }
                 break;
             case CollectionType.RECIPE:
-                if (findViewById(R.id.detail_fragment_container) == null) {
-                    Intent intent = RecipeListActivity.newIntent(this, collection.getId(), collection.getTitle());
-                    startActivity(intent);
-                } else {
-                    Fragment newDetail = RecipeListFragment.newInstance(collection.getId());
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.detail_fragment_container, newDetail)
-                            .commit();
-                }
+//                if (findViewById(R.id.detail_fragment_container) == null) {
+                    Intent recipeIntent = RecipeListActivity.newIntent(this, collection.getId(), collection.getTitle());
+                    startActivity(recipeIntent);
+//                } else {
+//                    Fragment newDetail = RecipeListFragment.newInstance(collection.getId());
+//                    getSupportFragmentManager().beginTransaction()
+//                            .replace(R.id.detail_fragment_container, newDetail)
+//                            .commit();
+//                }
                 break;
         }
     }
