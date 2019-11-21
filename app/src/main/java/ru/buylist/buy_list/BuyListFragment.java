@@ -7,12 +7,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+
+import com.daimajia.swipe.SimpleSwipeListener;
+import com.daimajia.swipe.SwipeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +86,7 @@ public class BuyListFragment extends Fragment {
         binding.setViewmodel(viewModel);
         binding.setCallback(buyListCallback);
 
-        adapter = new BuyListAdapter(itemCallback);
+        adapter = new BuyListAdapter(itemCallback, swipeListener);
         binding.recyclerItems.setAdapter(adapter);
         initUi(binding.getRoot());
         setupFab();
@@ -127,6 +131,15 @@ public class BuyListFragment extends Fragment {
             viewModel.loadItems(items);
         });
         Log.i(TAG, "ShoppingList visFAB activated");
+
+        // скрытие fab при  прокрутке с анимацией
+        binding.recyclerItems.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                viewModel.recyclerScrolled(dy);
+            }
+        });
     }
 
     private void setupCreateButton(final long itemId) {
@@ -161,6 +174,7 @@ public class BuyListFragment extends Fragment {
         @Override
         public void onItemClick(Item item) {
             viewModel.checkItem(item);
+            adapter.closeAllItems();
             Log.i(TAG, "BuyList on item click: " + item.getId());
         }
 
@@ -177,6 +191,40 @@ public class BuyListFragment extends Fragment {
             setupCreateButton(item.getId());
             adapter.closeAllItems();
             Log.i(TAG, "BuyList edit item: " + item.getId());
+        }
+    };
+
+    private final SwipeLayout.SwipeListener swipeListener = new SwipeLayout.SwipeListener() {
+        @Override
+        public void onStartOpen(SwipeLayout layout) {
+            layout.setBackgroundResource(R.drawable.horizontal_border);
+            viewModel.fabIsShown.set(false);
+        }
+
+        @Override
+        public void onOpen(SwipeLayout layout) {
+
+        }
+
+        @Override
+        public void onStartClose(SwipeLayout layout) {
+
+        }
+
+        @Override
+        public void onClose(SwipeLayout layout) {
+            layout.setBackground(null);
+            viewModel.fabIsShown.set(true);
+        }
+
+        @Override
+        public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+
+        }
+
+        @Override
+        public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+
         }
     };
 }

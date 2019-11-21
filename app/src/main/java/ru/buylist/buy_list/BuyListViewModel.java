@@ -31,8 +31,7 @@ public class BuyListViewModel extends AndroidViewModel {
 
     // Флаги для отображения/скрытия элементов
     public final ObservableBoolean layoutFieldsShow = new ObservableBoolean(false);
-    public final ObservableBoolean fabAddItemShow = new ObservableBoolean(true);
-    public final ObservableBoolean fabVisibilityShow = new ObservableBoolean(true);
+    public final ObservableBoolean fabIsShown = new ObservableBoolean(true);
     public final ObservableBoolean bottomShow = new ObservableBoolean(true);
     public final ObservableBoolean purchasedItemShow = new ObservableBoolean(true);
 
@@ -289,8 +288,7 @@ public class BuyListViewModel extends AndroidViewModel {
     // отображение полей для ввода товара
     public void showLayoutFields(EditText targetField) {
         layoutFieldsShow.set(true);
-        fabAddItemShow.set(false);
-        fabVisibilityShow.set(false);
+        fabIsShown.set(false);
         bottomShow.set(false);
         KeyboardUtils.showKeyboard(targetField, context);
     }
@@ -298,24 +296,29 @@ public class BuyListViewModel extends AndroidViewModel {
     // скрытие полей для ввода товара
     public void hideNewProductLayout(EditText targetField) {
         layoutFieldsShow.set(false);
-        fabAddItemShow.set(true);
-        fabVisibilityShow.set(true);
+        fabIsShown.set(true);
         bottomShow.set(true);
         KeyboardUtils.hideKeyboard(targetField, context);
     }
 
     // отображение bottomNavigation + fab
     public void showActivityLayout() {
-        fabVisibilityShow.set(true);
-        fabAddItemShow.set(true);
+        fabIsShown.set(true);
         bottomShow.set(true);
     }
 
     // скрытие bottomNavigation + fab
     public void hideActivityLayout() {
-        fabVisibilityShow.set(false);
-        fabAddItemShow.set(false);
+        fabIsShown.set(false);
         bottomShow.set(false);
+    }
+
+    public void recyclerScrolled(int dy) {
+        if (dy > 0) {
+            fabIsShown.set(false);
+        } else if (dy < 0) {
+            fabIsShown.set(true);
+        }
     }
 
     public void openPatternDialog(long collectionId) {

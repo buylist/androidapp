@@ -1,6 +1,7 @@
 package ru.buylist.utils;
 
 import android.databinding.BindingAdapter;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -40,6 +41,15 @@ public class BindingAdapters {
         PatternListAdapter adapter = (PatternListAdapter) recyclerView.getAdapter();
         if (adapter != null) {
             adapter.setItems(items);
+        }
+    }
+
+    @BindingAdapter("fabVisibility")
+    public static void setFabVisibility(FloatingActionButton button, boolean isShown) {
+        if (!isShown) {
+            button.hide();
+        } else {
+            button.show();
         }
     }
 }
