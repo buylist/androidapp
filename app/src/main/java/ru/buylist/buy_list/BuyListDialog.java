@@ -10,6 +10,7 @@ import android.util.Log;
 
 import java.util.List;
 
+import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.data.TemporaryDataStorage;
 import ru.buylist.data.entity.Collection;
 import ru.buylist.data.entity.Item;
@@ -53,7 +54,7 @@ public class BuyListDialog extends DialogFragment {
         String[] collectionTitle = getCollectionTitle();
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-        dialog.setTitle("Коллекция списков")
+        dialog.setTitle(getDialogTitle())
                 .setCancelable(false)
                 .setPositiveButton("Готово", (dialog12, which) -> {
 //                        transferItems();
@@ -73,6 +74,17 @@ public class BuyListDialog extends DialogFragment {
         super.onDestroy();
 
         storage.saveSelectedCollection(getArguments().getLong(ARG_COLLECTION_ID));
+    }
+
+    private String getDialogTitle() {
+        switch (getArguments().getString(ARG_COLLECTION_TYPE)) {
+            case CollectionType.PATTERN:
+                return "Шаблоны";
+            case CollectionType.RECIPE:
+                return "Рецепты";
+            default:
+                return "Коллекция списков";
+        }
     }
 
     private String[] getCollectionTitle() {
