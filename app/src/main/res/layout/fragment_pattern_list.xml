@@ -48,7 +48,7 @@
             android:background="@drawable/field_border"
             android:visibility="@{viewmodel.layoutFieldsShow ? View.VISIBLE : View.GONE}">
 
-            <EditText
+            <ru.buylist.utils.FocusableEditText
                 android:id="@+id/field_name"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -56,9 +56,10 @@
                 android:hint="@string/item_name_default_text"
                 android:inputType="text"
                 android:background="@android:color/transparent"
-                android:text="@={viewmodel.itemName}" />
+                android:text="@={viewmodel.itemName}"
+                requestFocus="@{viewmodel.layoutFieldsShow}"/>
 
-            <EditText
+            <ru.buylist.utils.FocusableEditText
                 android:id="@+id/field_quantity"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -70,7 +71,7 @@
                 android:background="@drawable/field_bg"
                 android:text="@={viewmodel.quantity}" />
 
-            <EditText
+            <ru.buylist.utils.FocusableEditText
                 android:id="@+id/field_unit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

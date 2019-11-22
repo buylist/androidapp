@@ -93,7 +93,7 @@
                     android:visibility="@{viewmodel.layoutBuyListShow ? View.VISIBLE : View.GONE}"
                     android:background="@drawable/field_border">
 
-                    <EditText
+                    <ru.buylist.utils.FocusableEditText
                         android:id="@+id/field_name_buy_list"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -102,7 +102,8 @@
                         android:hint="@string/field_name_list_hint"
                         android:inputType="text"
                         android:background="@android:color/transparent"
-                        android:text="@={viewmodel.buyListName}"/>
+                        android:text="@={viewmodel.buyListName}"
+                        requestFocus="@{viewmodel.layoutBuyListShow}"/>
 
                     <ImageButton
                         android:id="@+id/btn_create_buy_list"
@@ -177,7 +178,7 @@
                     android:visibility="@{viewmodel.layoutPatternListShow ? View.VISIBLE : View.GONE}"
                     android:background="@drawable/field_border">
 
-                    <EditText
+                    <ru.buylist.utils.FocusableEditText
                         android:id="@+id/field_name_pattern_list"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -186,7 +187,8 @@
                         android:hint="@string/field_name_pattern_hint"
                         android:inputType="text"
                         android:background="@android:color/transparent"
-                        android:text="@={viewmodel.patterName}" />
+                        android:text="@={viewmodel.patterName}"
+                        requestFocus="@{viewmodel.layoutPatternListShow}"/>
 
                     <ImageButton
                         android:id="@+id/btn_create_pattern_list"
@@ -259,7 +261,7 @@
                     android:background="@drawable/field_border"
                     android:visibility="@{viewmodel.layoutRecipeListShow ? View.VISIBLE : View.GONE}">
 
-                    <EditText
+                    <ru.buylist.utils.FocusableEditText
                         android:id="@+id/field_name_recipe_list"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -268,7 +270,8 @@
                         android:hint="@string/field_name_recipe_hint"
                         android:inputType="text"
                         android:background="@android:color/transparent"
-                        android:text="@={viewmodel.recipeName}" />
+                        android:text="@={viewmodel.recipeName}"
+                        requestFocus="@{viewmodel.layoutRecipeListShow}"/>
 
                     <ImageButton
                         android:id="@+id/btn_create_recipe_list"

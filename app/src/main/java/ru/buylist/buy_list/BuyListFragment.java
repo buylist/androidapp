@@ -120,7 +120,7 @@ public class BuyListFragment extends Fragment {
         FloatingActionButton visibilityFab = getActivity().findViewById(R.id.fab_visibility);
 
         newItemFab.setOnClickListener(v -> {
-            viewModel.showLayoutFields(productField);
+            viewModel.showLayoutFields();
             setupCreateButton(0);
         });
         Log.i(TAG, "ShoppingList newFAB activated");

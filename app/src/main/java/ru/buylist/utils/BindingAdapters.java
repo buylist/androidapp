@@ -4,6 +4,7 @@ import android.databinding.BindingAdapter;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 
 import java.util.List;
 
@@ -44,12 +45,22 @@ public class BindingAdapters {
         }
     }
 
+    // Скрытие / отображение fab с анимацией
     @BindingAdapter("fabVisibility")
     public static void setFabVisibility(FloatingActionButton button, boolean isShown) {
         if (!isShown) {
             button.hide();
         } else {
             button.show();
+        }
+    }
+
+    @BindingAdapter("requestFocus")
+    public static void setFocus(EditText field, boolean isFocusable) {
+        if (isFocusable) {
+            field.requestFocus();
+        } else {
+            field.clearFocus();
         }
     }
 }

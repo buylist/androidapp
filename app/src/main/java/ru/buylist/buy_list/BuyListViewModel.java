@@ -18,7 +18,6 @@ import ru.buylist.R;
 import ru.buylist.data.TemporaryDataStorage;
 import ru.buylist.utils.BuylistApp;
 import ru.buylist.data.DataRepository;
-import ru.buylist.utils.KeyboardUtils;
 import ru.buylist.utils.SingleLiveEvent;
 import ru.buylist.data.entity.*;
 
@@ -154,13 +153,13 @@ public class BuyListViewModel extends AndroidViewModel {
         if (item.isEmpty()) {
             // товар не может быть пустым, обнуляем и скрываем layout
             clearFields();
-            hideNewProductLayout(targetField);
+            hideNewProductLayout();
             snackbarText.setValue(R.string.item_name_is_empty);
             return;
         }
 
         item.setCollectionId(collectionId);
-        item.setQuantity(quantity.get());
+        item.setQuantity(quantity.get() + " ");
         item.setUnit(unit.get());
 
         // новый товар добавляется в базу, редактируемый - обновляется
@@ -177,7 +176,7 @@ public class BuyListViewModel extends AndroidViewModel {
         }
 
         clearFields();
-        hideNewProductLayout(targetField);
+        hideNewProductLayout();
     }
 
     // проверка на наличие товара в глобальной базе
@@ -286,19 +285,17 @@ public class BuyListViewModel extends AndroidViewModel {
     }
 
     // отображение полей для ввода товара
-    public void showLayoutFields(EditText targetField) {
+    public void showLayoutFields() {
         layoutFieldsShow.set(true);
         fabIsShown.set(false);
         bottomShow.set(false);
-        KeyboardUtils.showKeyboard(targetField, context);
     }
 
     // скрытие полей для ввода товара
-    public void hideNewProductLayout(EditText targetField) {
+    public void hideNewProductLayout() {
         layoutFieldsShow.set(false);
         fabIsShown.set(true);
         bottomShow.set(true);
-        KeyboardUtils.hideKeyboard(targetField, context);
     }
 
     // отображение bottomNavigation + fab

@@ -119,7 +119,7 @@ public class RecipeListViewModel extends AndroidViewModel {
         }
 
         item.setCollectionId(collectionId);
-        item.setQuantity(quantity.get());
+        item.setQuantity(quantity.get() + " ");
         item.setUnit(unit.get());
 
         // новый товар добавляется в базу, редактируемый - обновляется

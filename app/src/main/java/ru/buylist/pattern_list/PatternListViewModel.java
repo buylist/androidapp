@@ -124,7 +124,7 @@ public class PatternListViewModel extends AndroidViewModel {
         }
 
         item.setCollectionId(collectionId);
-        item.setQuantity(quantity.get());
+        item.setQuantity(quantity.get() + " ");
         item.setUnit(unit.get());
 
         // новый товар добавляем в базу, редактируемый - обновляем
