@@ -1,11 +1,12 @@
 package ru.buylist.pattern_list;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import androidx.databinding.DataBindingUtil;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import ru.buylist.R;
 import ru.buylist.buy_list.BuyListViewModel;

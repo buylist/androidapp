@@ -1,11 +1,12 @@
 package ru.buylist.buy_list;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
@@ -37,7 +38,9 @@ public class BuyListAdapter extends RecyclerSwipeAdapter<BuyListAdapter.BuyListH
                 LayoutInflater.from(parent.getContext()),
                 R.layout.item_product,
                 parent, false);
+
         binding.setCallback(callback);  // отслеживание кликов
+
         return new BuyListHolder(binding);
     }
 
@@ -46,7 +49,7 @@ public class BuyListAdapter extends RecyclerSwipeAdapter<BuyListAdapter.BuyListH
         Item item = items.get(position);
         holder.bind(item);
 
-        mItemManger.bindView(holder.itemView, position);
+        mItemManger.bind(holder.itemView, position);
         holder.binding.layoutSwipeItem.addSwipeListener(swipeListener);
     }
 

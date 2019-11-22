@@ -1,11 +1,11 @@
 package ru.buylist.collection_lists;
 
-import android.databinding.DataBindingUtil;
-import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.databinding.DataBindingUtil;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.*;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
@@ -49,7 +49,7 @@ public class CollectionAdapter extends RecyclerSwipeAdapter<CollectionAdapter.Bu
         holder.bind(collection);
 
         // обработка свайпа
-        mItemManger.bindView(holder.itemView, i);
+        mItemManger.bind(holder.itemView, i);
         holder.binding.layoutSwipe.addSwipeListener(new SwipeLayout.SwipeListener() {
             @Override
             public void onStartOpen(SwipeLayout layout) {

@@ -22,7 +22,7 @@
         android:orientation="vertical"
         tools:ignore="Autofill">
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
@@ -117,13 +117,13 @@
                         android:src="@drawable/button_create" />
                 </RelativeLayout>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_buy_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_horizontal_margin"
                     android:layout_marginEnd="@dimen/default_horizontal_margin"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:visibility="@{viewmodel.recyclerBuyListShow ? View.VISIBLE : View.GONE}" />
 
 
@@ -202,13 +202,13 @@
                         android:src="@drawable/button_create" />
                 </RelativeLayout>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_pattern"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_horizontal_margin"
                     android:layout_marginEnd="@dimen/default_horizontal_margin"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:visibility="@{viewmodel.recyclerPatternListShow ? View.VISIBLE : View.GONE}" />
 
                 <View
@@ -285,13 +285,13 @@
                         android:src="@drawable/button_create" />
                 </RelativeLayout>
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_recipe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_horizontal_margin"
                     android:layout_marginEnd="@dimen/default_horizontal_margin"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:visibility="@{viewmodel.recyclerRecipeListShow ? View.VISIBLE : View.GONE}" />
 
 
@@ -302,9 +302,9 @@
                     android:background="@color/colorDivider" />
 
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
-        <android.support.design.widget.BottomNavigationView
+        <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

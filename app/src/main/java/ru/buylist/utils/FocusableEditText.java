@@ -6,7 +6,10 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.inputmethod.InputMethodManager;
 
-public class FocusableEditText extends android.support.v7.widget.AppCompatEditText {
+import androidx.appcompat.widget.AppCompatEditText;
+
+public class FocusableEditText extends AppCompatEditText {
+
     public FocusableEditText(Context context) {
         super(context);
     }
@@ -24,7 +27,7 @@ public class FocusableEditText extends android.support.v7.widget.AppCompatEditTe
         super.onFocusChanged(focused, direction, previouslyFocusedRect);
 
         if (focused) {
-            InputMethodManager imm = (InputMethodManager)getContext()
+            InputMethodManager imm = (InputMethodManager) getContext()
                     .getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(this, InputMethodManager.SHOW_FORCED);
         } else {

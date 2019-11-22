@@ -1,10 +1,11 @@
 package ru.buylist.pattern_list;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
@@ -44,7 +45,7 @@ public class PatternListAdapter extends RecyclerSwipeAdapter<PatternListAdapter.
         Item item = items.get(position);
         holder.bind(item);
 
-        mItemManger.bindView(holder.itemView, position);
+        mItemManger.bind(holder.itemView, position);
         holder.binding.layoutSwipeItem.addSwipeListener(swipeListener);
     }
 
