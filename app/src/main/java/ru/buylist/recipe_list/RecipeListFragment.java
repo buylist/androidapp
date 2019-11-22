@@ -116,17 +116,20 @@ public class RecipeListFragment extends Fragment {
     private void saveSelectedItem(Item selectedItem) {
         if (selectedItems.isEmpty()) {
             selectedItems.add(selectedItem);
+            selectedItem.setPurchased(true);
             return;
         }
 
         for (Item item : selectedItems) {
             if (item.getId() == selectedItem.getId()) {
                 selectedItems.remove(item);
+                selectedItem.setPurchased(false);
                 return;
             }
         }
 
         selectedItems.add(selectedItem);
+        selectedItem.setPurchased(true);
     }
 
     // callback'и кликов по кнопкам создания товара, инструкции, сохранение инструкции
@@ -162,6 +165,7 @@ public class RecipeListFragment extends Fragment {
         public void onItemClick(Item item) {
             saveSelectedItem(item);
             viewModel.btnToMoveShow.set(!selectedItems.isEmpty());
+            adapter.notifyDataSetChanged();
         }
 
         @Override

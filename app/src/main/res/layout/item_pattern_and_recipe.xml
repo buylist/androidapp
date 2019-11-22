@@ -81,7 +81,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/small_layout_margin"
                         android:contentDescription="@string/category_marker_description"
-                        android:src="@drawable/circle"/>
+                        android:src="@{item.purchased ? @drawable/circle : @drawable/circle_empty}"/>
 
                     <TextView
                         android:id="@+id/text_view_item_name"
@@ -90,7 +90,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/small_layout_margin"
                         android:layout_toEndOf="@id/img_category_circle"
-                        android:background="@{item.purchased ? @drawable/strike_through : null}"
+                        android:layout_toStartOf="@+id/text_view_item_quantity"
                         android:text="@{item.name}"
                         android:textSize="@dimen/default_text_size"/>
 
@@ -100,7 +100,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignEnd="@id/text_view_item_name"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="4dp"
                         android:layout_marginEnd="@dimen/default_layout_margin"

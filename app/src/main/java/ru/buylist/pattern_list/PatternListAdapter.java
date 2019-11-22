@@ -14,7 +14,7 @@ import java.util.List;
 import ru.buylist.R;
 import ru.buylist.buy_list.CategoryInfo;
 import ru.buylist.data.entity.Item;
-import ru.buylist.databinding.ItemProductBinding;
+import ru.buylist.databinding.ItemPatternAndRecipeBinding;
 
 import static ru.buylist.utils.ItemClickCallback.*;
 
@@ -31,9 +31,9 @@ public class PatternListAdapter extends RecyclerSwipeAdapter<PatternListAdapter.
 
     @Override
     public PatternListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ItemProductBinding binding = DataBindingUtil.inflate(
+        ItemPatternAndRecipeBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.item_product,
+                R.layout.item_pattern_and_recipe,
                 parent, false);
         binding.setCallback(callback);
         return new PatternListHolder(binding);
@@ -68,10 +68,10 @@ public class PatternListAdapter extends RecyclerSwipeAdapter<PatternListAdapter.
      * Holder
      */
     static class PatternListHolder extends RecyclerView.ViewHolder {
-        ItemProductBinding binding;
+        ItemPatternAndRecipeBinding binding;
         Item item;
 
-        PatternListHolder(ItemProductBinding binding) {
+        PatternListHolder(ItemPatternAndRecipeBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -79,7 +79,6 @@ public class PatternListAdapter extends RecyclerSwipeAdapter<PatternListAdapter.
         void bind(Item item) {
             this.item = item;
             binding.setItem(item);
-            binding.imgCategoryCircle.setImageResource(R.drawable.circle_empty);
             bindColor(item);
             binding.layoutSwipeItem.setShowMode(SwipeLayout.ShowMode.PullOut);
             binding.layoutSwipeItem.addDrag(SwipeLayout.DragEdge.Right, binding.layoutBottomSwipe);
@@ -94,5 +93,6 @@ public class PatternListAdapter extends RecyclerSwipeAdapter<PatternListAdapter.
                 binding.imgCategoryCircle.setColorFilter(Color.parseColor(item.getCategoryColor()));
             }
         }
+
     }
 }
