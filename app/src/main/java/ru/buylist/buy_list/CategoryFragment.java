@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     private Button buttonSkip;
 
     private BuyListViewModel viewModel;
+    private CategoryAdapter adapter;
 
     public static CategoryFragment newInstance(long itemId, String type) {
         Bundle args = new Bundle();
@@ -92,7 +94,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
         productName.setText(item.getName());
 
-        setAdapter();
+        subscribeCategories();
 
         spinnerButton.setOnClickListener(this);
         buttonNext.setOnClickListener(this);
@@ -121,8 +123,6 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                     SnackbarUtils.showSnackbar(v, getString(R.string.category_is_empty));
                     break;
                 }
-
-
                 viewModel.updateCategory(categoryText.getText().toString(), item);
                 break;
             case R.id.button_skip:
@@ -131,35 +131,16 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private List<Category> getCategories() {
-        String[] standardCategories = getResources().getStringArray(R.array.category);
-        List<Category> categories = new ArrayList<>();
-
-        for (int i = 0; i < standardCategories.length; i++) {
-            categories.add(getCategory(i));
-            Category baseCategory = viewModel.getCategory(categories.get(i).getName());
-            if (baseCategory == null || baseCategory.getName() == null) {
-                viewModel.addCategory(categories.get(i));
+    private void subscribeCategories() {
+        viewModel.getLiveCategories().observe(this, newCategories -> {
+            if (adapter == null) {
+                adapter = new CategoryAdapter(getActivity(),
+                        R.layout.item_category_row, newCategories);
+            } else {
+                adapter.setList(newCategories);
             }
-        }
-        return categories;
-    }
-
-    private Category getCategory(int i) {
-        String[] standardCategories = getResources().getStringArray(R.array.category);
-        String[] standardColor = getResources().getStringArray(R.array.category_color);
-        Category category = new Category();
-        category.setName(standardCategories[i]);
-        category.setColor(standardColor[i]);
-        return category;
-    }
-
-    private void setAdapter() {
-        List<Category> categories = getCategories();
-        CategoryAdapter adapter = new CategoryAdapter(getActivity(),
-                R.layout.item_category_row,
-                categories);
-        categoryText.setAdapter(adapter);
+            categoryText.setAdapter(adapter);
+        });
     }
 
 
@@ -181,6 +162,11 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
             return getCustomView(position, convertView, parent);
         }
 
+        private void setList(List<Category> categories) {
+            this.categories = categories;
+            notifyDataSetChanged();
+        }
+
         View getCustomView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
             View row = inflater.inflate(R.layout.item_category_row, parent, false);
@@ -188,31 +174,8 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
             ImageView icon = row.findViewById(R.id.img_category_circle);
 
             label.setText(categories.get(position).getName());
-
-            switch (categories.get(position).getName()) {
-                case "Продукты":
-                    icon.setColorFilter(Color.parseColor("#56CCF2"));
-                    return row;
-                case "Товары для дома":
-                    icon.setColorFilter(Color.parseColor("#4CB5AB"));
-                    return row;
-                case "Красота и здоровье":
-                    icon.setColorFilter(Color.parseColor("#EB5757"));
-                    return row;
-                case "Детям и мамам":
-                    icon.setColorFilter(Color.parseColor("#F2994A"));
-                    return row;
-                case "Авто Мото":
-                    icon.setColorFilter(Color.parseColor("#F2E148"));
-                    return row;
-                case "Зоотовары":
-                    icon.setColorFilter(Color.parseColor("#D766FF"));
-                    return row;
-                default:
-                    icon.setColorFilter(Color.BLACK);
-                    return row;
-            }
-
+            icon.setColorFilter(Color.parseColor(categories.get(position).getColor()));
+            return row;
         }
     }
 

@@ -28,5 +28,8 @@ public interface CategoryDao {
     Category getCategory(String name);
 
     @Query("SELECT * FROM categories")
-    LiveData<List<Category>> getAllCategories();
+    List<Category> getAllCategories();
+
+    @Query("SELECT * FROM categories")
+    LiveData<List<Category>> getLiveCategories();
 }

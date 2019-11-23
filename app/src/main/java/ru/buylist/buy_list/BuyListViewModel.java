@@ -142,6 +142,10 @@ public class BuyListViewModel extends AndroidViewModel {
         return repository.getCategory(name);
     }
 
+    public LiveData<List<Category>> getLiveCategories() {
+        return repository.getLiveCategories();
+    }
+
 
     /**
      * main

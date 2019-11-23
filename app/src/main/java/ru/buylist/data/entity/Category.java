@@ -22,6 +22,14 @@ public class Category {
         this.id = id;
     }
 
+    @Ignore
+    public Category(int count, String name, String color) {
+        // для уникальности, т.к. при переносе нескольких позиций генерируемые id начинают совпадать
+        this.id = System.currentTimeMillis() + count;
+        this.name = name;
+        this.color = color;
+    }
+
     public long getId() {
         return id;
     }

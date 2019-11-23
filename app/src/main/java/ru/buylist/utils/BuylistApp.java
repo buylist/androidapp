@@ -22,7 +22,7 @@ public class BuylistApp extends Application {
     }
 
     public BuyListDatabase getDatabase() {
-        return BuyListDatabase.getInstance(this);
+        return BuyListDatabase.getInstance(this, executors);
     }
 
     public DataRepository getRepository() {

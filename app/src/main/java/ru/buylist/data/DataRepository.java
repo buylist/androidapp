@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -185,5 +186,21 @@ public class DataRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List<Category> getCategories() {
+        FutureTask<List<Category>> task = new FutureTask<>(() ->
+                database.categoryDao().getAllCategories());
+        executors.discIO().execute(task);
+        try {
+            return task.get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public LiveData<List<Category>> getLiveCategories() {
+        return database.categoryDao().getLiveCategories();
     }
 }
