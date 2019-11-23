@@ -172,19 +172,18 @@ public class CollectionFragment extends Fragment {
 
             switch (menuItem.getItemId()) {
                 case R.id.action_home:
-                    callbacks.showHome();
+                    viewModel.hideAllLists();
                     return true;
                 case R.id.action_lists:
-
+                    viewModel.expandBuyList();
                     return true;
-                case R.id.action_templates:
-
+                case R.id.action_pattern:
+                    viewModel.expandPatternList();
                     return true;
                 case R.id.action_recipe:
-
+                    viewModel.expandRecipeList();
                     return true;
                 case R.id.action_settings:
-
                     return true;
             }
             return false;

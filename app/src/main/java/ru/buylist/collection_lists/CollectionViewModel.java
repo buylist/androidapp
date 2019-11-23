@@ -188,22 +188,16 @@ public class CollectionViewModel extends AndroidViewModel {
     public void addCollection(String type) {
         switch (type) {
             case CollectionType.BuyList:
+                expandBuyList();
                 layoutBuyListShow.set(true);
-                layoutPatternListShow.set(false);
-                layoutRecipeListShow.set(false);
-                recyclerBuyListShow.set(true);
                 break;
             case CollectionType.PATTERN:
+                expandPatternList();
                 layoutPatternListShow.set(true);
-                layoutBuyListShow.set(false);
-                layoutRecipeListShow.set(false);
-                recyclerPatternListShow.set(true);
                 break;
             case CollectionType.RECIPE:
+                expandRecipeList();
                 layoutRecipeListShow.set(true);
-                layoutBuyListShow.set(false);
-                layoutPatternListShow.set(false);
-                recyclerRecipeListShow.set(true);
                 break;
         }
     }
@@ -220,5 +214,41 @@ public class CollectionViewModel extends AndroidViewModel {
         buyListName.set("");
         patterName.set("");
         recipeName.set("");
+    }
+
+    public void expandBuyList() {
+        recyclerBuyListShow.set(true);
+        recyclerPatternListShow.set(false);
+        recyclerRecipeListShow.set(false);
+        layoutBuyListShow.set(false);
+        layoutPatternListShow.set(false);
+        layoutRecipeListShow.set(false);
+    }
+
+    public void expandPatternList() {
+        recyclerPatternListShow.set(true);
+        recyclerBuyListShow.set(false);
+        recyclerRecipeListShow.set(false);
+        layoutBuyListShow.set(false);
+        layoutPatternListShow.set(false);
+        layoutRecipeListShow.set(false);
+    }
+
+    public void expandRecipeList() {
+        recyclerRecipeListShow.set(true);
+        recyclerBuyListShow.set(false);
+        recyclerPatternListShow.set(false);
+        layoutBuyListShow.set(false);
+        layoutPatternListShow.set(false);
+        layoutRecipeListShow.set(false);
+    }
+
+    public void hideAllLists() {
+        recyclerRecipeListShow.set(false);
+        recyclerBuyListShow.set(false);
+        recyclerPatternListShow.set(false);
+        layoutBuyListShow.set(false);
+        layoutPatternListShow.set(false);
+        layoutRecipeListShow.set(false);
     }
 }

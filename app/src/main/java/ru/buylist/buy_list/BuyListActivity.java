@@ -3,6 +3,7 @@ package ru.buylist.buy_list;
 
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.databinding.DataBindingUtil;
 import android.util.Log;
 
@@ -11,6 +12,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
+import ru.buylist.collection_lists.CollectionActivity;
 import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.data.entity.Collection;
 import ru.buylist.databinding.ActivityBuyListBinding;
@@ -96,6 +98,7 @@ public class BuyListActivity extends SingleFragmentActivity {
         });
 
         setTitle(getIntent().getStringExtra(EXTRA_COLLECTION_TITLE));
+        onBottomNavigationClickListener(binding);
     }
 
     @Override
@@ -143,5 +146,17 @@ public class BuyListActivity extends SingleFragmentActivity {
     private void chooseFromRecipe(Collection collection) {
         Intent intent = RecipeListActivity.newIntent(this, collection.getId(), collection.getTitle());
         startActivity(intent);
+    }
+
+    private void showHome() {
+        Intent intent = new Intent(this, CollectionActivity.class);
+        startActivity(intent);
+    }
+
+    private void onBottomNavigationClickListener(ActivityBuyListBinding binding) {
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+            showHome();
+            return true;
+        });
     }
 }

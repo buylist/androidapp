@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 import ru.buylist.R;
 import ru.buylist.buy_list.BuyListViewModel;
 import ru.buylist.buy_list.CategoryFragment;
+import ru.buylist.collection_lists.CollectionActivity;
 import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.databinding.ActivityPatternListBinding;
 import ru.buylist.utils.SingleFragmentActivity;
@@ -59,6 +60,7 @@ public class PatternListActivity extends SingleFragmentActivity {
         buyViewmodel.getReturnToListEvent().observe(this, this::returnToPattern);
 
         setTitle(getIntent().getStringExtra(EXTRA_PATTERN_TITLE));
+        onBottomNavigationClickListener(binding);
     }
 
     // вызов CategoryFragment
@@ -77,5 +79,17 @@ public class PatternListActivity extends SingleFragmentActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
+    }
+
+    private void showHome() {
+        Intent intent = new Intent(this, CollectionActivity.class);
+        startActivity(intent);
+    }
+
+    private void onBottomNavigationClickListener(ActivityPatternListBinding binding) {
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+            showHome();
+            return true;
+        });
     }
 }

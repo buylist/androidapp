@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_nav_list"
         android:title="@string/action_buy_list_text" />
     <item
-        android:id="@+id/action_templates"
+        android:id="@+id/action_pattern"
         android:icon="@drawable/ic_nav_pattern"
         android:title="@string/action_pattern_text" />
     <item

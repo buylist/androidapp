@@ -13,7 +13,8 @@
     <color name="colorDivider">#1F000000</color>
     <color name="colorButtonNextText">#007AFF</color>
     <color name="colorButtonSkipText">#4F4F4F</color>
-    <color name="colorNavIcon">#4F4F4F</color>
+    <color name="colorNavChecked">#4F4F4F</color>
+    <color name="colorNavNormal">#979797</color>
     <color name="colorNavBackground">#F2F2F2</color>
     <color name="colorMarkerDefault">#858E99</color>
 </resources>
