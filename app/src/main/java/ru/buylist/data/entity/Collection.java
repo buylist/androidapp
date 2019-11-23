@@ -10,6 +10,7 @@ public class Collection {
     private long id;
     private String title;
     private String type;
+    private String description;
 
     public Collection() {
         id = System.currentTimeMillis();
@@ -42,6 +43,14 @@ public class Collection {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public boolean isEmpty() {

@@ -140,6 +140,12 @@ public class RecipeListViewModel extends AndroidViewModel {
         clearFields();
     }
 
+    public void saveInstruction(Collection collection) {
+        collection.setDescription(instruction.get());
+        fieldInstructionShow.set(false);
+        repository.updateCollection(collection);
+    }
+
     // проверка на наличие в GlobalProductTable
     // если товар уже есть в глобальной базе - цепляем категорию и цвет
     private boolean isNewItem(Item item) {
@@ -158,6 +164,10 @@ public class RecipeListViewModel extends AndroidViewModel {
     public void loadItems(List<Item> items) {
         this.items.clear();
         this.items.addAll(items);
+    }
+
+    public void loadInstruction(String instruction) {
+        this.instruction.set(instruction);
     }
 
     private void clearFields() {

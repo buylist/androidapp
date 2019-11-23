@@ -195,7 +195,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/instruction_text_size"
-                android:textColor="@color/colorText"/>
+                android:textColor="@color/colorText"
+                android:text="@{viewmodel.instruction}"
+                android:visibility="@{viewmodel.fieldInstructionShow ? View.GONE : View.VISIBLE}"/>
 
         </LinearLayout>
 

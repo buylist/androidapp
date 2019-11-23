@@ -94,7 +94,11 @@ public class RecipeListFragment extends Fragment {
     }
 
     private void subscribeCollection(LiveData<Collection> liveData) {
-        liveData.observe(this, newCollection -> collection = newCollection);
+        liveData.observe(this, newCollection -> {
+            collection = newCollection;
+            viewModel.loadInstruction(newCollection.getDescription());
+        });
+
     }
 
     // устанавливаем кнопку создания товара
@@ -148,9 +152,7 @@ public class RecipeListFragment extends Fragment {
 
         @Override
         public void onSaveInstructionButtonClick() {
-            String newInstruction = viewModel.instruction.get();
-            binding.textViewInstruction.setText(newInstruction);
-            viewModel.fieldInstructionShow.set(false);
+            viewModel.saveInstruction(collection);
         }
 
         @Override
