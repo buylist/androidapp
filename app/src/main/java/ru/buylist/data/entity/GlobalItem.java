@@ -1,6 +1,7 @@
 package ru.buylist.data.entity;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "global_items")
@@ -16,6 +17,12 @@ public class GlobalItem {
         this.name = name;
         this.category = category;
         this.colorCategory = colorCategory;
+    }
+
+    @Ignore
+    public GlobalItem(String name) {
+        id = System.currentTimeMillis();
+        this.name = name;
     }
 
     public long getId() {

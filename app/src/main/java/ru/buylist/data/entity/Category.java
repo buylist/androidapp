@@ -23,6 +23,13 @@ public class Category {
     }
 
     @Ignore
+    public Category(String name, String color) {
+        this.id = System.currentTimeMillis();
+        this.name = name;
+        this.color = color;
+    }
+
+    @Ignore
     public Category(int count, String name, String color) {
         // для уникальности, т.к. при переносе нескольких позиций генерируемые id начинают совпадать
         this.id = System.currentTimeMillis() + count;

@@ -177,6 +177,11 @@ public class DataRepository {
         Log.i(TAG, "Repository add category: " + category.getName());
     }
 
+    public void updateCategory(final Category category) {
+        Runnable runnable = () -> database.categoryDao().updateCategory(category);
+        executors.discIO().execute(runnable);
+    }
+
     public Category getCategory(String name) {
         FutureTask<Category> task = new FutureTask<>(() -> database.categoryDao().getCategory(name));
         executors.discIO().execute(task);

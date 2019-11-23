@@ -36,6 +36,12 @@ public class BuyListViewModel extends AndroidViewModel {
     public final ObservableBoolean bottomShow = new ObservableBoolean(true);
     public final ObservableBoolean purchasedItemShow = new ObservableBoolean(true);
 
+    public ObservableBoolean circleOneSelected = new ObservableBoolean(false);
+    public ObservableBoolean circleTwoSelected = new ObservableBoolean(false);
+    public ObservableBoolean circleThreeSelected = new ObservableBoolean(false);
+    public ObservableBoolean circleFourSelected = new ObservableBoolean(false);
+    public ObservableBoolean circleFiveSelected = new ObservableBoolean(false);
+
     // Поля ввода данных нового товара
     public final ObservableField<String> itemName = new ObservableField<>();
     public final ObservableField<String> quantity = new ObservableField<>("");
@@ -221,20 +227,24 @@ public class BuyListViewModel extends AndroidViewModel {
     // используется, когда пользователем была выбрана категория для нового товара
     // товару присваивается категория, цвет категории и обновляется в БД
     // создается новый глобальный товар и добавляется в БД
-    public void updateCategory(String categoryName, Item item) {
+    public void updateCategory(String categoryName, String color, Item item) {
+        Category newCategory = new Category(categoryName, color);
+        GlobalItem globalItem = new GlobalItem(item.getName());
         Category category = repository.getCategory(categoryName);
+
+        // если нет в БД
         if (category == null) {
-            snackbarText.setValue(R.string.category_name_is_invalid);
-            return;
+            repository.addCategory(newCategory);
+            item.setCategory(newCategory.getName());
+            item.setCategoryColor(newCategory.getColor());
+            globalItem.setCategory(newCategory.getName());
+            globalItem.setCategoryColor(newCategory.getColor());
+        } else {
+            item.setCategory(category.getName());
+            item.setCategoryColor(category.getColor());
+            globalItem.setCategory(category.getName());
+            globalItem.setCategoryColor(category.getColor());
         }
-
-        GlobalItem globalItem = new GlobalItem(
-                item.getName(), item.getCategory(), item.getCategoryColor());
-
-        item.setCategory(category.getName());
-        item.setCategoryColor(category.getColor());
-        globalItem.setCategory(category.getName());
-        globalItem.setCategoryColor(category.getColor());
 
         repository.updateItem(item);
         repository.addGlobalItem(globalItem);
@@ -340,5 +350,53 @@ public class BuyListViewModel extends AndroidViewModel {
         itemName.set("");
         quantity.set("");
         unit.set("");
+    }
+
+    public void circleSelected(int position) {
+        switch (position) {
+            case CategoryCircle.CIRCLE_1:
+                circleOneSelected.set(true);
+                circleTwoSelected.set(false);
+                circleThreeSelected.set(false);
+                circleFourSelected.set(false);
+                circleFiveSelected.set(false);
+                break;
+            case CategoryCircle.CIRCLE_2:
+                circleOneSelected.set(false);
+                circleTwoSelected.set(true);
+                circleThreeSelected.set(false);
+                circleFourSelected.set(false);
+                circleFiveSelected.set(false);
+                break;
+            case CategoryCircle.CIRCLE_3:
+                circleOneSelected.set(false);
+                circleTwoSelected.set(false);
+                circleThreeSelected.set(true);
+                circleFourSelected.set(false);
+                circleFiveSelected.set(false);
+                break;
+            case CategoryCircle.CIRCLE_4:
+                circleOneSelected.set(false);
+                circleTwoSelected.set(false);
+                circleThreeSelected.set(false);
+                circleFourSelected.set(true);
+                circleFiveSelected.set(false);
+                break;
+            case CategoryCircle.CIRCLE_5:
+                circleOneSelected.set(false);
+                circleTwoSelected.set(false);
+                circleThreeSelected.set(false);
+                circleFourSelected.set(false);
+                circleFiveSelected.set(true);
+                break;
+        }
+    }
+
+    public void unselectCircles() {
+        circleOneSelected.set(false);
+        circleTwoSelected.set(false);
+        circleThreeSelected.set(false);
+        circleFourSelected.set(false);
+        circleFiveSelected.set(false);
     }
 }
