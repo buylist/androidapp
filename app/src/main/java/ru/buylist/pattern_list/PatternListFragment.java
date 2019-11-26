@@ -111,9 +111,7 @@ public class PatternListFragment extends Fragment {
     // для создания нового товара передаем в метод 0
     // для обновления существующего товара - его идентификатор
     private void setupCreateButton(final long itemId) {
-        binding.btnCreateItem.setOnClickListener(v -> {
-            viewModel.saveItem(collection.getId(), itemId);
-        });
+        binding.btnCreateItem.setOnClickListener(v -> viewModel.saveItem(collection.getId(), itemId));
     }
 
     private void setupSnackbar() {
@@ -141,7 +139,6 @@ public class PatternListFragment extends Fragment {
 
         selectedItems.add(selectedItem);
         selectedItem.setPurchased(true);
-
     }
 
     // callback кликов по кнопке переноса товаров в список

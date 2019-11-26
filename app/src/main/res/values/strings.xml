@@ -13,6 +13,7 @@
     <!--Category-->
     <string name="category_name_is_invalid">Имя категории указано неверно</string>
     <string name="category_is_empty">Категория не выбрана</string>
+    <string name="category_color_is_empty">Выберите цвет</string>
 
 <!--Collection-->
     <string name="list_collection">Cписки</string>
@@ -49,6 +50,8 @@
     <string name="new_category_name_hint">Введите название категории</string>
     <string name="category_spinner_description">Развернуть список категорий</string>
     <string name="category_marker_description">Цвет категории</string>
+    <string name="btn_prev_color_description">Предыдущие цвета</string>
+    <string name="btn_next_color_description">Следующие цвета</string>
 
 <!--RecipeList-->
     <string name="ingredient_text">Ингредиенты</string>
@@ -113,6 +116,11 @@
         <item>#EB5757</item>
         <item>#F2994A</item>
         <item>#F2E148</item>
+
         <item>#D766FF</item>
+        <item>#D4DD6A</item>
+        <item>#DEA000</item>
+        <item>#9C27B0</item>
+        <item>#3F51B5</item>
     </string-array>
 </resources>

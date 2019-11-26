@@ -13,6 +13,9 @@ public class Category {
     private String name;
     private String color;
 
+    @Ignore
+    private boolean isSelected;
+
     public Category() {
         id = System.currentTimeMillis();
     }
@@ -59,6 +62,14 @@ public class Category {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
     @NonNull

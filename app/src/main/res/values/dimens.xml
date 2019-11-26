@@ -23,6 +23,7 @@
     <dimen name="field_quantity_margin_end">10dp</dimen>
 
     <dimen name="img_category_circle">16dp</dimen>
+    <dimen name="img_category_circle_big">40dp</dimen>
     <dimen name="category_item_margin_start">24dp</dimen>
 
     <dimen name="ingredients_top_margin">20dp</dimen>

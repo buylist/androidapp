@@ -3,10 +3,6 @@ package ru.buylist.buy_list;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,17 +46,11 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     private ImageButton spinnerButton;
     private Button buttonNext;
     private Button buttonSkip;
-    private ImageView circle_1;
-    private ImageView circle_2;
-    private ImageView circle_3;
-    private ImageView circle_4;
-    private ImageView circle_5;
 
     private FragmentCategoryBinding binding;
     private BuyListViewModel viewModel;
     private CategoryAdapter adapter;
-
-    private String newCategoryColor;
+    private CirclesAdapter circlesAdapter;
 
     public static CategoryFragment newInstance(long itemId, String type) {
         Bundle args = new Bundle();
@@ -107,11 +98,6 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         spinnerButton = view.findViewById(R.id.category_spinner);
         buttonNext = view.findViewById(R.id.button_next);
         buttonSkip = view.findViewById(R.id.button_skip);
-        circle_1 = view.findViewById(R.id.circle_1);
-        circle_2 = view.findViewById(R.id.circle_2);
-        circle_3 = view.findViewById(R.id.circle_3);
-        circle_4 = view.findViewById(R.id.circle_4);
-        circle_5 = view.findViewById(R.id.circle_5);
 
         productName.setText(item.getName());
 
@@ -120,19 +106,10 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         spinnerButton.setOnClickListener(this);
         buttonNext.setOnClickListener(this);
         buttonSkip.setOnClickListener(this);
-        circle_1.setOnClickListener(this);
-        circle_2.setOnClickListener(this);
-        circle_3.setOnClickListener(this);
-        circle_4.setOnClickListener(this);
-        circle_5.setOnClickListener(this);
 
         setupSnackbar();
+        setupCircleAdapter();
     }
-
-    private void getNewCategoryColor(int position) {
-        String[] standardColor = getActivity().getResources().getStringArray(R.array.category_color);
-        newCategoryColor = standardColor[position];
-     }
 
     private void setupSnackbar() {
         viewModel.getSnackbarMessage().observe(this, msg -> {
@@ -151,34 +128,13 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
             case R.id.button_next:
                 if (categoryText.getText().toString().isEmpty()) {
                     // категория не выбрана, отображаем snackbar
-                    SnackbarUtils.showSnackbar(v, getString(R.string.category_is_empty));
+                    viewModel.setSnackbarText(R.string.category_is_empty);
                     break;
                 }
-                viewModel.updateCategory(categoryText.getText().toString(), newCategoryColor, item);
-                viewModel.unselectCircles();
+                viewModel.updateCategory(categoryText.getText().toString(), circlesAdapter.getColor(), item);
                 break;
             case R.id.button_skip:
                 viewModel.skipCategory(item);
-                break;
-            case R.id.circle_1:
-                getNewCategoryColor(CategoryCircle.CIRCLE_1);
-                viewModel.circleSelected(CategoryCircle.CIRCLE_1);
-                break;
-            case R.id.circle_2:
-                getNewCategoryColor(CategoryCircle.CIRCLE_2);
-                viewModel.circleSelected(CategoryCircle.CIRCLE_2);
-                break;
-            case R.id.circle_3:
-                getNewCategoryColor(CategoryCircle.CIRCLE_3);
-                viewModel.circleSelected(CategoryCircle.CIRCLE_3);
-                break;
-            case R.id.circle_4:
-                getNewCategoryColor(CategoryCircle.CIRCLE_4);
-                viewModel.circleSelected(CategoryCircle.CIRCLE_4);
-                break;
-            case R.id.circle_5:
-                getNewCategoryColor(CategoryCircle.CIRCLE_5);
-                viewModel.circleSelected(CategoryCircle.CIRCLE_5);
                 break;
         }
     }
@@ -194,6 +150,42 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
             categoryText.setAdapter(adapter);
         });
     }
+
+    private void setupCircleAdapter() {
+        if (circlesAdapter == null) {
+            circlesAdapter = new CirclesAdapter(getColors());
+        } else {
+            circlesAdapter.setColors(getColors());
+        }
+        binding.recyclerCircles.setAdapter(circlesAdapter);
+
+        binding.recyclerCircles.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                viewModel.showHidePrevCirclesButton(isFirstPositionVisible());
+            }
+        });
+    }
+
+    private List<Category> getColors() {
+        String[] standardColors = getResources().getStringArray(R.array.category_color);
+        List<Category> colors = new ArrayList<>();
+        for (String standardColor : standardColors) {
+            Category color = new Category();
+            color.setColor(standardColor);
+            color.setSelected(false);
+            colors.add(color);
+        }
+        return colors;
+    }
+
+    private boolean isFirstPositionVisible() {
+        LinearLayoutManager layoutManager =((LinearLayoutManager) binding.recyclerCircles.getLayoutManager());
+        int pos = layoutManager.findFirstCompletelyVisibleItemPosition();
+        return (pos > 0);
+    }
+
 
 
     public class CategoryAdapter extends ArrayAdapter<Category> {
@@ -224,9 +216,16 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
             View row = inflater.inflate(R.layout.item_category_row, parent, false);
             TextView label = row.findViewById(R.id.text_view_category_name);
             ImageView icon = row.findViewById(R.id.img_category_circle);
+            String color = categories.get(position).getColor();
 
             label.setText(categories.get(position).getName());
-            icon.setColorFilter(Color.parseColor(categories.get(position).getColor()));
+
+            if (color == null) {
+                icon.setColorFilter(Color.parseColor(CategoryInfo.COLOR));
+            } else {
+                icon.setColorFilter(Color.parseColor(color));
+            }
+
             return row;
         }
     }

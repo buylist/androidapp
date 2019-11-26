@@ -138,7 +138,7 @@ public class BuyListFragment extends Fragment {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                viewModel.recyclerScrolled(dy);
+                viewModel.showHideFab(dy);
             }
         });
     }

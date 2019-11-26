@@ -35,12 +35,7 @@ public class BuyListViewModel extends AndroidViewModel {
     public final ObservableBoolean fabIsShown = new ObservableBoolean(true);
     public final ObservableBoolean bottomShow = new ObservableBoolean(true);
     public final ObservableBoolean purchasedItemShow = new ObservableBoolean(true);
-
-    public ObservableBoolean circleOneSelected = new ObservableBoolean(false);
-    public ObservableBoolean circleTwoSelected = new ObservableBoolean(false);
-    public ObservableBoolean circleThreeSelected = new ObservableBoolean(false);
-    public ObservableBoolean circleFourSelected = new ObservableBoolean(false);
-    public ObservableBoolean circleFiveSelected = new ObservableBoolean(false);
+    public final ObservableBoolean btnPrevCirclesShow = new ObservableBoolean(false);
 
     // Поля ввода данных нового товара
     public final ObservableField<String> itemName = new ObservableField<>();
@@ -152,6 +147,10 @@ public class BuyListViewModel extends AndroidViewModel {
         return repository.getLiveCategories();
     }
 
+    public void setSnackbarText(int msg) {
+        snackbarText.setValue(msg);
+    }
+
 
     /**
      * main
@@ -234,6 +233,10 @@ public class BuyListViewModel extends AndroidViewModel {
 
         // если нет в БД
         if (category == null) {
+            if (color.equals(CategoryInfo.COLOR)) {
+                snackbarText.setValue(R.string.category_color_is_empty);
+                return;
+            }
             repository.addCategory(newCategory);
             item.setCategory(newCategory.getName());
             item.setCategoryColor(newCategory.getColor());
@@ -326,12 +329,16 @@ public class BuyListViewModel extends AndroidViewModel {
         bottomShow.set(false);
     }
 
-    public void recyclerScrolled(int dy) {
+    public void showHideFab(int dy) {
         if (dy > 0) {
             fabIsShown.set(false);
         } else if (dy < 0) {
             fabIsShown.set(true);
         }
+    }
+
+    public void showHidePrevCirclesButton(boolean isShown) {
+        btnPrevCirclesShow.set(isShown);
     }
 
     public void openPatternDialog(long collectionId) {
@@ -350,53 +357,5 @@ public class BuyListViewModel extends AndroidViewModel {
         itemName.set("");
         quantity.set("");
         unit.set("");
-    }
-
-    public void circleSelected(int position) {
-        switch (position) {
-            case CategoryCircle.CIRCLE_1:
-                circleOneSelected.set(true);
-                circleTwoSelected.set(false);
-                circleThreeSelected.set(false);
-                circleFourSelected.set(false);
-                circleFiveSelected.set(false);
-                break;
-            case CategoryCircle.CIRCLE_2:
-                circleOneSelected.set(false);
-                circleTwoSelected.set(true);
-                circleThreeSelected.set(false);
-                circleFourSelected.set(false);
-                circleFiveSelected.set(false);
-                break;
-            case CategoryCircle.CIRCLE_3:
-                circleOneSelected.set(false);
-                circleTwoSelected.set(false);
-                circleThreeSelected.set(true);
-                circleFourSelected.set(false);
-                circleFiveSelected.set(false);
-                break;
-            case CategoryCircle.CIRCLE_4:
-                circleOneSelected.set(false);
-                circleTwoSelected.set(false);
-                circleThreeSelected.set(false);
-                circleFourSelected.set(true);
-                circleFiveSelected.set(false);
-                break;
-            case CategoryCircle.CIRCLE_5:
-                circleOneSelected.set(false);
-                circleTwoSelected.set(false);
-                circleThreeSelected.set(false);
-                circleFourSelected.set(false);
-                circleFiveSelected.set(true);
-                break;
-        }
-    }
-
-    public void unselectCircles() {
-        circleOneSelected.set(false);
-        circleTwoSelected.set(false);
-        circleThreeSelected.set(false);
-        circleFourSelected.set(false);
-        circleFiveSelected.set(false);
     }
 }
