@@ -36,6 +36,7 @@ public class BuyListViewModel extends AndroidViewModel {
     public final ObservableBoolean bottomShow = new ObservableBoolean(true);
     public final ObservableBoolean purchasedItemShow = new ObservableBoolean(true);
     public final ObservableBoolean btnPrevCirclesShow = new ObservableBoolean(false);
+    public final ObservableBoolean btnNextCirclesShow = new ObservableBoolean(false);
 
     // Поля ввода данных нового товара
     public final ObservableField<String> itemName = new ObservableField<>();
@@ -337,8 +338,9 @@ public class BuyListViewModel extends AndroidViewModel {
         }
     }
 
-    public void showHidePrevCirclesButton(boolean isShown) {
-        btnPrevCirclesShow.set(isShown);
+    public void showHideCirclesButton(boolean prevIsShown, boolean nextIsShown) {
+        btnPrevCirclesShow.set(prevIsShown);
+        btnNextCirclesShow.set(nextIsShown);
     }
 
     public void openPatternDialog(long collectionId) {

@@ -103,7 +103,7 @@
             android:src="@drawable/ic_arrow_right"
             android:background="@android:color/transparent"
             android:contentDescription="@string/btn_next_color_description"
-            android:visibility="@{viewmodel.btnPrevCirclesShow ? View.GONE : View.VISIBLE}"/>
+            android:visibility="@{viewmodel.btnNextCirclesShow ? View.GONE : View.VISIBLE}"/>
 
 
         <LinearLayout

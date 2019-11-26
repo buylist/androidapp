@@ -109,6 +109,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
         setupSnackbar();
         setupCircleAdapter();
+        onPrevNextButtonClick();
     }
 
     private void setupSnackbar() {
@@ -163,7 +164,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                viewModel.showHidePrevCirclesButton(isFirstPositionVisible());
+                viewModel.showHideCirclesButton(isFirstPositionVisible(), isLastPositionVisible());
             }
         });
     }
@@ -182,8 +183,35 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
     private boolean isFirstPositionVisible() {
         LinearLayoutManager layoutManager =((LinearLayoutManager) binding.recyclerCircles.getLayoutManager());
-        int pos = layoutManager.findFirstCompletelyVisibleItemPosition();
+        int pos = layoutManager.findFirstVisibleItemPosition();
         return (pos > 0);
+    }
+
+    private boolean isLastPositionVisible() {
+        LinearLayoutManager layoutManager =((LinearLayoutManager) binding.recyclerCircles.getLayoutManager());
+        int position = layoutManager.findLastVisibleItemPosition();
+        return (position >= circlesAdapter.getItemCount() - 1);
+    }
+
+    private void onPrevNextButtonClick() {
+        LinearLayoutManager layoutManager =((LinearLayoutManager) binding.recyclerCircles.getLayoutManager());
+        int totalItemCount = circlesAdapter.getItemCount();
+
+        binding.btnPrevCircles.setOnClickListener(v -> {
+            int firstVisibleItemIndex = layoutManager.findFirstVisibleItemPosition();
+            if (firstVisibleItemIndex > 0) {
+                layoutManager.smoothScrollToPosition(binding.recyclerCircles, null, firstVisibleItemIndex-1);
+            }
+        });
+
+        binding.btnNextCircles.setOnClickListener(v -> {
+            if (totalItemCount <= 0) return;
+
+            int lastVisibleItemIndex = layoutManager.findLastVisibleItemPosition();
+            if (lastVisibleItemIndex >= totalItemCount) return;
+
+            layoutManager.smoothScrollToPosition(binding.recyclerCircles, null, lastVisibleItemIndex+1);
+        });
     }
 
 
