@@ -45,7 +45,7 @@ public class PatternListAdapter extends RecyclerSwipeAdapter<PatternListAdapter.
         Item item = items.get(position);
         holder.bind(item);
 
-        mItemManger.bind(holder.itemView, position);
+        mItemManger.bindView(holder.itemView, position);
         holder.binding.layoutSwipeItem.addSwipeListener(swipeListener);
     }
 

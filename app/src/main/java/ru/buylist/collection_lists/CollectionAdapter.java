@@ -49,7 +49,7 @@ public class CollectionAdapter extends RecyclerSwipeAdapter<CollectionAdapter.Bu
         holder.bind(collection);
 
         // обработка свайпа
-        mItemManger.bind(holder.itemView, i);
+        mItemManger.bindView(holder.itemView, i);
         holder.binding.layoutSwipe.addSwipeListener(new SwipeLayout.SwipeListener() {
             @Override
             public void onStartOpen(SwipeLayout layout) {
