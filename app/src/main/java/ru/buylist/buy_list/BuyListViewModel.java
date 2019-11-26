@@ -132,6 +132,7 @@ public class BuyListViewModel extends AndroidViewModel {
 
     public void deleteItem(Item item) {
         repository.deleteItem(item);
+        fabIsShown.set(true);
     }
 
     public void addCategory(Category category) {
@@ -213,6 +214,7 @@ public class BuyListViewModel extends AndroidViewModel {
             item.setPurchased(true);
         }
         repository.updateItem(item);
+        fabIsShown.set(true);
     }
 
     // отображение полей для редактирования товара
@@ -300,6 +302,11 @@ public class BuyListViewModel extends AndroidViewModel {
                 }
             }
         }
+
+        if (itemsToShow.isEmpty()) {
+            fabIsShown.set(true);
+        }
+
         this.items.clear();
         this.items.addAll(itemsToShow);
     }

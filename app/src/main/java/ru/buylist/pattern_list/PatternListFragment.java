@@ -157,6 +157,7 @@ public class PatternListFragment extends Fragment {
             saveSelectedItem(item);
             viewModel.btnToMoveShow.set(!selectedItems.isEmpty());
             adapter.notifyDataSetChanged();
+            viewModel.fabShow.set(true);
         }
 
         @Override

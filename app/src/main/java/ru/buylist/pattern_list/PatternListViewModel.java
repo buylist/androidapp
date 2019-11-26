@@ -97,6 +97,7 @@ public class PatternListViewModel extends AndroidViewModel {
 
     public void deleteItem(Item item) {
         repository.deleteItem(item);
+        fabShow.set(true);
     }
 
 
@@ -163,6 +164,9 @@ public class PatternListViewModel extends AndroidViewModel {
 
     // при добавлении нового товара список обновляется
     public void loadItems(List<Item> items) {
+        if (items.isEmpty()) {
+            fabShow.set(true);
+        }
         this.items.clear();
         this.items.addAll(items);
     }
