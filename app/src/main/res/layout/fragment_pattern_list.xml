@@ -55,6 +55,8 @@
                 android:layout_weight="4"
                 android:hint="@string/item_name_default_text"
                 android:inputType="text"
+                android:imeOptions="actionNext"
+                android:nextFocusForward="@id/field_quantity"
                 android:background="@android:color/transparent"
                 android:text="@={viewmodel.itemName}"
                 requestFocus="@{viewmodel.layoutFieldsShow}"/>
@@ -67,7 +69,9 @@
                 android:layout_marginEnd="@dimen/field_quantity_margin_end"
                 android:gravity="center"
                 android:hint="@string/field_quantity_hint"
-                android:inputType="text"
+                android:inputType="numberDecimal"
+                android:digits="0123456789.,"
+                android:imeOptions="actionNext"
                 android:background="@drawable/field_bg"
                 android:text="@={viewmodel.quantity}" />
 
@@ -79,6 +83,7 @@
                 android:gravity="center"
                 android:hint="@string/field_unit_hint"
                 android:inputType="text"
+                android:imeOptions="actionDone"
                 android:background="@drawable/field_bg"
                 android:text="@={viewmodel.unit}" />
 

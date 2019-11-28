@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -107,6 +108,15 @@ public class RecipeListFragment extends Fragment {
     private void setupCreateButton(final long itemId) {
         binding.btnCreateItem.setOnClickListener(v -> {
             viewModel.saveItem(collection.getId(), itemId);
+        });
+
+        // keyboard listener
+        binding.fieldUnit.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.saveItem(collection.getId(), itemId);
+                return true;
+            }
+            return false;
         });
     }
 

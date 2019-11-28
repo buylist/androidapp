@@ -7,8 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -144,10 +144,18 @@ public class BuyListFragment extends Fragment {
     }
 
     private void setupCreateButton(final long itemId) {
-        ImageButton createButton = getActivity().findViewById(R.id.btn_create_item);
-        createButton.setOnClickListener(v -> {
-            viewModel.saveItem(productField, collection.getId(), itemId);
+        binding.btnCreateItem.setOnClickListener(v -> {
+            viewModel.saveItem(collection.getId(), itemId);
             Log.i(TAG, "ShoppingList save new item: " + itemId);
+        });
+
+        // keyboard listener
+        binding.fieldUnit.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.saveItem(collectionId, itemId);
+                return true;
+            }
+            return false;
         });
     }
 

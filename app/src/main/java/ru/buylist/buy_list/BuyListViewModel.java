@@ -8,7 +8,6 @@ import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableList;
 import android.util.Log;
-import android.widget.EditText;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -159,7 +158,7 @@ public class BuyListViewModel extends AndroidViewModel {
      */
 
     // новый товар добавляет в базу, существующий - обновляет
-    public void saveItem(EditText targetField, long collectionId, long itemId) {
+    public void saveItem(long collectionId, long itemId) {
         // id != 0 при редактировании товара, создавать новый не требуется
         Item item = (itemId == 0 ? new Item() : new Item(itemId));
         item.setName(itemName.get());

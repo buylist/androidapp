@@ -101,6 +101,7 @@
                         android:layout_toStartOf="@+id/btn_create_buy_list"
                         android:hint="@string/field_name_list_hint"
                         android:inputType="text"
+                        android:imeOptions="actionDone"
                         android:background="@android:color/transparent"
                         android:text="@={viewmodel.buyListName}"
                         requestFocus="@{viewmodel.layoutBuyListShow}"/>
@@ -186,6 +187,7 @@
                         android:layout_toStartOf="@+id/btn_create_pattern_list"
                         android:hint="@string/field_name_pattern_hint"
                         android:inputType="text"
+                        android:imeOptions="actionDone"
                         android:background="@android:color/transparent"
                         android:text="@={viewmodel.patterName}"
                         requestFocus="@{viewmodel.layoutPatternListShow}"/>
@@ -269,6 +271,7 @@
                         android:layout_toStartOf="@+id/btn_create_recipe_list"
                         android:hint="@string/field_name_recipe_hint"
                         android:inputType="text"
+                        android:imeOptions="actionDone"
                         android:background="@android:color/transparent"
                         android:text="@={viewmodel.recipeName}"
                         requestFocus="@{viewmodel.layoutRecipeListShow}"/>

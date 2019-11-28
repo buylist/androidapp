@@ -10,196 +10,216 @@
         <variable
             name="viewmodel"
             type="ru.buylist.recipe_list.RecipeListViewModel" />
+
         <variable
             name="callback"
             type="ru.buylist.recipe_list.RecipeListCallback" />
     </data>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:ignore="Autofill">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
-        <!--Layout с кнопкой переноса-->
-        <LinearLayout
-            android:id="@+id/layout_top_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="@{viewmodel.btnToMoveShow ? View.VISIBLE : View.GONE}">
-
-            <Button
-                android:id="@+id/btn_move_to_list"
-                style="@style/TopButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/small_layout_margin"
-                android:text="@string/btn_move_to_list_description"
-                android:onClick="@{()-> callback.onToMoveButtonClick()}"/>
-        </LinearLayout>
-
-        <!--Layout с ингредиентами-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="@dimen/ingredients_top_margin">
+            tools:ignore="Autofill">
 
-            <!--Layout с кнопкой добавления нового ингредиента-->
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:visibility="@{viewmodel.layoutFieldsShow ? View.GONE : View.VISIBLE}">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorText"
-                    android:textSize="@dimen/default_text_size"
-                    android:layout_centerVertical="true"
-                    android:text="@string/ingredient_text"
-                    android:layout_alignParentStart="true"
-                    android:layout_toStartOf="@+id/btn_new_ingredient"/>
-                <ImageButton
-                    android:id="@+id/btn_new_ingredient"
-                    android:layout_width="@dimen/btn_recipe_size"
-                    android:layout_height="@dimen/btn_recipe_size"
-                    android:contentDescription="@string/btn_new_ingredient_description"
-                    android:layout_alignParentEnd="true"
-                    android:src="@drawable/button_add_recipe"
-                    android:onClick="@{()-> callback.onNewIngredientButtonClick()}"/>
-            </RelativeLayout>
-
-            <!--Layout с полями ввода-->
+            <!--Layout с кнопкой переноса-->
             <LinearLayout
-                android:id="@+id/layout_item_fields"
+                android:id="@+id/layout_top_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="horizontal"
-                android:background="@drawable/field_border"
-                android:visibility="@{viewmodel.layoutFieldsShow ? View.VISIBLE : View.GONE}">
+                android:visibility="@{viewmodel.btnToMoveShow ? View.VISIBLE : View.GONE}">
 
-                <ru.buylist.utils.FocusableEditText
-                    android:id="@+id/field_name"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:hint="@string/item_name_default_text"
-                    android:inputType="text"
-                    android:background="@android:color/transparent"
-                    android:text="@={viewmodel.itemName}"
-                    requestFocus="@{viewmodel.layoutFieldsShow}"/>
-
-                <ru.buylist.utils.FocusableEditText
-                    android:id="@+id/field_quantity"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/field_quantity_margin_end"
-                    android:gravity="center"
-                    android:hint="@string/field_quantity_hint"
-                    android:inputType="text"
-                    android:background="@drawable/field_bg"
-                    android:text="@={viewmodel.quantity}" />
-
-                <ru.buylist.utils.FocusableEditText
-                    android:id="@+id/field_unit"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:hint="@string/field_unit_hint"
-                    android:inputType="text"
-                    android:background="@drawable/field_bg"
-                    android:text="@={viewmodel.unit}" />
-
-                <ImageButton
-                    android:id="@+id/btn_create_item"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/btn_create_item_description"
-                    android:src="@drawable/button_create" />
+                <Button
+                    android:id="@+id/btn_move_to_list"
+                    style="@style/TopButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/small_layout_margin"
+                    android:text="@string/btn_move_to_list_description"
+                    android:onClick="@{()-> callback.onToMoveButtonClick()}" />
             </LinearLayout>
 
-            <!--Список ингредиентов-->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_ingredients"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/ingredients_top_margin"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:patternItems="@{viewmodel.items}"/>
-        </LinearLayout>
-
-        <!--Layout с инструкцией-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/instruction_top_margin">
-
-            <!--Layout с кнопкой добавления инструкции-->
-            <RelativeLayout
+            <!--Layout с ингредиентами-->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/instruction_bottom_margin">
-                <TextView
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/ingredients_top_margin">
+
+                <!--Layout с кнопкой добавления нового ингредиента-->
+                <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorText"
-                    android:textSize="@dimen/default_text_size"
-                    android:layout_centerVertical="true"
-                    android:text="@string/instruction_text"
-                    android:layout_alignParentStart="true"
-                    android:layout_toStartOf="@+id/btn_new_instruction"/>
-                <ImageButton
-                    android:id="@+id/btn_new_instruction"
-                    android:layout_width="@dimen/btn_recipe_size"
-                    android:layout_height="@dimen/btn_recipe_size"
-                    android:contentDescription="@string/btn_new_instruction_description"
-                    android:layout_alignParentEnd="true"
-                    android:src="@drawable/button_add_recipe"
-                    android:visibility="@{viewmodel.fieldInstructionShow ? View.GONE : View.VISIBLE}"
-                    android:onClick="@{()-> callback.onNewInstructionButtonClick()}"/>
-                <ImageButton
-                    android:id="@+id/btn_save_instruction"
-                    android:layout_width="@dimen/btn_recipe_size"
-                    android:layout_height="@dimen/btn_recipe_size"
-                    android:contentDescription="@string/btn_save_instruction_description"
-                    android:layout_alignParentEnd="true"
-                    android:src="@drawable/button_create"
-                    android:background="@android:color/transparent"
-                    android:visibility="@{viewmodel.fieldInstructionShow ? View.VISIBLE : View.GONE}"
-                    android:onClick="@{()-> callback.onSaveInstructionButtonClick()}"/>
-            </RelativeLayout>
+                    android:layout_height="match_parent"
+                    android:visibility="@{viewmodel.layoutFieldsShow ? View.GONE : View.VISIBLE}">
 
-            <ru.buylist.utils.FocusableEditText
-                android:id="@+id/field_instruction"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorText"
+                        android:textSize="@dimen/default_text_size"
+                        android:layout_centerVertical="true"
+                        android:text="@string/ingredient_text"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/btn_new_ingredient" />
+
+                    <ImageButton
+                        android:id="@+id/btn_new_ingredient"
+                        android:layout_width="@dimen/btn_recipe_size"
+                        android:layout_height="@dimen/btn_recipe_size"
+                        android:contentDescription="@string/btn_new_ingredient_description"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/button_add_recipe"
+                        android:onClick="@{()-> callback.onNewIngredientButtonClick()}" />
+                </RelativeLayout>
+
+                <!--Layout с полями ввода-->
+                <LinearLayout
+                    android:id="@+id/layout_item_fields"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/field_border"
+                    android:visibility="@{viewmodel.layoutFieldsShow ? View.VISIBLE : View.GONE}">
+
+                    <ru.buylist.utils.FocusableEditText
+                        android:id="@+id/field_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:hint="@string/item_name_default_text"
+                        android:inputType="text"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/field_quantity"
+                        android:background="@android:color/transparent"
+                        android:text="@={viewmodel.itemName}"
+                        requestFocus="@{viewmodel.layoutFieldsShow}" />
+
+                    <ru.buylist.utils.FocusableEditText
+                        android:id="@+id/field_quantity"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="@dimen/field_quantity_margin_end"
+                        android:gravity="center"
+                        android:hint="@string/field_quantity_hint"
+                        android:inputType="numberDecimal"
+                        android:digits="0123456789.,"
+                        android:imeOptions="actionNext"
+                        android:nextFocusForward="@id/field_unit"
+                        android:background="@drawable/field_bg"
+                        android:text="@={viewmodel.quantity}" />
+
+                    <ru.buylist.utils.FocusableEditText
+                        android:id="@+id/field_unit"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:hint="@string/field_unit_hint"
+                        android:inputType="text"
+                        android:imeOptions="actionDone"
+                        android:background="@drawable/field_bg"
+                        android:text="@={viewmodel.unit}" />
+
+                    <ImageButton
+                        android:id="@+id/btn_create_item"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/btn_create_item_description"
+                        android:src="@drawable/button_create" />
+                </LinearLayout>
+
+                <!--Список ингредиентов-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_ingredients"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/ingredients_top_margin"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:patternItems="@{viewmodel.items}" />
+            </LinearLayout>
+
+            <!--Layout с инструкцией-->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text|textMultiLine"
-                android:minLines="5"
-                android:maxLines="10"
-                android:gravity="top|start"
-                android:scrollbars="vertical"
-                android:hint="@string/field_instruction_hint"
-                android:background="@drawable/field_border"
-                android:text="@={viewmodel.instruction}"
-                android:visibility="@{viewmodel.fieldInstructionShow ? View.VISIBLE : View.GONE}"
-                requestFocus="@{viewmodel.fieldInstructionShow}"/>
-            <TextView
-                android:id="@+id/text_view_instruction"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/instruction_text_size"
-                android:textColor="@color/colorText"
-                android:text="@{viewmodel.instruction}"
-                android:visibility="@{viewmodel.fieldInstructionShow ? View.GONE : View.VISIBLE}"/>
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/instruction_top_margin">
+
+                <!--Layout с кнопкой добавления инструкции-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/instruction_bottom_margin">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorText"
+                        android:textSize="@dimen/default_text_size"
+                        android:layout_centerVertical="true"
+                        android:text="@string/instruction_text"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/btn_new_instruction" />
+
+                    <ImageButton
+                        android:id="@+id/btn_new_instruction"
+                        android:layout_width="@dimen/btn_recipe_size"
+                        android:layout_height="@dimen/btn_recipe_size"
+                        android:contentDescription="@string/btn_new_instruction_description"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/button_add_recipe"
+                        android:visibility="@{viewmodel.fieldInstructionShow ? View.GONE : View.VISIBLE}"
+                        android:onClick="@{()-> callback.onNewInstructionButtonClick()}" />
+
+                    <ImageButton
+                        android:id="@+id/btn_save_instruction"
+                        android:layout_width="@dimen/btn_recipe_size"
+                        android:layout_height="@dimen/btn_recipe_size"
+                        android:contentDescription="@string/btn_save_instruction_description"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/button_create"
+                        android:background="@android:color/transparent"
+                        android:visibility="@{viewmodel.fieldInstructionShow ? View.VISIBLE : View.GONE}"
+                        android:onClick="@{()-> callback.onSaveInstructionButtonClick()}" />
+                </RelativeLayout>
+
+                <ru.buylist.utils.FocusableEditText
+                    android:id="@+id/field_instruction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text|textMultiLine"
+                    android:imeOptions="flagNoEnterAction"
+                    android:minLines="5"
+                    android:maxLines="10"
+                    android:gravity="top|start"
+                    android:scrollbars="vertical"
+                    android:hint="@string/field_instruction_hint"
+                    android:background="@drawable/field_border"
+                    android:text="@={viewmodel.instruction}"
+                    android:visibility="@{viewmodel.fieldInstructionShow ? View.VISIBLE : View.GONE}"
+                    requestFocus="@{viewmodel.fieldInstructionShow}" />
+
+                <TextView
+                    android:id="@+id/text_view_instruction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/instruction_text_size"
+                    android:textColor="@color/colorText"
+                    android:text="@{viewmodel.instruction}"
+                    android:visibility="@{viewmodel.fieldInstructionShow ? View.GONE : View.VISIBLE}" />
+
+            </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 </layout>

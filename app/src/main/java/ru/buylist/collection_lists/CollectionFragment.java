@@ -5,10 +5,13 @@ import android.content.Context;
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -158,6 +161,32 @@ public class CollectionFragment extends Fragment {
         });
     }
 
+    private void setupKeyboardListener(final long collectionId) {
+        binding.fieldNameBuyList.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.saveCollection(collectionId, BuyList);
+                return true;
+            }
+            return false;
+        });
+
+        binding.fieldNamePatternList.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.saveCollection(collectionId, PATTERN);
+                return true;
+            }
+            return false;
+        });
+
+        binding.fieldNameRecipeList.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.saveCollection(collectionId, RECIPE);
+                return true;
+            }
+            return false;
+        });
+    }
+
     // закрывает все свайпы
     private void closeAllItems() {
         buyListAdapter.closeAllItems();
@@ -214,6 +243,7 @@ public class CollectionFragment extends Fragment {
         public void onNewBuyListButtonClick() {
             viewModel.addCollection(BuyList);
             setupCreateButton(0);
+            setupKeyboardListener(0);
             closeAllItems();
         }
 
@@ -221,6 +251,7 @@ public class CollectionFragment extends Fragment {
         public void onNewPatternListButtonClick() {
             viewModel.addCollection(PATTERN);
             setupCreateButton(0);
+            setupKeyboardListener(0);
             closeAllItems();
         }
 
@@ -228,6 +259,7 @@ public class CollectionFragment extends Fragment {
         public void onNewRecipeListButtonClick() {
             viewModel.addCollection(RECIPE);
             setupCreateButton(0);
+            setupKeyboardListener(0);
             closeAllItems();
         }
     };
@@ -252,6 +284,7 @@ public class CollectionFragment extends Fragment {
             closeAllItems();
             viewModel.editCollection(collection);
             setupCreateButton(collection.getId());
+            setupKeyboardListener(collection.getId());
             Log.i(TAG, "Edit collection: " + collection.getId());
         }
     };
