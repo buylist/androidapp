@@ -52,6 +52,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.CirclesH
 
     public void setColors(List<Category> colors) {
         categories = colors;
+        notifyDataSetChanged();
     }
 
     private final CategoryCallback callback = new CategoryCallback() {

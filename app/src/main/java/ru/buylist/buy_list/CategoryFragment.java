@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +28,7 @@ import ru.buylist.R;
 import ru.buylist.data.entity.Category;
 import ru.buylist.data.entity.Item;
 import ru.buylist.databinding.FragmentCategoryBinding;
+import ru.buylist.databinding.ItemCategoryRowBinding;
 import ru.buylist.pattern_list.PatternListActivity;
 import ru.buylist.pattern_list.PatternListViewModel;
 import ru.buylist.utils.SnackbarUtils;
@@ -144,7 +144,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         viewModel.getLiveCategories().observe(this, newCategories -> {
             if (adapter == null) {
                 adapter = new CategoryAdapter(getActivity(),
-                        R.layout.item_category_row, newCategories);
+                        R.layout.item_category_row, newCategories, rowCallback);
             } else {
                 adapter.setList(newCategories);
             }
@@ -214,14 +214,36 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         });
     }
 
+    private void selectCircle(String selectedColor) {
+        List<Category> categories = getColors();
+        for (Category category : categories) {
+            if (category.getColor().equals(selectedColor)) {
+                category.setSelected(true);
+                circlesAdapter.setColors(categories);
+                return;
+            }
+        }
+    }
+
+    private final CategoryCallback.CategoryRowCallback rowCallback = new CategoryCallback.CategoryRowCallback() {
+        @Override
+        public void onRowClick(Category category) {
+            selectCircle(category.getColor());
+            categoryText.setText(category.getName());
+            categoryText.dismissDropDown();
+        }
+    };
+
 
 
     public class CategoryAdapter extends ArrayAdapter<Category> {
         private List<Category> categories;
+        private CategoryCallback.CategoryRowCallback callback;
 
-        CategoryAdapter(Context context, int textViewResourceId, List<Category> categories) {
-            super(context, textViewResourceId, categories);
+        CategoryAdapter(Context context, int layoutId, List<Category> categories, CategoryCallback.CategoryRowCallback callback) {
+            super(context, layoutId, categories);
             this.categories = categories;
+            this.callback = callback;
         }
 
         @Override
@@ -240,21 +262,21 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         }
 
         View getCustomView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = getLayoutInflater();
-            View row = inflater.inflate(R.layout.item_category_row, parent, false);
-            TextView label = row.findViewById(R.id.text_view_category_name);
-            ImageView icon = row.findViewById(R.id.img_category_circle);
+            ItemCategoryRowBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                    R.layout.item_category_row, parent, false);
+
+            binding.setCategory(categories.get(position));
+            binding.setCallback(callback);
+
             String color = categories.get(position).getColor();
 
-            label.setText(categories.get(position).getName());
-
             if (color == null) {
-                icon.setColorFilter(Color.parseColor(CategoryInfo.COLOR));
+                binding.imgCategoryCircle.setColorFilter(Color.parseColor(CategoryInfo.COLOR));
             } else {
-                icon.setColorFilter(Color.parseColor(color));
+                binding.imgCategoryCircle.setColorFilter(Color.parseColor(color));
             }
 
-            return row;
+            return binding.getRoot();
         }
     }
 

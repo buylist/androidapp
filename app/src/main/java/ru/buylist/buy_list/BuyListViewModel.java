@@ -240,16 +240,26 @@ public class BuyListViewModel extends AndroidViewModel {
                 snackbarText.setValue(R.string.category_color_is_empty);
                 return;
             }
+
             repository.addCategory(newCategory);
+
             item.setCategory(newCategory.getName());
             item.setCategoryColor(newCategory.getColor());
             globalItem.setCategory(newCategory.getName());
             globalItem.setCategoryColor(newCategory.getColor());
         } else {
+            if (!color.equals(CategoryInfo.COLOR)) {
+                category.setColor(color);
+                item.setCategoryColor(color);
+                globalItem.setCategoryColor(color);
+                repository.updateCategory(category);
+            } else {
+                item.setCategoryColor(category.getColor());
+                globalItem.setCategoryColor(category.getColor());
+            }
+
             item.setCategory(category.getName());
-            item.setCategoryColor(category.getColor());
             globalItem.setCategory(category.getName());
-            globalItem.setCategoryColor(category.getColor());
         }
 
         repository.updateItem(item);
@@ -271,6 +281,11 @@ public class BuyListViewModel extends AndroidViewModel {
                 if (items.get(i).getCategoryColor() == null) {
                     items.get(i).setCategoryColor(item.getCategoryColor());
                 }
+                repository.updateItem(items.get(i));
+            }
+
+            if (items.get(i).getCategory().equals(item.getCategory())) {
+                items.get(i).setCategoryColor(item.getCategoryColor());
                 repository.updateItem(items.get(i));
             }
         }
