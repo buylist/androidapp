@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
         <import type="android.view.View" />
 
         <variable
@@ -13,27 +9,9 @@
             type="ru.buylist.recipe_list.RecipeListViewModel" />
     </data>
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:ignore="Autofill">
-
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_margin="16dp" />
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:itemBackground="@color/colorNavBackground"
-            app:itemIconTint="@drawable/bottom_navigation_color"
-            app:itemTextColor="@drawable/bottom_navigation_color"
-            app:menu="@menu/bottom_navigation_menu"
-            android:visibility="@{viewmodel.bottomShow ? View.VISIBLE : View.GONE}"/>
-    </LinearLayout>
+        android:layout_margin="16dp" />
 </layout>

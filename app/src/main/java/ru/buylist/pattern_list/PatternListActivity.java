@@ -51,7 +51,7 @@ public class PatternListActivity extends SingleFragmentActivity {
         binding.setViewmodel(viewModel);
 
         // открытие CategoryFragment
-        viewModel.getNewCategoryEvent().observe(this, itemId -> setCategory(itemId));
+        viewModel.getNewCategoryEvent().observe(this, this::setCategory);
 
         viewModel.getDialogEvent().observe(this, type ->
                 PatternDialog.newInstance(type).show(getSupportFragmentManager(), "custom"));
@@ -66,7 +66,6 @@ public class PatternListActivity extends SingleFragmentActivity {
         buyViewmodel.getReturnToListEvent().observe(this, this::returnToPattern);
 
         setTitle(getIntent().getStringExtra(EXTRA_PATTERN_TITLE));
-        onBottomNavigationClickListener(binding);
     }
 
     // вызов CategoryFragment
@@ -75,7 +74,6 @@ public class PatternListActivity extends SingleFragmentActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
-        viewModel.bottomShow.set(false);
         viewModel.fabShow.set(false);
     }
 
@@ -90,12 +88,5 @@ public class PatternListActivity extends SingleFragmentActivity {
     private void showHome() {
         Intent intent = new Intent(this, CollectionActivity.class);
         startActivity(intent);
-    }
-
-    private void onBottomNavigationClickListener(ActivityPatternListBinding binding) {
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            showHome();
-            return true;
-        });
     }
 }

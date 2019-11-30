@@ -77,7 +77,6 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
         // скрытие кнопки fab и bottomNavigation
         PatternListViewModel patternViewmodel = PatternListActivity.obtainViewModel(getActivity());
-        patternViewmodel.bottomShow.set(false);
         patternViewmodel.fabShow.set(false);
         viewModel.hideActivityLayout();
     }
@@ -247,12 +246,12 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
         }
 
         @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
             return getCustomView(position, convertView, parent);
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             return getCustomView(position, convertView, parent);
         }
 

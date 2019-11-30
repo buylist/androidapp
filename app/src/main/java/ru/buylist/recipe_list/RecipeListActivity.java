@@ -51,7 +51,7 @@ public class RecipeListActivity extends SingleFragmentActivity {
         binding.setViewmodel(viewModel);
 
         // открытие CategoryFragment
-        viewModel.getNewCategoryEvent().observe(this, itemId -> setCategory(itemId));
+        viewModel.getNewCategoryEvent().observe(this, this::setCategory);
 
         // открытие диалогового окна
         viewModel.getDialogEvent().observe(this, type ->
@@ -64,11 +64,9 @@ public class RecipeListActivity extends SingleFragmentActivity {
 
         // временное решение
         BuyListViewModel buyViewmodel = ViewModelProviders.of(this).get(BuyListViewModel.class);
-        buyViewmodel.getReturnToListEvent().observe(this, collectionId ->
-                returnToRecipe(collectionId));
+        buyViewmodel.getReturnToListEvent().observe(this, this::returnToRecipe);
 
         setTitle(getIntent().getStringExtra(EXTRA_RECIPE_TITLE));
-        onBottomNavigationClickListener(binding);
     }
 
     // вызов CategoryFragment
@@ -77,7 +75,6 @@ public class RecipeListActivity extends SingleFragmentActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
-        viewModel.bottomShow.set(false);
     }
 
     // возврат к RecipeListFragment
@@ -91,12 +88,5 @@ public class RecipeListActivity extends SingleFragmentActivity {
     private void showHome() {
         Intent intent = new Intent(this, CollectionActivity.class);
         startActivity(intent);
-    }
-
-    private void onBottomNavigationClickListener(ActivityRecipeListBinding binding) {
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            showHome();
-            return true;
-        });
     }
 }

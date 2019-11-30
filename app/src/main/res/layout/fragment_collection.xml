@@ -24,8 +24,7 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent">
 
             <!--Содержит все, кроме BN-->
             <LinearLayout
@@ -104,7 +103,7 @@
                         android:imeOptions="actionDone"
                         android:background="@android:color/transparent"
                         android:text="@={viewmodel.buyListName}"
-                        requestFocus="@{viewmodel.layoutBuyListShow}"/>
+                        requestFocus="@{viewmodel.layoutBuyListShow}" />
 
                     <ImageButton
                         android:id="@+id/btn_create_buy_list"
@@ -190,7 +189,7 @@
                         android:imeOptions="actionDone"
                         android:background="@android:color/transparent"
                         android:text="@={viewmodel.patterName}"
-                        requestFocus="@{viewmodel.layoutPatternListShow}"/>
+                        requestFocus="@{viewmodel.layoutPatternListShow}" />
 
                     <ImageButton
                         android:id="@+id/btn_create_pattern_list"
@@ -274,7 +273,7 @@
                         android:imeOptions="actionDone"
                         android:background="@android:color/transparent"
                         android:text="@={viewmodel.recipeName}"
-                        requestFocus="@{viewmodel.layoutRecipeListShow}"/>
+                        requestFocus="@{viewmodel.layoutRecipeListShow}" />
 
                     <ImageButton
                         android:id="@+id/btn_create_recipe_list"
@@ -306,14 +305,5 @@
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:itemBackground="@color/colorNavBackground"
-            app:itemIconTint="@drawable/bottom_navigation_color"
-            app:itemTextColor="@drawable/bottom_navigation_color"
-            app:menu="@menu/bottom_navigation_menu" />
     </LinearLayout>
 </layout>

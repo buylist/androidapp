@@ -32,7 +32,6 @@ public class BuyListViewModel extends AndroidViewModel {
     // Флаги для отображения/скрытия элементов
     public final ObservableBoolean layoutFieldsShow = new ObservableBoolean(false);
     public final ObservableBoolean fabIsShown = new ObservableBoolean(true);
-    public final ObservableBoolean bottomShow = new ObservableBoolean(true);
     public final ObservableBoolean purchasedItemShow = new ObservableBoolean(true);
     public final ObservableBoolean btnPrevCirclesShow = new ObservableBoolean(false);
     public final ObservableBoolean btnNextCirclesShow = new ObservableBoolean(false);
@@ -329,26 +328,22 @@ public class BuyListViewModel extends AndroidViewModel {
     public void showLayoutFields() {
         layoutFieldsShow.set(true);
         fabIsShown.set(false);
-        bottomShow.set(false);
     }
 
     // скрытие полей для ввода товара
-    public void hideNewProductLayout() {
+    private void hideNewProductLayout() {
         layoutFieldsShow.set(false);
         fabIsShown.set(true);
-        bottomShow.set(true);
     }
 
     // отображение bottomNavigation + fab
     public void showActivityLayout() {
         fabIsShown.set(true);
-        bottomShow.set(true);
     }
 
     // скрытие bottomNavigation + fab
     public void hideActivityLayout() {
         fabIsShown.set(false);
-        bottomShow.set(false);
     }
 
     public void showHideFab(int dy) {

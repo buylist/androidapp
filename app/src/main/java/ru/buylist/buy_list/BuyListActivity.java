@@ -98,7 +98,6 @@ public class BuyListActivity extends SingleFragmentActivity {
         });
 
         setTitle(getIntent().getStringExtra(EXTRA_COLLECTION_TITLE));
-        onBottomNavigationClickListener(binding);
     }
 
     @Override
@@ -151,12 +150,5 @@ public class BuyListActivity extends SingleFragmentActivity {
     private void showHome() {
         Intent intent = new Intent(this, CollectionActivity.class);
         startActivity(intent);
-    }
-
-    private void onBottomNavigationClickListener(ActivityBuyListBinding binding) {
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            showHome();
-            return true;
-        });
     }
 }

@@ -55,7 +55,6 @@ public class RecipeListFragment extends Fragment {
         selectedItems = new ArrayList<>();
 
         viewModel = RecipeListActivity.obtainViewModel(getActivity());
-        viewModel.bottomShow.set(true);
 
         long collectionId = getArguments() != null ? getArguments().getLong(ARG_RECIPE_ID, 0) : 0;
         subscribeUi(viewModel.getItems(collectionId));
@@ -106,9 +105,7 @@ public class RecipeListFragment extends Fragment {
     // для создания нового товара передаем в метод 0
     // для редактирования существующего товара - его индентификатор
     private void setupCreateButton(final long itemId) {
-        binding.btnCreateItem.setOnClickListener(v -> {
-            viewModel.saveItem(collection.getId(), itemId);
-        });
+        binding.btnCreateItem.setOnClickListener(v -> viewModel.saveItem(collection.getId(), itemId));
 
         // keyboard listener
         binding.fieldUnit.setOnEditorActionListener((v, actionId, event) -> {

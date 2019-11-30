@@ -31,7 +31,6 @@ public class PatternListViewModel extends AndroidViewModel {
     public final ObservableBoolean btnToMoveShow = new ObservableBoolean(false);
     public final ObservableBoolean layoutFieldsShow = new ObservableBoolean(false);
     public final ObservableBoolean fabShow = new ObservableBoolean(true);
-    public final ObservableBoolean bottomShow = new ObservableBoolean(true);
 
     // Поля для ввода нового товара
     public final ObservableField<String> itemName = new ObservableField<>();
@@ -71,11 +70,11 @@ public class PatternListViewModel extends AndroidViewModel {
         return dialogEvent;
     }
 
-    public SingleLiveEvent<Collection> getReturnToBuyListEvent() {
+    SingleLiveEvent<Collection> getReturnToBuyListEvent() {
         return returnToBuyListEvent;
     }
 
-    public SingleLiveEvent<Integer> getSnackbarMessage() {
+    SingleLiveEvent<Integer> getSnackbarMessage() {
         return snackbarText;
     }
 
@@ -108,7 +107,6 @@ public class PatternListViewModel extends AndroidViewModel {
     // onFabClick
     public void addNewItem() {
         layoutFieldsShow.set(true);
-        bottomShow.set(false);
         fabShow.set(false);
     }
 
@@ -119,7 +117,6 @@ public class PatternListViewModel extends AndroidViewModel {
             // товар не может быть пустым, обнуляем и скрываем поля
             clearFields();
             layoutFieldsShow.set(false);
-            bottomShow.set(true);
             fabShow.set(true);
             snackbarText.setValue(R.string.item_name_is_empty);
             return;
@@ -143,7 +140,6 @@ public class PatternListViewModel extends AndroidViewModel {
         }
 
         layoutFieldsShow.set(false);
-        bottomShow.set(true);
         fabShow.set(true);
         clearFields();
     }
@@ -180,14 +176,13 @@ public class PatternListViewModel extends AndroidViewModel {
     // отображение полей для редактирования товара
     public void editItem(Item item) {
         layoutFieldsShow.set(true);
-        bottomShow.set(false);
         fabShow.set(false);
         itemName.set(item.getName());
         quantity.set(item.getQuantity());
         unit.set(item.getUnit());
     }
 
-    public void openDialog() {
+    private void openDialog() {
         dialogEvent.setValue(CollectionType.BuyList);
         btnToMoveShow.set(false);
     }
@@ -217,7 +212,7 @@ public class PatternListViewModel extends AndroidViewModel {
         openBuyList();
     }
 
-    public void openBuyList() {
+    private void openBuyList() {
         List<Collection> collections = storage.loadCollection(CollectionType.BuyList);
         for (Collection collection : collections) {
             if (collection.getId() == storage.loadSelectedCollection()) {

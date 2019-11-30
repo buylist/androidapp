@@ -2,24 +2,20 @@ package ru.buylist.collection_lists;
 
 
 import android.content.Context;
+
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
@@ -44,7 +40,7 @@ public class CollectionFragment extends Fragment {
     private CollectionViewModel viewModel;
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         callbacks = (Callbacks) context;
     }
@@ -60,7 +56,6 @@ public class CollectionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_collection, container, false);
 
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         setupAdapter();
         return binding.getRoot();
     }
@@ -87,7 +82,7 @@ public class CollectionFragment extends Fragment {
         setupSnackbar();
     }
 
-    public void setupAdapter() {
+    private void setupAdapter() {
         buyListAdapter = new CollectionAdapter(itemClickCallback);
         binding.recyclerBuyList.setAdapter(buyListAdapter);
 
@@ -193,31 +188,6 @@ public class CollectionFragment extends Fragment {
         patternAdapter.closeAllItems();
         recipeAdapter.closeAllItems();
     }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-            switch (menuItem.getItemId()) {
-                case R.id.action_home:
-                    viewModel.hideAllLists();
-                    return true;
-                case R.id.action_lists:
-                    viewModel.expandBuyList();
-                    return true;
-                case R.id.action_pattern:
-                    viewModel.expandPatternList();
-                    return true;
-                case R.id.action_recipe:
-                    viewModel.expandRecipeList();
-                    return true;
-                case R.id.action_settings:
-                    return true;
-            }
-            return false;
-        }
-    };
 
     // callback'и кликов по карточкам и по newButton
     private final CollectionClickCallback collectionCallback = new CollectionClickCallback() {

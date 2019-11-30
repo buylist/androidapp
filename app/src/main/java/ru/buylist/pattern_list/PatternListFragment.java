@@ -55,7 +55,6 @@ public class PatternListFragment extends Fragment {
         selectedItems = new ArrayList<>();
 
         viewModel = PatternListActivity.obtainViewModel(getActivity());
-        viewModel.bottomShow.set(true);
         viewModel.fabShow.set(true);
 
         long collectionId = getArguments() != null ? getArguments().getLong(ARG_PATTERN_ID, 0) : 0;

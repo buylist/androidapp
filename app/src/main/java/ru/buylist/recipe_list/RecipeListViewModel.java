@@ -31,7 +31,6 @@ public class RecipeListViewModel extends AndroidViewModel {
     public final ObservableBoolean btnToMoveShow = new ObservableBoolean(false);
     public final ObservableBoolean layoutFieldsShow = new ObservableBoolean(false);
     public final ObservableBoolean fieldInstructionShow = new ObservableBoolean(false);
-    public final ObservableBoolean bottomShow = new ObservableBoolean(true);
 
     // Поля для ввода нового ингредиента
     public final ObservableField<String> itemName = new ObservableField<>();
@@ -190,7 +189,7 @@ public class RecipeListViewModel extends AndroidViewModel {
         unit.set(item.getUnit());
     }
 
-    public void openDialog() {
+    private void openDialog() {
         dialogEvent.setValue(CollectionType.BuyList);
         btnToMoveShow.set(false);
     }
@@ -220,7 +219,7 @@ public class RecipeListViewModel extends AndroidViewModel {
         openBuyList();
     }
 
-    public void openBuyList() {
+    private void openBuyList() {
         List<Collection> collections = storage.loadCollection(CollectionType.BuyList);
         for (Collection collection : collections) {
             if (collection.getId() == storage.loadSelectedCollection()) {
