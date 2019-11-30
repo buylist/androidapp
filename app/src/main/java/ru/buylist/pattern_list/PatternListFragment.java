@@ -127,6 +127,10 @@ public class PatternListFragment extends Fragment {
     private void setupSnackbar() {
         viewModel.getSnackbarMessage().observe(this, msg -> {
             if (msg != null) {
+//                if (msg == R.string.items_moved) {
+//                    SnackbarUtils.showSnackbarWithButton(getView(), getString(msg), v -> viewModel.openBuyList());
+//                    return;
+//                }
                 SnackbarUtils.showSnackbar(getView(), getString(msg));
             }
         });

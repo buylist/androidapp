@@ -44,7 +44,7 @@ public class PatternListViewModel extends AndroidViewModel {
     // Открытие диалогового окна
     private SingleLiveEvent<String> dialogEvent = new SingleLiveEvent<>();
 
-    private SingleLiveEvent<Long> returnToBuyListEvent = new SingleLiveEvent<>();
+    private SingleLiveEvent<Collection> returnToBuyListEvent = new SingleLiveEvent<>();
 
     private SingleLiveEvent<Integer> snackbarText = new SingleLiveEvent<>();
 
@@ -71,7 +71,7 @@ public class PatternListViewModel extends AndroidViewModel {
         return dialogEvent;
     }
 
-    public SingleLiveEvent<Long> getReturnToBuyListEvent() {
+    public SingleLiveEvent<Collection> getReturnToBuyListEvent() {
         return returnToBuyListEvent;
     }
 
@@ -214,7 +214,18 @@ public class PatternListViewModel extends AndroidViewModel {
 
         btnToMoveShow.set(false);
         snackbarText.setValue(R.string.items_moved);
-        storage.deleteSelectedItems();
+        openBuyList();
+    }
+
+    public void openBuyList() {
+        List<Collection> collections = storage.loadCollection(CollectionType.BuyList);
+        for (Collection collection : collections) {
+            if (collection.getId() == storage.loadSelectedCollection()) {
+                returnToBuyListEvent.setValue(collection);
+                deleteSelected();
+                return;
+            }
+        }
     }
 
     public List<Item> loadSelectedItems() {

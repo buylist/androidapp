@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 
 import ru.buylist.R;
+import ru.buylist.buy_list.BuyListActivity;
 import ru.buylist.buy_list.BuyListViewModel;
 import ru.buylist.buy_list.CategoryFragment;
 import ru.buylist.collection_lists.CollectionActivity;
@@ -54,6 +55,11 @@ public class PatternListActivity extends SingleFragmentActivity {
 
         viewModel.getDialogEvent().observe(this, type ->
                 PatternDialog.newInstance(type).show(getSupportFragmentManager(), "custom"));
+
+        viewModel.getReturnToBuyListEvent().observe(this, collection -> {
+            Intent intent = BuyListActivity.newIntent(this, collection.getId(), collection.getTitle());
+            startActivity(intent);
+        });
 
         // временное решение
         BuyListViewModel buyViewmodel = ViewModelProviders.of(this).get(BuyListViewModel.class);

@@ -47,6 +47,8 @@ public class RecipeListViewModel extends AndroidViewModel {
     // Открытие диалогового окна
     private SingleLiveEvent<String> dialogEvent = new SingleLiveEvent<>();
 
+    private SingleLiveEvent<Collection> returnToBuyListEvent = new SingleLiveEvent<>();
+
     private SingleLiveEvent<Integer> snackbarText = new SingleLiveEvent<>();
 
     private DataRepository repository;
@@ -70,6 +72,10 @@ public class RecipeListViewModel extends AndroidViewModel {
 
     SingleLiveEvent<String> getDialogEvent() {
         return dialogEvent;
+    }
+
+    public SingleLiveEvent<Collection> getReturnToBuyListEvent() {
+        return returnToBuyListEvent;
     }
 
     public SingleLiveEvent<Integer> getSnackbarMessage() {
@@ -211,7 +217,18 @@ public class RecipeListViewModel extends AndroidViewModel {
 
         btnToMoveShow.set(false);
         snackbarText.setValue(R.string.items_moved);
-        storage.deleteSelectedItems();
+        openBuyList();
+    }
+
+    public void openBuyList() {
+        List<Collection> collections = storage.loadCollection(CollectionType.BuyList);
+        for (Collection collection : collections) {
+            if (collection.getId() == storage.loadSelectedCollection()) {
+                returnToBuyListEvent.setValue(collection);
+                deleteSelected();
+                return;
+            }
+        }
     }
 
     public List<Item> loadSelectedItems() {

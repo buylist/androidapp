@@ -12,4 +12,13 @@ public class SnackbarUtils {
         }
         Snackbar.make(v, snackbarText, Snackbar.LENGTH_LONG).show();
     }
+
+    public static void showSnackbarWithButton(View v, String snackbarText, View.OnClickListener listener) {
+        if (v == null || snackbarText == null) {
+            return;
+        }
+        Snackbar.make(v, snackbarText, Snackbar.LENGTH_INDEFINITE)
+                .setAction("Перейти...", listener)
+                .show();
+    }
 }
