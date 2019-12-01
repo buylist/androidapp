@@ -11,9 +11,8 @@ import androidx.lifecycle.ViewModelProviders;
 import ru.buylist.R;
 import ru.buylist.buy_list.BuyListActivity;
 import ru.buylist.buy_list.BuyListViewModel;
-import ru.buylist.buy_list.CategoryFragment;
+import ru.buylist.buy_list.NewItemFragment;
 import ru.buylist.collection_lists.CollectionActivity;
-import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.databinding.ActivityPatternListBinding;
 import ru.buylist.utils.SingleFragmentActivity;
 
@@ -50,8 +49,9 @@ public class PatternListActivity extends SingleFragmentActivity {
         viewModel = obtainViewModel(this);
         binding.setViewmodel(viewModel);
 
-        // открытие CategoryFragment
-        viewModel.getNewCategoryEvent().observe(this, this::setCategory);
+        // открытие NewItemFragment
+        viewModel.getNewItemEvent().observe(this, patternId ->
+                setCategory(getIntent().getLongExtra(EXTRA_PATTERN_ID, 0), patternId));
 
         viewModel.getDialogEvent().observe(this, type ->
                 PatternDialog.newInstance(type).show(getSupportFragmentManager(), "custom"));
@@ -68,9 +68,9 @@ public class PatternListActivity extends SingleFragmentActivity {
         setTitle(getIntent().getStringExtra(EXTRA_PATTERN_TITLE));
     }
 
-    // вызов CategoryFragment
-    private void setCategory(long itemId) {
-        Fragment fragment = CategoryFragment.newInstance(itemId, CollectionType.PATTERN);
+    // вызов NewItemFragment
+    private void setCategory(long patternId, long itemId) {
+        Fragment fragment = NewItemFragment.newInstance(patternId, itemId);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();

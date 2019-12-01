@@ -61,10 +61,10 @@ public class BuyListActivity extends SingleFragmentActivity {
         viewModel = obtainViewModel(this);
         binding.setViewmodel(viewModel);
 
-        // открытие CategoryFragment
-        viewModel.getNewCategoryEvent().observe(this, itemId -> {
+        // открытие NewItemFragment
+        viewModel.getNewItemEvent().observe(this, itemId -> {
             Log.i(TAG, "ShoppingActivity: new category event");
-            setCategory(itemId);
+            setCategory(getIntent().getLongExtra(EXTRA_COLLECTION_ID, 0), itemId);
         });
 
         // Возврат к BuyList
@@ -100,31 +100,31 @@ public class BuyListActivity extends SingleFragmentActivity {
         setTitle(getIntent().getStringExtra(EXTRA_COLLECTION_TITLE));
     }
 
-    @Override
-    public void onBackPressed() {
-        FragmentManager fm = getSupportFragmentManager();
-        IOnBackPressed listener = null;
-        for (Fragment fragment : fm.getFragments()) {
-            if (fragment instanceof IOnBackPressed) {
-                listener = (IOnBackPressed) fragment;
-                break;
-            }
-        }
-
-        if (listener != null) {
-            listener.onBackPressed();
-        } else {
-            super.onBackPressed();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        FragmentManager fm = getSupportFragmentManager();
+//        IOnBackPressed listener = null;
+//        for (Fragment fragment : fm.getFragments()) {
+//            if (fragment instanceof IOnBackPressed) {
+//                listener = (IOnBackPressed) fragment;
+//                break;
+//            }
+//        }
+//
+//        if (listener != null) {
+//            listener.onBackPressed();
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
-    private void setCategory(long itemId) {
-        Fragment fragment = CategoryFragment.newInstance(itemId, CollectionType.BuyList);
+    private void setCategory(long collectionId, long itemId) {
+        Fragment fragment = NewItemFragment.newInstance(collectionId, itemId);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();

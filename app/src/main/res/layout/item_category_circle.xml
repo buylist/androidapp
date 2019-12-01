@@ -8,7 +8,7 @@
 
         <variable
             name="callback"
-            type="ru.buylist.buy_list.CategoryCallback" />
+            type="ru.buylist.buy_list.CategoryCallback.CircleCallback" />
 
     </data>
 <ImageView android:id="@+id/circle"

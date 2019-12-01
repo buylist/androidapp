@@ -17,4 +17,7 @@
     <color name="colorNavNormal">#979797</color>
     <color name="colorNavBackground">#F2F2F2</color>
     <color name="colorMarkerDefault">#858E99</color>
+
+    <color name="test1">#DADADA</color>
+    <color name="test2">#69F0AE</color>
 </resources>

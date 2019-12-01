@@ -11,9 +11,8 @@ import androidx.lifecycle.ViewModelProviders;
 import ru.buylist.R;
 import ru.buylist.buy_list.BuyListActivity;
 import ru.buylist.buy_list.BuyListViewModel;
-import ru.buylist.buy_list.CategoryFragment;
+import ru.buylist.buy_list.NewItemFragment;
 import ru.buylist.collection_lists.CollectionActivity;
-import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.databinding.ActivityRecipeListBinding;
 import ru.buylist.utils.SingleFragmentActivity;
 
@@ -50,8 +49,9 @@ public class RecipeListActivity extends SingleFragmentActivity {
         viewModel = obtainViewModel(this);
         binding.setViewmodel(viewModel);
 
-        // открытие CategoryFragment
-        viewModel.getNewCategoryEvent().observe(this, this::setCategory);
+        // открытие NewItemFragment
+        viewModel.getNewItemEvent().observe(this, recipeId ->
+                setCategory(getIntent().getLongExtra(EXTRA_RECIPE_ID, 0), recipeId));
 
         // открытие диалогового окна
         viewModel.getDialogEvent().observe(this, type ->
@@ -69,9 +69,9 @@ public class RecipeListActivity extends SingleFragmentActivity {
         setTitle(getIntent().getStringExtra(EXTRA_RECIPE_TITLE));
     }
 
-    // вызов CategoryFragment
-    private void setCategory(long itemId) {
-        Fragment fragment = CategoryFragment.newInstance(itemId, CollectionType.RECIPE);
+    // вызов NewItemFragment
+    private void setCategory(long recipeId, long itemId) {
+        Fragment fragment = NewItemFragment.newInstance(recipeId, itemId);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();

@@ -13,6 +13,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import ru.buylist.R;
@@ -46,10 +48,10 @@ public class BuyListViewModel extends AndroidViewModel {
     private DataRepository repository;
     private TemporaryDataStorage storage;
 
-    // Отслеживание нового товара для открытия CategoryFragment
-    private SingleLiveEvent<Long> newCategoryEvent = new SingleLiveEvent<>();
+    // Отслеживание нового товара для открытия NewItemFragment
+    private SingleLiveEvent<Long> newItemEvent = new SingleLiveEvent<>();
 
-    // Отслеживает нажатие на кнопки "Далее" и "Пропустить" в CategoryFragment для перехода в список
+    // Отслеживает нажатие на кнопки "Далее" и "Пропустить" в NewItemFragment для перехода в список
     private SingleLiveEvent<Long> returnToListEvent = new SingleLiveEvent<>();
 
     // Отвечает за открытие диалогового окна "по шаблонам"
@@ -76,8 +78,8 @@ public class BuyListViewModel extends AndroidViewModel {
      * get Event
      */
 
-    public SingleLiveEvent<Long> getNewCategoryEvent() {
-        return newCategoryEvent;
+    public SingleLiveEvent<Long> getNewItemEvent() {
+        return newItemEvent;
     }
 
     public SingleLiveEvent<Long> getReturnToListEvent() {
@@ -156,52 +158,9 @@ public class BuyListViewModel extends AndroidViewModel {
      * main
      */
 
-    // новый товар добавляет в базу, существующий - обновляет
-    public void saveItem(long collectionId, long itemId) {
-        // id != 0 при редактировании товара, создавать новый не требуется
-        Item item = (itemId == 0 ? new Item() : new Item(itemId));
-        item.setName(itemName.get());
-        if (item.isEmpty()) {
-            // товар не может быть пустым, обнуляем и скрываем layout
-            clearFields();
-            hideNewProductLayout();
-            snackbarText.setValue(R.string.item_name_is_empty);
-            return;
-        }
-
-        item.setCollectionId(collectionId);
-        item.setQuantity(quantity.get() + " ");
-        item.setUnit(unit.get());
-
-        // новый товар добавляется в базу, редактируемый - обновляется
-        if (itemId == 0) {
-            repository.addItem(item);
-        } else {
-            repository.updateItem(item);
-            snackbarText.setValue(R.string.item_name_edited);
-        }
-
-        // открывает CategoryFragment, если товара нет в глобальной базе
-        if (!isInGlobalDatabase(item)) {
-            newCategoryEvent.setValue(item.getId());
-        }
-
-        clearFields();
-        hideNewProductLayout();
-    }
-
-    // проверка на наличие товара в глобальной базе
-    // если товар есть в глобальной базе - цепляем категорию и цвет категории
-    private boolean isInGlobalDatabase(Item item) {
-        GlobalItem globalItem = repository.getGlobalItem(item.getName());
-        if (globalItem == null || globalItem.getName() == null) {
-            return false;
-        } else {
-            item.setCategory(globalItem.getCategory());
-            item.setCategoryColor(globalItem.getColorCategory());
-            repository.updateItem(item);
-            return true;
-        }
+    // itemId == 0 - новый товар, != 0 - редактируемый товар
+    public void createNewItem(long itemId) {
+        newItemEvent.setValue(itemId);
     }
 
     // true - товар перечеркивается линией, false - линия удаляется
@@ -319,6 +278,13 @@ public class BuyListViewModel extends AndroidViewModel {
         if (itemsToShow.isEmpty()) {
             fabIsShown.set(true);
         }
+
+        Collections.sort(itemsToShow, new Comparator<Item>() {
+            @Override
+            public int compare(Item obj1, Item obj2) {
+                return obj1.getCategoryColor().compareTo(obj2.getCategoryColor());
+            }
+        });
 
         this.items.clear();
         this.items.addAll(itemsToShow);

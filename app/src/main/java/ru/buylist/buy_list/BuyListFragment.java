@@ -122,8 +122,7 @@ public class BuyListFragment extends Fragment {
         FloatingActionButton visibilityFab = getActivity().findViewById(R.id.fab_visibility);
 
         newItemFab.setOnClickListener(v -> {
-            viewModel.showLayoutFields();
-            setupCreateButton(0);
+            viewModel.createNewItem(0);
         });
         Log.i(TAG, "ShoppingList newFAB activated");
 
@@ -140,22 +139,6 @@ public class BuyListFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
                 viewModel.showHideFab(dy);
             }
-        });
-    }
-
-    private void setupCreateButton(final long itemId) {
-        binding.btnCreateItem.setOnClickListener(v -> {
-            viewModel.saveItem(collection.getId(), itemId);
-            Log.i(TAG, "ShoppingList save new item: " + itemId);
-        });
-
-        // keyboard listener
-        binding.fieldUnit.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                viewModel.saveItem(collectionId, itemId);
-                return true;
-            }
-            return false;
         });
     }
 
@@ -196,8 +179,7 @@ public class BuyListFragment extends Fragment {
 
         @Override
         public void onEditButtonClick(Item item) {
-            viewModel.editItem(item);
-            setupCreateButton(item.getId());
+            viewModel.createNewItem(item.getId());
             adapter.closeAllItems();
             Log.i(TAG, "BuyList edit item: " + item.getId());
         }

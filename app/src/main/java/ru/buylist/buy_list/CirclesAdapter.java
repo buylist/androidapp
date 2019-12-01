@@ -55,7 +55,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.CirclesH
         notifyDataSetChanged();
     }
 
-    private final CategoryCallback callback = new CategoryCallback() {
+    private final CategoryCallback.CircleCallback callback = new CategoryCallback.CircleCallback() {
         @Override
         public void onCircleClick(Category category) {
             if (category.isSelected()) {

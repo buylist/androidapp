@@ -40,8 +40,8 @@ public class RecipeListViewModel extends AndroidViewModel {
     //Поле инструкции
     public final ObservableField<String> instruction = new ObservableField<>("");
 
-    // Отслеживание нового товара для открытия CategoryFragment
-    private SingleLiveEvent<Long> newCategoryEvent = new SingleLiveEvent<>();
+    // Отслеживание нового товара для открытия NewItemFragment
+    private SingleLiveEvent<Long> newItemEvent = new SingleLiveEvent<>();
 
     // Открытие диалогового окна
     private SingleLiveEvent<String> dialogEvent = new SingleLiveEvent<>();
@@ -65,8 +65,8 @@ public class RecipeListViewModel extends AndroidViewModel {
     /**
      *  get Event
     * */
-    SingleLiveEvent<Long> getNewCategoryEvent() {
-        return newCategoryEvent;
+    SingleLiveEvent<Long> getNewItemEvent() {
+        return newItemEvent;
     }
 
     SingleLiveEvent<String> getDialogEvent() {
@@ -107,8 +107,8 @@ public class RecipeListViewModel extends AndroidViewModel {
     * */
 
     // отображение полей для ввода товара
-    public void addNewItem() {
-        layoutFieldsShow.set(true);
+    public void addNewItem(long itemId) {
+        newItemEvent.setValue(itemId);
     }
 
     // новый товар добавляет в базу, существующий - обновляет
@@ -136,9 +136,9 @@ public class RecipeListViewModel extends AndroidViewModel {
             snackbarText.setValue(R.string.item_name_edited);
         }
 
-        // если товар новый - открывается CategoryFragment для выбора категории
+        // если товар новый - открывается NewItemFragment для выбора категории
         if (isNewItem(item)) {
-            newCategoryEvent.setValue(item.getId());
+            newItemEvent.setValue(item.getId());
         }
 
         layoutFieldsShow.set(false);

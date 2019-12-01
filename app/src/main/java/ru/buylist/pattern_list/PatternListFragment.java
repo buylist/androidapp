@@ -102,7 +102,7 @@ public class PatternListFragment extends Fragment {
     private void setupFab() {
         FloatingActionButton addItemButton = getActivity().findViewById(R.id.fab_new_item);
         addItemButton.setOnClickListener(v -> {
-            viewModel.addNewItem();
+            viewModel.addNewItem(0);
             setupCreateButton(0);
         });
     }
@@ -181,8 +181,7 @@ public class PatternListFragment extends Fragment {
 
         @Override
         public void onEditButtonClick(Item item) {
-            viewModel.editItem(item);
-            setupCreateButton(item.getId());
+            viewModel.addNewItem(item.getId());
             adapter.closeAllItems();
         }
     };

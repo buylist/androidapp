@@ -37,8 +37,8 @@ public class PatternListViewModel extends AndroidViewModel {
     public final ObservableField<String> quantity = new ObservableField<>("");
     public final ObservableField<String> unit = new ObservableField<>("");
 
-    // Отслеживание нового товара для открытия CategoryFragment
-    private SingleLiveEvent<Long> newCategoryEvent = new SingleLiveEvent<>();
+    // Отслеживание нового товара для открытия NewItemFragment
+    private SingleLiveEvent<Long> newItemEvent = new SingleLiveEvent<>();
 
     // Открытие диалогового окна
     private SingleLiveEvent<String> dialogEvent = new SingleLiveEvent<>();
@@ -62,8 +62,8 @@ public class PatternListViewModel extends AndroidViewModel {
      *  get Event
     * */
 
-    SingleLiveEvent<Long> getNewCategoryEvent() {
-        return newCategoryEvent;
+    SingleLiveEvent<Long> getNewItemEvent() {
+        return newItemEvent;
     }
 
     SingleLiveEvent<String> getDialogEvent() {
@@ -105,9 +105,8 @@ public class PatternListViewModel extends AndroidViewModel {
     * */
 
     // onFabClick
-    public void addNewItem() {
-        layoutFieldsShow.set(true);
-        fabShow.set(false);
+    public void addNewItem(long itemId) {
+        newItemEvent.setValue(itemId);
     }
 
     public void saveItem(long collectionId, long itemId) {
@@ -136,7 +135,7 @@ public class PatternListViewModel extends AndroidViewModel {
 
         // если товар новый - открытие фрагмента для выбора категории
         if (isNewItem(item)) {
-            newCategoryEvent.setValue(item.getId());
+            newItemEvent.setValue(item.getId());
         }
 
         layoutFieldsShow.set(false);

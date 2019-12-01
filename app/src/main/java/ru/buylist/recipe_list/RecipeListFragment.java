@@ -148,7 +148,7 @@ public class RecipeListFragment extends Fragment {
     private final RecipeListCallback callback = new RecipeListCallback() {
         @Override
         public void onNewIngredientButtonClick() {
-            viewModel.addNewItem();
+            viewModel.addNewItem(0);
             setupCreateButton(0);
         }
 
@@ -186,8 +186,7 @@ public class RecipeListFragment extends Fragment {
 
         @Override
         public void onEditButtonClick(Item item) {
-            viewModel.editItem(item);
-            setupCreateButton(item.getId());
+            viewModel.addNewItem(item.getId());
             adapter.closeAllItems();
         }
     };
