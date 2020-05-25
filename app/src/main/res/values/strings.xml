@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">BuyList</string>
-    
-<!--Snackbar text-->
+
+<!--    nav drawer-->
+    <string name="open">open</string>
+    <string name="close">close</string>
+
+    <!--Snackbar text-->
     <!--Collection-->
     <string name="collection_is_empty">Имя не может быть пустым</string>
     <string name="collection_deleted">Удалено</string>
@@ -15,7 +19,7 @@
     <string name="category_is_empty">Категория не выбрана</string>
     <string name="category_color_is_empty">Выберите цвет</string>
 
-<!--Collection-->
+    <!--Collection-->
     <string name="list_collection">Cписки</string>
     <string name="list_pattern">Шаблоны</string>
     <string name="recipe_list">Рецепты</string>
@@ -36,14 +40,14 @@
     <string name="field_name_pattern_hint">Введите название шаблона</string>
     <string name="field_name_recipe_hint">Введите название рецепта</string>
 
-<!--BuyList-->
+    <!--BuyList-->
     <string name="btn_pattern_text">По шаблону</string>
     <string name="btn_recipe_text">По рецепту</string>
     <!--ContentDescription-->
     <string name="fab_visibility_description">Показать или скрыть купленные товары</string>
     <!--hint-->
 
-<!--Category-->
+    <!--Category-->
     <string name="product_text">товар</string>
     <string name="button_next_text">Далее</string>
     <string name="button_skip_text">Пропустить</string>
@@ -53,7 +57,7 @@
     <string name="btn_prev_color_description">Предыдущие цвета</string>
     <string name="btn_next_color_description">Следующие цвета</string>
 
-<!--RecipeList-->
+    <!--RecipeList-->
     <string name="ingredient_text">Ингредиенты</string>
     <string name="instruction_text">Инструкция</string>
     <!--ContentDescription-->
@@ -63,7 +67,7 @@
     <!--hint-->
     <string name="field_instruction_hint">Введите текст инструкции</string>
 
-<!--Общее-->
+    <!--Общее-->
     <string name="fab_new_item_description">Добавить товар</string>
     <string name="btn_create_item_description">Сохранить товар</string>
     <string name="btn_move_to_list_description">Перенести в список</string>
@@ -73,32 +77,12 @@
     <string name="btn_edit_item_description">Редактировать товар</string>
     <string name="btn_delete_item_description">Удалить товар</string>
 
-<!--Bottom navigation-->
+    <!--Bottom navigation-->
     <string name="action_home_text">На главную</string>
     <string name="action_buy_list_text">Списки</string>
     <string name="action_pattern_text">Шаблоны</string>
     <string name="action_recipe_text">Рецепты</string>
     <string name="action_settings_text">Настройки</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     <string-array name="category">
