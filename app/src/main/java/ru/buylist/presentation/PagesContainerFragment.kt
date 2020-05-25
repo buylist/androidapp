@@ -21,6 +21,7 @@ class PagesContainerFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
         setupDrawerContent()
+        setupBottomView()
     }
 
     private fun setupToolbar() {
@@ -60,9 +61,25 @@ class PagesContainerFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
-            return true;
+            return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupBottomView() {
+        nav_bottom.selectedItemId = R.id.action_lists // default
+        nav_bottom.setOnNavigationItemSelectedListener {
+            selectBottomItem(it)
+            true
+        }
+    }
+
+    private fun selectBottomItem(menuItem: MenuItem) {
+        when(menuItem.itemId) {
+            R.id.action_lists -> Toast.makeText(context, "lists", Toast.LENGTH_LONG).show()
+            R.id.action_pattern -> Toast.makeText(context, "pattern", Toast.LENGTH_LONG).show()
+            R.id.action_recipe -> Toast.makeText(context, "recipe", Toast.LENGTH_LONG).show()
+        }
     }
 
 }
