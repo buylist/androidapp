@@ -14,29 +14,12 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity
-            android:name=".buy_list.BuyListActivity"
-            android:parentActivityName=".collection_lists.CollectionActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".pattern_list.PatternListActivity"
-            android:parentActivityName=".collection_lists.CollectionActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".recipe_list.RecipeListActivity"
-            android:parentActivityName=".collection_lists.CollectionActivity"
-            android:windowSoftInputMode="adjustPan" />
-
-        <activity
-            android:name=".collection_lists.CollectionActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
+        <activity android:name=".presentation.SingleActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.SingleActivity" />
     </application>
 
 </manifest>
