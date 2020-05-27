@@ -8,7 +8,7 @@
             android:title="Авторизация"
             android:icon="@drawable/ic_list" />
         <item
-            android:id="@+id/nav_settings"
+            android:id="@+id/settings_fragment"
             android:title="Настройки"
             android:icon="@drawable/ic_list" />
     </group>
@@ -17,7 +17,7 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/nav_about"
+                    android:id="@+id/about_fragment"
                     android:title="О приложении"
                     android:icon="@drawable/ic_list" />
                 <item

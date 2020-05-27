@@ -3,10 +3,46 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/pages_container">
-
+    app:startDestination="@id/lists_fragment">
     <fragment
-        android:id="@+id/pages_container"
-        android:name="ru.buylist.presentation.PagesContainerFragment"
-        android:label="pages_container" />
+        android:id="@+id/lists_fragment"
+        android:name="ru.buylist.presentation.fragments.ListsFragment"
+        android:label="BuyLists" >
+        <action
+            android:id="@+id/action_lists_fragment_to_settings_fragment"
+            app:destination="@id/settings_fragment" />
+        <action
+            android:id="@+id/action_lists_fragment_to_about_fragment"
+            app:destination="@id/about_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pattern_fragment"
+        android:name="ru.buylist.presentation.fragments.PatternFragment"
+        android:label="Patterns" >
+        <action
+            android:id="@+id/action_pattern_fragment_to_settings_fragment"
+            app:destination="@id/settings_fragment" />
+        <action
+            android:id="@+id/action_pattern_fragment_to_about_fragment"
+            app:destination="@id/about_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recipe_fragment"
+        android:name="ru.buylist.presentation.fragments.RecipeFragment"
+        android:label="Recipes" >
+        <action
+            android:id="@+id/action_recipe_fragment_to_settings_fragment"
+            app:destination="@id/settings_fragment" />
+        <action
+            android:id="@+id/action_recipe_fragment_to_about_fragment"
+            app:destination="@id/about_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="ru.buylist.presentation.fragments.SettingsFragment"
+        android:label="Settings" />
+    <fragment
+        android:id="@+id/about_fragment"
+        android:name="ru.buylist.presentation.fragments.AboutFragment"
+        android:label="About" />
 </navigation>
