@@ -2,32 +2,32 @@ package ru.buylist.utils
 
 import android.content.Context
 import ru.buylist.BuyListApp
-import ru.buylist.data.repositories.buyList.BuyListDataSource
-import ru.buylist.data.repositories.buyList.BuyListRepository
-import ru.buylist.data.repositories.items.GlobalItemDataSource
-import ru.buylist.data.repositories.items.GlobalItemRepository
-import ru.buylist.data.repositories.pattern.PatternDataSource
-import ru.buylist.data.repositories.pattern.PatternRepository
+import ru.buylist.data.repositories.buyList.BuyListsDataSource
+import ru.buylist.data.repositories.buyList.BuyListsRepository
+import ru.buylist.data.repositories.items.GlobalItemsDataSource
+import ru.buylist.data.repositories.items.GlobalItemsRepository
+import ru.buylist.data.repositories.pattern.PatternsDataSource
+import ru.buylist.data.repositories.pattern.PatternsRepository
 
 object InjectorUtils {
 
     fun getExecutors(): AppExecutors = AppExecutors()
 
-    private fun getBuyListRepository(context: Context): BuyListDataSource {
-        return BuyListRepository.getInstance(
+    private fun getBuyListsRepository(context: Context): BuyListsDataSource {
+        return BuyListsRepository.getInstance(
                 getExecutors(),
                 (context.applicationContext as BuyListApp).getDatabase().buyListDao())
     }
 
-    private fun getPatternRepository(context: Context): PatternDataSource {
-        return PatternRepository.getInstance(
+    private fun getPatternsRepository(context: Context): PatternsDataSource {
+        return PatternsRepository.getInstance(
                 getExecutors(),
                 (context.applicationContext as BuyListApp).getDatabase().patternDao()
         )
     }
 
-    private fun getGlobalItemRepository(context: Context): GlobalItemDataSource {
-        return GlobalItemRepository.getInstance(
+    private fun getGlobalItemsRepository(context: Context): GlobalItemsDataSource {
+        return GlobalItemsRepository.getInstance(
                 getExecutors(),
                 (context.applicationContext as BuyListApp).getDatabase().globalItemDao()
         )
