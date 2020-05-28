@@ -13,7 +13,6 @@ import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import java.util.List;
 
 import ru.buylist.R;
-import ru.buylist.data.entity.Collection;
 import ru.buylist.databinding.ItemCollectionListBinding;
 
 import static ru.buylist.utils.ItemClickCallback.*;

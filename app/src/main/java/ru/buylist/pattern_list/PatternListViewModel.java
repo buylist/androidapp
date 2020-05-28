@@ -14,12 +14,7 @@ import java.util.List;
 import ru.buylist.R;
 import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.data.TemporaryDataStorage;
-import ru.buylist.data.entity.Collection;
-import ru.buylist.utils.BuylistApp;
-import ru.buylist.data.DataRepository;
 import ru.buylist.utils.SingleLiveEvent;
-import ru.buylist.data.entity.GlobalItem;
-import ru.buylist.data.entity.Item;
 
 
 public class PatternListViewModel extends AndroidViewModel {

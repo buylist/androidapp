@@ -9,12 +9,8 @@ import ru.buylist.R;
 
 
 import ru.buylist.pattern_list.PatternListActivity;
-import ru.buylist.pattern_list.PatternListFragment;
 import ru.buylist.recipe_list.RecipeListActivity;
-import ru.buylist.recipe_list.RecipeListFragment;
 import ru.buylist.utils.SingleFragmentActivity;
-import ru.buylist.data.entity.Collection;
-import ru.buylist.buy_list.BuyListFragment;
 import ru.buylist.buy_list.BuyListActivity;
 
 public class CollectionActivity extends SingleFragmentActivity implements CollectionFragment.Callbacks {

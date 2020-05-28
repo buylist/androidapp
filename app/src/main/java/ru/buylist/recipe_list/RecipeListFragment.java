@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.buylist.R;
-import ru.buylist.data.entity.Collection;
-import ru.buylist.data.entity.Item;
 import ru.buylist.databinding.FragmentRecipeListBinding;
 import ru.buylist.pattern_list.PatternListAdapter;
 import ru.buylist.utils.SnackbarUtils;

@@ -9,16 +9,13 @@ import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import ru.buylist.collection_lists.CollectionActivity;
 import ru.buylist.collection_lists.CollectionType;
-import ru.buylist.data.entity.Collection;
 import ru.buylist.databinding.ActivityBuyListBinding;
 import ru.buylist.pattern_list.PatternListActivity;
 import ru.buylist.recipe_list.RecipeListActivity;
-import ru.buylist.utils.IOnBackPressed;
 import ru.buylist.R;
 import ru.buylist.utils.SingleFragmentActivity;
 

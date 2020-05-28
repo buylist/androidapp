@@ -14,9 +14,6 @@ import java.util.List;
 
 import ru.buylist.collection_lists.CollectionType;
 import ru.buylist.data.TemporaryDataStorage;
-import ru.buylist.data.entity.Collection;
-import ru.buylist.data.entity.Item;
-import ru.buylist.utils.BuylistApp;
 
 
 public class BuyListDialog extends DialogFragment {

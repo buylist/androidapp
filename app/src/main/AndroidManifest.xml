@@ -4,7 +4,7 @@
     package="ru.buylist">
 
     <application
-        android:name=".utils.BuylistApp"
+        android:name=".BuyListApp"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"

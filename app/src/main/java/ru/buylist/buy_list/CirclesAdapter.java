@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ru.buylist.R;
-import ru.buylist.data.entity.Category;
 import ru.buylist.databinding.ItemCategoryCircleBinding;
 
 public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.CirclesHolder> {

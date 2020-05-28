@@ -1,9 +1,5 @@
 package ru.buylist.recipe_list;
 
-import java.util.List;
-
-import ru.buylist.data.entity.Item;
-
 public interface RecipeListCallback {
 
     public interface PatternListItemCallback {
