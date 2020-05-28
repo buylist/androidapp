@@ -5,7 +5,7 @@ import ru.buylist.data.entity.BuyList
 interface BuyListDataSource {
 
     interface GetBuyListCallback {
-        fun onBuyListsLoaded(buyList: BuyList)
+        fun onBuyListLoaded(buyList: BuyList)
         fun onDataNotAvailable()
     }
 

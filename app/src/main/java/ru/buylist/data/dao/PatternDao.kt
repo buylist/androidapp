@@ -16,15 +16,15 @@ interface PatternDao {
     fun deletePattern(pattern: Pattern)
 
     @Delete
-    fun deleteSelectedPatterns(patterns: MutableList<Pattern>)
+    fun deleteSelectedPatterns(patterns: List<Pattern>)
 
     @Query("DELETE FROM patterns")
     fun deleteAllPatterns()
 
     @Query("SELECT * FROM patterns")
-    fun getPatterns(): MutableList<Pattern>
+    fun getPatterns(): List<Pattern>
 
     @Query("SELECT * FROM patterns WHERE id = :patternId")
-    fun getPattern(patternId: Long)
+    fun getPattern(patternId: Long): Pattern
 
 }

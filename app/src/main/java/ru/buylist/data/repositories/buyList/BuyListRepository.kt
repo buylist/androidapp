@@ -49,7 +49,7 @@ class BuyListRepository private constructor(
                 if (buyList == null) {
                     callback.onDataNotAvailable()
                 } else {
-                    callback.onBuyListsLoaded(buyList)
+                    callback.onBuyListLoaded(buyList)
                 }
             }
         }
