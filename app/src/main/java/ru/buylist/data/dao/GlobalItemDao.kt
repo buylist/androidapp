@@ -19,9 +19,9 @@ interface GlobalItemDao {
     fun updateGlobalItemColor(color: String)
 
     @Query("SELECT * FROM global_items")
-    fun getGlobalItems(): MutableList<GlobalItem>
+    fun getGlobalItems(): List<GlobalItem>
 
     @Query("SELECT * FROM global_items WHERE id = :globalItemId")
-    fun getPattern(globalItemId: Long)
+    fun getGlobalItem(globalItemId: Long): GlobalItem
 
 }

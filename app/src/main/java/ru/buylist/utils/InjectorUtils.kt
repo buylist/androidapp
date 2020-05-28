@@ -4,6 +4,8 @@ import android.content.Context
 import ru.buylist.BuyListApp
 import ru.buylist.data.repositories.buyList.BuyListDataSource
 import ru.buylist.data.repositories.buyList.BuyListRepository
+import ru.buylist.data.repositories.items.GlobalItemDataSource
+import ru.buylist.data.repositories.items.GlobalItemRepository
 import ru.buylist.data.repositories.pattern.PatternDataSource
 import ru.buylist.data.repositories.pattern.PatternRepository
 
@@ -21,6 +23,13 @@ object InjectorUtils {
         return PatternRepository.getInstance(
                 getExecutors(),
                 (context.applicationContext as BuyListApp).getDatabase().patternDao()
+        )
+    }
+
+    private fun getGlobalItemRepository(context: Context): GlobalItemDataSource {
+        return GlobalItemRepository.getInstance(
+                getExecutors(),
+                (context.applicationContext as BuyListApp).getDatabase().globalItemDao()
         )
     }
 }
