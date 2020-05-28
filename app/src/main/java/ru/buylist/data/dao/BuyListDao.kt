@@ -16,15 +16,15 @@ interface BuyListDao {
     fun deleteBuyList(buyList: BuyList)
 
     @Delete
-    fun deleteSelectedBuyLists(buyLists: MutableList<BuyList>)
+    fun deleteSelectedBuyLists(buyLists: List<BuyList>)
 
     @Query("DELETE FROM buy_lists")
     fun deleteAllBuyLists()
 
     @Query("SELECT * FROM buy_lists")
-    fun getBuyLists(): MutableList<BuyList>
+    fun getBuyLists(): List<BuyList>
 
     @Query("SELECT * FROM buy_lists WHERE id = :buyListId")
-    fun getBuyList(buyListId: Long)
+    fun getBuyList(buyListId: Long): BuyList
 
 }
