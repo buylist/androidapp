@@ -10,9 +10,6 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import ru.buylist.data.entity.Collection;
-import ru.buylist.data.entity.Item;
-
 public class TemporaryDataStorage {
 
     private final String PREF_FILE_ALL_COLLECTION = "pref_buy_list_collection";

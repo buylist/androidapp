@@ -7,12 +7,8 @@ import android.util.Log;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.AndroidViewModel;
-import ru.buylist.R;
-import ru.buylist.data.DataRepository;
+
 import ru.buylist.data.TemporaryDataStorage;
-import ru.buylist.data.entity.GlobalItem;
-import ru.buylist.data.entity.Item;
-import ru.buylist.utils.BuylistApp;
 import ru.buylist.utils.SingleLiveEvent;
 
 

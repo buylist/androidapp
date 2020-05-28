@@ -1,18 +1,15 @@
 package ru.buylist.collection_lists;
 
 
-import android.app.Activity;
 import android.content.Context;
 
 import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,8 +21,8 @@ import java.util.List;
 
 import ru.buylist.databinding.FragmentCollectionBinding;
 import ru.buylist.R;
-import ru.buylist.data.entity.Collection;
 import ru.buylist.utils.SnackbarUtils;
+import ru.buylist.view_models.CollectionViewModel;
 
 import static ru.buylist.collection_lists.CollectionType.*;
 import static ru.buylist.utils.ItemClickCallback.*;

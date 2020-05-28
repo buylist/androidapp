@@ -1,17 +1,12 @@
 package ru.buylist.buy_list;
 
 
-import android.animation.AnimatorSet;
-import android.animation.ArgbEvaluator;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
@@ -27,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.buylist.R;
-import ru.buylist.data.entity.Category;
-import ru.buylist.data.entity.Item;
 import ru.buylist.databinding.FragmentNewItemBinding;
 
 public class NewItemFragment extends Fragment {

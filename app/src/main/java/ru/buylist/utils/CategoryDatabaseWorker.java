@@ -11,7 +11,7 @@ import ru.buylist.data.entity.Category;
 // Для заполнения базы данных стандартными категориями
 public class CategoryDatabaseWorker {
 
-    public static List<Category> getStandartCategories(Context context) {
+    public static List<Category> getStandardCategories(Context context) {
         List<Category> categories = new ArrayList<>();
         String[] standardCategories = context.getResources().getStringArray(R.array.category);
         for (int i = 0; i < standardCategories.length; i++) {

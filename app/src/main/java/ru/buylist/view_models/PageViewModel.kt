@@ -4,8 +4,6 @@ import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import ru.buylist.collection_lists.CollectionType
-import ru.buylist.data.DataRepository
-import ru.buylist.data.entity.Collection
 
 class PageViewModel(private val repository: DataRepository) : ViewModel() {
 

@@ -10,7 +10,7 @@
 
         <variable
             name="item"
-            type="ru.buylist.data.entity.Collection" />
+            type="ru.buylist.data.entity_old.Collection" />
     </data>
 
     <com.daimajia.swipe.SwipeLayout

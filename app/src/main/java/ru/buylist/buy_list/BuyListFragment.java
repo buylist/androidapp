@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -23,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.buylist.R;
-import ru.buylist.data.entity.Collection;
-import ru.buylist.data.entity.Item;
 import ru.buylist.databinding.FragmentBuyListBinding;
 import ru.buylist.utils.SnackbarUtils;
 

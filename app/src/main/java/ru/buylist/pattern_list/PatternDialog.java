@@ -12,8 +12,6 @@ import androidx.fragment.app.DialogFragment;
 import java.util.List;
 
 import ru.buylist.data.TemporaryDataStorage;
-import ru.buylist.data.entity.Collection;
-import ru.buylist.utils.BuylistApp;
 
 
 public class PatternDialog extends DialogFragment {

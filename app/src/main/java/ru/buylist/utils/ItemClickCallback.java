@@ -1,8 +1,5 @@
 package ru.buylist.utils;
 
-import ru.buylist.data.entity.Collection;
-import ru.buylist.data.entity.Item;
-
 public interface ItemClickCallback {
 
     interface ItemCollectionCallback {
