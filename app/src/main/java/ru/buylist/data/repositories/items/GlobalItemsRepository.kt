@@ -4,10 +4,10 @@ import ru.buylist.data.dao.GlobalItemDao
 import ru.buylist.data.entity.GlobalItem
 import ru.buylist.utils.AppExecutors
 
-class GlobalItemRepository(
+class GlobalItemsRepository(
         private val executors: AppExecutors,
         private val globalItemDao: GlobalItemDao
-) : GlobalItemDataSource {
+) : GlobalItemsDataSource {
 
     override fun saveGlobalItem(globalItem: GlobalItem) {
         executors.discIO().execute { globalItemDao.insertGlobalItem(globalItem) }
@@ -25,7 +25,7 @@ class GlobalItemRepository(
         executors.discIO().execute { globalItemDao.updateGlobalItemColor(color) }
     }
 
-    override fun getGlobalItems(callback: GlobalItemDataSource.LoadGlobalItemsCallback) {
+    override fun getGlobalItems(callback: GlobalItemsDataSource.LoadGlobalItemsCallback) {
         executors.discIO().execute {
             val items = globalItemDao.getGlobalItems()
             executors.mainThread().execute {
@@ -38,7 +38,7 @@ class GlobalItemRepository(
         }
     }
 
-    override fun getGlobalItem(globalItemId: Long, callback: GlobalItemDataSource.GetGlobalItemCallback) {
+    override fun getGlobalItem(globalItemId: Long, callback: GlobalItemsDataSource.GetGlobalItemCallback) {
         executors.discIO().execute {
             val item = globalItemDao.getGlobalItem(globalItemId)
             executors.mainThread().execute {
@@ -53,11 +53,11 @@ class GlobalItemRepository(
 
     companion object {
         @Volatile
-        private var instance: GlobalItemRepository? = null
+        private var instance: GlobalItemsRepository? = null
 
         fun getInstance(executors: AppExecutors, globalItemDao: GlobalItemDao) =
                 instance ?: synchronized(this) {
-                    instance ?: GlobalItemRepository(executors, globalItemDao)
+                    instance ?: GlobalItemsRepository(executors, globalItemDao)
                             .also { instance = it }
                 }
     }

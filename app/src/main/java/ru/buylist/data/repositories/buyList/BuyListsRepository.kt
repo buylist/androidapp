@@ -4,10 +4,10 @@ import ru.buylist.data.dao.BuyListDao
 import ru.buylist.data.entity.BuyList
 import ru.buylist.utils.AppExecutors
 
-class BuyListRepository private constructor(
+class BuyListsRepository private constructor(
         private val executors: AppExecutors,
         private val buyListDao: BuyListDao
-): BuyListDataSource {
+): BuyListsDataSource {
 
     override fun saveBuyList(buyList: BuyList) {
         executors.discIO().execute { buyListDao.insertBuyList(buyList) }
@@ -29,7 +29,7 @@ class BuyListRepository private constructor(
         executors.discIO().execute { buyListDao.deleteAllBuyLists() }
     }
 
-    override fun getBuyLists(callback: BuyListDataSource.LoadBuyListsCallback) {
+    override fun getBuyLists(callback: BuyListsDataSource.LoadBuyListsCallback) {
         executors.discIO().execute {
             val buyLists = buyListDao.getBuyLists()
             executors.mainThread().execute{
@@ -42,7 +42,7 @@ class BuyListRepository private constructor(
         }
     }
 
-    override fun getBuyList(buyListId: Long, callback: BuyListDataSource.GetBuyListCallback) {
+    override fun getBuyList(buyListId: Long, callback: BuyListsDataSource.GetBuyListCallback) {
         executors.discIO().execute {
             val buyList = buyListDao.getBuyList(buyListId)
             executors.mainThread().execute {
@@ -56,11 +56,11 @@ class BuyListRepository private constructor(
     }
 
     companion object {
-        @Volatile private var instance: BuyListRepository? = null
+        @Volatile private var instance: BuyListsRepository? = null
 
         fun getInstance(executors: AppExecutors, buyListDao: BuyListDao) =
                 instance ?: synchronized(this) {
-                    instance ?: BuyListRepository(executors, buyListDao).also { instance = it }
+                    instance ?: BuyListsRepository(executors, buyListDao).also { instance = it }
                 }
     }
 }

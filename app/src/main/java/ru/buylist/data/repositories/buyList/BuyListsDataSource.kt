@@ -2,7 +2,7 @@ package ru.buylist.data.repositories.buyList
 
 import ru.buylist.data.entity.BuyList
 
-interface BuyListDataSource {
+interface BuyListsDataSource {
 
     interface GetBuyListCallback {
         fun onBuyListLoaded(buyList: BuyList)

@@ -2,7 +2,7 @@ package ru.buylist.data.repositories.items
 
 import ru.buylist.data.entity.GlobalItem
 
-interface GlobalItemDataSource {
+interface GlobalItemsDataSource {
 
     interface GetGlobalItemCallback {
         fun onGlobalItemLoaded(globalItem: GlobalItem)

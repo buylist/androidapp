@@ -2,7 +2,7 @@ package ru.buylist.data.repositories.pattern
 
 import ru.buylist.data.entity.Pattern
 
-interface PatternDataSource {
+interface PatternsDataSource {
 
     interface GetPatternCallback {
         fun onPatternLoaded(pattern: Pattern)

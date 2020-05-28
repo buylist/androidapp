@@ -4,10 +4,10 @@ import ru.buylist.data.dao.PatternDao
 import ru.buylist.data.entity.Pattern
 import ru.buylist.utils.AppExecutors
 
-class PatternRepository private constructor(
+class PatternsRepository private constructor(
         private val executors: AppExecutors,
         private val patternDao: PatternDao
-) : PatternDataSource {
+) : PatternsDataSource {
 
     override fun savePattern(pattern: Pattern) {
         executors.discIO().execute { patternDao.insertPattern(pattern) }
@@ -29,7 +29,7 @@ class PatternRepository private constructor(
         executors.discIO().execute { patternDao.deleteAllPatterns() }
     }
 
-    override fun getPatterns(callback: PatternDataSource.LoadPatternsCallback) {
+    override fun getPatterns(callback: PatternsDataSource.LoadPatternsCallback) {
         executors.discIO().execute {
             val patterns = patternDao.getPatterns()
             executors.mainThread().execute {
@@ -42,7 +42,7 @@ class PatternRepository private constructor(
         }
     }
 
-    override fun getPattern(patternId: Long, callback: PatternDataSource.GetPatternCallback) {
+    override fun getPattern(patternId: Long, callback: PatternsDataSource.GetPatternCallback) {
         executors.discIO().execute {
             val pattern = patternDao.getPattern(patternId)
             executors.mainThread().execute {
@@ -57,11 +57,11 @@ class PatternRepository private constructor(
 
     companion object {
         @Volatile
-        private var instance: PatternRepository? = null
+        private var instance: PatternsRepository? = null
 
         fun getInstance(executors: AppExecutors, patternDao: PatternDao) =
                 instance ?: synchronized(this) {
-                    instance ?: PatternRepository(executors, patternDao).also { instance = it }
+                    instance ?: PatternsRepository(executors, patternDao).also { instance = it }
                 }
     }
 
