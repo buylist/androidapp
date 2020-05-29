@@ -1,6 +1,7 @@
 package ru.buylist.presentation
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
@@ -27,11 +28,29 @@ class SingleActivity : AppCompatActivity() {
         // setup drawer and bottom navigation
         nav_drawer.setupWithNavController(navController)
         nav_bottom.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when(destination.id) {
+                R.id.lists_fragment -> showBottomMenu()
+                R.id.pattern_fragment -> showBottomMenu()
+                R.id.recipe_fragment -> showBottomMenu()
+                R.id.about_fragment -> hideBottomMenu()
+                R.id.settings_fragment -> hideBottomMenu()
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.fragment_container)
         return navController.navigateUp(appBarConfig) || super.onSupportNavigateUp()
+    }
+
+    private fun showBottomMenu() {
+        nav_bottom.visibility = View.VISIBLE
+    }
+
+    private fun hideBottomMenu() {
+        nav_bottom.visibility = View.GONE
     }
 
 }
