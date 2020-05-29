@@ -31,17 +31,6 @@
                 app:defaultNavHost="true"
                 app:navGraph="@navigation/nav_graph" />
 
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:useCompatPadding="true"
-                app:layout_anchor="@id/fragment_container"
-                app:layout_anchorGravity="end|bottom"
-                app:fabSize="auto"
-                android:src="@drawable/fab_add_white" />
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
