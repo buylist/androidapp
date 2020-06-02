@@ -1,117 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-
-        <import type="android.view.View" />
-
-        <!--        <variable-->
-        <!--            name="view_model"-->
-        <!--            type="ru.buylist.view_models.PageViewModel" />-->
-
-        <!--        <variable-->
-        <!--            name="callback"-->
-        <!--            type="" />-->
-    </data>
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_info"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <FrameLayout
-            android:id="@+id/frame_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tv_page_info"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:textSize="30sp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-        </FrameLayout>
-            <View
-                android:id="@+id/shadow_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#703A3A3A"
-                android:visibility="gone" />
-
-            <com.google.android.material.circularreveal.CircularRevealLinearLayout
-                android:id="@+id/sheet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:visibility="invisible"
-                android:background="@color/colorWhite"
-                android:orientation="vertical"
-                app:layout_behavior="com.google.android.material.transformation.FabTransformationSheetBehavior">
-
-<!--                <ImageButton-->
-<!--                    android:id="@+id/close"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:src="@drawable/ic_close"-->
-<!--                    android:background="@android:color/transparent"/>-->
-                <RelativeLayout
-                    android:id="@+id/layout_buy_list_fields"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_horizontal_margin"
-                    android:layout_marginTop="@dimen/field_margin_vertical"
-                    android:layout_marginEnd="@dimen/default_horizontal_margin"
-                    android:layout_marginBottom="@dimen/field_margin_vertical"
-                    android:background="@drawable/field_border">
-
-                    <ru.buylist.utils.FocusableEditText
-                        android:id="@+id/field_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_toStartOf="@+id/btn_create_buy_list"
-                        android:hint="@string/field_name_list_hint"
-                        android:inputType="text"
-                        android:imeOptions="actionDone"
-                        android:background="@android:color/transparent" />
-
-                    <ImageButton
-                        android:id="@+id/btn_create_buy_list"
-                        android:layout_width="@dimen/btn_create_size"
-                        android:layout_height="@dimen/btn_create_size"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/btn_create_margin_end"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="@string/btn_create_buy_list_description"
-                        android:src="@drawable/button_create" />
-                </RelativeLayout>
-
-            </com.google.android.material.circularreveal.CircularRevealLinearLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_add"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:useCompatPadding="true"
-            app:layout_anchor="@id/frame_layout"
-            app:layout_anchorGravity="end|bottom"
-            app:fabSize="auto"
-            android:src="@drawable/fab_add_white" />
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:textSize="30sp" />
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </FrameLayout>
 
-    </LinearLayout>
 </layout>
