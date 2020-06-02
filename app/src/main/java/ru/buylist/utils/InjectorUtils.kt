@@ -8,22 +8,29 @@ import ru.buylist.data.repositories.items.GlobalItemsDataSource
 import ru.buylist.data.repositories.items.GlobalItemsRepository
 import ru.buylist.data.repositories.pattern.PatternsDataSource
 import ru.buylist.data.repositories.pattern.PatternsRepository
+import ru.buylist.view_models.factories.BuyListViewModelFactory
+import ru.buylist.view_models.factories.PatternViewModelFactory
 
 object InjectorUtils {
 
     fun getExecutors(): AppExecutors = AppExecutors()
 
-    private fun getBuyListsRepository(context: Context): BuyListsDataSource {
+    fun provideBuyListViewModelFactory() =
+            BuyListViewModelFactory(getBuyListsRepository())
+
+    fun providePatternViewModelFactory() =
+            PatternViewModelFactory(getPatternsRepository())
+
+    private fun getBuyListsRepository(): BuyListsDataSource {
         return BuyListsRepository.getInstance(
                 getExecutors(),
-                (context.applicationContext as BuyListApp).getDatabase().buyListDao())
+                BuyListApp.get().getDatabase().buyListDao())
     }
 
-    private fun getPatternsRepository(context: Context): PatternsDataSource {
+    private fun getPatternsRepository(): PatternsDataSource {
         return PatternsRepository.getInstance(
                 getExecutors(),
-                (context.applicationContext as BuyListApp).getDatabase().patternDao()
-        )
+                BuyListApp.get().getDatabase().patternDao())
     }
 
     private fun getGlobalItemsRepository(context: Context): GlobalItemsDataSource {

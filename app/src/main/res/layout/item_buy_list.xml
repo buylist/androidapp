@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="item"
+            type="ru.buylist.data.entity.BuyList" />
+
+        <variable
+            name="callback"
+            type="ru.buylist.presentation.adapters.BuyListItemListener" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="70dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_buy_list_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/btn_more"
+                android:layout_marginStart="8dp"
+                android:textSize="24sp"
+                android:onClick="@{()-> callback.onBuyListClicked(item)}" />
+
+            <ImageView
+                android:id="@+id/btn_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_more"
+                android:tint="@color/colorNavNormal"
+                android:onClick="@{()-> callback.onButtonMoreClick(item)}" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

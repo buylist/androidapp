@@ -7,14 +7,20 @@ import ru.buylist.utils.InjectorUtils
 
 class BuyListApp : Application() {
 
-    lateinit var instance: BuyListApp
     lateinit var executors: AppExecutors
 
     override fun onCreate() {
         super.onCreate()
-        instance = this
+        INSTANCE = this
         executors = InjectorUtils.getExecutors()
     }
 
-    fun getDatabase(): BuyListDatabase = BuyListDatabase.getInstance(instance, executors)
+    fun getDatabase(): BuyListDatabase = BuyListDatabase.getInstance(INSTANCE, executors)
+
+    companion object {
+        private lateinit var INSTANCE : BuyListApp
+
+        @JvmStatic
+        fun get() : BuyListApp = INSTANCE
+    }
 }

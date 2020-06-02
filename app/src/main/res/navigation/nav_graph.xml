@@ -6,7 +6,7 @@
     app:startDestination="@id/lists_fragment">
     <fragment
         android:id="@+id/lists_fragment"
-        android:name="ru.buylist.presentation.fragments.ListsFragment"
+        android:name="ru.buylist.presentation.fragments.BuyListsFragment"
         android:label="BuyLists" >
         <action
             android:id="@+id/action_lists_fragment_to_settings_fragment"
