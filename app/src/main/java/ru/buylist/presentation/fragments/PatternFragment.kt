@@ -2,21 +2,27 @@ package ru.buylist.presentation.fragments
 
 import android.os.Bundle
 import android.view.View
-import kotlinx.android.synthetic.main.fragment_page.*
-import ru.buylist.presentation.BaseFragment
+import androidx.fragment.app.viewModels
+import kotlinx.android.synthetic.main.activity_fragment.*
+import kotlinx.android.synthetic.main.fragment_pattern_list.*
 import ru.buylist.R
-import ru.buylist.databinding.FragmentPageBinding
-import ru.buylist.utils.BuylistApp
-import ru.buylist.view_models.PageViewModel
+import ru.buylist.databinding.FragmentPatternListBinding
+import ru.buylist.presentation.BaseFragment
+import ru.buylist.presentation.adapters.PatternAdapter
+import ru.buylist.utils.InjectorUtils
+import ru.buylist.view_models.PatternViewModel
 
-class PatternFragment : BaseFragment<FragmentPageBinding>() {
+class PatternFragment : BaseFragment<FragmentPatternListBinding>() {
 
-    private lateinit var viewModel: PageViewModel
+    private val viewModel: PatternViewModel by viewModels {
+        InjectorUtils.providePatternViewModelFactory()
+    }
 
-    override val layoutResId: Int = R.layout.fragment_page
+    private lateinit var patternAdapter: PatternAdapter
 
-    override fun setupBindings(binding: FragmentPageBinding) {
-        viewModel = PageViewModel((context?.applicationContext as BuylistApp).repository)
+    override val layoutResId: Int = R.layout.fragment_pattern_list
+
+    override fun setupBindings(binding: FragmentPatternListBinding) {
         binding.viewModel = viewModel
     }
 
@@ -24,6 +30,35 @@ class PatternFragment : BaseFragment<FragmentPageBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         tv_info.text = "List of patterns is empty"
+
+        fab_add.setOnClickListener { expandFab() }
+        shadow_view.setOnClickListener { minimizeFab() }
+
+        btn_create.setOnClickListener{
+            viewModel.save()
+            minimizeFab()
+        }
+
+        patternAdapter = PatternAdapter(ArrayList(0), viewModel)
+        recycler.apply { adapter = patternAdapter }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        minimizeFab()
+    }
+
+    private fun expandFab() {
+        fab_add.isExpanded = true
+        requireActivity().nav_bottom.visibility = View.GONE
+        shadow_view.visibility = View.VISIBLE
+        field_name.requestFocus()
+    }
+
+    private fun minimizeFab() {
+        fab_add.isExpanded = false
+        requireActivity().nav_bottom.visibility = View.VISIBLE
+        shadow_view.visibility = View.GONE
     }
 
 
