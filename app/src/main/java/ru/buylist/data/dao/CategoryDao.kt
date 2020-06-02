@@ -25,7 +25,7 @@ interface CategoryDao {
     fun getCategories(): MutableList<Category>
 
     @Query("SELECT * FROM categories WHERE name = :categoryName")
-    fun getCategory(categoryName: String)
+    fun getCategory(categoryName: String): Category
 
     @Query("UPDATE categories SET color = :categoryColor")
     fun updateCategoryColor(categoryColor: String)

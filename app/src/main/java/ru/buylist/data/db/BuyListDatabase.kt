@@ -9,14 +9,14 @@ import ru.buylist.data.dao.BuyListDao
 import ru.buylist.data.dao.CategoryDao
 import ru.buylist.data.dao.GlobalItemDao
 import ru.buylist.data.dao.PatternDao
-import ru.buylist.data.entity_old.Category
-import ru.buylist.data.entity_old.Collection
-import ru.buylist.data.entity_old.GlobalItem
-import ru.buylist.data.entity_old.Item
+import ru.buylist.data.entity.BuyList
+import ru.buylist.data.entity.Category
+import ru.buylist.data.entity.GlobalItem
+import ru.buylist.data.entity.Pattern
 import ru.buylist.utils.AppExecutors
 import ru.buylist.utils.CategoryDatabaseWorker
 
-@Database(entities = [Collection::class, Item::class, GlobalItem::class, Category::class],
+@Database(entities = [BuyList::class, Pattern::class, GlobalItem::class, Category::class],
         version = 1, exportSchema = false)
 abstract class BuyListDatabase : RoomDatabase() {
     abstract fun buyListDao(): BuyListDao
