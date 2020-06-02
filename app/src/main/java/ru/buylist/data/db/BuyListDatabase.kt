@@ -5,22 +5,17 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import ru.buylist.data.dao.BuyListDao
-import ru.buylist.data.dao.CategoryDao
-import ru.buylist.data.dao.GlobalItemDao
-import ru.buylist.data.dao.PatternDao
-import ru.buylist.data.entity.BuyList
-import ru.buylist.data.entity.Category
-import ru.buylist.data.entity.GlobalItem
-import ru.buylist.data.entity.Pattern
+import ru.buylist.data.dao.*
+import ru.buylist.data.entity.*
 import ru.buylist.utils.AppExecutors
 import ru.buylist.utils.CategoryDatabaseWorker
 
-@Database(entities = [BuyList::class, Pattern::class, GlobalItem::class, Category::class],
+@Database(entities = [BuyList::class, Pattern::class, Recipe::class, GlobalItem::class, Category::class],
         version = 1, exportSchema = false)
 abstract class BuyListDatabase : RoomDatabase() {
     abstract fun buyListDao(): BuyListDao
     abstract fun patternDao(): PatternDao
+    abstract fun recipeDao(): RecipeDao
     abstract fun globalItemDao(): GlobalItemDao
     abstract fun categoryDao(): CategoryDao
 
