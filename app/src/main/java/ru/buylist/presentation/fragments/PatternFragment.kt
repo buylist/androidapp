@@ -2,6 +2,7 @@ package ru.buylist.presentation.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_pattern_list.*
@@ -18,8 +19,6 @@ class PatternFragment : BaseFragment<FragmentPatternListBinding>() {
         InjectorUtils.providePatternViewModelFactory()
     }
 
-    private lateinit var patternAdapter: PatternAdapter
-
     override val layoutResId: Int = R.layout.fragment_pattern_list
 
     override fun setupBindings(binding: FragmentPatternListBinding) {
@@ -29,23 +28,39 @@ class PatternFragment : BaseFragment<FragmentPatternListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tv_info.text = "List of patterns is empty"
-
         fab_add.setOnClickListener { expandFab() }
         shadow_view.setOnClickListener { minimizeFab() }
 
-        btn_create.setOnClickListener{
-            viewModel.save()
-            minimizeFab()
-        }
-
-        patternAdapter = PatternAdapter(ArrayList(0), viewModel)
-        recycler.apply { adapter = patternAdapter }
+        setupListenersToButtonsCreate()
+        setupAdapter()
     }
 
     override fun onResume() {
         super.onResume()
         minimizeFab()
+    }
+
+    private fun setupAdapter() {
+        val patternAdapter = PatternAdapter(ArrayList(0), viewModel)
+        recycler.apply { adapter = patternAdapter }
+    }
+
+    private fun setupListenersToButtonsCreate() {
+        btn_create.setOnClickListener {
+            viewModel.save()
+            minimizeFab()
+        }
+
+        field_name.setOnEditorActionListener { _, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    viewModel.save()
+                    minimizeFab()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun expandFab() {
@@ -60,8 +75,5 @@ class PatternFragment : BaseFragment<FragmentPatternListBinding>() {
         requireActivity().nav_bottom.visibility = View.VISIBLE
         shadow_view.visibility = View.GONE
     }
-
-
-
 
 }

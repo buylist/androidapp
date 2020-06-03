@@ -2,6 +2,7 @@ package ru.buylist.presentation.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_buy_list.*
@@ -18,8 +19,6 @@ class BuyListsFragment : BaseFragment<FragmentBuyListBinding>() {
         InjectorUtils.provideBuyListViewModelFactory()
     }
 
-    private lateinit var buyListAdapter: BuyListAdapter
-
     override val layoutResId: Int = R.layout.fragment_buy_list
 
     override fun setupBindings(binding: FragmentBuyListBinding) {
@@ -29,23 +28,39 @@ class BuyListsFragment : BaseFragment<FragmentBuyListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tv_info.text = "List of buylists is empty"
-
         fab_add.setOnClickListener { expandFab() }
         shadow_view.setOnClickListener { minimizeFab() }
 
-        btn_create.setOnClickListener{
-            viewModel.save()
-            minimizeFab()
-        }
-
-        buyListAdapter = BuyListAdapter(ArrayList(0), viewModel)
-        recycler.apply { adapter = buyListAdapter }
+        setupListenersToButtonsCreate()
+        setupAdapter()
     }
 
     override fun onResume() {
         super.onResume()
         minimizeFab()
+    }
+
+    private fun setupAdapter() {
+        val buyListAdapter = BuyListAdapter(ArrayList(0), viewModel)
+        recycler.apply { adapter = buyListAdapter }
+    }
+
+    private fun setupListenersToButtonsCreate() {
+        btn_create.setOnClickListener{
+            viewModel.save()
+            minimizeFab()
+        }
+
+        field_name.setOnEditorActionListener { _, actionId, _ ->
+            when(actionId) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    viewModel.save()
+                    minimizeFab()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun expandFab() {

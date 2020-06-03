@@ -2,6 +2,7 @@ package ru.buylist.presentation.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_recipe_list.*
@@ -18,8 +19,6 @@ class RecipeFragment : BaseFragment<FragmentRecipeListBinding>() {
         InjectorUtils.provideRecipeViewModelFactory()
     }
 
-    private lateinit var recipeAdapter: RecipeAdapter
-
     override val layoutResId: Int = R.layout.fragment_recipe_list
 
     override fun setupBindings(binding: FragmentRecipeListBinding) {
@@ -29,23 +28,39 @@ class RecipeFragment : BaseFragment<FragmentRecipeListBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tv_info.text = "List of recipes is empty"
-
         fab_add.setOnClickListener { expandFab() }
         shadow_view.setOnClickListener { minimizeFab() }
 
-        btn_create.setOnClickListener {
-            viewModel.save()
-            minimizeFab()
-        }
-
-        recipeAdapter = RecipeAdapter(ArrayList(0), viewModel)
-        recycler.apply { adapter = recipeAdapter }
+        setupListenersToButtonsCreate()
+        setupAdapter()
     }
 
     override fun onResume() {
         super.onResume()
         minimizeFab()
+    }
+
+    private fun setupAdapter() {
+        val recipeAdapter = RecipeAdapter(ArrayList(0), viewModel)
+        recycler.apply { adapter = recipeAdapter }
+    }
+
+    private fun setupListenersToButtonsCreate() {
+        btn_create.setOnClickListener {
+            viewModel.save()
+            minimizeFab()
+        }
+
+        field_name.setOnEditorActionListener { _, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    viewModel.save()
+                    minimizeFab()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun expandFab() {
