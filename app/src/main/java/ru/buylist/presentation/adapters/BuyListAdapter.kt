@@ -5,22 +5,22 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_buy_list.view.*
 import ru.buylist.R
-import ru.buylist.data.entity.BuyList
+import ru.buylist.data.entity.BuyListWrapper
 import ru.buylist.databinding.ItemBuyListBinding
 import ru.buylist.view_models.BuyListViewModel
 
 class BuyListAdapter(
-        list: List<BuyList>,
-        private val viewModel: BuyListViewModel?
-) : RecyclerView.Adapter<BuyListAdapter.BuyListHolder>() {
+        list: List<BuyListWrapper>,
+        private val viewModel: BuyListViewModel
+) : ListAdapter<BuyListWrapper, BuyListAdapter.BuyListHolder>(BuyListDiffCallback()) {
 
-    var list: List<BuyList> = list
+    var list: List<BuyListWrapper> = list
         set(list) {
             field = list
-            notifyDataSetChanged()
+            submitList(list)
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BuyListHolder {
@@ -30,22 +30,26 @@ class BuyListAdapter(
                 parent, false)
 
         val listener = object : BuyListItemListener {
-            override fun onBuyListClicked(buyList: BuyList) {
-                Toast.makeText(parent.context, buyList.title, Toast.LENGTH_SHORT).show()
+            override fun onBuyListClicked(buyList: BuyListWrapper) {
+                Toast.makeText(parent.context, buyList.buyList.title, Toast.LENGTH_SHORT).show()
             }
 
-            override fun onButtonMoreClick(buyList: BuyList) {
+            override fun onButtonMoreClick(buyList: BuyListWrapper) {
                 PopupMenu(parent.context, binding.btnMore).apply {
                     menuInflater.inflate(R.menu.buy_list_item_menu, menu)
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
-                            R.id.edit -> viewModel?.edit(buyList)
-                            R.id.delete -> viewModel?.delete(buyList)
+                            R.id.edit -> viewModel.edit(buyList)
+                            R.id.delete -> viewModel.delete(buyList)
                         }
                         true
                     }
                     show()
                 }
+            }
+
+            override fun onButtonSaveClick(buyList: BuyListWrapper) {
+                viewModel.saveEditedData(buyList, binding.fieldBuyListTitle.text.toString())
             }
 
         }
@@ -54,20 +58,19 @@ class BuyListAdapter(
         return BuyListHolder(binding)
     }
 
-    override fun getItemCount(): Int = list.size
-
-
     override fun onBindViewHolder(holder: BuyListHolder, position: Int) {
-        val buyList = list[position]
+        val buyList = getItem(position)
         holder.bind(buyList)
     }
 
 
     class BuyListHolder(private val binding: ItemBuyListBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(buyList: BuyList) {
+        fun bind(buyList: BuyListWrapper) {
             binding.item = buyList
-            itemView.tv_buy_list_title.text = buyList.title
+            binding.executePendingBindings()
         }
     }
 }
+
+

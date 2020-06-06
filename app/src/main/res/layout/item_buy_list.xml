@@ -3,9 +3,11 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="item"
-            type="ru.buylist.data.entity.BuyList" />
+            type="ru.buylist.data.entity.BuyListWrapper" />
 
         <variable
             name="callback"
@@ -32,8 +34,25 @@
                 android:layout_alignParentStart="true"
                 android:layout_toStartOf="@+id/btn_more"
                 android:layout_marginStart="8dp"
+                android:background="@android:color/transparent"
                 android:textSize="24sp"
-                android:onClick="@{()-> callback.onBuyListClicked(item)}" />
+                android:text="@{item.buyList.title}"
+                android:onClick="@{()-> callback.onBuyListClicked(item)}"
+                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}"/>
+
+            <EditText
+                android:id="@+id/field_buy_list_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/btn_more"
+                android:layout_marginStart="8dp"
+                android:background="@android:color/transparent"
+                android:inputType="text"
+                android:textSize="24sp"
+                android:imeOptions="actionDone"
+                android:text="@{item.buyList.title}"
+                android:visibility="@{item.editable ? View.VISIBLE : View.GONE}"/>
 
             <ImageView
                 android:id="@+id/btn_more"
@@ -42,7 +61,17 @@
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_more"
                 android:tint="@color/colorNavNormal"
-                android:onClick="@{()-> callback.onButtonMoreClick(item)}" />
+                android:onClick="@{()-> callback.onButtonMoreClick(item)}"
+                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}" />
+
+            <ImageView
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/button_create"
+                android:onClick="@{()-> callback.onButtonSaveClick(item)}"
+                android:visibility="@{item.editable ? View.VISIBLE : View.GONE}" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

@@ -2,14 +2,14 @@ package ru.buylist.presentation.adapters
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.buylist.data.entity.BuyList
+import ru.buylist.data.entity.BuyListWrapper
 import ru.buylist.data.entity.Pattern
 import ru.buylist.data.entity.Recipe
 
 object BindingAdapters {
 
     @BindingAdapter("app:items")
-    @JvmStatic fun setItems(recycler: RecyclerView, items: List<BuyList>) {
+    @JvmStatic fun setItems(recycler: RecyclerView, items: List<BuyListWrapper>) {
         with(recycler.adapter as BuyListAdapter) {
             list = items
         }

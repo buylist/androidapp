@@ -23,6 +23,7 @@ class BuyListsFragment : BaseFragment<FragmentBuyListBinding>() {
 
     override fun setupBindings(binding: FragmentBuyListBinding) {
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

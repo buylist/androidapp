@@ -41,7 +41,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/default_layout_margin"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:items="@{view_model.list}"/>
+                app:items="@{view_model.wrapperList}"/>
         </FrameLayout>
             <View
                 android:id="@+id/shadow_view"
