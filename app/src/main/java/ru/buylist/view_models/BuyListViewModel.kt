@@ -11,6 +11,7 @@ import ru.buylist.data.repositories.buyList.BuyListsDataSource
 class BuyListViewModel(private val repository: BuyListsDataSource) : ViewModel() {
 
     var listIsEmpty = ObservableBoolean(true)
+    var fabIsShown = ObservableBoolean(true)
     var isEditable: Boolean = false
     var buyListTitle = ObservableField("")
 
@@ -48,6 +49,10 @@ class BuyListViewModel(private val repository: BuyListsDataSource) : ViewModel()
         buyLists.remove(buyListWrapper.buyList)
         repository.deleteBuyList(buyListWrapper.buyList)
         updateUi()
+    }
+
+    fun showHideFab(dy: Int) {
+        fabIsShown.set(dy <= 0)
     }
 
     private fun updateUi() {

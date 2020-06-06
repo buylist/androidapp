@@ -2,6 +2,7 @@ package ru.buylist.presentation.adapters
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.buylist.data.entity.BuyListWrapper
 import ru.buylist.data.entity.Pattern
 import ru.buylist.data.entity.Recipe
@@ -26,6 +27,15 @@ object BindingAdapters {
     @JvmStatic fun setRecipes(recycler: RecyclerView, items: List<Recipe>) {
         with(recycler.adapter as RecipeAdapter) {
             list = items
+        }
+    }
+
+    @BindingAdapter("app:fabVisibility")
+    @JvmStatic fun setFabVisibility(fab: FloatingActionButton, isShown: Boolean) {
+        if (isShown) {
+            fab.show()
+        } else {
+            fab.hide()
         }
     }
 }

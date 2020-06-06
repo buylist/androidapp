@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_buy_list.*
 import ru.buylist.R
@@ -44,6 +45,13 @@ class BuyListsFragment : BaseFragment<FragmentBuyListBinding>() {
     private fun setupAdapter() {
         val buyListAdapter = BuyListAdapter(ArrayList(0), viewModel)
         recycler.apply { adapter = buyListAdapter }
+
+        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                viewModel.showHideFab(dy)
+            }
+        })
     }
 
     private fun setupListenersToButtonsCreate() {

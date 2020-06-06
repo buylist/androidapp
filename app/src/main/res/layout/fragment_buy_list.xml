@@ -104,7 +104,8 @@
             app:layout_anchor="@id/frame_layout"
             app:layout_anchorGravity="end|bottom"
             app:fabSize="auto"
-            android:src="@drawable/fab_add_white" />
+            android:src="@drawable/fab_add_white"
+            app:fabVisibility="@{view_model.fabIsShown}"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
