@@ -123,4 +123,5 @@
     <string name="tv_buy_list_info">Списков покупок еще нет</string>
     <string name="tv_pattern_list_info">Список шаблонов пуст</string>
     <string name="tv_recipe_list_info">Список рецептов пуст</string>
+    <string name="tv_buylist_detail_info">Список покупок пуст</string>
 </resources>

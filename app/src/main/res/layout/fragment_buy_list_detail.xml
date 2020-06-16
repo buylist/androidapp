@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="view_model"
+            type="ru.buylist.view_models.BuyListDetailViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/frame_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tv_buylist_detail_info"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="30sp"
+                    android:drawableTop="@drawable/ic_list"
+                    android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/default_layout_margin"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:items="@{view_model.wrapperList}" />
+            </FrameLayout>
+
+            <View
+                android:id="@+id/shadow_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#703A3A3A"
+                android:visibility="gone" />
+
+            <com.google.android.material.circularreveal.CircularRevealLinearLayout
+                android:id="@+id/sheet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:visibility="invisible"
+                android:background="@color/colorWhite"
+                android:orientation="vertical"
+                app:layout_behavior="com.google.android.material.transformation.FabTransformationSheetBehavior">
+
+                <!--Палитра цветов-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_circles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toStartOf="@id/btn_next_circles"
+                        android:layout_toEndOf="@id/btn_prev_circles"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:scrollbars="none"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:orientation="horizontal" />
+
+                    <ImageButton
+                        android:id="@+id/btn_prev_circles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_arrow_left"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/btn_prev_color_description" />
+
+                    <ImageButton
+                        android:id="@+id/btn_next_circles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="4dp"
+                        android:src="@drawable/ic_arrow_right"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/btn_next_color_description" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout_buy_list_fields"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_horizontal_margin"
+                    android:layout_marginTop="@dimen/field_margin_vertical"
+                    android:layout_marginEnd="@dimen/default_horizontal_margin"
+                    android:layout_marginBottom="@dimen/field_margin_vertical"
+                    android:background="@drawable/field_border">
+
+                    <ru.buylist.utils.FocusableEditText
+                        android:id="@+id/field_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/btn_create"
+                        android:hint="@string/field_name_list_hint"
+                        android:inputType="text"
+                        android:imeOptions="actionDone"
+                        android:background="@android:color/transparent"
+                        android:text="@={view_model.itemName}" />
+
+                    <ImageButton
+                        android:id="@+id/btn_create"
+                        android:layout_width="@dimen/btn_create_size"
+                        android:layout_height="@dimen/btn_create_size"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/btn_create_margin_end"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="@string/btn_create_buy_list_description"
+                        android:src="@drawable/button_create" />
+                </RelativeLayout>
+
+            </com.google.android.material.circularreveal.CircularRevealLinearLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useCompatPadding="true"
+                app:layout_anchor="@id/frame_layout"
+                app:layout_anchorGravity="end|bottom"
+                app:fabSize="auto"
+                android:src="@drawable/fab_add_white"
+                app:fabVisibility="@{view_model.fabIsShown}" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </LinearLayout>
+</layout>
