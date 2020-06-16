@@ -4,9 +4,9 @@ import ru.buylist.data.entity.BuyListWrapper
 
 interface BuyListItemListener {
 
-    fun onBuyListClicked(buyList: BuyListWrapper)
+    fun onBuyListClicked(buyListWrapper: BuyListWrapper)
 
-    fun onButtonMoreClick(buyList: BuyListWrapper)
+    fun onButtonMoreClick(buyListWrapper: BuyListWrapper)
 
-    fun onButtonSaveClick(buyList: BuyListWrapper)
+    fun onButtonSaveClick(buyListWrapper: BuyListWrapper)
 }

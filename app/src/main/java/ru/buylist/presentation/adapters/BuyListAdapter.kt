@@ -1,15 +1,17 @@
 package ru.buylist.presentation.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.buylist.R
 import ru.buylist.data.entity.BuyListWrapper
 import ru.buylist.databinding.ItemBuyListBinding
+import ru.buylist.presentation.fragments.BuyListsFragmentDirections
 import ru.buylist.view_models.BuyListViewModel
 
 class BuyListAdapter(
@@ -30,17 +32,17 @@ class BuyListAdapter(
                 parent, false)
 
         val listener = object : BuyListItemListener {
-            override fun onBuyListClicked(buyList: BuyListWrapper) {
-                Toast.makeText(parent.context, buyList.buyList.title, Toast.LENGTH_SHORT).show()
+            override fun onBuyListClicked(buyListWrapper: BuyListWrapper) {
+                navigateToBuyList(buyListWrapper.buyList.id, binding.root)
             }
 
-            override fun onButtonMoreClick(buyList: BuyListWrapper) {
+            override fun onButtonMoreClick(buyListWrapper: BuyListWrapper) {
                 PopupMenu(parent.context, binding.btnMore).apply {
                     menuInflater.inflate(R.menu.buy_list_item_menu, menu)
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
-                            R.id.edit -> viewModel.edit(buyList)
-                            R.id.delete -> viewModel.delete(buyList)
+                            R.id.edit -> viewModel.edit(buyListWrapper)
+                            R.id.delete -> viewModel.delete(buyListWrapper)
                         }
                         true
                     }
@@ -48,8 +50,8 @@ class BuyListAdapter(
                 }
             }
 
-            override fun onButtonSaveClick(buyList: BuyListWrapper) {
-                viewModel.saveEditedData(buyList, binding.fieldBuyListTitle.text.toString())
+            override fun onButtonSaveClick(buyListWrapper: BuyListWrapper) {
+                viewModel.saveEditedData(buyListWrapper, binding.fieldBuyListTitle.text.toString())
             }
 
         }
@@ -61,6 +63,11 @@ class BuyListAdapter(
     override fun onBindViewHolder(holder: BuyListHolder, position: Int) {
         val buyList = getItem(position)
         holder.bind(buyList)
+    }
+
+    private fun navigateToBuyList(buyListId: Long, view: View) {
+        val direction = BuyListsFragmentDirections.actionBuyListFragmentToBuyListDetailFragment(buyListId)
+        view.findNavController().navigate(direction)
     }
 
 
