@@ -6,43 +6,45 @@
 
         <import type="android.view.View" />
 
-                <variable
-                    name="view_model"
-                    type="ru.buylist.view_models.BuyListViewModel" />
+        <variable
+            name="view_model"
+            type="ru.buylist.view_models.BuyListViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/frame_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <TextView
-                android:id="@+id/tv_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tv_buy_list_info"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="30sp"
-                android:drawableTop="@drawable/ic_list"
-                android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler"
+            <FrameLayout
+                android:id="@+id/frame_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/default_layout_margin"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:items="@{view_model.wrapperList}"/>
-        </FrameLayout>
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tv_buy_list_info"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="30sp"
+                    android:drawableTop="@drawable/ic_list"
+                    android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/default_layout_margin"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:items="@{view_model.wrapperList}" />
+            </FrameLayout>
+
             <View
                 android:id="@+id/shadow_view"
                 android:layout_width="match_parent"
@@ -80,7 +82,7 @@
                         android:inputType="text"
                         android:imeOptions="actionDone"
                         android:background="@android:color/transparent"
-                        android:text="@={view_model.buyListTitle}"/>
+                        android:text="@={view_model.buyListTitle}" />
 
                     <ImageButton
                         android:id="@+id/btn_create"
@@ -96,16 +98,16 @@
 
             </com.google.android.material.circularreveal.CircularRevealLinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:useCompatPadding="true"
-            app:layout_anchor="@id/frame_layout"
-            app:layout_anchorGravity="end|bottom"
-            app:fabSize="auto"
-            android:src="@drawable/fab_add_white"
-            app:fabVisibility="@{view_model.fabIsShown}"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useCompatPadding="true"
+                app:layout_anchor="@id/frame_layout"
+                app:layout_anchorGravity="end|bottom"
+                app:fabSize="auto"
+                android:src="@drawable/fab_add_white"
+                app:fabVisibility="@{view_model.fabIsShown}" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
