@@ -47,7 +47,7 @@
                 android:id="@+id/shadow_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#703A3A3A"
+                android:background="@color/colorScrim"
                 android:visibility="gone" />
 
             <com.google.android.material.circularreveal.CircularRevealLinearLayout
