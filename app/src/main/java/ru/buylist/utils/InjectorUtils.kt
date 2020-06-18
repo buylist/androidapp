@@ -1,6 +1,5 @@
 package ru.buylist.utils
 
-import android.content.Context
 import ru.buylist.BuyListApp
 import ru.buylist.data.repositories.buyList.BuyListsDataSource
 import ru.buylist.data.repositories.buyList.BuyListsRepository
@@ -10,6 +9,7 @@ import ru.buylist.data.repositories.pattern.PatternsDataSource
 import ru.buylist.data.repositories.pattern.PatternsRepository
 import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.data.repositories.recipe.RecipesRepository
+import ru.buylist.view_models.factories.BuyListDetailViewModelFactory
 import ru.buylist.view_models.factories.BuyListViewModelFactory
 import ru.buylist.view_models.factories.PatternViewModelFactory
 import ru.buylist.view_models.factories.RecipeViewModelFactory
@@ -26,6 +26,9 @@ object InjectorUtils {
 
     fun provideRecipeViewModelFactory() =
             RecipeViewModelFactory(getRecipesRepository())
+
+    fun provideBuyListDetailViewModelFactory(buyListId: Long) =
+            BuyListDetailViewModelFactory(getBuyListsRepository(), getGlobalItemsRepository(), buyListId)
 
     private fun getBuyListsRepository(): BuyListsDataSource {
         return BuyListsRepository.getInstance(
@@ -45,10 +48,10 @@ object InjectorUtils {
                 BuyListApp.get().getDatabase().recipeDao())
     }
 
-    private fun getGlobalItemsRepository(context: Context): GlobalItemsDataSource {
+    private fun getGlobalItemsRepository(): GlobalItemsDataSource {
         return GlobalItemsRepository.getInstance(
                 getExecutors(),
-                (context.applicationContext as BuyListApp).getDatabase().globalItemDao()
+                BuyListApp.get().getDatabase().globalItemDao()
         )
     }
 }
