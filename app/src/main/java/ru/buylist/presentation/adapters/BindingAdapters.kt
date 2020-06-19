@@ -3,10 +3,7 @@ package ru.buylist.presentation.adapters
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import ru.buylist.data.entity.BuyListWrapper
-import ru.buylist.data.entity.ItemWrapper
-import ru.buylist.data.entity.Pattern
-import ru.buylist.data.entity.Recipe
+import ru.buylist.data.entity.*
 
 object BindingAdapters {
 
@@ -35,6 +32,13 @@ object BindingAdapters {
     @JvmStatic fun setItems(recycler: RecyclerView, items: List<ItemWrapper>) {
         with(recycler.adapter as BuyListDetailAdapter) {
             list = items
+        }
+    }
+
+    @BindingAdapter("app:items")
+    @JvmStatic fun setCircles(recycler: RecyclerView, circles: List<CircleWrapper>) {
+        with(recycler.adapter as CirclesAdapter) {
+            list = circles
         }
     }
 

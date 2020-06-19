@@ -14,6 +14,7 @@ import ru.buylist.databinding.FragmentBuyListDetailBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.R
 import ru.buylist.presentation.adapters.BuyListDetailAdapter
+import ru.buylist.presentation.adapters.CirclesAdapter
 import ru.buylist.utils.InjectorUtils
 import ru.buylist.view_models.BuyListDetailViewModel
 
@@ -34,6 +35,7 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.setupCircles(resources.getStringArray(R.array.category_color).toList())
         fab_add.setOnClickListener { expandFab() }
         shadow_view.setOnClickListener { minimizeFab() }
         btn_new_item.setOnClickListener { expandNewItemLayout() }
@@ -90,5 +92,8 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
     private fun setupAdapter() {
         val itemsAdapter = BuyListDetailAdapter(ArrayList(0), viewModel)
         recycler_items.apply { adapter = itemsAdapter }
+
+        val circlesAdapter = CirclesAdapter(ArrayList(0), viewModel)
+        recycler_circles.apply { adapter = circlesAdapter }
     }
 }
