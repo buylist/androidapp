@@ -6,7 +6,8 @@ data class Item(
         var globalItemId: Long,
         var name: String,
         var quantity: String,
-        var isPurchased: Boolean = false
+        var isPurchased: Boolean = false,
+        var category: Category
 ) {
     val isEmpty get() = name.isEmpty()
 }
