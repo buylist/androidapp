@@ -76,8 +76,9 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
             addTarget(fab_add)
         }
         TransitionManager.beginDelayedTransition(coordinator_layout, transition)
-        fab_menu.visibility = View.INVISIBLE
-        shadow_view.visibility = View.INVISIBLE
+        fab_menu.visibility = View.GONE
+        shadow_view.visibility = View.GONE
+        layout_new_item.visibility = View.GONE
         fab_add.visibility = View.VISIBLE
     }
 
