@@ -19,6 +19,7 @@ class BuyListDetailViewModel(
     var isEditable: Boolean = false
     var itemName = ObservableField("")
     private var colorPosition = -1
+    private lateinit var buyList: BuyList
 
     var wrapperItems = MutableLiveData<List<ItemWrapper>>().apply { value = emptyList() }
     var items = mutableListOf<Item>()
@@ -28,6 +29,15 @@ class BuyListDetailViewModel(
 
     init {
         loadList()
+    }
+
+    fun saveNewItem() {
+        val item  = Item(name = itemName.get().toString())
+        items.add(item)
+        updateUi()
+        itemName.set("")
+        buyList.items = JsonUtils.convertItemsToJson(items)
+        buyListRepository.updateBuyList(buyList)
     }
 
     fun edit(itemWrapper: ItemWrapper) {
@@ -58,6 +68,12 @@ class BuyListDetailViewModel(
         circles.clear()
         circles.addAll(newCircles)
         wrapperCircles.value = getWrapperCircles(newCircles)
+    }
+
+    private fun updateUi() {
+        val items = getWrapperItems(items)
+        listIsEmpty.set(items.isEmpty())
+        wrapperItems.value = items
     }
 
     private fun updateCirclesWrapper(list: MutableList<CircleWrapper>, color: String, position: Int, isSelected: Boolean = false) {
@@ -102,6 +118,7 @@ class BuyListDetailViewModel(
                 items.addAll(JsonUtils.convertItemsFromJson(buyList.items))
                 wrapperItems.value = getWrapperItems(items)
                 listIsEmpty.set(items.isEmpty())
+                this@BuyListDetailViewModel.buyList = buyList
             }
 
             override fun onDataNotAvailable() {

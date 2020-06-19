@@ -30,6 +30,7 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
 
     override fun setupBindings(binding: FragmentBuyListDetailBinding) {
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,6 +40,10 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
         fab_add.setOnClickListener { expandFab() }
         shadow_view.setOnClickListener { minimizeFab() }
         btn_new_item.setOnClickListener { expandNewItemLayout() }
+        btn_create.setOnClickListener {
+            viewModel.saveNewItem()
+            field_name.requestFocus()
+        }
         setupAdapter()
     }
 
