@@ -22,8 +22,6 @@ class CirclesAdapter(
             notifyDataSetChanged()
         }
 
-    private var currentSelectedPosition: Int = 0
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CirclesHolder {
         val binding: ItemCircleBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
@@ -34,8 +32,8 @@ class CirclesAdapter(
             override fun onCircleClick(circleWrapper: CircleWrapper) {
                 viewModel.updateCircle(circleWrapper)
                 notifyItemChanged(circleWrapper.position)
-                notifyItemChanged(currentSelectedPosition)
-                currentSelectedPosition = circleWrapper.position
+                notifyItemChanged(viewModel.getCurrentColorPosition())
+                viewModel.saveCurrentColorPosition(circleWrapper.position)
             }
         }
 

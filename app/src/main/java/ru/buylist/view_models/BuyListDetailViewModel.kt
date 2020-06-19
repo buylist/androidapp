@@ -18,6 +18,7 @@ class BuyListDetailViewModel(
     var fabIsShown = ObservableBoolean(true)
     var isEditable: Boolean = false
     var itemName = ObservableField("")
+    private var colorPosition = -1
 
     var wrapperItems = MutableLiveData<List<ItemWrapper>>().apply { value = emptyList() }
     var items = mutableListOf<Item>()
@@ -39,6 +40,12 @@ class BuyListDetailViewModel(
 
     fun saveEditedData(itemWrapper: ItemWrapper, name: String) {
 
+    }
+
+    fun getCurrentColorPosition() = colorPosition
+
+    fun saveCurrentColorPosition(position: Int) {
+        colorPosition = position
     }
 
     fun updateCircle(selectedCircle: CircleWrapper) {
