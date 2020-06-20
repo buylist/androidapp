@@ -1,5 +1,6 @@
 package ru.buylist.presentation.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
@@ -68,6 +69,7 @@ class BuyListDetailAdapter(
 
         fun bind(itemWrapper: ItemWrapper) {
             binding.item = itemWrapper
+            binding.imgCategoryCircle.setColorFilter(Color.parseColor(itemWrapper.item.category.color))
             binding.executePendingBindings()
         }
     }
