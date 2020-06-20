@@ -32,8 +32,9 @@ class BuyListDetailViewModel(
     }
 
     fun saveNewItem() {
-        val item  = Item(name = itemName.get().toString())
+        val item  = Item(name = itemName.get().toString(), category = Category(color = circles[colorPosition]))
         items.add(item)
+        items.sortBy { it.category.color }
         updateUi()
         itemName.set("")
         buyList.items = JsonUtils.convertItemsToJson(items)
