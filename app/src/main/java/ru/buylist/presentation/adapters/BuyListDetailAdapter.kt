@@ -33,7 +33,7 @@ class BuyListDetailAdapter(
         val listener = object : BuyListDetailItemListener {
 
             override fun onItemClicked(itemWrapper: ItemWrapper) {
-                // TODO: отмечать товар как купленный и наоборот
+                viewModel.onItemClick(itemWrapper)
             }
 
             override fun onButtonMoreClick(itemWrapper: ItemWrapper) {
