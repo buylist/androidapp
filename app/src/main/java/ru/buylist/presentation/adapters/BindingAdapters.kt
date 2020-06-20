@@ -35,6 +35,13 @@ object BindingAdapters {
         }
     }
 
+    @BindingAdapter("app:purchasedItems")
+    @JvmStatic fun setPurchasedItems(recycler: RecyclerView, items: List<ItemWrapper>) {
+        with(recycler.adapter as PurchasedItemsAdapter) {
+            list = items
+        }
+    }
+
     @BindingAdapter("app:items")
     @JvmStatic fun setCircles(recycler: RecyclerView, circles: List<CircleWrapper>) {
         with(recycler.adapter as CirclesAdapter) {
