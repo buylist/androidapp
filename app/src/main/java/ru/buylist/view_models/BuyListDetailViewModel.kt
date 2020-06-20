@@ -32,7 +32,7 @@ class BuyListDetailViewModel(
     }
 
     fun saveNewItem() {
-        val item  = Item(name = itemName.get().toString(), category = Category(color = circles[colorPosition]))
+        val item  = Item(name = itemName.get().toString(), category = getCategory())
         items.add(item)
         items.sortBy { it.category.color }
         updateUi()
@@ -69,6 +69,13 @@ class BuyListDetailViewModel(
         circles.clear()
         circles.addAll(newCircles)
         wrapperCircles.value = getWrapperCircles(newCircles)
+    }
+
+    private fun getCategory(): Category {
+        return when {
+            colorPosition < 0 -> Category()
+            else -> Category(color = circles[colorPosition])
+        }
     }
 
     private fun updateUi() {
