@@ -22,6 +22,7 @@ class BuyListDetailViewModel(
     private lateinit var buyList: BuyList
 
     var wrapperItems = MutableLiveData<List<ItemWrapper>>().apply { value = emptyList() }
+    var wrapperPurchasedItems = MutableLiveData<List<ItemWrapper>>().apply { value = emptyList() }
     var items = mutableListOf<Item>()
 
     var wrapperCircles = MutableLiveData<List<CircleWrapper>>().apply { value = emptyList() }
@@ -53,6 +54,13 @@ class BuyListDetailViewModel(
 
     }
 
+    fun onItemClick(wrapper: ItemWrapper) {
+        items[wrapper.position].isPurchased = !items[wrapper.position].isPurchased
+        buyList.items = JsonUtils.convertItemsToJson(items)
+        buyListRepository.updateBuyList(buyList)
+        updateUi()
+    }
+
     fun getCurrentColorPosition() = colorPosition
 
     fun saveCurrentColorPosition(position: Int) {
@@ -79,9 +87,11 @@ class BuyListDetailViewModel(
     }
 
     private fun updateUi() {
-        val items = getWrapperItems(items)
+        val itemsToBuy = getWrapperItems(items, false)
+        val purchasedItems = getWrapperItems(items, true)
         listIsEmpty.set(items.isEmpty())
-        wrapperItems.value = items
+        wrapperItems.value = itemsToBuy
+        wrapperPurchasedItems.value = purchasedItems
     }
 
     private fun updateCirclesWrapper(list: MutableList<CircleWrapper>, color: String, position: Int, isSelected: Boolean = false) {
@@ -110,11 +120,14 @@ class BuyListDetailViewModel(
         return newList
     }
 
-    private fun getWrapperItems(list: List<Item>): List<ItemWrapper> {
+    private fun getWrapperItems(list: List<Item>, isPurchased: Boolean): List<ItemWrapper> {
         val newList = mutableListOf<ItemWrapper>()
         for ((i, item) in list.withIndex()) {
             val itemWrapper = ItemWrapper(item, i)
-            newList.add(itemWrapper)
+
+            if (item.isPurchased == isPurchased) {
+                newList.add(itemWrapper)
+            }
         }
         return newList
     }
@@ -124,7 +137,8 @@ class BuyListDetailViewModel(
             override fun onBuyListLoaded(buyList: BuyList) {
                 items.clear()
                 items.addAll(JsonUtils.convertItemsFromJson(buyList.items))
-                wrapperItems.value = getWrapperItems(items)
+                wrapperItems.value = getWrapperItems(items, false)
+                wrapperPurchasedItems.value = getWrapperItems(items, true)
                 listIsEmpty.set(items.isEmpty())
                 this@BuyListDetailViewModel.buyList = buyList
             }
