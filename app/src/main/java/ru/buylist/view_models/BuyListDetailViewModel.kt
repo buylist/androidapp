@@ -46,8 +46,11 @@ class BuyListDetailViewModel(
 
     }
 
-    fun delete(itemWrapper: ItemWrapper) {
-
+    fun delete(wrapper: ItemWrapper) {
+        items.remove(wrapper.item)
+        buyList.items = JsonUtils.convertItemsToJson(items)
+        buyListRepository.updateBuyList(buyList)
+        updateUi()
     }
 
     fun saveEditedData(itemWrapper: ItemWrapper, name: String) {
@@ -70,7 +73,7 @@ class BuyListDetailViewModel(
     fun updateCircle(selectedCircle: CircleWrapper) {
         val circleList: MutableList<CircleWrapper> = wrapperCircles.value as MutableList<CircleWrapper>
         checkSelectedCircles(circleList)
-        updateCirclesWrapper(circleList, selectedCircle.color, selectedCircle.position, !selectedCircle.isSelected)
+        selectedCircle.isSelected = !selectedCircle.isSelected
     }
 
     fun setupCircles(newCircles: List<String>) {
@@ -94,18 +97,12 @@ class BuyListDetailViewModel(
         wrapperPurchasedItems.value = purchasedItems
     }
 
-    private fun updateCirclesWrapper(list: MutableList<CircleWrapper>, color: String, position: Int, isSelected: Boolean = false) {
-        list.removeAt(position)
-        list.add(position, CircleWrapper(color, position, isSelected))
-        wrapperCircles.value = list
-    }
-
     private fun checkSelectedCircles(list: MutableList<CircleWrapper>) {
         val iterator = list.iterator()
         while (iterator.hasNext()) {
             val circle = iterator.next()
             if (circle.isSelected) {
-                updateCirclesWrapper(list, circle.color, circle.position, false)
+                circle.isSelected = !circle.isSelected
                 break
             }
         }
