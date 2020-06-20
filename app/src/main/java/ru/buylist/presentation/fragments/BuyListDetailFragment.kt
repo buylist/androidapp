@@ -15,6 +15,7 @@ import ru.buylist.presentation.BaseFragment
 import ru.buylist.R
 import ru.buylist.presentation.adapters.BuyListDetailAdapter
 import ru.buylist.presentation.adapters.CirclesAdapter
+import ru.buylist.presentation.adapters.PurchasedItemsAdapter
 import ru.buylist.utils.InjectorUtils
 import ru.buylist.view_models.BuyListDetailViewModel
 
@@ -98,6 +99,9 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
     private fun setupAdapter() {
         val itemsAdapter = BuyListDetailAdapter(ArrayList(0), viewModel)
         recycler_items.apply { adapter = itemsAdapter }
+
+        val purchasedItemsAdapter = PurchasedItemsAdapter(ArrayList(0), viewModel)
+        recycler_purchased_items.apply { adapter = purchasedItemsAdapter }
 
         val circlesAdapter = CirclesAdapter(ArrayList(0), viewModel)
         recycler_circles.apply { adapter = circlesAdapter }
