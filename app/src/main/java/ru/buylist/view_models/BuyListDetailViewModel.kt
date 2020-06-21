@@ -42,8 +42,13 @@ class BuyListDetailViewModel(
         buyListRepository.updateBuyList(buyList)
     }
 
-    fun saveEditedData(wrapper: ItemWrapper, name: String) {
+    fun saveEditedData(wrapper: ItemWrapper, newName: String) {
         val list = getMutableWrapper(wrapper.item.isPurchased)
+        wrapper.item.name = newName
+        updateItemsWrapper(list, wrapper.item, wrapper.item.isPurchased, wrapper.globalPosition,
+                wrapper.localPosition, false)
+        buyList.items = JsonUtils.convertItemsToJson(items)
+        buyListRepository.updateBuyList(buyList)
         isEditable = false
     }
 
