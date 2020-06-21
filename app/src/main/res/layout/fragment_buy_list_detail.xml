@@ -172,7 +172,8 @@
                         android:layout_marginEnd="4dp"
                         android:src="@drawable/ic_arrow_left"
                         android:background="@android:color/transparent"
-                        android:contentDescription="@string/btn_prev_color_description" />
+                        android:contentDescription="@string/btn_prev_color_description"
+                        android:visibility="@{view_model.prevArrowIsShown ? View.VISIBLE : View.INVISIBLE}"/>
 
                     <ImageButton
                         android:id="@+id/btn_next_circles"
@@ -183,7 +184,8 @@
                         android:layout_marginStart="4dp"
                         android:src="@drawable/ic_arrow_right"
                         android:background="@android:color/transparent"
-                        android:contentDescription="@string/btn_next_color_description" />
+                        android:contentDescription="@string/btn_next_color_description"
+                        android:visibility="@{view_model.nextArrowIsShown ? View.INVISIBLE : View.VISIBLE}"/>
 
                 </RelativeLayout>
 

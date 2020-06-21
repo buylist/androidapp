@@ -16,6 +16,8 @@ class BuyListDetailViewModel(
 
     var listIsEmpty = ObservableBoolean(true)
     var fabIsShown = ObservableBoolean(true)
+    var prevArrowIsShown = ObservableBoolean(true)
+    var nextArrowIsShown = ObservableBoolean(true)
     var isEditable: Boolean = false
     var itemName = ObservableField("")
     private var colorPosition = -1
@@ -26,7 +28,7 @@ class BuyListDetailViewModel(
     var items = mutableListOf<Item>()
 
     var wrapperCircles = MutableLiveData<List<CircleWrapper>>().apply { value = emptyList() }
-    var circles = mutableListOf<String>()
+    private var circles = mutableListOf<String>()
 
     init {
         loadList()
@@ -93,6 +95,11 @@ class BuyListDetailViewModel(
         circles.clear()
         circles.addAll(newCircles)
         wrapperCircles.value = getWrapperCircles(newCircles)
+    }
+
+    fun showHideArrows(prev: Boolean, next: Boolean) {
+        prevArrowIsShown.set(prev)
+        nextArrowIsShown.set(next)
     }
 
     fun showHideFab(isShow: Boolean) {

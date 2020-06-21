@@ -6,6 +6,8 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.activity_fragment.*
@@ -105,6 +107,18 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
         }
     }
 
+    private fun isLastCircleVisible(circlesAdapter: CirclesAdapter): Boolean {
+        val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
+        val position = layoutManager.findLastVisibleItemPosition()
+        return (position >= circlesAdapter.itemCount - 1)
+    }
+
+    private fun isFirstCircleVisible(): Boolean {
+        val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
+        val position = layoutManager.findFirstVisibleItemPosition()
+        return position > 0
+    }
+
     private fun setupAdapter() {
         val itemsAdapter = BuyListDetailAdapter(ArrayList(0), viewModel)
         recycler_items.apply { adapter = itemsAdapter }
@@ -114,5 +128,12 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
 
         val circlesAdapter = CirclesAdapter(ArrayList(0), viewModel)
         recycler_circles.apply { adapter = circlesAdapter }
+
+        recycler_circles.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun  onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                viewModel.showHideArrows(isFirstCircleVisible(), isLastCircleVisible(circlesAdapter))
+            }
+        })
     }
 }
