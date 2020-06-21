@@ -33,7 +33,7 @@ class BuyListDetailViewModel(
     }
 
     fun saveNewItem() {
-        val item  = Item(name = itemName.get().toString(), category = getCategory())
+        val item = Item(name = itemName.get().toString(), category = getCategory())
         items.add(item)
         items.sortBy { it.category.color }
         updateUi()
@@ -42,8 +42,20 @@ class BuyListDetailViewModel(
         buyListRepository.updateBuyList(buyList)
     }
 
-    fun edit(itemWrapper: ItemWrapper) {
+    fun saveEditedData(wrapper: ItemWrapper, name: String) {
+        val list = getMutableWrapper(wrapper.item.isPurchased)
+        isEditable = false
+    }
 
+    fun edit(wrapper: ItemWrapper) {
+        val items = getMutableWrapper(false)
+        val purchasedItems = getMutableWrapper(true)
+        checkEditableField(items)
+        checkEditableField(purchasedItems)
+        val list = if (wrapper.item.isPurchased) purchasedItems else items
+        updateItemsWrapper(list, wrapper.item, wrapper.item.isPurchased,
+                wrapper.globalPosition, wrapper.localPosition, true)
+        isEditable = true
     }
 
     fun delete(wrapper: ItemWrapper) {
@@ -53,12 +65,8 @@ class BuyListDetailViewModel(
         updateUi()
     }
 
-    fun saveEditedData(itemWrapper: ItemWrapper, name: String) {
-
-    }
-
     fun onItemClick(wrapper: ItemWrapper) {
-        items[wrapper.position].isPurchased = !items[wrapper.position].isPurchased
+        items[wrapper.globalPosition].isPurchased = !items[wrapper.globalPosition].isPurchased
         buyList.items = JsonUtils.convertItemsToJson(items)
         buyListRepository.updateBuyList(buyList)
         updateUi()
@@ -97,6 +105,32 @@ class BuyListDetailViewModel(
         wrapperPurchasedItems.value = purchasedItems
     }
 
+    private fun updateItemsWrapper(list: MutableList<ItemWrapper>, item: Item, isPurchased: Boolean,
+                                   globalPosition: Int, localPosition: Int, isEditable: Boolean = false,
+                                   isSelected: Boolean = false) {
+        list.removeAt(localPosition)
+        list.add(localPosition, ItemWrapper(item, globalPosition, localPosition, isEditable, isSelected))
+        if (isPurchased) {
+            wrapperPurchasedItems.value = list
+        } else {
+            wrapperItems.value = list
+        }
+    }
+
+    private fun checkEditableField(list: MutableList<ItemWrapper>) {
+        if (isEditable) {
+            val iterator = list.iterator()
+            while (iterator.hasNext()) {
+                val item = iterator.next()
+                if (item.isEditable) {
+                    updateItemsWrapper(list, item.item, item.item.isPurchased, item.globalPosition,
+                            item.localPosition)
+                    break
+                }
+            }
+        }
+    }
+
     private fun checkSelectedCircles(list: MutableList<CircleWrapper>) {
         val iterator = list.iterator()
         while (iterator.hasNext()) {
@@ -106,6 +140,16 @@ class BuyListDetailViewModel(
                 break
             }
         }
+    }
+
+    private fun getMutableWrapper(isPurchased: Boolean): MutableList<ItemWrapper> {
+        val list = mutableListOf<ItemWrapper>()
+        if (isPurchased) {
+            wrapperPurchasedItems.value?.let { list.addAll(it) }
+        } else {
+            wrapperItems.value?.let { list.addAll(it) }
+        }
+        return list
     }
 
     private fun getWrapperCircles(list: List<String>): List<CircleWrapper> {
@@ -119,11 +163,12 @@ class BuyListDetailViewModel(
 
     private fun getWrapperItems(list: List<Item>, isPurchased: Boolean): List<ItemWrapper> {
         val newList = mutableListOf<ItemWrapper>()
+        var count = 0
         for ((i, item) in list.withIndex()) {
-            val itemWrapper = ItemWrapper(item, i)
-
             if (item.isPurchased == isPurchased) {
+                val itemWrapper = ItemWrapper(item, i, count)
                 newList.add(itemWrapper)
+                count++
             }
         }
         return newList
