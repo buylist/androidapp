@@ -41,7 +41,10 @@ class BuyListDetailAdapter(
                     menuInflater.inflate(R.menu.buy_list_item_menu, menu)
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
-                            R.id.edit -> viewModel.edit(itemWrapper)
+                            R.id.edit -> {
+                                viewModel.edit(itemWrapper)
+                                binding.fieldItemTitle.requestFocus()
+                            }
                             R.id.delete -> viewModel.delete(itemWrapper)
                         }
                         true
