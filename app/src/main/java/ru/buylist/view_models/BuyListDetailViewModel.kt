@@ -95,6 +95,10 @@ class BuyListDetailViewModel(
         wrapperCircles.value = getWrapperCircles(newCircles)
     }
 
+    fun showHideFab(isShow: Boolean) {
+        fabIsShown.set(isShow)
+    }
+
     private fun getCategory(): Category {
         return when {
             colorPosition < 0 -> Category()

@@ -10,9 +10,9 @@ import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_buy_list_detail.*
+import ru.buylist.R
 import ru.buylist.databinding.FragmentBuyListDetailBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.R
 import ru.buylist.presentation.adapters.BuyListDetailAdapter
 import ru.buylist.presentation.adapters.CirclesAdapter
 import ru.buylist.presentation.adapters.PurchasedItemsAdapter
@@ -46,6 +46,7 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
             field_name.requestFocus()
         }
         setupAdapter()
+        setupFabVisibility()
     }
 
     private fun expandNewItemLayout() {
@@ -95,6 +96,14 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
                 fadeMode = MaterialContainerTransform.FADE_MODE_IN
                 interpolator = FastOutSlowInInterpolator()
             }
+
+    private fun setupFabVisibility() {
+        var oldDy = 0
+        scroll_view.viewTreeObserver.addOnScrollChangedListener {
+            viewModel.showHideFab(oldDy >= scroll_view.scrollY)
+            oldDy = scroll_view.scrollY
+        }
+    }
 
     private fun setupAdapter() {
         val itemsAdapter = BuyListDetailAdapter(ArrayList(0), viewModel)
