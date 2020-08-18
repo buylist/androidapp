@@ -33,7 +33,7 @@ class BuyListDetailAdapter(
         val listener = object : BuyListDetailItemListener {
 
             override fun onItemClicked(itemWrapper: ItemWrapper) {
-                viewModel.onItemClick(itemWrapper)
+                viewModel.changePurchaseStatus(itemWrapper)
             }
 
             override fun onButtonMoreClick(itemWrapper: ItemWrapper) {

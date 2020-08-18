@@ -17,7 +17,6 @@ import ru.buylist.databinding.FragmentBuyListDetailBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.adapters.BuyListDetailAdapter
 import ru.buylist.presentation.adapters.CirclesAdapter
-import ru.buylist.presentation.adapters.PurchasedItemsAdapter
 import ru.buylist.utils.InjectorUtils
 import ru.buylist.view_models.BuyListDetailViewModel
 
@@ -48,7 +47,7 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
             field_name.requestFocus()
         }
         setupAdapter()
-        setupFabVisibility()
+        setupArrowListeners()
     }
 
     private fun expandNewItemLayout() {
@@ -99,11 +98,27 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
                 interpolator = FastOutSlowInInterpolator()
             }
 
-    private fun setupFabVisibility() {
-        var oldDy = 0
-        scroll_view.viewTreeObserver.addOnScrollChangedListener {
-            viewModel.showHideFab(oldDy >= scroll_view.scrollY)
-            oldDy = scroll_view.scrollY
+    private fun setupArrowListeners() {
+        val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
+        btn_prev_circles.setOnClickListener {
+            val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
+            if (firstVisiblePosition > 0) {
+                layoutManager.smoothScrollToPosition(
+                        recycler_circles, null, firstVisiblePosition - 1)
+            }
+        }
+
+        btn_next_circles.setOnClickListener {
+            recycler_circles.adapter?.itemCount?.let {
+                if (it <= 0) return@let
+
+                val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
+                if (lastVisiblePosition >= it) return@let
+
+                layoutManager.smoothScrollToPosition(
+                        recycler_circles, null, lastVisiblePosition + 1)
+            }
+
         }
     }
 
@@ -121,10 +136,7 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
 
     private fun setupAdapter() {
         val itemsAdapter = BuyListDetailAdapter(ArrayList(0), viewModel)
-        recycler_items.apply { adapter = itemsAdapter }
-
-        val purchasedItemsAdapter = PurchasedItemsAdapter(ArrayList(0), viewModel)
-        recycler_purchased_items.apply { adapter = purchasedItemsAdapter }
+        recycler_items.adapter = itemsAdapter
 
         val circlesAdapter = CirclesAdapter(ArrayList(0), viewModel)
         recycler_circles.apply { adapter = circlesAdapter }
@@ -136,4 +148,5 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
             }
         })
     }
+
 }

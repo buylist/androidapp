@@ -18,18 +18,15 @@ class BuyListDetailViewModel(
     var fabIsShown = ObservableBoolean(true)
     var prevArrowIsShown = ObservableBoolean(true)
     var nextArrowIsShown = ObservableBoolean(true)
-    var isEditable: Boolean = false
     var itemName = ObservableField("")
+
+    var isEditable: Boolean = false
     private var colorPosition = -1
     private lateinit var buyList: BuyList
-
+    val items = mutableListOf<Item>()
     val wrappedItems = MutableLiveData<List<ItemWrapper>>().apply { value = emptyList() }
-    var wrapperItems = MutableLiveData<List<ItemWrapper>>().apply { value = emptyList() }
-    var wrapperPurchasedItems = MutableLiveData<List<ItemWrapper>>().apply { value = emptyList() }
-    var items = mutableListOf<Item>()
-
-    var wrapperCircles = MutableLiveData<List<CircleWrapper>>().apply { value = emptyList() }
-    private var circles = mutableListOf<String>()
+    val wrapperCircles = MutableLiveData<List<CircleWrapper>>().apply { value = emptyList() }
+    private val circles = mutableListOf<String>()
 
     init {
         loadList()
@@ -38,7 +35,7 @@ class BuyListDetailViewModel(
     fun saveNewItem() {
         val item = Item(name = itemName.get().toString(), category = getCategory())
         items.add(item)
-        items.sortBy { it.category.color }
+        items.sortWith(compareBy({ it.isPurchased }, { it.category.color }, { it.id }))
         updateUi()
         itemName.set("")
         buyList.items = JsonUtils.convertItemsToJson(items)
@@ -46,35 +43,35 @@ class BuyListDetailViewModel(
     }
 
     fun saveEditedData(wrapper: ItemWrapper, newName: String) {
-        val list = getMutableWrapper(wrapper.item.isPurchased)
+        val list = extractDataFromWrappedItems()
         wrapper.item.name = newName
-        updateItemsWrapper(list, wrapper.item, wrapper.item.isPurchased, wrapper.globalPosition,
-                wrapper.localPosition, false)
+        items[wrapper.position].name = newName
+
+        updateWrappedItems(list, wrapper, false)
         buyList.items = JsonUtils.convertItemsToJson(items)
         buyListRepository.updateBuyList(buyList)
         isEditable = false
     }
 
     fun edit(wrapper: ItemWrapper) {
-        val items = getMutableWrapper(false)
-        val purchasedItems = getMutableWrapper(true)
+        val items = extractDataFromWrappedItems()
         checkEditableField(items)
-        checkEditableField(purchasedItems)
-        val list = if (wrapper.item.isPurchased) purchasedItems else items
-        updateItemsWrapper(list, wrapper.item, wrapper.item.isPurchased,
-                wrapper.globalPosition, wrapper.localPosition, true)
+        updateWrappedItems(items, wrapper, true)
         isEditable = true
     }
 
     fun delete(wrapper: ItemWrapper) {
+        // TODO: добавить возможность отмены удаления
+
         items.remove(wrapper.item)
         buyList.items = JsonUtils.convertItemsToJson(items)
         buyListRepository.updateBuyList(buyList)
         updateUi()
     }
 
-    fun onItemClick(wrapper: ItemWrapper) {
-        items[wrapper.globalPosition].isPurchased = !items[wrapper.globalPosition].isPurchased
+    fun changePurchaseStatus(wrapper: ItemWrapper) {
+        items[wrapper.position].isPurchased = !items[wrapper.position].isPurchased
+        items.sortWith(compareBy({ it.isPurchased }, { it.category.color }, { it.id }))
         buyList.items = JsonUtils.convertItemsToJson(items)
         buyListRepository.updateBuyList(buyList)
         updateUi()
@@ -95,7 +92,7 @@ class BuyListDetailViewModel(
     fun setupCircles(newCircles: List<String>) {
         circles.clear()
         circles.addAll(newCircles)
-        wrapperCircles.value = getWrapperCircles(newCircles)
+        wrapperCircles.value = getWrappedCircles(newCircles)
     }
 
     fun showHideArrows(prev: Boolean, next: Boolean) {
@@ -119,16 +116,12 @@ class BuyListDetailViewModel(
         listIsEmpty.set(items.isEmpty())
     }
 
-    private fun updateItemsWrapper(list: MutableList<ItemWrapper>, item: Item, isPurchased: Boolean,
-                                   globalPosition: Int, localPosition: Int, isEditable: Boolean = false,
-                                   isSelected: Boolean = false) {
-        list.removeAt(localPosition)
-        list.add(localPosition, ItemWrapper(item, globalPosition, localPosition, isEditable, isSelected))
-        if (isPurchased) {
-            wrapperPurchasedItems.value = list
-        } else {
-            wrapperItems.value = list
-        }
+    private fun updateWrappedItems(list: MutableList<ItemWrapper>, wrapper: ItemWrapper,
+                                   isEditable: Boolean = false, isSelected: Boolean = false) {
+        val newWrapper = wrapper.copy(isEditable = isEditable, isSelected = isSelected)
+        list.removeAt(wrapper.position)
+        list.add(wrapper.position, newWrapper)
+        wrappedItems.value = list
     }
 
     private fun checkEditableField(list: MutableList<ItemWrapper>) {
@@ -137,8 +130,7 @@ class BuyListDetailViewModel(
             while (iterator.hasNext()) {
                 val item = iterator.next()
                 if (item.isEditable) {
-                    updateItemsWrapper(list, item.item, item.item.isPurchased, item.globalPosition,
-                            item.localPosition)
+                    updateWrappedItems(list, item)
                     break
                 }
             }
@@ -156,17 +148,13 @@ class BuyListDetailViewModel(
         }
     }
 
-    private fun getMutableWrapper(isPurchased: Boolean): MutableList<ItemWrapper> {
+    private fun extractDataFromWrappedItems(): MutableList<ItemWrapper> {
         val list = mutableListOf<ItemWrapper>()
-        if (isPurchased) {
-            wrapperPurchasedItems.value?.let { list.addAll(it) }
-        } else {
-            wrapperItems.value?.let { list.addAll(it) }
-        }
+        wrappedItems.value?.let { list.addAll(it) }
         return list
     }
 
-    private fun getWrapperCircles(list: List<String>): List<CircleWrapper> {
+    private fun getWrappedCircles(list: List<String>): List<CircleWrapper> {
         val newList = mutableListOf<CircleWrapper>()
         for ((i, circle) in list.withIndex()) {
             val circleWrapper = CircleWrapper(circle, i)
@@ -178,10 +166,10 @@ class BuyListDetailViewModel(
     private fun getWrappedItems(list: List<Item>): List<ItemWrapper> {
         val newList = mutableListOf<ItemWrapper>()
         for ((i, item) in list.withIndex()) {
-            val wrappedItem = ItemWrapper(item.copy(), i, i)
+            val wrappedItem = ItemWrapper(item.copy(), i)
             newList.add(wrappedItem)
         }
-        return newList.sortedBy { it.item.isPurchased }
+        return newList
     }
 
     private fun loadList() {
@@ -195,7 +183,6 @@ class BuyListDetailViewModel(
             }
 
             override fun onDataNotAvailable() {
-                wrappedItems.value = emptyList()
                 listIsEmpty.set(true)
             }
         })
