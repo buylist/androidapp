@@ -7,24 +7,24 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import ru.buylist.R
 import ru.buylist.data.entity.ItemWrapper
 import ru.buylist.databinding.ItemBuyListDetailBinding
+import ru.buylist.old.buy_list.CategoryInfo
 import ru.buylist.view_models.BuyListDetailViewModel
 
 class BuyListDetailAdapter(
-        list: List<ItemWrapper>,
+        wrappedItems: List<ItemWrapper>,
         private val viewModel: BuyListDetailViewModel
-) : ListAdapter<ItemWrapper, BuyListDetailAdapter.BuyListDetailHolder>(BuyListDetailDiffCallback()) {
+) : ListAdapter<ItemWrapper, GenericViewHolder>(BuyListDetailDiffCallback()) {
 
-    var list: List<ItemWrapper> = list
-        set(list) {
-            field = list
-            submitList(list)
+    var wrappedItems: List<ItemWrapper> = wrappedItems
+        set(wrappedItems) {
+            field = wrappedItems
+            submitList(wrappedItems)
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BuyListDetailHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val binding: ItemBuyListDetailBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 R.layout.item_buy_list_detail,
@@ -60,21 +60,50 @@ class BuyListDetailAdapter(
         }
 
         binding.callback = listener
-        return BuyListDetailHolder(binding)
+
+        return when(viewType) {
+            ITEMS -> ItemsHolder(binding)
+
+            // PURCHASED_ITEMS
+            else -> PurchasedItemsHolder(binding)
+        }
     }
 
-    override fun onBindViewHolder(holder: BuyListDetailHolder, position: Int) {
-        val buyList = getItem(position)
-        holder.bind(buyList)
+    override fun onBindViewHolder(holder: GenericViewHolder, position: Int) {
+        holder.bind(position)
     }
 
-    class BuyListDetailHolder(private val binding: ItemBuyListDetailBinding) : RecyclerView.ViewHolder(binding.root) {
+    override fun getItemViewType(position: Int): Int {
+        return if (wrappedItems[position].item.isPurchased) PURCHASED_ITEMS
+        else ITEMS
+    }
 
-        fun bind(itemWrapper: ItemWrapper) {
-            binding.item = itemWrapper
-            binding.imgCategoryCircle.setColorFilter(Color.parseColor(itemWrapper.item.category.color))
+
+    private inner class ItemsHolder(private val binding: ItemBuyListDetailBinding) : GenericViewHolder(binding.root) {
+
+        override fun bind(position: Int) {
+            binding.item = wrappedItems[position]
+            binding.imgCategoryCircle.setColorFilter(Color.parseColor(wrappedItems[position].item.category.color))
             binding.executePendingBindings()
         }
+
+    }
+
+    private inner class PurchasedItemsHolder(private val binding: ItemBuyListDetailBinding) : GenericViewHolder(binding.root) {
+
+        override fun bind(position: Int) {
+            binding.item = wrappedItems[position]
+            binding.card.setBackgroundColor(0)
+            binding.imgCategoryCircle.setColorFilter(Color.parseColor(CategoryInfo.COLOR))
+            binding.executePendingBindings()
+        }
+
+    }
+
+
+    companion object {
+        const val ITEMS = 1
+        const val PURCHASED_ITEMS = 2
     }
 }
 

@@ -23,6 +23,7 @@ class BuyListDetailViewModel(
     private var colorPosition = -1
     private lateinit var buyList: BuyList
 
+    val wrappedItems = MutableLiveData<List<ItemWrapper>>().apply { value = emptyList() }
     var wrapperItems = MutableLiveData<List<ItemWrapper>>().apply { value = emptyList() }
     var wrapperPurchasedItems = MutableLiveData<List<ItemWrapper>>().apply { value = emptyList() }
     var items = mutableListOf<Item>()
@@ -114,11 +115,8 @@ class BuyListDetailViewModel(
     }
 
     private fun updateUi() {
-        val itemsToBuy = getWrapperItems(items, false)
-        val purchasedItems = getWrapperItems(items, true)
+        wrappedItems.value = getWrappedItems(items)
         listIsEmpty.set(items.isEmpty())
-        wrapperItems.value = itemsToBuy
-        wrapperPurchasedItems.value = purchasedItems
     }
 
     private fun updateItemsWrapper(list: MutableList<ItemWrapper>, item: Item, isPurchased: Boolean,
@@ -177,17 +175,13 @@ class BuyListDetailViewModel(
         return newList
     }
 
-    private fun getWrapperItems(list: List<Item>, isPurchased: Boolean): List<ItemWrapper> {
+    private fun getWrappedItems(list: List<Item>): List<ItemWrapper> {
         val newList = mutableListOf<ItemWrapper>()
-        var count = 0
         for ((i, item) in list.withIndex()) {
-            if (item.isPurchased == isPurchased) {
-                val itemWrapper = ItemWrapper(item, i, count)
-                newList.add(itemWrapper)
-                count++
-            }
+            val wrappedItem = ItemWrapper(item.copy(), i, i)
+            newList.add(wrappedItem)
         }
-        return newList
+        return newList.sortedBy { it.item.isPurchased }
     }
 
     private fun loadList() {
@@ -195,17 +189,15 @@ class BuyListDetailViewModel(
             override fun onBuyListLoaded(buyList: BuyList) {
                 items.clear()
                 items.addAll(JsonUtils.convertItemsFromJson(buyList.items))
-                wrapperItems.value = getWrapperItems(items, false)
-                wrapperPurchasedItems.value = getWrapperItems(items, true)
+                wrappedItems.value = getWrappedItems(items)
                 listIsEmpty.set(items.isEmpty())
                 this@BuyListDetailViewModel.buyList = buyList
             }
 
             override fun onDataNotAvailable() {
-                wrapperItems.value = emptyList()
+                wrappedItems.value = emptyList()
                 listIsEmpty.set(true)
             }
-
         })
     }
 

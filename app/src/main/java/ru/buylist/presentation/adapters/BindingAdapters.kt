@@ -29,16 +29,10 @@ object BindingAdapters {
     }
 
     @BindingAdapter("app:items")
-    @JvmStatic fun setItems(recycler: RecyclerView, items: List<ItemWrapper>) {
+    @JvmStatic fun setItems(recycler: RecyclerView,
+                            items: List<ItemWrapper>) {
         with(recycler.adapter as BuyListDetailAdapter) {
-            list = items
-        }
-    }
-
-    @BindingAdapter("app:purchasedItems")
-    @JvmStatic fun setPurchasedItems(recycler: RecyclerView, items: List<ItemWrapper>) {
-        with(recycler.adapter as PurchasedItemsAdapter) {
-            list = items
+            wrappedItems = items
         }
     }
 

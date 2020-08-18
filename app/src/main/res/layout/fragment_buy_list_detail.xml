@@ -45,34 +45,20 @@
                     android:drawableTop="@drawable/ic_list"
                     android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}" />
 
-                <androidx.core.widget.NestedScrollView
-                    android:id="@+id/scroll_view"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scrollbars="vertical">
+                    android:orientation="vertical">
 
-                    <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_items"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:scrollbars="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:items="@{view_model.wrappedItems}" />
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_items"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:items="@{view_model.wrapperItems}"
-                            android:overScrollMode="never" />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_purchased_items"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:purchasedItems="@{view_model.wrapperPurchasedItems}"
-                            android:overScrollMode="never" />
-                    </LinearLayout>
-                </androidx.core.widget.NestedScrollView>
+                </LinearLayout>
             </FrameLayout>
 
             <androidx.cardview.widget.CardView
@@ -173,7 +159,7 @@
                         android:src="@drawable/ic_arrow_left"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_prev_color_description"
-                        android:visibility="@{view_model.prevArrowIsShown ? View.VISIBLE : View.INVISIBLE}"/>
+                        android:visibility="@{view_model.prevArrowIsShown ? View.VISIBLE : View.INVISIBLE}" />
 
                     <ImageButton
                         android:id="@+id/btn_next_circles"
@@ -185,7 +171,7 @@
                         android:src="@drawable/ic_arrow_right"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_next_color_description"
-                        android:visibility="@{view_model.nextArrowIsShown ? View.INVISIBLE : View.VISIBLE}"/>
+                        android:visibility="@{view_model.nextArrowIsShown ? View.INVISIBLE : View.VISIBLE}" />
 
                 </RelativeLayout>
 
