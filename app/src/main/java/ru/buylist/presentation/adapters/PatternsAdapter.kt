@@ -1,21 +1,24 @@
 package ru.buylist.presentation.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_pattern.view.*
 import ru.buylist.R
 import ru.buylist.data.entity.Pattern
 import ru.buylist.databinding.ItemPatternBinding
-import ru.buylist.view_models.PatternViewModel
+import ru.buylist.presentation.fragments.PatternsFragmentDirections
+import ru.buylist.view_models.PatternsViewModel
 
-class PatternAdapter(
+class PatternsAdapter(
         list: List<Pattern>,
-        private val viewModel: PatternViewModel
-) : RecyclerView.Adapter<PatternAdapter.PatternHolder>() {
+        private val viewModel: PatternsViewModel
+) : RecyclerView.Adapter<PatternsAdapter.PatternHolder>() {
 
     var list: List<Pattern> = list
         set(list) {
@@ -31,7 +34,7 @@ class PatternAdapter(
 
         val listener = object : PatternItemListener {
             override fun onPatternClicked(pattern: Pattern) {
-                Toast.makeText(parent.context, pattern.title, Toast.LENGTH_SHORT).show()
+                showDetail(pattern.id, binding.root)
             }
 
             override fun onButtonMoreClick(pattern: Pattern) {
@@ -60,6 +63,11 @@ class PatternAdapter(
     override fun onBindViewHolder(holder: PatternHolder, position: Int) {
         val pattern = list[position]
         holder.bind(pattern)
+    }
+
+    private fun showDetail(patterId: Long, view: View) {
+        val direction = PatternsFragmentDirections.actionPatternsFragmentToPatternDetailFragment(patterId)
+        view.findNavController().navigate(direction)
     }
 
 

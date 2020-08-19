@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import ru.buylist.data.entity.Pattern
 import ru.buylist.data.repositories.pattern.PatternsDataSource
 
-class PatternViewModel(private val repository: PatternsDataSource) : ViewModel() {
+class PatternsViewModel(private val repository: PatternsDataSource) : ViewModel() {
 
     var listIsEmpty = ObservableBoolean(true)
     var patternTitle = ObservableField("")

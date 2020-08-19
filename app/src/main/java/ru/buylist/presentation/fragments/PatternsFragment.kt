@@ -5,23 +5,23 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import kotlinx.android.synthetic.main.activity_fragment.*
-import kotlinx.android.synthetic.main.fragment_pattern_list.*
+import kotlinx.android.synthetic.main.fragment_patterns.*
 import ru.buylist.R
-import ru.buylist.databinding.FragmentPatternListBinding
+import ru.buylist.databinding.FragmentPatternsBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.presentation.adapters.PatternAdapter
+import ru.buylist.presentation.adapters.PatternsAdapter
 import ru.buylist.utils.InjectorUtils
-import ru.buylist.view_models.PatternViewModel
+import ru.buylist.view_models.PatternsViewModel
 
-class PatternsFragment : BaseFragment<FragmentPatternListBinding>() {
+class PatternsFragment : BaseFragment<FragmentPatternsBinding>() {
 
-    private val viewModel: PatternViewModel by viewModels {
+    private val viewModel: PatternsViewModel by viewModels {
         InjectorUtils.providePatternViewModelFactory()
     }
 
-    override val layoutResId: Int = R.layout.fragment_pattern_list
+    override val layoutResId: Int = R.layout.fragment_patterns
 
-    override fun setupBindings(binding: FragmentPatternListBinding) {
+    override fun setupBindings(binding: FragmentPatternsBinding) {
         binding.viewModel = viewModel
     }
 
@@ -41,7 +41,7 @@ class PatternsFragment : BaseFragment<FragmentPatternListBinding>() {
     }
 
     private fun setupAdapter() {
-        val patternAdapter = PatternAdapter(ArrayList(0), viewModel)
+        val patternAdapter = PatternsAdapter(ArrayList(0), viewModel)
         recycler.apply { adapter = patternAdapter }
     }
 

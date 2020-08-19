@@ -10,31 +10,39 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialContainerTransform
-import kotlinx.android.synthetic.main.activity_fragment.*
-import kotlinx.android.synthetic.main.fragment_buy_list_detail.*
+import kotlinx.android.synthetic.main.fragment_pattern_detail.*
+import kotlinx.android.synthetic.main.fragment_pattern_detail.btn_create
+import kotlinx.android.synthetic.main.fragment_pattern_detail.btn_next_circles
+import kotlinx.android.synthetic.main.fragment_pattern_detail.btn_prev_circles
+import kotlinx.android.synthetic.main.fragment_pattern_detail.coordinator_layout
+import kotlinx.android.synthetic.main.fragment_pattern_detail.fab_add
+import kotlinx.android.synthetic.main.fragment_pattern_detail.layout_new_item
+import kotlinx.android.synthetic.main.fragment_pattern_detail.recycler_circles
+import kotlinx.android.synthetic.main.fragment_pattern_detail.recycler_items
+import kotlinx.android.synthetic.main.fragment_pattern_detail.shadow_view
 import ru.buylist.R
 import ru.buylist.data.entity.CircleWrapper
-import ru.buylist.databinding.FragmentBuyListDetailBinding
+import ru.buylist.databinding.FragmentPatternDetailBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.presentation.adapters.BuyListDetailAdapter
 import ru.buylist.presentation.adapters.CircleItemClickListener
 import ru.buylist.presentation.adapters.CirclesAdapter
+import ru.buylist.presentation.adapters.PatternDetailAdapter
 import ru.buylist.utils.InjectorUtils
-import ru.buylist.view_models.BuyListDetailViewModel
+import ru.buylist.view_models.PatternDetailViewModel
 
-class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
+class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
 
-    private val args: BuyListDetailFragmentArgs by navArgs()
+    private val args: PatternDetailFragmentArgs by navArgs()
 
-    private val viewModel: BuyListDetailViewModel by viewModels {
-        InjectorUtils.provideBuyListDetailViewModelFactory(args.buyListId)
+    private val viewModel: PatternDetailViewModel by viewModels {
+        InjectorUtils.providePatternDetailViewModelFactory(args.patternId)
     }
 
-    override val layoutResId: Int = R.layout.fragment_buy_list_detail
+    override val layoutResId: Int = ru.buylist.R.layout.fragment_pattern_detail
 
     private lateinit var circlesAdapter: CirclesAdapter
 
-    override fun setupBindings(binding: FragmentBuyListDetailBinding) {
+    override fun setupBindings(binding: FragmentPatternDetailBinding) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
     }
@@ -45,8 +53,7 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
         viewModel.setupCircles(resources.getStringArray(R.array.category_color).toList())
         fab_add.setOnClickListener { expandFab() }
         shadow_view.setOnClickListener { minimizeFab() }
-        btn_new_item.setOnClickListener { expandNewItemLayout() }
-        btn_create.setOnClickListener {
+        btn_create.setOnClickListener{
             viewModel.saveNewItem()
             field_name.requestFocus()
         }
@@ -54,41 +61,27 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
         setupArrowListeners()
     }
 
-    private fun expandNewItemLayout() {
+    private fun expandFab() {
         val transition = buildContainerTransform().apply {
-            startView = btn_new_item
+            startView = fab_add
             endView = layout_new_item
             addTarget(layout_new_item)
         }
 
         TransitionManager.beginDelayedTransition(requireActivity().findViewById(android.R.id.content), transition)
-        fab_menu.visibility = View.GONE
-        requireActivity().nav_bottom.visibility = View.GONE
         layout_new_item.visibility = View.VISIBLE
-        field_name.requestFocus()
-    }
-
-    private fun expandFab() {
-        val transition = buildContainerTransform().apply {
-            startView = fab_add
-            endView = fab_menu
-            addTarget(fab_menu)
-        }
-
-        TransitionManager.beginDelayedTransition(requireActivity().findViewById(android.R.id.content), transition)
-        fab_menu.visibility = View.VISIBLE
         shadow_view.visibility = View.VISIBLE
         fab_add.visibility = View.GONE
     }
 
     private fun minimizeFab() {
         val transition = buildContainerTransform().apply {
-            startView = fab_menu
+            startView = layout_new_item
             endView = fab_add
             addTarget(fab_add)
         }
         TransitionManager.beginDelayedTransition(coordinator_layout, transition)
-        fab_menu.visibility = View.GONE
+        layout_new_item.visibility = View.GONE
         shadow_view.visibility = View.GONE
         layout_new_item.visibility = View.GONE
         fab_add.visibility = View.VISIBLE
@@ -126,6 +119,28 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
         }
     }
 
+    private fun setupAdapter() {
+        val itemsAdapter = PatternDetailAdapter(emptyList(), viewModel)
+        recycler_items.adapter = itemsAdapter
+
+        recycler_items.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                viewModel.showHideFab(dy)
+            }
+        })
+
+        circlesAdapter = CirclesAdapter(emptyList(), callback)
+        recycler_circles.apply { adapter = circlesAdapter }
+
+        recycler_circles.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun  onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                viewModel.showHideArrows(isFirstCircleVisible(), isLastCircleVisible(circlesAdapter))
+            }
+        })
+    }
+
     private fun isLastCircleVisible(circlesAdapter: CirclesAdapter): Boolean {
         val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
         val position = layoutManager.findLastVisibleItemPosition()
@@ -138,29 +153,7 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
         return position > 0
     }
 
-    private fun setupAdapter() {
-        val itemsAdapter = BuyListDetailAdapter(ArrayList(0), viewModel)
-        recycler_items.adapter = itemsAdapter
-
-        recycler_items.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                viewModel.showHideFab(dy)
-            }
-        })
-
-        circlesAdapter = CirclesAdapter(ArrayList(0), circlesCallback)
-        recycler_circles.apply { adapter = circlesAdapter }
-
-        recycler_circles.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun  onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                viewModel.showHideArrows(isFirstCircleVisible(), isLastCircleVisible(circlesAdapter))
-            }
-        })
-    }
-
-    private val circlesCallback = object : CircleItemClickListener {
+    private val callback = object : CircleItemClickListener {
         override fun onCircleClick(circleWrapper: CircleWrapper) {
             viewModel.updateCircle(circleWrapper)
             circlesAdapter.updateCircles(viewModel.getCurrentColorPosition(), circleWrapper.position)
@@ -168,6 +161,4 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
         }
 
     }
-
-
 }

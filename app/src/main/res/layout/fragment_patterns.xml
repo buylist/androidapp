@@ -8,7 +8,7 @@
 
         <variable
             name="view_model"
-            type="ru.buylist.view_models.PatternViewModel" />
+            type="ru.buylist.view_models.PatternsViewModel" />
 
     </data>
 

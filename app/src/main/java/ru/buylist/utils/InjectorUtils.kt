@@ -9,10 +9,7 @@ import ru.buylist.data.repositories.pattern.PatternsDataSource
 import ru.buylist.data.repositories.pattern.PatternsRepository
 import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.data.repositories.recipe.RecipesRepository
-import ru.buylist.view_models.factories.BuyListDetailViewModelFactory
-import ru.buylist.view_models.factories.BuyListViewModelFactory
-import ru.buylist.view_models.factories.PatternViewModelFactory
-import ru.buylist.view_models.factories.RecipeViewModelFactory
+import ru.buylist.view_models.factories.*
 
 object InjectorUtils {
 
@@ -22,13 +19,16 @@ object InjectorUtils {
             BuyListViewModelFactory(getBuyListsRepository())
 
     fun providePatternViewModelFactory() =
-            PatternViewModelFactory(getPatternsRepository())
+            PatternsViewModelFactory(getPatternsRepository())
 
     fun provideRecipeViewModelFactory() =
             RecipeViewModelFactory(getRecipesRepository())
 
     fun provideBuyListDetailViewModelFactory(buyListId: Long) =
             BuyListDetailViewModelFactory(getBuyListsRepository(), getGlobalItemsRepository(), buyListId)
+
+    fun providePatternDetailViewModelFactory(patternId: Long) =
+            PatternDetailViewModelFactory(getPatternsRepository(), getGlobalItemsRepository(), patternId)
 
     private fun getBuyListsRepository(): BuyListsDataSource {
         return BuyListsRepository.getInstance(

@@ -19,7 +19,7 @@
             app:destination="@id/buy_list_detail_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/pattern_fragment"
+        android:id="@+id/patterns_fragment"
         android:name="ru.buylist.presentation.fragments.PatternsFragment"
         android:label="Patterns" >
         <action
@@ -28,9 +28,12 @@
         <action
             android:id="@+id/action_pattern_fragment_to_about_fragment"
             app:destination="@id/about_fragment" />
+        <action
+            android:id="@+id/action_patterns_fragment_to_pattern_detail_fragment"
+            app:destination="@id/pattern_detail_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/recipe_fragment"
+        android:id="@+id/recipes_fragment"
         android:name="ru.buylist.presentation.fragments.RecipesFragment"
         android:label="Recipes" >
         <action
@@ -54,6 +57,14 @@
         android:label="BuyListDetail" >
         <argument
             android:name="buy_list_id"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/pattern_detail_fragment"
+        android:name="ru.buylist.presentation.fragments.PatternDetailFragment"
+        android:label="PatternDetail" >
+        <argument
+            android:name="pattern_id"
             app:argType="long" />
     </fragment>
 </navigation>

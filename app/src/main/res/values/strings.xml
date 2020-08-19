@@ -89,6 +89,7 @@
     <string name="tv_recipe_list_info">Список рецептов пуст</string>
     <string name="tv_buylist_detail_info">Список покупок пуст</string>
     <string name="btn_new_item_text">Новый товар</string>
+    <string name="tv_pattern_detail_info">Шаблон пуст</string>
 
 
     <string-array name="category">
