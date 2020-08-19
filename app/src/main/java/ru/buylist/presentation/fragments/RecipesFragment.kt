@@ -5,23 +5,23 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import kotlinx.android.synthetic.main.activity_fragment.*
-import kotlinx.android.synthetic.main.fragment_pattern_list.*
+import kotlinx.android.synthetic.main.fragment_recipe_list.*
 import ru.buylist.R
-import ru.buylist.databinding.FragmentPatternListBinding
+import ru.buylist.databinding.FragmentRecipeListBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.presentation.adapters.PatternAdapter
+import ru.buylist.presentation.adapters.RecipeAdapter
 import ru.buylist.utils.InjectorUtils
-import ru.buylist.view_models.PatternViewModel
+import ru.buylist.view_models.RecipeViewModel
 
-class PatternFragment : BaseFragment<FragmentPatternListBinding>() {
+class RecipesFragment : BaseFragment<FragmentRecipeListBinding>() {
 
-    private val viewModel: PatternViewModel by viewModels {
-        InjectorUtils.providePatternViewModelFactory()
+    private val viewModel: RecipeViewModel by viewModels {
+        InjectorUtils.provideRecipeViewModelFactory()
     }
 
-    override val layoutResId: Int = R.layout.fragment_pattern_list
+    override val layoutResId: Int = R.layout.fragment_recipe_list
 
-    override fun setupBindings(binding: FragmentPatternListBinding) {
+    override fun setupBindings(binding: FragmentRecipeListBinding) {
         binding.viewModel = viewModel
     }
 
@@ -41,8 +41,8 @@ class PatternFragment : BaseFragment<FragmentPatternListBinding>() {
     }
 
     private fun setupAdapter() {
-        val patternAdapter = PatternAdapter(ArrayList(0), viewModel)
-        recycler.apply { adapter = patternAdapter }
+        val recipeAdapter = RecipeAdapter(ArrayList(0), viewModel)
+        recycler.apply { adapter = recipeAdapter }
     }
 
     private fun setupListenersToButtonsCreate() {
@@ -75,5 +75,4 @@ class PatternFragment : BaseFragment<FragmentPatternListBinding>() {
         requireActivity().nav_bottom.visibility = View.VISIBLE
         shadow_view.visibility = View.GONE
     }
-
 }
