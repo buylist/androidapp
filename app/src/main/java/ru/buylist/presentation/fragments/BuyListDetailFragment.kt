@@ -138,6 +138,13 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
         val itemsAdapter = BuyListDetailAdapter(ArrayList(0), viewModel)
         recycler_items.adapter = itemsAdapter
 
+        recycler_items.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                viewModel.showHideFab(dy)
+            }
+        })
+
         val circlesAdapter = CirclesAdapter(ArrayList(0), viewModel)
         recycler_circles.apply { adapter = circlesAdapter }
 

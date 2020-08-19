@@ -100,8 +100,8 @@ class BuyListDetailViewModel(
         nextArrowIsShown.set(next)
     }
 
-    fun showHideFab(isShow: Boolean) {
-        fabIsShown.set(isShow)
+    fun showHideFab(dy: Int) {
+        fabIsShown.set(dy <= 0)
     }
 
     private fun getCategory(): Category {
