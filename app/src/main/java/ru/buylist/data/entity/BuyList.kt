@@ -8,4 +8,7 @@ data class BuyList(
         @PrimaryKey var id: Long = System.currentTimeMillis(),
         var title: String = "",
         var items: String = ""
-)
+) {
+    val titleIsEmpty
+        get() = title.isEmpty()
+}

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="ru.buylist.data.entity.BuyListWrapper" />
+
+        <variable
+            name="callback"
+            type="ru.buylist.presentation.adapters.BuyListItemListener" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="70dp"
+        android:layout_marginStart="@dimen/default_layout_margin"
+        android:layout_marginEnd="@dimen/default_layout_margin"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_buy_list_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/btn_more"
+                android:layout_marginStart="8dp"
+                android:background="@android:color/transparent"
+                android:textSize="24sp"
+                android:text="@{item.buyList.title}"
+                android:onClick="@{()-> callback.onBuyListClicked(item)}"
+                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}"/>
+
+            <EditText
+                android:id="@+id/field_buy_list_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/btn_save"
+                android:layout_marginStart="8dp"
+                android:background="@android:color/transparent"
+                android:inputType="text"
+                android:textSize="24sp"
+                android:imeOptions="actionDone"
+                android:text="@{item.buyList.title}"
+                android:visibility="@{item.editable ? View.VISIBLE : View.GONE}"/>
+
+            <ImageView
+                android:id="@+id/btn_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_more"
+                app:tint="@color/colorNavNormal"
+                android:onClick="@{()-> callback.onButtonMoreClick(item)}"
+                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}" />
+
+            <ImageView
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/button_create"
+                android:onClick="@{()-> callback.onButtonSaveClick(item)}"
+                android:visibility="@{item.editable ? View.VISIBLE : View.GONE}" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

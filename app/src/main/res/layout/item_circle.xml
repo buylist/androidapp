@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="circle"
+            type="ru.buylist.data.entity.CircleWrapper" />
+
+        <variable
+            name="callback"
+            type="ru.buylist.presentation.adapters.CircleItemClickListener" />
+
+    </data>
+    <ImageView android:id="@+id/circle"
+        android:layout_width="@dimen/img_category_circle_big"
+        android:layout_height="@dimen/img_category_circle_big"
+        android:layout_margin="@dimen/small_layout_margin"
+        android:contentDescription="@string/category_marker_description"
+        android:src="@{circle.selected ? @drawable/circle_empty : @drawable/circle}"
+        android:onClick="@{() -> callback.onCircleClick(circle)}"/>
+</layout>

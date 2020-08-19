@@ -1,19 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-
-        <import type="android.view.View" />
-
-        <variable
-            name="view_model"
-            type="ru.buylist.view_models.PageViewModel" />
-
-<!--        <variable-->
-<!--            name="callback"-->
-<!--            type="" />-->
-    </data>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -21,19 +7,11 @@
 
         <TextView
             android:id="@+id/tv_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tv_page_info"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:textSize="30sp"
-            android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:visibility="@{view_model.listIsEmpty ? View.GONE : View.VISIBLE}"/>
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:textSize="30sp" />
 
     </FrameLayout>
+
 </layout>

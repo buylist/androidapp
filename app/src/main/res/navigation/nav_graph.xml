@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/lists_fragment">
+    app:startDestination="@id/buy_list_fragment">
     <fragment
-        android:id="@+id/lists_fragment"
-        android:name="ru.buylist.presentation.fragments.ListsFragment"
+        android:id="@+id/buy_list_fragment"
+        android:name="ru.buylist.presentation.fragments.BuyListsFragment"
         android:label="BuyLists" >
         <action
             android:id="@+id/action_lists_fragment_to_settings_fragment"
@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_lists_fragment_to_about_fragment"
             app:destination="@id/about_fragment" />
+        <action
+            android:id="@+id/action_buy_list_fragment_to_buy_list_detail_fragment"
+            app:destination="@id/buy_list_detail_fragment" />
     </fragment>
     <fragment
         android:id="@+id/pattern_fragment"
@@ -45,4 +48,12 @@
         android:id="@+id/about_fragment"
         android:name="ru.buylist.presentation.fragments.AboutFragment"
         android:label="About" />
+    <fragment
+        android:id="@+id/buy_list_detail_fragment"
+        android:name="ru.buylist.presentation.fragments.BuyListDetailFragment"
+        android:label="BuyListDetail" >
+        <argument
+            android:name="buy_list_id"
+            app:argType="long" />
+    </fragment>
 </navigation>
