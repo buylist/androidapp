@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/pattern_fragment"
-        android:name="ru.buylist.presentation.fragments.PatternFragment"
+        android:name="ru.buylist.presentation.fragments.PatternsFragment"
         android:label="Patterns" >
         <action
             android:id="@+id/action_pattern_fragment_to_settings_fragment"
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/recipe_fragment"
-        android:name="ru.buylist.presentation.fragments.RecipeFragment"
+        android:name="ru.buylist.presentation.fragments.RecipesFragment"
         android:label="Recipes" >
         <action
             android:id="@+id/action_recipe_fragment_to_settings_fragment"
