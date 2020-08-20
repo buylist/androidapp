@@ -3,52 +3,55 @@ package ru.buylist.presentation.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_pattern.view.*
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
-import ru.buylist.data.entity.Pattern
+import ru.buylist.data.entity.PatternWrapper
 import ru.buylist.databinding.ItemPatternBinding
 import ru.buylist.presentation.fragments.PatternsFragmentDirections
 import ru.buylist.view_models.PatternsViewModel
 
 class PatternsAdapter(
-        list: List<Pattern>,
+        list: List<PatternWrapper>,
         private val viewModel: PatternsViewModel
-) : RecyclerView.Adapter<PatternsAdapter.PatternHolder>() {
+) : ListAdapter<PatternWrapper, GenericViewHolder>(PatternsDiffCallback()) {
 
-    var list: List<Pattern> = list
+    var list: List<PatternWrapper> = list
         set(list) {
             field = list
-            notifyDataSetChanged()
+            submitList(list)
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PatternHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val binding: ItemPatternBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 R.layout.item_pattern,
                 parent, false)
 
         val listener = object : PatternItemListener {
-            override fun onPatternClicked(pattern: Pattern) {
-                showDetail(pattern.id, binding.root)
+            override fun onPatternClicked(wrapper: PatternWrapper) {
+                showDetail(wrapper.pattern.id, binding.root)
             }
 
-            override fun onButtonMoreClick(pattern: Pattern) {
+            override fun onButtonMoreClick(wrapper: PatternWrapper) {
                 PopupMenu(parent.context, binding.btnMore).apply {
                     menuInflater.inflate(R.menu.buy_list_item_menu, menu)
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
-                            R.id.edit -> viewModel.edit(pattern)
-                            R.id.delete -> viewModel.delete(pattern)
+                            R.id.edit -> viewModel.edit(wrapper)
+                            R.id.delete -> viewModel.delete(wrapper)
                         }
                         true
                     }
                     show()
                 }
+            }
+
+            override fun onButtonSaveClick(wrapper: PatternWrapper) {
+                viewModel.saveEditedData(wrapper, binding.fieldPatternTitle.text.toString())
             }
 
         }
@@ -57,12 +60,8 @@ class PatternsAdapter(
         return PatternHolder(binding)
     }
 
-    override fun getItemCount(): Int = list.size
-
-
-    override fun onBindViewHolder(holder: PatternHolder, position: Int) {
-        val pattern = list[position]
-        holder.bind(pattern)
+    override fun onBindViewHolder(holder: GenericViewHolder, position: Int) {
+        holder.bind(position)
     }
 
     private fun showDetail(patterId: Long, view: View) {
@@ -71,11 +70,24 @@ class PatternsAdapter(
     }
 
 
-    class PatternHolder(private val binding: ItemPatternBinding) : RecyclerView.ViewHolder(binding.root) {
+    private inner class PatternHolder(private val binding: ItemPatternBinding) : GenericViewHolder(binding.root) {
 
-        fun bind(pattern: Pattern) {
-            binding.item = pattern
-            itemView.tv_pattern_title.text = pattern.title
+        override fun bind(position: Int) {
+            binding.wrapper = list[position]
+            binding.executePendingBindings()
         }
     }
+}
+
+
+
+class PatternsDiffCallback : DiffUtil.ItemCallback<PatternWrapper>() {
+    override fun areItemsTheSame(oldItem: PatternWrapper, newItem: PatternWrapper): Boolean {
+        return oldItem.pattern.id == newItem.pattern.id
+    }
+
+    override fun areContentsTheSame(oldItem: PatternWrapper, newItem: PatternWrapper): Boolean {
+        return oldItem == newItem
+    }
+
 }
