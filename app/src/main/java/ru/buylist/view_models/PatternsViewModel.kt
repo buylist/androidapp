@@ -23,7 +23,11 @@ class PatternsViewModel(private val repository: PatternsDataSource) : ViewModel(
     }
 
     fun save() {
-        val newPattern = Pattern(title = patternTitle.get().toString())
+        val newPattern = Pattern()
+        val title = patternTitle.get().toString().trim()
+        if (title.isNotEmpty())  {
+            newPattern.title = patternTitle.get().toString()
+        }
         repository.savePattern(newPattern)
         patterns.add(newPattern)
         updateUi()
