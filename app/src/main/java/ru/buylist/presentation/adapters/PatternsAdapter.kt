@@ -9,6 +9,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
+import ru.buylist.data.entity.Pattern
 import ru.buylist.data.entity.PatternWrapper
 import ru.buylist.databinding.ItemPatternBinding
 import ru.buylist.presentation.fragments.PatternsFragmentDirections
@@ -33,7 +34,7 @@ class PatternsAdapter(
 
         val listener = object : PatternItemListener {
             override fun onPatternClicked(wrapper: PatternWrapper) {
-                showDetail(wrapper.pattern.id, binding.root)
+                showDetail(wrapper.pattern, binding.root)
             }
 
             override fun onButtonMoreClick(wrapper: PatternWrapper) {
@@ -64,8 +65,8 @@ class PatternsAdapter(
         holder.bind(position)
     }
 
-    private fun showDetail(patterId: Long, view: View) {
-        val direction = PatternsFragmentDirections.actionPatternsFragmentToPatternDetailFragment(patterId)
+    private fun showDetail(pattern: Pattern, view: View) {
+        val direction = PatternsFragmentDirections.actionPatternsFragmentToPatternDetailFragment(pattern.id, pattern.title)
         view.findNavController().navigate(direction)
     }
 

@@ -62,9 +62,12 @@
     <fragment
         android:id="@+id/pattern_detail_fragment"
         android:name="ru.buylist.presentation.fragments.PatternDetailFragment"
-        android:label="PatternDetail" >
+        android:label="{pattern_title}" >
         <argument
             android:name="pattern_id"
             app:argType="long" />
+        <argument
+            android:name="pattern_title"
+            app:argType="string" />
     </fragment>
 </navigation>
