@@ -34,7 +34,10 @@ class PatternDetailViewModel(
     }
 
     fun saveNewItem() {
-        val item = Item(name = itemName.get().toString(), category = getCategory())
+        val title = itemName.get().toString().trim()
+        if (title.isEmpty())  return
+
+        val item = Item(name = title, category = getCategory())
         items.add(item)
         items.sortWith(compareBy({ it.isPurchased }, { it.category.color }, { it.id }))
         updateUi()
