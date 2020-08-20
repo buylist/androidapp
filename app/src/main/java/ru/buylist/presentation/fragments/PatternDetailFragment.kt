@@ -38,7 +38,7 @@ class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
         InjectorUtils.providePatternDetailViewModelFactory(args.patternId)
     }
 
-    override val layoutResId: Int = ru.buylist.R.layout.fragment_pattern_detail
+    override val layoutResId: Int = R.layout.fragment_pattern_detail
 
     private lateinit var circlesAdapter: CirclesAdapter
 
