@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:items="@{view_model.list}"/>
+                    app:items="@{view_model.wrappedPatterns}"/>
             </FrameLayout>
             <View
                 android:id="@+id/shadow_view"
