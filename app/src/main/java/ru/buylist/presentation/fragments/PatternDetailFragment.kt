@@ -10,16 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialContainerTransform
+import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_pattern_detail.*
-import kotlinx.android.synthetic.main.fragment_pattern_detail.btn_create
-import kotlinx.android.synthetic.main.fragment_pattern_detail.btn_next_circles
-import kotlinx.android.synthetic.main.fragment_pattern_detail.btn_prev_circles
-import kotlinx.android.synthetic.main.fragment_pattern_detail.coordinator_layout
-import kotlinx.android.synthetic.main.fragment_pattern_detail.fab_add
-import kotlinx.android.synthetic.main.fragment_pattern_detail.layout_new_item
-import kotlinx.android.synthetic.main.fragment_pattern_detail.recycler_circles
-import kotlinx.android.synthetic.main.fragment_pattern_detail.recycler_items
-import kotlinx.android.synthetic.main.fragment_pattern_detail.shadow_view
 import ru.buylist.R
 import ru.buylist.data.entity.CircleWrapper
 import ru.buylist.databinding.FragmentPatternDetailBinding
@@ -72,6 +64,8 @@ class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
         layout_new_item.visibility = View.VISIBLE
         shadow_view.visibility = View.VISIBLE
         fab_add.visibility = View.GONE
+        requireActivity().nav_bottom.visibility = View.GONE
+        field_name.requestFocus()
     }
 
     private fun minimizeFab() {
@@ -85,6 +79,7 @@ class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
         shadow_view.visibility = View.GONE
         layout_new_item.visibility = View.GONE
         fab_add.visibility = View.VISIBLE
+        requireActivity().nav_bottom.visibility = View.VISIBLE
     }
 
     private fun buildContainerTransform() =
