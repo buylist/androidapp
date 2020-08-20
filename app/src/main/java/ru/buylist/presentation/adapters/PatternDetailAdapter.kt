@@ -9,14 +9,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
 import ru.buylist.data.entity.ItemWrapper
-import ru.buylist.databinding.ItemBuyListDetailBinding
-import ru.buylist.utils.CategoryInfo
-import ru.buylist.view_models.BuyListDetailViewModel
+import ru.buylist.databinding.ItemPatternDetailBinding
+import ru.buylist.view_models.PatternDetailViewModel
 
-class BuyListDetailAdapter(
+
+// TODO: в будущем сделать общий адаптер для BuyListDetail и PatterDetail
+class PatternDetailAdapter(
         wrappedItems: List<ItemWrapper>,
-        private val viewModel: BuyListDetailViewModel
-) : ListAdapter<ItemWrapper, GenericViewHolder>(BuyListDetailDiffCallback()) {
+        private val viewModel: PatternDetailViewModel
+) : ListAdapter<ItemWrapper, GenericViewHolder>(PatternDetailDiffCallback()) {
 
     var wrappedItems: List<ItemWrapper> = wrappedItems
         set(wrappedItems) {
@@ -25,17 +26,12 @@ class BuyListDetailAdapter(
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
-        val binding: ItemBuyListDetailBinding = DataBindingUtil.inflate(
+        val binding: ItemPatternDetailBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.item_buy_list_detail,
+                R.layout.item_pattern_detail,
                 parent, false)
 
-        val listener = object : BuyListDetailItemListener {
-
-            override fun onItemClicked(itemWrapper: ItemWrapper) {
-                viewModel.changePurchaseStatus(itemWrapper)
-            }
-
+        val listener = object : PatternDetailItemCallback {
             override fun onButtonMoreClick(itemWrapper: ItemWrapper) {
                 PopupMenu(parent.context, binding.btnMore).apply {
                     menuInflater.inflate(R.menu.buy_list_item_menu, menu)
@@ -56,59 +52,33 @@ class BuyListDetailAdapter(
             override fun onButtonSaveClick(itemWrapper: ItemWrapper) {
                 viewModel.saveEditedData(itemWrapper, binding.fieldItemTitle.text.toString())
             }
-
         }
 
         binding.callback = listener
-
-        return when(viewType) {
-            ITEMS -> ItemsHolder(binding)
-
-            // PURCHASED_ITEMS
-            else -> PurchasedItemsHolder(binding)
-        }
+        return ItemViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: GenericViewHolder, position: Int) {
         holder.bind(position)
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return if (wrappedItems[position].item.isPurchased) PURCHASED_ITEMS
-        else ITEMS
-    }
 
 
-    private inner class ItemsHolder(private val binding: ItemBuyListDetailBinding) : GenericViewHolder(binding.root) {
-
+    // View Holder
+    private inner class ItemViewHolder(private val binding: ItemPatternDetailBinding) : GenericViewHolder(binding.root) {
         override fun bind(position: Int) {
             binding.item = wrappedItems[position]
             binding.imgCategoryCircle.setColorFilter(Color.parseColor(wrappedItems[position].item.category.color))
             binding.executePendingBindings()
         }
-
-    }
-
-    private inner class PurchasedItemsHolder(private val binding: ItemBuyListDetailBinding) : GenericViewHolder(binding.root) {
-
-        override fun bind(position: Int) {
-            binding.item = wrappedItems[position]
-            binding.card.setBackgroundColor(0)
-            binding.imgCategoryCircle.setColorFilter(Color.parseColor(CategoryInfo.COLOR))
-            binding.executePendingBindings()
-        }
-
     }
 
 
-    companion object {
-        const val ITEMS = 1
-        const val PURCHASED_ITEMS = 2
-    }
 }
 
 
-class BuyListDetailDiffCallback : DiffUtil.ItemCallback<ItemWrapper>() {
+// DiffUtil
+class PatternDetailDiffCallback : DiffUtil.ItemCallback<ItemWrapper>() {
     override fun areItemsTheSame(oldItem: ItemWrapper, newItem: ItemWrapper): Boolean {
         return oldItem.item.id == newItem.item.id
     }
@@ -119,3 +89,9 @@ class BuyListDetailDiffCallback : DiffUtil.ItemCallback<ItemWrapper>() {
 }
 
 
+// Callback
+interface PatternDetailItemCallback {
+    fun onButtonMoreClick(itemWrapper: ItemWrapper)
+
+    fun onButtonSaveClick(itemWrapper: ItemWrapper)
+}

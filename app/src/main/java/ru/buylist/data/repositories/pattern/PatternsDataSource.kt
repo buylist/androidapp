@@ -5,12 +5,12 @@ import ru.buylist.data.entity.Pattern
 interface PatternsDataSource {
 
     interface GetPatternCallback {
-        fun onPatternLoaded(pattern: Pattern)
+        fun onPatternLoaded(loadedPattern: Pattern)
         fun onDataNotAvailable()
     }
 
     interface LoadPatternsCallback {
-        fun onPatternsLoaded(patterns: List<Pattern>)
+        fun onPatternsLoaded(loadedPatterns: List<Pattern>)
         fun onDataNotAvailable()
     }
 

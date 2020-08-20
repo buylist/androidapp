@@ -5,11 +5,11 @@
         android:icon="@drawable/ic_nav_list"
         android:title="@string/action_buy_list_text" />
     <item
-        android:id="@+id/pattern_fragment"
+        android:id="@+id/patterns_fragment"
         android:icon="@drawable/ic_nav_pattern"
         android:title="@string/action_pattern_text" />
     <item
-        android:id="@+id/recipe_fragment"
+        android:id="@+id/recipes_fragment"
         android:icon="@drawable/ic_nav_recipe"
         android:title="@string/action_recipe_text" />
 </menu>

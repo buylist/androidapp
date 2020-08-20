@@ -13,7 +13,7 @@ import ru.buylist.view_models.BuyListDetailViewModel
 
 class CirclesAdapter(
         list: List<CircleWrapper>,
-        private val viewModel: BuyListDetailViewModel) :
+        val listener: CircleItemClickListener) :
         RecyclerView.Adapter<CirclesAdapter.CirclesHolder>() {
 
     var list: List<CircleWrapper> = list
@@ -28,15 +28,6 @@ class CirclesAdapter(
                 R.layout.item_circle,
                 parent, false)
 
-        val listener = object : CircleItemClickListener {
-            override fun onCircleClick(circleWrapper: CircleWrapper) {
-                viewModel.updateCircle(circleWrapper)
-                notifyItemChanged(circleWrapper.position)
-                notifyItemChanged(viewModel.getCurrentColorPosition())
-                viewModel.saveCurrentColorPosition(circleWrapper.position)
-            }
-        }
-
         binding.callback = listener
         return CirclesHolder(binding)
     }
@@ -46,6 +37,11 @@ class CirclesAdapter(
     override fun onBindViewHolder(holder: CirclesHolder, position: Int) {
         val circle = list.get(position)
         holder.bind(circle)
+    }
+
+    fun updateCircles(oldPosition: Int, newPosition: Int) {
+        notifyItemChanged(oldPosition)
+        notifyItemChanged(newPosition)
     }
 
     class CirclesHolder(private val binding: ItemCircleBinding) : RecyclerView.ViewHolder(binding.root) {

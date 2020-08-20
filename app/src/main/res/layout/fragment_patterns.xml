@@ -8,7 +8,7 @@
 
         <variable
             name="view_model"
-            type="ru.buylist.view_models.PatternViewModel" />
+            type="ru.buylist.view_models.PatternsViewModel" />
 
     </data>
 
@@ -19,12 +19,13 @@
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/coordinator_layout">
 
             <FrameLayout
                 android:id="@+id/frame_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/tv_info"
@@ -35,34 +36,42 @@
                     android:gravity="center"
                     android:textSize="30sp"
                     android:drawableTop="@drawable/ic_pattern"
-                    android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}"/>
+                    android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:items="@{view_model.list}"/>
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:items="@{view_model.wrappedPatterns}" />
+                </LinearLayout>
             </FrameLayout>
+
             <View
                 android:id="@+id/shadow_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#703A3A3A"
-                android:visibility="gone" />
+                android:background="@color/colorScrim"
+                android:elevation="8dp"
+                android:visibility="invisible" />
 
-            <com.google.android.material.circularreveal.CircularRevealLinearLayout
-                android:id="@+id/sheet"
+            <LinearLayout
+                android:id="@+id/layout_new_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:visibility="invisible"
-                android:background="@color/colorWhite"
                 android:orientation="vertical"
-                app:layout_behavior="com.google.android.material.transformation.FabTransformationSheetBehavior">
+                android:layout_gravity="bottom|center_horizontal"
+                android:background="@color/colorWhite"
+                android:elevation="8dp"
+                android:visibility="invisible">
 
                 <RelativeLayout
-                    android:id="@+id/layout_buy_list_fields"
+                    android:id="@+id/layout_pattern_fields"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_horizontal_margin"
@@ -77,25 +86,25 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/btn_create"
-                        android:hint="@string/field_name_list_hint"
+                        android:hint="@string/field_name_pattern_hint"
                         android:inputType="text"
-                        android:imeOptions="actionDone"
+                        android:imeOptions="actionNext"
                         android:background="@android:color/transparent"
-                        android:text="@={view_model.patternTitle}"/>
+                        android:text="@={view_model.patternTitle}" />
 
                     <ImageButton
                         android:id="@+id/btn_create"
-                        android:layout_width="@dimen/btn_create_size"
-                        android:layout_height="@dimen/btn_create_size"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/btn_create_margin_end"
                         android:background="@android:color/transparent"
-                        android:contentDescription="@string/btn_create_buy_list_description"
+                        android:contentDescription="@string/btn_create_item_description"
                         android:src="@drawable/button_create" />
-                </RelativeLayout>
 
-            </com.google.android.material.circularreveal.CircularRevealLinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_add"
@@ -105,7 +114,9 @@
                 app:layout_anchor="@id/frame_layout"
                 app:layout_anchorGravity="end|bottom"
                 app:fabSize="auto"
-                android:src="@drawable/fab_add_white" />
+                android:src="@drawable/fab_add_white"
+                android:backgroundTint="@color/colorAccent"
+                app:fabVisibility="@{view_model.fabIsShown}" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

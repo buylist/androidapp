@@ -15,9 +15,9 @@ object BindingAdapters {
     }
 
     @BindingAdapter("app:items")
-    @JvmStatic fun setPatterns(recycler: RecyclerView, items: List<Pattern>) {
-        with(recycler.adapter as PatternAdapter) {
-            list = items
+    @JvmStatic fun setPatterns(recycler: RecyclerView, patterns: List<PatternWrapper>) {
+        with(recycler.adapter as PatternsAdapter) {
+            list = patterns
         }
     }
 
@@ -32,6 +32,14 @@ object BindingAdapters {
     @JvmStatic fun setItems(recycler: RecyclerView,
                             items: List<ItemWrapper>) {
         with(recycler.adapter as BuyListDetailAdapter) {
+            wrappedItems = items
+        }
+    }
+
+    @BindingAdapter("app:patternItems")
+    @JvmStatic fun setPatternItems(recycler: RecyclerView,
+                            items: List<ItemWrapper>) {
+        with(recycler.adapter as PatternDetailAdapter) {
             wrappedItems = items
         }
     }

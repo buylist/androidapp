@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "patterns")
 data class Pattern(
         @PrimaryKey var id: Long = System.currentTimeMillis(),
-        var title: String = "",
+        var title: String = "(Без названия...)",
         var items: String = ""
 )
