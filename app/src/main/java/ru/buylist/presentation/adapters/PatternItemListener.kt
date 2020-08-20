@@ -1,10 +1,12 @@
 package ru.buylist.presentation.adapters
 
-import ru.buylist.data.entity.Pattern
+import ru.buylist.data.entity.PatternWrapper
 
 interface PatternItemListener {
 
-    fun onPatternClicked(pattern: Pattern)
+    fun onPatternClicked(wrapper: PatternWrapper)
 
-    fun onButtonMoreClick(pattern: Pattern)
+    fun onButtonMoreClick(wrapper: PatternWrapper)
+
+    fun onButtonSaveClick(wrapper: PatternWrapper)
 }
