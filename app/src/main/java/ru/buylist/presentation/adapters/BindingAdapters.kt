@@ -23,7 +23,7 @@ object BindingAdapters {
 
     @BindingAdapter("app:items")
     @JvmStatic fun setRecipes(recycler: RecyclerView, items: List<Recipe>) {
-        with(recycler.adapter as RecipeAdapter) {
+        with(recycler.adapter as RecipesAdapter) {
             list = items
         }
     }

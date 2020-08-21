@@ -12,10 +12,10 @@ import ru.buylist.data.entity.Recipe
 import ru.buylist.databinding.ItemRecipeBinding
 import ru.buylist.view_models.RecipeViewModel
 
-class RecipeAdapter(
+class RecipesAdapter(
         list: List<Recipe>,
         private val viewModel: RecipeViewModel
-) : RecyclerView.Adapter<RecipeAdapter.RecipeHolder>() {
+) : RecyclerView.Adapter<RecipesAdapter.RecipeHolder>() {
 
     var list: List<Recipe> = list
         set(list) {
