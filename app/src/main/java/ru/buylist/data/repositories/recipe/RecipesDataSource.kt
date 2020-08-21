@@ -5,12 +5,12 @@ import ru.buylist.data.entity.Recipe
 interface RecipesDataSource {
 
     interface GetRecipeCallback {
-        fun onRecipeLoaded(recipe: Recipe)
+        fun onRecipeLoaded(loadedRecipe: Recipe)
         fun onDataNotAvailable()
     }
 
     interface LoadRecipesCallback {
-        fun onRecipesLoaded(recipes: List<Recipe>)
+        fun onRecipesLoaded(loadedRecipes: List<Recipe>)
         fun onDataNotAvailable()
     }
 
