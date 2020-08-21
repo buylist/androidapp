@@ -1,6 +1,6 @@
 package ru.buylist.presentation.adapters
 
-import ru.buylist.data.entity.PatternWrapper
+import ru.buylist.data.entity.wrappers.PatternWrapper
 
 interface PatternItemListener {
 

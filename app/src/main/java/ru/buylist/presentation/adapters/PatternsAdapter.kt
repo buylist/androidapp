@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
 import ru.buylist.data.entity.Pattern
-import ru.buylist.data.entity.PatternWrapper
+import ru.buylist.data.entity.wrappers.PatternWrapper
 import ru.buylist.databinding.ItemPatternBinding
 import ru.buylist.presentation.fragments.PatternsFragmentDirections
 import ru.buylist.view_models.PatternsViewModel

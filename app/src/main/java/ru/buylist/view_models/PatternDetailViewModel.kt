@@ -5,6 +5,8 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.buylist.data.entity.*
+import ru.buylist.data.entity.wrappers.CircleWrapper
+import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.data.repositories.items.GlobalItemsDataSource
 import ru.buylist.data.repositories.pattern.PatternsDataSource
 import ru.buylist.data.repositories.pattern.PatternsDataSource.*

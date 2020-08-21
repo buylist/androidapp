@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.buylist.R
-import ru.buylist.data.entity.CircleWrapper
+import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.databinding.ItemCircleBinding
-import ru.buylist.view_models.BuyListDetailViewModel
 
 class CirclesAdapter(
         list: List<CircleWrapper>,

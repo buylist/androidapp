@@ -1,6 +1,6 @@
 package ru.buylist.presentation.adapters
 
-import ru.buylist.data.entity.CircleWrapper
+import ru.buylist.data.entity.wrappers.CircleWrapper
 
 interface CircleItemClickListener {
 

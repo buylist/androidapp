@@ -13,7 +13,7 @@ import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_buy_list_detail.*
 import ru.buylist.R
-import ru.buylist.data.entity.CircleWrapper
+import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentBuyListDetailBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.adapters.BuyListDetailAdapter

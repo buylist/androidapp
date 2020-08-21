@@ -1,6 +1,6 @@
 package ru.buylist.presentation.adapters
 
-import ru.buylist.data.entity.ItemWrapper
+import ru.buylist.data.entity.wrappers.ItemWrapper
 
 interface BuyListDetailItemListener {
 

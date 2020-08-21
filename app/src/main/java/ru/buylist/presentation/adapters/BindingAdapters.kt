@@ -4,6 +4,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.buylist.data.entity.*
+import ru.buylist.data.entity.wrappers.*
 
 object BindingAdapters {
 

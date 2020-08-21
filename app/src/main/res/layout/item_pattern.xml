@@ -8,7 +8,7 @@
 
         <variable
             name="wrapper"
-            type="ru.buylist.data.entity.PatternWrapper" />
+            type="ru.buylist.data.entity.wrappers.PatternWrapper" />
 
         <variable
             name="callback"

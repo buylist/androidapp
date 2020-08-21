@@ -5,7 +5,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.buylist.data.entity.BuyList
-import ru.buylist.data.entity.BuyListWrapper
+import ru.buylist.data.entity.wrappers.BuyListWrapper
 import ru.buylist.data.repositories.buyList.BuyListsDataSource
 
 class BuyListViewModel(private val repository: BuyListsDataSource) : ViewModel() {

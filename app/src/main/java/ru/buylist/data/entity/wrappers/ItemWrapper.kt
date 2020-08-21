@@ -1,4 +1,6 @@
-package ru.buylist.data.entity
+package ru.buylist.data.entity.wrappers
+
+import ru.buylist.data.entity.Item
 
 
 data class ItemWrapper(

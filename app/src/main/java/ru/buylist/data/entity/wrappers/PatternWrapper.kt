@@ -1,4 +1,6 @@
-package ru.buylist.data.entity
+package ru.buylist.data.entity.wrappers
+
+import ru.buylist.data.entity.Pattern
 
 data class PatternWrapper(
         var pattern: Pattern,

@@ -9,7 +9,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.buylist.R
-import ru.buylist.data.entity.BuyListWrapper
+import ru.buylist.data.entity.wrappers.BuyListWrapper
 import ru.buylist.databinding.ItemBuyListBinding
 import ru.buylist.presentation.fragments.BuyListsFragmentDirections
 import ru.buylist.view_models.BuyListViewModel
