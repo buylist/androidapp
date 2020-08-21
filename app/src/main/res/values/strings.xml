@@ -90,6 +90,7 @@
     <string name="tv_buylist_detail_info">Список покупок пуст</string>
     <string name="btn_new_item_text">Новый товар</string>
     <string name="tv_pattern_detail_info">Шаблон пуст</string>
+    <string name="tv_cooking_time">Готовится за:</string>
 
 
     <string-array name="category">
