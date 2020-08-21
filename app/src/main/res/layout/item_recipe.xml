@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="item"
-            type="ru.buylist.data.entity.Recipe" />
+            name="wrapper"
+            type="ru.buylist.data.entity.wrappers.RecipeWrapper" />
 
         <variable
             name="callback"
@@ -36,7 +36,8 @@
                 android:layout_toStartOf="@+id/btn_more"
                 android:layout_marginStart="8dp"
                 android:textSize="24sp"
-                android:onClick="@{()-> callback.onRecipeClicked(item)}" />
+                android:text="@{wrapper.recipe.title}"
+                android:onClick="@{()-> callback.onRecipeClicked(wrapper)}" />
 
             <ImageView
                 android:id="@+id/btn_more"
@@ -45,7 +46,7 @@
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_more"
                 app:tint="@color/colorNavNormal"
-                android:onClick="@{()-> callback.onButtonMoreClick(item)}" />
+                android:onClick="@{()-> callback.onButtonMoreClick(wrapper)}" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

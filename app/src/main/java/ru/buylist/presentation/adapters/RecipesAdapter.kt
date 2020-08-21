@@ -1,51 +1,56 @@
 package ru.buylist.presentation.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_recipe.view.*
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
 import ru.buylist.data.entity.Recipe
+import ru.buylist.data.entity.wrappers.RecipeWrapper
 import ru.buylist.databinding.ItemRecipeBinding
 import ru.buylist.view_models.RecipeViewModel
 
 class RecipesAdapter(
-        list: List<Recipe>,
+        list: List<RecipeWrapper>,
         private val viewModel: RecipeViewModel
-) : RecyclerView.Adapter<RecipesAdapter.RecipeHolder>() {
+) : ListAdapter<RecipeWrapper, GenericViewHolder>(RecipesDiffCallback()) {
 
-    var list: List<Recipe> = list
+    var list: List<RecipeWrapper> = list
         set(list) {
             field = list
-            notifyDataSetChanged()
+            submitList(list)
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val binding: ItemRecipeBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 R.layout.item_recipe,
                 parent, false)
 
         val listener = object : RecipeItemListener {
-            override fun onRecipeClicked(recipe: Recipe) {
-                Toast.makeText(parent.context, recipe.title, Toast.LENGTH_SHORT).show()
+            override fun onRecipeClicked(wrapper: RecipeWrapper) {
+                showDetail(wrapper.recipe, binding.root)
             }
 
-            override fun onButtonMoreClick(recipe: Recipe) {
+            override fun onButtonMoreClick(wrapper: RecipeWrapper) {
                 PopupMenu(parent.context, binding.btnMore).apply {
                     menuInflater.inflate(R.menu.buy_list_item_menu, menu)
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
-                            R.id.edit -> viewModel.edit(recipe)
-                            R.id.delete -> viewModel.delete(recipe)
+                            R.id.edit -> viewModel.edit(wrapper)
+                            R.id.delete -> viewModel.delete(wrapper)
                         }
                         true
                     }
                     show()
                 }
+            }
+
+            override fun onButtonSaveClick(wrapper: RecipeWrapper) {
+                viewModel.saveEditedData(wrapper, "")
             }
 
         }
@@ -54,20 +59,40 @@ class RecipesAdapter(
         return RecipeHolder(binding)
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun onBindViewHolder(holder: GenericViewHolder, position: Int) {
+        holder.bind(position)
+    }
 
+    private fun showDetail(recipe: Recipe, view: View) {
 
-    override fun onBindViewHolder(holder: RecipeHolder, position: Int) {
-        val recipe = list[position]
-        holder.bind(recipe)
     }
 
 
-    class RecipeHolder(private val binding: ItemRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
+    private inner class RecipeHolder(private val binding: ItemRecipeBinding) : GenericViewHolder(binding.root) {
 
-        fun bind(recipe: Recipe) {
-            binding.item = recipe
-            itemView.tv_recipe_title.text = recipe.title
+        override fun bind(position: Int) {
+            binding.wrapper = list[position]
         }
     }
+}
+
+
+class RecipesDiffCallback : DiffUtil.ItemCallback<RecipeWrapper>() {
+    override fun areItemsTheSame(oldItem: RecipeWrapper, newItem: RecipeWrapper): Boolean {
+        return oldItem.recipe.id == newItem.recipe.id
+    }
+
+    override fun areContentsTheSame(oldItem: RecipeWrapper, newItem: RecipeWrapper): Boolean {
+        return oldItem == newItem
+    }
+
+}
+
+interface RecipeItemListener {
+
+    fun onRecipeClicked(wrapper: RecipeWrapper)
+
+    fun onButtonMoreClick(wrapper: RecipeWrapper)
+
+    fun onButtonSaveClick(wrapper: RecipeWrapper)
 }
