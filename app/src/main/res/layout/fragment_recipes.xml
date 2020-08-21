@@ -17,6 +17,7 @@
         android:orientation="vertical">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -34,14 +35,14 @@
                     android:gravity="center"
                     android:textSize="30sp"
                     android:drawableTop="@drawable/ic_recipe"
-                    android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}"/>
+                    android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:items="@{view_model.wrappedRecipes}"/>
+                    app:items="@{view_model.wrappedRecipes}" />
             </FrameLayout>
 
             <View
@@ -51,18 +52,17 @@
                 android:background="#703A3A3A"
                 android:visibility="gone" />
 
-            <com.google.android.material.circularreveal.CircularRevealLinearLayout
-                android:id="@+id/sheet"
+            <LinearLayout
+                android:id="@+id/layout_new_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_horizontal"
-                android:visibility="invisible"
-                android:background="@color/colorWhite"
                 android:orientation="vertical"
-                app:layout_behavior="com.google.android.material.transformation.FabTransformationSheetBehavior">
+                android:layout_gravity="bottom|center_horizontal"
+                android:background="@color/colorWhite"
+                android:elevation="8dp"
+                android:visibility="invisible">
 
                 <RelativeLayout
-                    android:id="@+id/layout_recipe_fields"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_horizontal_margin"
@@ -94,8 +94,8 @@
                         android:contentDescription="@string/btn_create_buy_list_description"
                         android:src="@drawable/button_create" />
                 </RelativeLayout>
+            </LinearLayout>
 
-            </com.google.android.material.circularreveal.CircularRevealLinearLayout>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_add"
@@ -106,7 +106,7 @@
                 app:layout_anchorGravity="end|bottom"
                 app:fabSize="auto"
                 android:src="@drawable/fab_add_white"
-                app:fabVisibility="@{view_model.fabIsShown}"/>
+                app:fabVisibility="@{view_model.fabIsShown}" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
