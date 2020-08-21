@@ -77,7 +77,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/btn_create"
-                        android:hint="@string/field_name_list_hint"
+                        android:hint="@string/field_name_recipe_hint"
                         android:inputType="text"
                         android:imeOptions="actionDone"
                         android:background="@android:color/transparent"
@@ -105,7 +105,8 @@
                 app:layout_anchor="@id/frame_layout"
                 app:layout_anchorGravity="end|bottom"
                 app:fabSize="auto"
-                android:src="@drawable/fab_add_white" />
+                android:src="@drawable/fab_add_white"
+                app:fabVisibility="@{view_model.fabIsShown}"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
