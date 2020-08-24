@@ -9,51 +9,68 @@ import ru.buylist.data.entity.wrappers.*
 object BindingAdapters {
 
     @BindingAdapter("app:items")
-    @JvmStatic fun setBuyLists(recycler: RecyclerView, items: List<BuyListWrapper>) {
+    @JvmStatic
+    fun setBuyLists(recycler: RecyclerView, items: List<BuyListWrapper>) {
         with(recycler.adapter as BuyListAdapter) {
             list = items
         }
     }
 
     @BindingAdapter("app:items")
-    @JvmStatic fun setPatterns(recycler: RecyclerView, patterns: List<PatternWrapper>) {
+    @JvmStatic
+    fun setPatterns(recycler: RecyclerView, patterns: List<PatternWrapper>) {
         with(recycler.adapter as PatternsAdapter) {
             list = patterns
         }
     }
 
     @BindingAdapter("app:items")
-    @JvmStatic fun setRecipes(recycler: RecyclerView, recipes: List<RecipeWrapper>) {
+    @JvmStatic
+    fun setRecipes(recycler: RecyclerView, recipes: List<RecipeWrapper>) {
         with(recycler.adapter as RecipesAdapter) {
             list = recipes
         }
     }
 
     @BindingAdapter("app:items")
-    @JvmStatic fun setItems(recycler: RecyclerView,
-                            items: List<ItemWrapper>) {
+    @JvmStatic
+    fun setItems(recycler: RecyclerView,
+                 items: List<ItemWrapper>) {
         with(recycler.adapter as BuyListDetailAdapter) {
             wrappedItems = items
         }
     }
 
     @BindingAdapter("app:patternItems")
-    @JvmStatic fun setPatternItems(recycler: RecyclerView,
-                            items: List<ItemWrapper>) {
+    @JvmStatic
+    fun setPatternItems(recycler: RecyclerView,
+                        items: List<ItemWrapper>) {
         with(recycler.adapter as PatternDetailAdapter) {
             wrappedItems = items
         }
     }
 
+    @BindingAdapter("app:itemsAndSteps")
+    @JvmStatic
+    fun setItemsAndCookingSteps(recycler: RecyclerView,
+                                items: List<ItemWrapper>,
+                                steps: List<CookingStepWrapper>) {
+        with(recycler.adapter as RecipeAddEditAdapter) {
+            setData(items, steps)
+        }
+    }
+
     @BindingAdapter("app:items")
-    @JvmStatic fun setCircles(recycler: RecyclerView, circles: List<CircleWrapper>) {
+    @JvmStatic
+    fun setCircles(recycler: RecyclerView, circles: List<CircleWrapper>) {
         with(recycler.adapter as CirclesAdapter) {
             list = circles
         }
     }
 
     @BindingAdapter("app:fabVisibility")
-    @JvmStatic fun setFabVisibility(fab: FloatingActionButton, isShown: Boolean) {
+    @JvmStatic
+    fun setFabVisibility(fab: FloatingActionButton, isShown: Boolean) {
         if (isShown) {
             fab.show()
         } else {

@@ -91,6 +91,9 @@
     <string name="btn_new_item_text">Новый товар</string>
     <string name="tv_pattern_detail_info">Шаблон пуст</string>
     <string name="tv_cooking_time">Готовится за:</string>
+    <string name="field_cooking_time_hint">Введите время приготовления</string>
+    <string name="field_recipe_category_hint">Выберите категорию рецепта</string>
+    <string name="tv_general_header">Основная информация</string>
 
 
     <string-array name="category">
