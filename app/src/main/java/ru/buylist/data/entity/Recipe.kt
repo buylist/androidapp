@@ -8,7 +8,7 @@ data class Recipe(
         @PrimaryKey var id: Long = System.currentTimeMillis(),
         var title: String = "(Без названия...)",
         var items: String = "",
-        var description: String = "",
+        var cookingSteps: String = "",
         var image: String = "",
         var category: String = "",
         var cookingTime: String = "",

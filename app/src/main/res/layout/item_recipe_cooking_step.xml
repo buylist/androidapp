@@ -7,12 +7,12 @@
         <import type="android.view.View" />
 
         <variable
-            name="item"
-            type="ru.buylist.data.entity.wrappers.ItemWrapper" />
+            name="wrapper"
+            type="ru.buylist.data.entity.wrappers.CookingStepWrapper" />
 
         <variable
             name="callback"
-            type="ru.buylist.presentation.adapters.BuyListDetailItemListener" />
+            type="ru.buylist.presentation.adapters.CookingStepListener" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -43,12 +43,11 @@
                 android:layout_toEndOf="@id/tv_number_of_step"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
-                android:layout_toStartOf="@+id/tv_quantity"
+                android:layout_toStartOf="@+id/btn_more"
                 android:background="@android:color/transparent"
                 android:textSize="@dimen/default_text_size"
-                android:text="@{item.item.name}"
-                android:onClick="@{()-> callback.onItemClicked(item)}"
-                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}"/>
+                android:text="@{wrapper.step.description}"
+                android:visibility="@{wrapper.editable ? View.GONE : View.VISIBLE}"/>
 
             <EditText
                 android:id="@+id/field_step"
@@ -62,8 +61,8 @@
                 android:inputType="text"
                 android:textSize="@dimen/default_text_size"
                 android:imeOptions="actionDone"
-                android:text="@{item.item.name}"
-                android:visibility="@{item.editable ? View.VISIBLE : View.GONE}"/>
+                android:text="@{wrapper.step.description}"
+                android:visibility="@{wrapper.editable ? View.VISIBLE : View.GONE}"/>
 
             <ImageView
                 android:id="@+id/btn_more"
@@ -72,8 +71,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_more"
-                android:onClick="@{()-> callback.onButtonMoreClick(item)}"
-                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}"
+                android:onClick="@{()-> callback.onButtonMoreClick(wrapper)}"
+                android:visibility="@{wrapper.editable ? View.GONE : View.VISIBLE}"
                 app:tint="@color/colorNavNormal" />
 
             <ImageView
@@ -83,8 +82,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/button_create"
-                android:onClick="@{()-> callback.onButtonSaveClick(item)}"
-                android:visibility="@{item.editable ? View.VISIBLE : View.GONE}" />
+                android:onClick="@{()-> callback.onButtonSaveClick(wrapper)}"
+                android:visibility="@{wrapper.editable ? View.VISIBLE : View.GONE}" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
