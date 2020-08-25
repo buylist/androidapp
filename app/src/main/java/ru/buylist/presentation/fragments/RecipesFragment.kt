@@ -6,6 +6,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialContainerTransform
@@ -77,17 +78,19 @@ class RecipesFragment : BaseFragment<FragmentRecipesBinding>() {
     }
 
     private fun expandFab() {
-        val transition = buildContainerTransform().apply {
-            startView = fab_add
-            endView = layout_new_item
-            addTarget(layout_new_item)
-        }
-        TransitionManager.beginDelayedTransition(coordinator_layout, transition)
-        layout_new_item.visibility = View.VISIBLE
-        shadow_view.visibility = View.VISIBLE
-        fab_add.visibility = View.GONE
-        requireActivity().nav_bottom.visibility = View.GONE
-        field_name.requestFocus()
+//        val transition = buildContainerTransform().apply {
+//            startView = fab_add
+//            endView = layout_new_item
+//            addTarget(layout_new_item)
+//        }
+//        TransitionManager.beginDelayedTransition(coordinator_layout, transition)
+//        layout_new_item.visibility = View.VISIBLE
+//        shadow_view.visibility = View.VISIBLE
+//        fab_add.visibility = View.GONE
+//        requireActivity().nav_bottom.visibility = View.GONE
+//        field_name.requestFocus()
+        val action = RecipesFragmentDirections.actionRecipesFragmentToRecipeAddEditFragment(0, "")
+        findNavController().navigate(action)
     }
 
     private fun minimizeFab() {

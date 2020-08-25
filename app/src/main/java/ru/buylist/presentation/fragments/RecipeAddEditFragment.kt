@@ -6,19 +6,16 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialContainerTransform
-import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_recipe_add_edit.*
 import ru.buylist.R
 import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentRecipeAddEditBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.presentation.adapters.CircleItemClickListener
-import ru.buylist.presentation.adapters.CirclesAdapter
-import ru.buylist.presentation.adapters.RecipeAddEditAdapter
+import ru.buylist.presentation.adapters.*
+import ru.buylist.presentation.adapters.recipe_adapters.*
 import ru.buylist.utils.InjectorUtils
 import ru.buylist.view_models.RecipeAddEditViewModel
 
@@ -115,8 +112,18 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
     }
 
     private fun setupAdapter() {
-        val recipeAdapter = RecipeAddEditAdapter(emptyList(), emptyList())
-        recycler.adapter = recipeAdapter
+        val generalHeaderAdapter = RecipeHeaderAdapter("Основная информация")
+        val generalInfoAdapter = RecipeGeneralInfoAdapter()
+        val itemsHeaderAdapter = RecipeHeaderAdapter("Ингредиенты")
+        val itemsAdapter = RecipeItemsAdapter(emptyList())
+        val itemsButtonAdapter = RecipeButtonAdapter("Добавить ингредиент")
+        val stepsHeaderAdapter = RecipeHeaderAdapter("Шаги приготовления")
+        val stepsAdapter = RecipeStepsAdapter(emptyList())
+        val stepsButtonAdapter = RecipeButtonAdapter("Добавить шаг")
+        val concatAdapter = ConcatAdapter(generalHeaderAdapter, generalInfoAdapter,
+                itemsHeaderAdapter, itemsAdapter, itemsButtonAdapter,
+                stepsHeaderAdapter, stepsAdapter, stepsButtonAdapter)
+        recycler.adapter = concatAdapter
 
         recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
