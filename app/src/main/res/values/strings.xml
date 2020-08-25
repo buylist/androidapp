@@ -94,6 +94,7 @@
     <string name="field_cooking_time_hint">Введите время приготовления</string>
     <string name="field_recipe_category_hint">Выберите категорию рецепта</string>
     <string name="tv_general_header">Основная информация</string>
+    <string name="fragment_label_new_recipe">Новый рецепт</string>
 
 
     <string-array name="category">

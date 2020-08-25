@@ -89,7 +89,7 @@ class RecipesFragment : BaseFragment<FragmentRecipesBinding>() {
 //        fab_add.visibility = View.GONE
 //        requireActivity().nav_bottom.visibility = View.GONE
 //        field_name.requestFocus()
-        val action = RecipesFragmentDirections.actionRecipesFragmentToRecipeAddEditFragment(0, "")
+        val action = RecipesFragmentDirections.actionRecipesFragmentToRecipeAddEditFragment(0, getString(R.string.fragment_label_new_recipe))
         findNavController().navigate(action)
     }
 

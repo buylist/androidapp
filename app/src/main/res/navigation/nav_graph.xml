@@ -99,7 +99,8 @@
             app:argType="long" />
         <argument
             android:name="recipe_title"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue="Новый рецепт"/>
         <action
             android:id="@+id/action_recipe_add_edit_fragment_to_recipe_detail_fragment"
             app:destination="@id/recipe_detail_fragment" />
