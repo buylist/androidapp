@@ -93,7 +93,7 @@
     <fragment
         android:id="@+id/recipe_add_edit_fragment"
         android:name="ru.buylist.presentation.fragments.RecipeAddEditFragment"
-        android:label="{recipe_title]">
+        android:label="{recipe_title}">
         <argument
             android:name="recipe_id"
             app:argType="long" />
