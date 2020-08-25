@@ -106,56 +106,61 @@ class RecipeAddEditAdapter(
     }
 
 
-    private inner class ItemsHeaderHolder(binding: ItemRecipeHeaderBinding) :
+    private inner class ItemsHeaderHolder(val binding: ItemRecipeHeaderBinding) :
             GenericViewHolder(binding.root) {
 
         override fun bind(position: Int) {
-            TODO("TODO")
+            binding.tvHeader.text = "Ингредиенты"
         }
 
     }
 
-    private inner class ItemHolder(binding: ItemBuyListDetailBinding) :
+    private inner class ItemHolder(val binding: ItemBuyListDetailBinding) :
             GenericViewHolder(binding.root) {
 
         override fun bind(position: Int) {
-            TODO("TODO")
+            if (wrappedItems.isNotEmpty()) {
+                binding.item = wrappedItems[position - 1]
+            }
         }
 
     }
 
-    private inner class ItemButtonHolder(binding: ItemRecipeButtonBinding) :
+    private inner class ItemButtonHolder(val binding: ItemRecipeButtonBinding) :
             GenericViewHolder(binding.root) {
 
         override fun bind(position: Int) {
-            TODO("TODO")
+            binding.btnAdd.text = "Добавить ингредиент"
         }
 
     }
 
-    private inner class CookingStepHeaderHolder(binding: ItemRecipeHeaderBinding) :
+    private inner class CookingStepHeaderHolder(val binding: ItemRecipeHeaderBinding) :
             GenericViewHolder(binding.root) {
 
         override fun bind(position: Int) {
-            TODO("TODO")
+            binding.tvHeader.text = "Шаги приготовления"
         }
 
     }
 
-    private inner class CookingStepHolder(binding: ItemRecipeCookingStepBinding) :
+    private inner class CookingStepHolder(val binding: ItemRecipeCookingStepBinding) :
             GenericViewHolder(binding.root) {
 
         override fun bind(position: Int) {
-            TODO("TODO")
+            if (wrappedCookingSteps.isNotEmpty()) {
+                val i = position - wrappedItems.size - 3
+                binding.wrapper = wrappedCookingSteps[i]
+            }
         }
 
     }
 
-    private inner class CookingStepButtonHolder(binding: ItemRecipeButtonBinding) :
+    private inner class CookingStepButtonHolder(val binding: ItemRecipeButtonBinding) :
             GenericViewHolder(binding.root) {
 
         override fun bind(position: Int) {
-            TODO("TODO")
+            binding.btnAdd.text = "Добавить шаг"
         }
 
     }
