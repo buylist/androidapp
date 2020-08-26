@@ -1,10 +1,12 @@
 package ru.buylist.presentation.adapters
 
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import ru.buylist.data.entity.*
 import ru.buylist.data.entity.wrappers.*
+import ru.buylist.presentation.adapters.recipe_adapters.RecipeItemsAdapter
+import ru.buylist.presentation.adapters.recipe_adapters.RecipeStepsAdapter
 
 object BindingAdapters {
 
@@ -50,13 +52,21 @@ object BindingAdapters {
         }
     }
 
-    @BindingAdapter("app:itemsAndSteps")
+    @BindingAdapter("app:recipeItems")
     @JvmStatic
-    fun setItemsAndCookingSteps(recycler: RecyclerView,
-                                items: List<ItemWrapper>,
-                                steps: List<CookingStepWrapper>) {
-        with(recycler.adapter as RecipeAddEditAdapter) {
-            setData(items, steps)
+    fun setRecipeItems(recycler: RecyclerView, items: List<ItemWrapper>) {
+        with(recycler.adapter as ConcatAdapter) {
+            val itemsAdapter =  adapters[3] as RecipeItemsAdapter
+            itemsAdapter.setData(items)
+        }
+    }
+
+    @BindingAdapter("app:recipeSteps")
+    @JvmStatic
+    fun setRecipeSteps(recycler: RecyclerView, steps: List<CookingStepWrapper>) {
+        with(recycler.adapter as ConcatAdapter) {
+            val itemsAdapter =  adapters[6] as RecipeStepsAdapter
+            itemsAdapter.setData(steps)
         }
     }
 

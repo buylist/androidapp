@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
 import ru.buylist.data.entity.wrappers.CookingStepWrapper
-import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.presentation.adapters.GenericViewHolder
 
-class RecipeStepsAdapter(val steps: List<CookingStepWrapper>) : ListAdapter<ItemWrapper, GenericViewHolder>(RecipeStepsDiffCallback()) {
+class RecipeStepsAdapter(var steps: List<CookingStepWrapper>)
+    : ListAdapter<CookingStepWrapper, GenericViewHolder>(RecipeStepsDiffCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe_cooking_step, parent, false)
         return RecipeStepsViewHolder(view)
@@ -19,6 +20,11 @@ class RecipeStepsAdapter(val steps: List<CookingStepWrapper>) : ListAdapter<Item
 
     override fun onBindViewHolder(holder: GenericViewHolder, position: Int) {
         holder.bind(position)
+    }
+
+    fun setData(newSteps: List<CookingStepWrapper>) {
+        steps = newSteps
+        submitList(steps)
     }
 
 
@@ -43,13 +49,13 @@ interface CookingStepListener {
 
 
 // DiffCallback
-class RecipeStepsDiffCallback : DiffUtil.ItemCallback<ItemWrapper>() {
-    override fun areItemsTheSame(oldItem: ItemWrapper, newItem: ItemWrapper): Boolean {
-        return oldItem.item.id == newItem.item.id
+class RecipeStepsDiffCallback : DiffUtil.ItemCallback<CookingStepWrapper>() {
+    override fun areItemsTheSame(oldItem: CookingStepWrapper, newItem: CookingStepWrapper): Boolean {
+        return oldItem.step.number == newItem.step.number
     }
 
-    override fun areContentsTheSame(oldItem: ItemWrapper, newItem: ItemWrapper): Boolean {
-        return oldItem.item == newItem.item
+    override fun areContentsTheSame(oldItem: CookingStepWrapper, newItem: CookingStepWrapper): Boolean {
+        return oldItem.step == newItem.step
     }
 
 }

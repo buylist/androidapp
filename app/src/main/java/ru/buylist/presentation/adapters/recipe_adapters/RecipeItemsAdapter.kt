@@ -12,7 +12,7 @@ import ru.buylist.R
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.presentation.adapters.GenericViewHolder
 
-class RecipeItemsAdapter(val items: List<ItemWrapper>) : ListAdapter<ItemWrapper, GenericViewHolder>(RecipeItemsDiffCallback()) {
+class RecipeItemsAdapter(var items: List<ItemWrapper>) : ListAdapter<ItemWrapper, GenericViewHolder>(RecipeItemsDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_buy_list_detail, parent, false)
         return RecipeItemsViewHolder(view)
@@ -20,6 +20,11 @@ class RecipeItemsAdapter(val items: List<ItemWrapper>) : ListAdapter<ItemWrapper
 
     override fun onBindViewHolder(holder: GenericViewHolder, position: Int) {
         holder.bind(position)
+    }
+
+    fun setData(newItems: List<ItemWrapper>) {
+        items = newItems
+        submitList(items)
     }
 
     private inner class RecipeItemsViewHolder(itemView: View) : GenericViewHolder(itemView) {
