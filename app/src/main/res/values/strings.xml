@@ -59,7 +59,8 @@
 
     <!--RecipeList-->
     <string name="ingredient_text">Ингредиенты</string>
-    <string name="instruction_text">Инструкция</string>
+    <string name="cooking_steps_text">Инструкция</string>
+    <string name="add_new_step">Добавить шаг</string>
     <!--ContentDescription-->
     <string name="btn_new_ingredient_description">Добавить ингредиент</string>
     <string name="btn_new_instruction_description">Добавить инструкцию</string>

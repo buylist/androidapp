@@ -112,14 +112,14 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
     }
 
     private fun setupAdapter() {
-        val generalHeaderAdapter = RecipeHeaderAdapter("Основная информация")
+        val generalHeaderAdapter = RecipeHeaderAdapter(getString(R.string.tv_general_header))
         val generalInfoAdapter = RecipeGeneralInfoAdapter()
-        val itemsHeaderAdapter = RecipeHeaderAdapter("Ингредиенты")
+        val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.ingredient_text))
         val itemsAdapter = RecipeItemsAdapter(emptyList())
-        val itemsButtonAdapter = RecipeButtonAdapter("Добавить ингредиент")
-        val stepsHeaderAdapter = RecipeHeaderAdapter("Шаги приготовления")
+        val itemsButtonAdapter = RecipeButtonAdapter(getString(R.string.btn_new_ingredient_description))
+        val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.cooking_steps_text))
         val stepsAdapter = RecipeStepsAdapter(emptyList())
-        val stepsButtonAdapter = RecipeButtonAdapter("Добавить шаг")
+        val stepsButtonAdapter = RecipeButtonAdapter(getString(R.string.add_new_step))
         val concatAdapter = ConcatAdapter(generalHeaderAdapter, generalInfoAdapter,
                 itemsHeaderAdapter, itemsAdapter, itemsButtonAdapter,
                 stepsHeaderAdapter, stepsAdapter, stepsButtonAdapter)
