@@ -7,9 +7,13 @@ import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialContainerTransform
+import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_recipe_add_edit.*
+import kotlinx.android.synthetic.main.item_recipe_button.*
 import ru.buylist.R
 import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentRecipeAddEditBinding
@@ -40,43 +44,45 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.setupCircles(resources.getStringArray(R.array.category_color).toList())
-        fab_add.setOnClickListener { expandFab() }
-//        shadow_view.setOnClickListener { minimizeFab() }
-//        btn_create.setOnClickListener{
-//            viewModel.saveNewItem()
+        fab_add.setOnClickListener { viewModel.saveRecipe() }
+        shadow_view.setOnClickListener { minimizeNewItemButton() }
+        btn_create.setOnClickListener{
+            viewModel.saveNewItem()
 //            field_name.requestFocus()
-//        }
+        }
         setupAdapter()
         setupArrowListeners()
     }
 
-    private fun expandFab() {
-//        val transition = buildContainerTransform().apply {
-//            startView = fab_add
-//            endView = layout_new_item
-//            addTarget(layout_new_item)
-//        }
-//
-//        TransitionManager.beginDelayedTransition(requireActivity().findViewById(android.R.id.content), transition)
-//        layout_new_item.visibility = View.VISIBLE
-//        shadow_view.visibility = View.VISIBLE
-//        fab_add.visibility = View.GONE
-//        requireActivity().nav_bottom.visibility = View.GONE
-//        field_name.requestFocus()
+    private fun expandNewItemButton() {
+        val transition = buildContainerTransform().apply {
+            startView = btn_add
+            endView = layout_new_item
+            addTarget(layout_new_item)
+        }
+
+        TransitionManager.beginDelayedTransition(requireActivity().findViewById(android.R.id.content), transition)
+        layout_new_item.visibility = View.VISIBLE
+        shadow_view.visibility = View.VISIBLE
+        btn_add.visibility = View.GONE
+        fab_add.visibility = View.GONE
+        requireActivity().nav_bottom.visibility = View.GONE
+        field_name.requestFocus()
     }
 
-    private fun minimizeFab() {
-//        val transition = buildContainerTransform().apply {
-//            startView = layout_new_item
-//            endView = fab_add
-//            addTarget(fab_add)
-//        }
-//        TransitionManager.beginDelayedTransition(coordinator_layout, transition)
-//        layout_new_item.visibility = View.GONE
-//        shadow_view.visibility = View.GONE
-//        layout_new_item.visibility = View.GONE
-//        fab_add.visibility = View.VISIBLE
-//        requireActivity().nav_bottom.visibility = View.VISIBLE
+    private fun minimizeNewItemButton() {
+        val transition = buildContainerTransform().apply {
+            startView = layout_new_item
+            endView = btn_add
+            addTarget(btn_add)
+        }
+        TransitionManager.beginDelayedTransition(coordinator_layout, transition)
+        layout_new_item.visibility = View.GONE
+        shadow_view.visibility = View.GONE
+        layout_new_item.visibility = View.GONE
+        btn_add.visibility = View.VISIBLE
+        fab_add.visibility = View.VISIBLE
+        requireActivity().nav_bottom.visibility = View.VISIBLE
     }
 
     private fun buildContainerTransform() =
@@ -116,10 +122,10 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         val generalInfoAdapter = RecipeGeneralInfoAdapter()
         val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.ingredient_text))
         val itemsAdapter = RecipeItemsAdapter(emptyList())
-        val itemsButtonAdapter = RecipeButtonAdapter(getString(R.string.btn_new_ingredient_description))
+        val itemsButtonAdapter = RecipeButtonAdapter(getString(R.string.btn_new_ingredient_description), newItemButtonCallback)
         val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.cooking_steps_text))
         val stepsAdapter = RecipeStepsAdapter(emptyList())
-        val stepsButtonAdapter = RecipeButtonAdapter(getString(R.string.add_new_step))
+        val stepsButtonAdapter = RecipeButtonAdapter(getString(R.string.add_new_step), newStepButtonCallback)
         val concatAdapter = ConcatAdapter(generalHeaderAdapter, generalInfoAdapter,
                 itemsHeaderAdapter, itemsAdapter, itemsButtonAdapter,
                 stepsHeaderAdapter, stepsAdapter, stepsButtonAdapter)
@@ -132,30 +138,44 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
             }
         })
 
-//        circlesAdapter = CirclesAdapter(emptyList(), callback)
-//        recycler_circles.apply { adapter = circlesAdapter }
-//
-//        recycler_circles.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun  onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                viewModel.showHideArrows(isFirstCircleVisible(), isLastCircleVisible(circlesAdapter))
-//            }
-//        })
+        circlesAdapter = CirclesAdapter(emptyList(), circleCallback)
+        recycler_circles.apply { adapter = circlesAdapter }
+
+        recycler_circles.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun  onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                viewModel.showHideArrows(isFirstCircleVisible(), isLastCircleVisible(circlesAdapter))
+            }
+        })
     }
 
-//    private fun isLastCircleVisible(circlesAdapter: CirclesAdapter): Boolean {
-//        val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
-//        val position = layoutManager.findLastVisibleItemPosition()
-//        return (position >= circlesAdapter.itemCount - 1)
-//    }
+    private fun isLastCircleVisible(circlesAdapter: CirclesAdapter): Boolean {
+        val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
+        val position = layoutManager.findLastVisibleItemPosition()
+        return (position >= circlesAdapter.itemCount - 1)
+    }
 
-//    private fun isFirstCircleVisible(): Boolean {
-//        val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
-//        val position = layoutManager.findFirstVisibleItemPosition()
-//        return position > 0
-//    }
+    private fun isFirstCircleVisible(): Boolean {
+        val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
+        val position = layoutManager.findFirstVisibleItemPosition()
+        return position > 0
+    }
 
-    private val callback = object : CircleItemClickListener {
+    private val newItemButtonCallback = object : RecipeButtonListener {
+        override fun onButtonClick() {
+            expandNewItemButton()
+        }
+
+    }
+
+    private val newStepButtonCallback = object : RecipeButtonListener {
+        override fun onButtonClick() {
+
+        }
+
+    }
+
+    private val circleCallback = object : CircleItemClickListener {
         override fun onCircleClick(circleWrapper: CircleWrapper) {
             viewModel.updateCircle(circleWrapper)
             circlesAdapter.updateCircles(viewModel.getCurrentColorPosition(), circleWrapper.position)

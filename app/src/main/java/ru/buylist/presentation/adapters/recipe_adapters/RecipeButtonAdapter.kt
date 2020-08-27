@@ -8,9 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.buylist.R
 import ru.buylist.presentation.adapters.GenericViewHolder
 
-class RecipeButtonAdapter(val btnText: String) : RecyclerView.Adapter<GenericViewHolder>() {
+class RecipeButtonAdapter(val btnText: String, val listener: RecipeButtonListener) :
+        RecyclerView.Adapter<GenericViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe_button, parent, false)
+        val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_recipe_button, parent, false)
         return ButtonViewHolder(view)
     }
 
@@ -22,9 +25,15 @@ class RecipeButtonAdapter(val btnText: String) : RecyclerView.Adapter<GenericVie
 
     private inner class ButtonViewHolder(itemView: View) : GenericViewHolder(itemView) {
         val button: Button = itemView.findViewById(R.id.btn_add)
+
         override fun bind(position: Int) {
             button.text = btnText
+            button.setOnClickListener { listener.onButtonClick() }
         }
 
     }
+}
+
+interface RecipeButtonListener {
+    fun onButtonClick()
 }

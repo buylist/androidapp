@@ -20,6 +20,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <View
+            android:id="@+id/shadow_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorScrim"
+            android:elevation="8dp"
+            android:visibility="invisible" />
+
         <LinearLayout
             android:id="@+id/layout_content"
             android:layout_width="match_parent"
@@ -35,6 +43,123 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:recipeItems="@{view_model.wrappedItems}"
                 app:recipeSteps="@{view_model.wrappedSteps}"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_new_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/colorWhite"
+            android:elevation="8dp"
+            android:visibility="invisible">
+
+            <!--Палитра цветов-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_circles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toStartOf="@id/btn_next_circles"
+                    android:layout_toEndOf="@id/btn_prev_circles"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:scrollbars="none"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
+                    app:items="@{view_model.wrappedCircles}" />
+
+                <ImageButton
+                    android:id="@+id/btn_prev_circles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_arrow_left"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/btn_prev_color_description"
+                    android:visibility="@{view_model.prevArrowIsShown ? View.VISIBLE : View.INVISIBLE}" />
+
+                <ImageButton
+                    android:id="@+id/btn_next_circles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="4dp"
+                    android:src="@drawable/ic_arrow_right"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/btn_next_color_description"
+                    android:visibility="@{view_model.nextArrowIsShown ? View.INVISIBLE : View.VISIBLE}" />
+
+            </RelativeLayout>
+
+            <!--Поля для ввода нового товара-->
+            <LinearLayout
+                android:id="@+id/layout_buy_list_fields"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="@dimen/default_horizontal_margin"
+                android:layout_marginTop="@dimen/field_margin_vertical"
+                android:layout_marginEnd="@dimen/default_horizontal_margin"
+                android:layout_marginBottom="@dimen/field_margin_vertical"
+                android:background="@drawable/field_border">
+
+                <ru.buylist.utils.FocusableEditText
+                    android:id="@+id/field_name"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:hint="@string/item_name_default_text"
+                    android:inputType="text"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/field_quantity"
+                    android:background="@android:color/transparent"
+                    android:text="@={view_model.itemName}" />
+
+                <ru.buylist.utils.FocusableEditText
+                    android:id="@+id/field_quantity"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/field_quantity_margin_end"
+                    android:gravity="center"
+                    android:hint="@string/field_quantity_hint"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789.,"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/field_unit"
+                    android:background="@drawable/field_bg" />
+
+                <ru.buylist.utils.FocusableEditText
+                    android:id="@+id/field_unit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:hint="@string/field_unit_hint"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:background="@drawable/field_bg" />
+
+                <ImageButton
+                    android:id="@+id/btn_create"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/btn_create_item_description"
+                    android:src="@drawable/button_create" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
