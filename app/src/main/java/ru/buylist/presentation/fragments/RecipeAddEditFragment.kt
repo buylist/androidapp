@@ -48,7 +48,7 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         shadow_view.setOnClickListener { minimizeNewItemButton() }
         btn_create.setOnClickListener{
             viewModel.saveNewItem()
-//            field_name.requestFocus()
+            field_name.requestFocus()
         }
         setupAdapter()
         setupArrowListeners()
@@ -94,27 +94,27 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
             }
 
     private fun setupArrowListeners() {
-//        val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
-//        btn_prev_circles.setOnClickListener {
-//            val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
-//            if (firstVisiblePosition > 0) {
-//                layoutManager.smoothScrollToPosition(
-//                        recycler_circles, null, firstVisiblePosition - 1)
-//            }
-//        }
-//
-//        btn_next_circles.setOnClickListener {
-//            recycler_circles.adapter?.itemCount?.let {
-//                if (it <= 0) return@let
-//
-//                val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
-//                if (lastVisiblePosition >= it) return@let
-//
-//                layoutManager.smoothScrollToPosition(
-//                        recycler_circles, null, lastVisiblePosition + 1)
-//            }
-//
-//        }
+        val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
+        btn_prev_circles.setOnClickListener {
+            val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
+            if (firstVisiblePosition > 0) {
+                layoutManager.smoothScrollToPosition(
+                        recycler_circles, null, firstVisiblePosition - 1)
+            }
+        }
+
+        btn_next_circles.setOnClickListener {
+            recycler_circles.adapter?.itemCount?.let {
+                if (it <= 0) return@let
+
+                val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
+                if (lastVisiblePosition >= it) return@let
+
+                layoutManager.smoothScrollToPosition(
+                        recycler_circles, null, lastVisiblePosition + 1)
+            }
+
+        }
     }
 
     private fun setupAdapter() {
