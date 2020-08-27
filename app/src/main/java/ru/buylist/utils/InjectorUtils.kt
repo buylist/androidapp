@@ -33,6 +33,9 @@ object InjectorUtils {
     fun provideRecipeAddEditViewModelFactory(recipeId: Long) =
             RecipeAddEditViewModelFactory(getRecipesRepository(), recipeId)
 
+    fun provideRecipeDetailViewModelFactory(recipeId: Long) =
+            RecipeDetailViewModelFactory(getRecipesRepository(), recipeId)
+
     private fun getBuyListsRepository(): BuyListsDataSource {
         return BuyListsRepository.getInstance(
                 getExecutors(),

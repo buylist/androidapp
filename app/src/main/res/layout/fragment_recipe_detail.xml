@@ -8,7 +8,7 @@
 
         <variable
             name="view_model"
-            type="ru.buylist.view_models.PatternDetailViewModel" />
+            type="ru.buylist.view_models.RecipeDetailViewModel" />
         <variable
             name="recipe"
             type="ru.buylist.data.entity.wrappers.RecipeWrapper" />
@@ -82,7 +82,7 @@
                 android:layout_marginTop="16dp"
                 android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:patternItems="@{view_model.wrappedItems}" />
+                 />
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
