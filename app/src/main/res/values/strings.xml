@@ -28,6 +28,7 @@
     <string name="logo_description">Логотип</string>
     <string name="btn_new_buy_list_description">Создать список</string>
     <string name="btn_create_buy_list_description">Сохранить список</string>
+    <string name="btn_create_cooking_step_description">Сохранить шаг</string>
     <string name="btn_new_pattern_description">Создать шаблон</string>
     <string name="btn_create_pattern_description">Сохранить шаблон</string>
     <string name="btn_new_recipe_description">Создать рецепт</string>
@@ -39,6 +40,7 @@
     <string name="field_name_list_hint">Введите название списка</string>
     <string name="field_name_pattern_hint">Введите название шаблона</string>
     <string name="field_name_recipe_hint">Введите название рецепта</string>
+    <string name="field_recipe_step_hint">Описание шага</string>
 
     <!--BuyList-->
     <string name="btn_pattern_text">По шаблону</string>
@@ -59,8 +61,9 @@
 
     <!--RecipeList-->
     <string name="ingredient_text">Ингредиенты</string>
-    <string name="cooking_steps_text">Инструкция</string>
+    <string name="cooking_steps_text">Шаги приготовления</string>
     <string name="add_new_step">Добавить шаг</string>
+    <string name="number_of_step">%d.</string>
     <!--ContentDescription-->
     <string name="btn_new_ingredient_description">Добавить ингредиент</string>
     <string name="btn_new_instruction_description">Добавить инструкцию</string>
