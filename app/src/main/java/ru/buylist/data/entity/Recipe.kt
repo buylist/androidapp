@@ -13,4 +13,9 @@ data class Recipe(
         var category: String = "",
         var cookingTime: String = "",
         var portion: String = ""
-)
+) {
+    val isEmpty get() =
+            (title == "(Без названия...)" || title.isEmpty()) &&
+            items.isEmpty()
+
+}
