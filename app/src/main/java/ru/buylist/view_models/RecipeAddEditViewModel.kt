@@ -2,6 +2,7 @@ package ru.buylist.view_models
 
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.buylist.data.entity.Category
@@ -13,6 +14,7 @@ import ru.buylist.data.entity.wrappers.CookingStepWrapper
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.data.repositories.recipe.RecipesDataSource.*
+import ru.buylist.utils.Event
 import ru.buylist.utils.JsonUtils
 
 class RecipeAddEditViewModel(
@@ -22,6 +24,9 @@ class RecipeAddEditViewModel(
     var fabIsShown = ObservableBoolean(true)
     var prevArrowIsShown = ObservableBoolean(true)
     var nextArrowIsShown = ObservableBoolean(true)
+    val recipeTitle = MutableLiveData<String>()
+    val recipeCategory = MutableLiveData<String>()
+    val recipeCookingTime = MutableLiveData<String>()
     var itemName = ObservableField("")
     var step = ObservableField("")
 
@@ -40,12 +45,39 @@ class RecipeAddEditViewModel(
     val wrappedCircles = MutableLiveData<List<CircleWrapper>>()
             .apply { value = emptyList() }
 
+    private val _detailsEvent = MutableLiveData<Event<Long>>()
+    val detailsEvent: LiveData<Event<Long>> = _detailsEvent
+
 
     init {
         loadList()
     }
 
-    fun saveNewItem() {
+    fun getTitle(): String {
+        return recipe.title
+    }
+
+    fun saveRecipe() {
+        val title = recipeTitle.value
+        if (title == null) {
+            // TODO: show snackbar "Введите название рецепта"
+            return
+        }
+
+        recipe.title = title.toString().trim()
+        if (recipe.isEmpty) {
+            // TODO: show snackbar "Заполните все обязательные поля: название, ингредиенты"
+            return
+        }
+
+        when(recipeId) {
+            0L -> repository.saveRecipe(recipe)
+            else -> repository.updateRecipe(recipe)
+        }
+        _detailsEvent.value = Event(recipeId)
+    }
+
+    fun addNewItem() {
         val title = itemName.get().toString().trim()
         if (title.isEmpty()) return
 
@@ -55,10 +87,9 @@ class RecipeAddEditViewModel(
         updateUi()
         itemName.set("")
         recipe.items = JsonUtils.convertItemsToJson(items)
-        repository.updateRecipe(recipe)
     }
 
-    fun saveNewStep() {
+    fun addNewStep() {
         val description = step.get().toString().trim()
         if (description.isEmpty()) return
 
@@ -67,7 +98,6 @@ class RecipeAddEditViewModel(
         updateUi()
         step.set("")
         recipe.cookingSteps = JsonUtils.convertCookingStepsToJson(cookingSteps)
-        repository.updateRecipe(recipe)
     }
 
     fun saveEditedItem(wrapper: ItemWrapper, newName: String) {
@@ -269,7 +299,7 @@ class RecipeAddEditViewModel(
             }
 
             override fun onDataNotAvailable() {
-
+                recipe = Recipe()
             }
 
         })

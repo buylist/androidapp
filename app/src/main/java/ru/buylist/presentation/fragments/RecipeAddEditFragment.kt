@@ -2,9 +2,11 @@ package ru.buylist.presentation.fragments
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,13 +15,13 @@ import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_recipe_add_edit.*
-import kotlinx.android.synthetic.main.item_recipe_button.*
 import ru.buylist.R
 import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentRecipeAddEditBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.adapters.*
 import ru.buylist.presentation.adapters.recipe_adapters.*
+import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
 import ru.buylist.view_models.RecipeAddEditViewModel
 
@@ -37,7 +39,7 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
 
     override fun setupBindings(binding: FragmentRecipeAddEditBinding) {
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = this.viewLifecycleOwner
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,12 +49,19 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         fab_add.setOnClickListener { viewModel.saveRecipe() }
 
         btn_create_item.setOnClickListener{
-            viewModel.saveNewItem()
+            viewModel.addNewItem()
             field_name.requestFocus()
         }
 
         setupAdapter()
         setupArrowListeners()
+
+        viewModel.detailsEvent.observe(this, EventObserver {
+            Log.i("TAG2", "details event ")
+            val action = RecipeAddEditFragmentDirections
+                    .actionRecipeAddEditFragmentToRecipeDetailFragment(it, viewModel.getTitle())
+            findNavController().navigate(action)
+        })
     }
 
     private fun expandNewStepButton(btnAdd: View) {
@@ -149,7 +158,7 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
 
     private fun setupAdapter() {
         val generalHeaderAdapter = RecipeHeaderAdapter(getString(R.string.tv_general_header))
-        val generalInfoAdapter = RecipeGeneralInfoAdapter()
+        val generalInfoAdapter = RecipeGeneralInfoAdapter(viewModel)
         val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.ingredient_text))
         val itemsAdapter = RecipeItemsAdapter(emptyList())
         val itemsButtonAdapter = RecipeButtonAdapter(getString(R.string.btn_new_ingredient_description), newItemButtonCallback)
@@ -205,7 +214,7 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
             shadow_view.setOnClickListener { minimizeNewStepButton(view) }
             btn_create_step.setOnClickListener {
                 minimizeNewStepButton(view)
-                viewModel.saveNewStep()
+                viewModel.addNewStep()
             }
         }
 
