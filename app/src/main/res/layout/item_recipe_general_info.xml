@@ -1,67 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginBottom="16dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <data>
+        <variable
+            name="view_model"
+            type="ru.buylist.view_models.RecipeAddEditViewModel" />
+    </data>
+
+    <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/field_border"
-        android:layout_marginBottom="8dp">
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp">
 
-        <EditText
-            android:id="@+id/field_recipe_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:inputType="text"
-            android:imeOptions="actionNext"
-            android:hint="@string/field_name_recipe_hint" />
+            android:background="@drawable/field_border"
+            android:layout_marginBottom="8dp">
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/field_recipe_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:inputType="text"
+                android:imeOptions="actionNext"
+                android:hint="@string/field_name_recipe_hint"
+                android:text="@={view_model.recipeTitle}"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/field_border"
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal">
+        </LinearLayout>
 
-        <AutoCompleteTextView
-            android:id="@+id/field_recipe_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/btn_more_category"
-            android:background="@android:color/transparent"
-            android:inputType="text"
-            android:imeOptions="actionNext"
-            android:hint="@string/field_recipe_category_hint" />
-
-        <ImageView
-            android:id="@+id/btn_more_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="4dp"
-            android:src="@drawable/ic_spinner_arrow" />
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/field_border">
-
-        <EditText
-            android:id="@+id/field_cooking_time"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:inputType="text"
-            android:imeOptions="actionNext"
-            android:hint="@string/field_cooking_time_hint" />
+            android:background="@drawable/field_border"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
+            <AutoCompleteTextView
+                android:id="@+id/field_recipe_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/btn_more_category"
+                android:background="@android:color/transparent"
+                android:inputType="text"
+                android:imeOptions="actionNext"
+                android:hint="@string/field_recipe_category_hint"
+                android:text="@={view_model.recipeCategory}"/>
+
+            <ImageView
+                android:id="@+id/btn_more_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="4dp"
+                android:src="@drawable/ic_spinner_arrow" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/field_border">
+
+            <EditText
+                android:id="@+id/field_cooking_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:inputType="text"
+                android:imeOptions="actionNext"
+                android:hint="@string/field_cooking_time_hint"
+                android:text="@={view_model.recipeCookingTime}"/>
+
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</layout>
