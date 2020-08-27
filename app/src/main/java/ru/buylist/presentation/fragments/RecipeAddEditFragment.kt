@@ -45,18 +45,49 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
 
         viewModel.setupCircles(resources.getStringArray(R.array.category_color).toList())
         fab_add.setOnClickListener { viewModel.saveRecipe() }
-        shadow_view.setOnClickListener { minimizeNewItemButton() }
-        btn_create.setOnClickListener{
+
+        btn_create_item.setOnClickListener{
             viewModel.saveNewItem()
             field_name.requestFocus()
         }
+
         setupAdapter()
         setupArrowListeners()
     }
 
-    private fun expandNewItemButton() {
+    private fun expandNewStepButton(btnAdd: View) {
         val transition = buildContainerTransform().apply {
-            startView = btn_add
+            startView = btnAdd
+            endView = layout_new_step
+            addTarget(layout_new_step)
+        }
+
+        TransitionManager.beginDelayedTransition(requireActivity().findViewById(android.R.id.content), transition)
+        layout_new_step.visibility = View.VISIBLE
+        shadow_view.visibility = View.VISIBLE
+        btnAdd.visibility = View.GONE
+        fab_add.visibility = View.GONE
+        requireActivity().nav_bottom.visibility = View.GONE
+        field_step.requestFocus()
+    }
+
+    private fun minimizeNewStepButton(btnAdd: View) {
+        val transition = buildContainerTransform().apply {
+            startView = layout_new_step
+            endView = btnAdd
+            addTarget(btnAdd)
+        }
+        TransitionManager.beginDelayedTransition(coordinator_layout, transition)
+        layout_new_step.visibility = View.GONE
+        shadow_view.visibility = View.GONE
+        btnAdd.visibility = View.VISIBLE
+        fab_add.visibility = View.VISIBLE
+        requireActivity().nav_bottom.visibility = View.VISIBLE
+    }
+
+    private fun expandNewItemButton(btnAdd: View) {
+        val transition = buildContainerTransform().apply {
+            startView = btnAdd
             endView = layout_new_item
             addTarget(layout_new_item)
         }
@@ -64,23 +95,22 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         TransitionManager.beginDelayedTransition(requireActivity().findViewById(android.R.id.content), transition)
         layout_new_item.visibility = View.VISIBLE
         shadow_view.visibility = View.VISIBLE
-        btn_add.visibility = View.GONE
+        btnAdd.visibility = View.GONE
         fab_add.visibility = View.GONE
         requireActivity().nav_bottom.visibility = View.GONE
         field_name.requestFocus()
     }
 
-    private fun minimizeNewItemButton() {
+    private fun minimizeNewItemButton(btnAdd: View) {
         val transition = buildContainerTransform().apply {
             startView = layout_new_item
-            endView = btn_add
-            addTarget(btn_add)
+            endView = btnAdd
+            addTarget(btnAdd)
         }
         TransitionManager.beginDelayedTransition(coordinator_layout, transition)
         layout_new_item.visibility = View.GONE
         shadow_view.visibility = View.GONE
-        layout_new_item.visibility = View.GONE
-        btn_add.visibility = View.VISIBLE
+        btnAdd.visibility = View.VISIBLE
         fab_add.visibility = View.VISIBLE
         requireActivity().nav_bottom.visibility = View.VISIBLE
     }
@@ -162,15 +192,21 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
     }
 
     private val newItemButtonCallback = object : RecipeButtonListener {
-        override fun onButtonClick() {
-            expandNewItemButton()
+        override fun onButtonClick(view: View) {
+            expandNewItemButton(view)
+            shadow_view.setOnClickListener { minimizeNewItemButton(view) }
         }
 
     }
 
     private val newStepButtonCallback = object : RecipeButtonListener {
-        override fun onButtonClick() {
-
+        override fun onButtonClick(view: View) {
+            expandNewStepButton(view)
+            shadow_view.setOnClickListener { minimizeNewStepButton(view) }
+            btn_create_step.setOnClickListener {
+                minimizeNewStepButton(view)
+                viewModel.saveNewStep()
+            }
         }
 
     }

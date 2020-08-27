@@ -28,12 +28,12 @@ class RecipeButtonAdapter(val btnText: String, val listener: RecipeButtonListene
 
         override fun bind(position: Int) {
             button.text = btnText
-            button.setOnClickListener { listener.onButtonClick() }
+            button.setOnClickListener { listener.onButtonClick(it) }
         }
 
     }
 }
 
 interface RecipeButtonListener {
-    fun onButtonClick()
+    fun onButtonClick(view: View)
 }
