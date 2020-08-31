@@ -38,6 +38,10 @@ class RecipeDetailViewModel(
         _editEvent.value = Event(_recipe)
     }
 
+    fun showHideFab(dy: Int) {
+        fabIsShown.value = dy <= 0
+    }
+
     private fun getWrappedSteps(list: List<CookingStep>): List<CookingStepWrapper> {
         val newList = mutableListOf<CookingStepWrapper>()
         for ((i, step) in list.withIndex()) {
