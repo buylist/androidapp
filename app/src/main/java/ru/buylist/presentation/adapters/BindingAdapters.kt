@@ -56,8 +56,11 @@ object BindingAdapters {
     @JvmStatic
     fun setRecipeItems(recycler: RecyclerView, items: List<ItemWrapper>) {
         with(recycler.adapter as ConcatAdapter) {
-            val itemsAdapter =  adapters[3] as RecipeItemsAdapter
-            itemsAdapter.setData(items)
+            for (adapter in adapters) {
+                if (adapter is RecipeItemsAdapter) {
+                    adapter.setData(items)
+                }
+            }
         }
     }
 
@@ -65,8 +68,11 @@ object BindingAdapters {
     @JvmStatic
     fun setRecipeSteps(recycler: RecyclerView, steps: List<CookingStepWrapper>) {
         with(recycler.adapter as ConcatAdapter) {
-            val itemsAdapter =  adapters[6] as RecipeStepsAdapter
-            itemsAdapter.setData(steps)
+            for (adapter in adapters) {
+                if (adapter is RecipeStepsAdapter) {
+                    adapter.setData(steps)
+                }
+            }
         }
     }
 

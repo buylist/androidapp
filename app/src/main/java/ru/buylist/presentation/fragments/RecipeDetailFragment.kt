@@ -6,11 +6,17 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.fragment_recipe_detail.*
 import ru.buylist.R
 import ru.buylist.databinding.FragmentRecipeDetailBinding
 import ru.buylist.presentation.BaseFragment
+import ru.buylist.presentation.adapters.recipe_adapters.RecipeDetailGeneralInfoAdapter
+import ru.buylist.presentation.adapters.recipe_adapters.RecipeHeaderAdapter
+import ru.buylist.presentation.adapters.recipe_adapters.RecipeItemsAdapter
+import ru.buylist.presentation.adapters.recipe_adapters.RecipeStepsAdapter
 import ru.buylist.utils.InjectorUtils
 import ru.buylist.view_models.RecipeDetailViewModel
 
@@ -74,27 +80,22 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
             }
 
 
-
     private fun setupAdapter() {
-//        val itemsAdapter = PatternDetailAdapter(emptyList(), viewModel)
-//        recycler_items.adapter = itemsAdapter
-//
-//        recycler_items.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
+        val generalInfoAdapter = RecipeDetailGeneralInfoAdapter(viewModel)
+        val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.ingredient_text))
+        val itemsAdapter = RecipeItemsAdapter(emptyList())
+        val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.cooking_steps_text))
+        val stepsAdapter = RecipeStepsAdapter(emptyList())
+        val concatAdapter = ConcatAdapter(generalInfoAdapter, itemsHeaderAdapter, itemsAdapter,
+                stepsHeaderAdapter, stepsAdapter)
+        recycler.adapter = concatAdapter
+
+        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
 //                viewModel.showHideFab(dy)
-//            }
-//        })
-//
-//        circlesAdapter = CirclesAdapter(emptyList(), callback)
-//        recycler_circles.apply { adapter = circlesAdapter }
-//
-//        recycler_circles.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun  onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                viewModel.showHideArrows(isFirstCircleVisible(), isLastCircleVisible(circlesAdapter))
-//            }
-//        })
+            }
+        })
     }
 
 
