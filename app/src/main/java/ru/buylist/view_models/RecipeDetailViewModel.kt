@@ -1,5 +1,6 @@
 package ru.buylist.view_models
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.buylist.data.entity.CookingStep
@@ -9,6 +10,7 @@ import ru.buylist.data.entity.wrappers.CookingStepWrapper
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.data.repositories.recipe.RecipesDataSource.*
+import ru.buylist.utils.Event
 import ru.buylist.utils.JsonUtils
 
 class RecipeDetailViewModel(
@@ -25,8 +27,15 @@ class RecipeDetailViewModel(
     private lateinit var _recipe: Recipe
     val recipe = MutableLiveData<Recipe>()
 
+    private val _editEvent = MutableLiveData<Event<Recipe>>()
+    val editEvent: LiveData<Event<Recipe>> = _editEvent
+
     init {
         loadRecipe()
+    }
+
+    fun editRecipe() {
+        _editEvent.value = Event(_recipe)
     }
 
     private fun getWrappedSteps(list: List<CookingStep>): List<CookingStepWrapper> {
@@ -50,6 +59,7 @@ class RecipeDetailViewModel(
     private fun loadRecipe() {
         repository.getRecipe(recipeId, object : GetRecipeCallback {
             override fun onRecipeLoaded(loadedRecipe: Recipe) {
+                _recipe = loadedRecipe
                 recipe.value = loadedRecipe
                 wrappedItems.value = getWrappedItems(JsonUtils
                         .convertItemsFromJson(loadedRecipe.items))
