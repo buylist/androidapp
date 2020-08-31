@@ -2,12 +2,14 @@ package ru.buylist.view_models
 
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.buylist.data.entity.Recipe
 import ru.buylist.data.entity.wrappers.RecipeWrapper
 import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.data.repositories.recipe.RecipesDataSource.LoadRecipesCallback
+import ru.buylist.utils.Event
 
 class RecipeViewModel(private val repository: RecipesDataSource) : ViewModel() {
 
@@ -19,6 +21,9 @@ class RecipeViewModel(private val repository: RecipesDataSource) : ViewModel() {
     val wrappedRecipes = MutableLiveData<List<RecipeWrapper>>()
             .apply { value = emptyList() }
     var recipes = mutableListOf<Recipe>()
+
+    private val _detailsEvent = MutableLiveData<Event<Recipe>>()
+    val detailsEvent: LiveData<Event<Recipe>> = _detailsEvent
 
     init {
         loadList()
@@ -62,6 +67,10 @@ class RecipeViewModel(private val repository: RecipesDataSource) : ViewModel() {
 
     fun showHideFab(dy: Int) {
         fabIsShown.set(dy <= 0)
+    }
+
+    fun showDetail(recipe: Recipe) {
+        _detailsEvent.value = Event(recipe)
     }
 
     private fun updateUi() {

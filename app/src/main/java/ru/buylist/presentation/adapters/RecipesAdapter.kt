@@ -64,7 +64,7 @@ class RecipesAdapter(
     }
 
     private fun showDetail(recipe: Recipe, view: View) {
-
+        viewModel.showDetail(recipe)
     }
 
 

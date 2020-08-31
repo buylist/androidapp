@@ -16,6 +16,7 @@ import ru.buylist.R
 import ru.buylist.databinding.FragmentRecipesBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.adapters.RecipesAdapter
+import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
 import ru.buylist.view_models.RecipeViewModel
 
@@ -40,11 +41,20 @@ class RecipesFragment : BaseFragment<FragmentRecipesBinding>() {
 
         setupListenersToButtonsCreate()
         setupAdapter()
+        setupNavigation()
     }
 
     override fun onResume() {
         super.onResume()
         minimizeFab()
+    }
+
+    private fun setupNavigation() {
+        viewModel.detailsEvent.observe(this, EventObserver { recipe ->
+            val action = RecipesFragmentDirections
+                    .actionRecipesFragmentToRecipeDetailFragment(recipe.id, recipe.title)
+            findNavController().navigate(action)
+        })
     }
 
     private fun setupAdapter() {
