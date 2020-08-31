@@ -5,18 +5,18 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.buylist.R
-import ru.buylist.databinding.ItemRecipeGeneralInfoBinding
+import ru.buylist.databinding.ItemRecipeGeneralInfoInputBinding
 import ru.buylist.presentation.adapters.GenericViewHolder
 import ru.buylist.view_models.RecipeAddEditViewModel
 
-class RecipeGeneralInfoAdapter(val viewModel: RecipeAddEditViewModel) : RecyclerView.Adapter<GenericViewHolder>() {
+class RecipeGeneralInfoAdapter(val viewModel: RecipeAddEditViewModel)
+    : RecyclerView.Adapter<GenericViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
-        val binding: ItemRecipeGeneralInfoBinding = DataBindingUtil.inflate(
+        val binding: ItemRecipeGeneralInfoInputBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.item_recipe_general_info,
+                R.layout.item_recipe_general_info_input,
                 parent, false)
-//        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recipe_general_info, parent, false)
         return GeneralInfoViewHolder(binding)
     }
 
@@ -26,7 +26,7 @@ class RecipeGeneralInfoAdapter(val viewModel: RecipeAddEditViewModel) : Recycler
 
     override fun getItemCount(): Int = 1
 
-    private inner class GeneralInfoViewHolder(val binding: ItemRecipeGeneralInfoBinding)
+    private inner class GeneralInfoViewHolder(val binding: ItemRecipeGeneralInfoInputBinding)
         : GenericViewHolder(binding.root) {
 
         override fun bind(position: Int) {
