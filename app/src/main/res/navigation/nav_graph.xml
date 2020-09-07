@@ -103,6 +103,7 @@
             android:defaultValue="Новый рецепт"/>
         <action
             android:id="@+id/action_recipe_add_edit_fragment_to_recipe_detail_fragment"
-            app:destination="@id/recipe_detail_fragment" />
+            app:destination="@id/recipe_detail_fragment"
+            app:popUpTo="@id/recipes_fragment"/>
     </fragment>
 </navigation>
