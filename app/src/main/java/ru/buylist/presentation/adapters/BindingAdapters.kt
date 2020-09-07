@@ -28,9 +28,9 @@ object BindingAdapters {
 
     @BindingAdapter("app:items")
     @JvmStatic
-    fun setRecipes(recycler: RecyclerView, recipes: List<RecipeWrapper>) {
-        with(recycler.adapter as RecipesAdapter) {
-            list = recipes
+    fun setRecipes(recycler: RecyclerView, recipes: List<RecipeWrapper>?) {
+        recipes?.let {
+            (recycler.adapter as RecipesAdapter).submitList(recipes)
         }
     }
 

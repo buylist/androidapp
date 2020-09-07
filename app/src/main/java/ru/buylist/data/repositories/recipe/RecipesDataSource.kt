@@ -1,5 +1,7 @@
 package ru.buylist.data.repositories.recipe
 
+import androidx.lifecycle.LiveData
+import ru.buylist.data.Result
 import ru.buylist.data.entity.Recipe
 
 interface RecipesDataSource {
@@ -14,17 +16,19 @@ interface RecipesDataSource {
         fun onDataNotAvailable()
     }
 
-    fun saveRecipe(recipe: Recipe)
+    suspend fun saveRecipe(recipe: Recipe)
 
-    fun updateRecipe(recipe: Recipe)
+    suspend fun updateRecipe(recipe: Recipe)
 
-    fun deleteRecipe(recipe: Recipe)
+    suspend fun deleteRecipe(recipe: Recipe)
 
-    fun deleteSelectedRecipes(recipes: List<Recipe>)
+    suspend fun deleteSelectedRecipes(recipes: List<Recipe>)
 
-    fun deleteAllRecipes()
+    suspend fun deleteAllRecipes()
 
-    fun getRecipes(callback: LoadRecipesCallback)
+    fun observeRecipes(): LiveData<Result<List<Recipe>>>
+
+    suspend fun getRecipes(): Result<List<Recipe>>
 
     fun getRecipe(recipeId: Long, callback: GetRecipeCallback)
 }

@@ -1,5 +1,6 @@
 package ru.buylist.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.buylist.data.entity.Recipe
 
@@ -17,6 +18,12 @@ interface RecipeDao {
 
     @Delete
     fun deleteSelectedRecipes(recipes: List<Recipe>)
+
+    @Query("SELECT * FROM recipes")
+    fun observeRecipes(): LiveData<List<Recipe>>
+
+    @Query("SELECT * FROM recipes WHERE id = :recipeId")
+    fun observeRecipeById(recipeId: Long): LiveData<Recipe>
 
     @Query("DELETE FROM recipes")
     fun deleteAllRecipes()

@@ -1,44 +1,54 @@
 package ru.buylist.data.repositories.recipe
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import ru.buylist.data.Result
+import ru.buylist.data.Result.*
 import ru.buylist.data.dao.RecipeDao
 import ru.buylist.data.entity.Recipe
 import ru.buylist.utils.AppExecutors
+import java.lang.Exception
 
 class RecipesRepository private constructor(
         private val executors: AppExecutors,
-        private val recipeDao: RecipeDao
+        private val recipeDao: RecipeDao,
+        private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RecipesDataSource {
 
-    override fun saveRecipe(recipe: Recipe) {
-        executors.discIO().execute { recipeDao.insertRecipe(recipe) }
+    override suspend fun saveRecipe(recipe: Recipe) = withContext(ioDispatcher) {
+        recipeDao.insertRecipe(recipe)
     }
 
-    override fun updateRecipe(recipe: Recipe) {
-        executors.discIO().execute { recipeDao.updateRecipe(recipe) }
+    override suspend fun updateRecipe(recipe: Recipe) = withContext(ioDispatcher) {
+        recipeDao.updateRecipe(recipe)
     }
 
-    override fun deleteRecipe(recipe: Recipe) {
-        executors.discIO().execute { recipeDao.deleteRecipe(recipe) }
+    override suspend fun deleteRecipe(recipe: Recipe) = withContext(ioDispatcher) {
+        recipeDao.deleteRecipe(recipe)
     }
 
-    override fun deleteSelectedRecipes(recipes: List<Recipe>) {
-        executors.discIO().execute { recipeDao.deleteSelectedRecipes(recipes) }
+    override suspend fun deleteSelectedRecipes(recipes: List<Recipe>) = withContext(ioDispatcher) {
+        recipeDao.deleteSelectedRecipes(recipes)
     }
 
-    override fun deleteAllRecipes() {
-        executors.discIO().execute { recipeDao.deleteAllRecipes() }
+    override suspend fun deleteAllRecipes() = withContext(ioDispatcher) {
+        recipeDao.deleteAllRecipes()
     }
 
-    override fun getRecipes(callback: RecipesDataSource.LoadRecipesCallback) {
-        executors.discIO().execute {
-            val recipes = recipeDao.getRecipes()
-            executors.mainThread().execute {
-                if (recipes.isEmpty()) {
-                    callback.onDataNotAvailable()
-                } else {
-                    callback.onRecipesLoaded(recipes)
-                }
-            }
+    override fun observeRecipes(): LiveData<Result<List<Recipe>>> {
+        return recipeDao.observeRecipes().map {
+            Success(it)
+        }
+    }
+
+    override suspend fun getRecipes(): Result<List<Recipe>> = withContext(ioDispatcher) {
+        return@withContext try {
+            Success(recipeDao.getRecipes())
+        } catch (e: Exception) {
+            Error(e)
         }
     }
 

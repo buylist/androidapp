@@ -34,68 +34,16 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textSize="30sp"
-                    android:drawableTop="@drawable/ic_recipe"
-                    android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}" />
+                    android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}"
+                    app:drawableTopCompat="@drawable/ic_recipe" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:items="@{view_model.wrappedRecipes}" />
+                    app:items="@{view_model.recipes}" />
             </FrameLayout>
-
-            <View
-                android:id="@+id/shadow_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#703A3A3A"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:id="@+id/layout_new_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="bottom|center_horizontal"
-                android:background="@color/colorWhite"
-                android:elevation="8dp"
-                android:visibility="invisible">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_horizontal_margin"
-                    android:layout_marginTop="@dimen/field_margin_vertical"
-                    android:layout_marginEnd="@dimen/default_horizontal_margin"
-                    android:layout_marginBottom="@dimen/field_margin_vertical"
-                    android:background="@drawable/field_border">
-
-                    <ru.buylist.utils.FocusableEditText
-                        android:id="@+id/field_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_toStartOf="@+id/btn_create"
-                        android:hint="@string/field_name_recipe_hint"
-                        android:inputType="text"
-                        android:imeOptions="actionDone"
-                        android:background="@android:color/transparent"
-                        android:text="@={view_model.recipeTitle}" />
-
-                    <ImageButton
-                        android:id="@+id/btn_create"
-                        android:layout_width="@dimen/btn_create_size"
-                        android:layout_height="@dimen/btn_create_size"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/btn_create_margin_end"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="@string/btn_create_buy_list_description"
-                        android:src="@drawable/button_create" />
-                </RelativeLayout>
-            </LinearLayout>
-
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_add"

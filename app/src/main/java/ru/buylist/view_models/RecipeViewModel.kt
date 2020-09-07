@@ -1,95 +1,59 @@
 package ru.buylist.view_models
 
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
+import ru.buylist.data.Result
+import ru.buylist.data.Result.Success
 import ru.buylist.data.entity.Recipe
 import ru.buylist.data.entity.wrappers.RecipeWrapper
 import ru.buylist.data.repositories.recipe.RecipesDataSource
-import ru.buylist.data.repositories.recipe.RecipesDataSource.LoadRecipesCallback
 import ru.buylist.utils.Event
 
 class RecipeViewModel(private val repository: RecipesDataSource) : ViewModel() {
 
-    var listIsEmpty = ObservableBoolean(true)
-    var fabIsShown = ObservableBoolean(true)
-    var isEditable: Boolean = false
-    var recipeTitle = ObservableField("")
+    private val _forceUpdate = MutableLiveData<Boolean>(false)
 
-    val wrappedRecipes = MutableLiveData<List<RecipeWrapper>>()
-            .apply { value = emptyList() }
-    var recipes = mutableListOf<Recipe>()
+    private val _recipes: LiveData<List<RecipeWrapper>> = _forceUpdate.switchMap { forceUpdate ->
+        if (forceUpdate) {
+            TODO("Load recipes from remote data source.")
+        }
+        repository.observeRecipes().distinctUntilChanged().switchMap { loadRecipes(it) }
+    }
+
+    val recipes: LiveData<List<RecipeWrapper>> = _recipes
+
+    val listIsEmpty: LiveData<Boolean> = Transformations.map(_recipes) {
+        it.isEmpty()
+    }
+
+    val fabIsShown = MutableLiveData<Boolean>(true)
+
+    private val _newRecipeEvent = MutableLiveData<Event<Recipe>>()
+    val newRecipeEvent: LiveData<Event<Recipe>> = _newRecipeEvent
 
     private val _detailsEvent = MutableLiveData<Event<Recipe>>()
     val detailsEvent: LiveData<Event<Recipe>> = _detailsEvent
 
-    init {
-        loadList()
-    }
 
-    fun save() {
-        val newRecipe = Recipe()
-        val title = recipeTitle.get().toString().trim()
-        if (title.isNotEmpty()) {
-            newRecipe.title = title
-        }
-        repository.saveRecipe(newRecipe)
-        recipes.add(newRecipe)
-        updateUi()
-        recipeTitle.set("")
-    }
 
-    fun saveEditedData(wrapper: RecipeWrapper, newTitle: String) {
-        if (newTitle.trim().isEmpty()) return
-
-        val list = extractDataFromWrappedRecipes()
-        wrapper.recipe.title = newTitle.trim()
-        recipes[wrapper.position].title = newTitle.trim()
-
-        updateWrappedRecipes(list, wrapper)
-        repository.updateRecipe(wrapper.recipe)
-        isEditable = false
+    fun addNewRecipe() {
+        _newRecipeEvent.value = Event(Recipe(0L))
     }
 
     fun edit(wrapper: RecipeWrapper) {
-        val list = extractDataFromWrappedRecipes()
-        updateWrappedRecipes(list, wrapper, true)
-        isEditable = true
+        _newRecipeEvent.value = Event(wrapper.recipe)
     }
 
-    fun delete(wrapper: RecipeWrapper) {
-        recipes.remove(wrapper.recipe)
+    fun delete(wrapper: RecipeWrapper) = viewModelScope.launch {
         repository.deleteRecipe(wrapper.recipe)
-        updateUi()
     }
 
     fun showHideFab(dy: Int) {
-        fabIsShown.set(dy <= 0)
+        fabIsShown.value = (dy <= 0)
     }
 
     fun showDetail(recipe: Recipe) {
         _detailsEvent.value = Event(recipe)
-    }
-
-    private fun updateUi() {
-        wrappedRecipes.value = getWrappedRecipes(recipes)
-        listIsEmpty.set(recipes.isEmpty())
-    }
-
-    private fun updateWrappedRecipes(list: MutableList<RecipeWrapper>, wrapper: RecipeWrapper,
-                                      isEditable: Boolean = false, isSelected: Boolean = false) {
-        val newWrapper = wrapper.copy(isEditable = isEditable, isSelected = isSelected)
-        list.removeAt(wrapper.position)
-        list.add(wrapper.position, newWrapper)
-        wrappedRecipes.value = list
-    }
-
-    private fun extractDataFromWrappedRecipes(): MutableList<RecipeWrapper> {
-        val list = mutableListOf<RecipeWrapper>()
-        wrappedRecipes.value?.let { list.addAll(it) }
-        return list
     }
 
     private fun getWrappedRecipes(recipes: List<Recipe>): List<RecipeWrapper> {
@@ -101,19 +65,16 @@ class RecipeViewModel(private val repository: RecipesDataSource) : ViewModel() {
         return newList
     }
 
-    private fun loadList() {
-        repository.getRecipes(object : LoadRecipesCallback {
-            override fun onRecipesLoaded(loadedRecipes: List<Recipe>) {
-                wrappedRecipes.value = getWrappedRecipes(loadedRecipes)
-                recipes.clear()
-                recipes.addAll(loadedRecipes)
-                listIsEmpty.set(recipes.isEmpty())
-            }
+    private fun loadRecipes(recipesResult: Result<List<Recipe>>): LiveData<List<RecipeWrapper>> {
+        val result = MutableLiveData<List<RecipeWrapper>>()
 
-            override fun onDataNotAvailable() {
-                listIsEmpty.set(true)
+        if (recipesResult is Success) {
+            viewModelScope.launch {
+                result.value = getWrappedRecipes(recipesResult.data)
             }
-
-        })
+        } else {
+            result.value = emptyList()
+        }
+        return result
     }
 }

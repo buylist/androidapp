@@ -14,8 +14,13 @@ data class Recipe(
         var cookingTime: String = "",
         var portion: String = ""
 ) {
-    val isEmpty get() =
-            (title == "(Без названия...)" || title.isEmpty()) &&
-            items.isEmpty()
+    val isEmpty
+        get() = (title == "(Без названия...)" || title.isEmpty()) && items.isEmpty()
 
+    val toolbarTitle
+        get() = if (title == "(Без названия...)" || title.isEmpty()) {
+            "Новый рецепт"
+        } else {
+            title
+        }
 }
