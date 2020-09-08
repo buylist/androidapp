@@ -9,7 +9,7 @@ import ru.buylist.data.entity.wrappers.RecipeWrapper
 import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.utils.Event
 
-class RecipeViewModel(private val repository: RecipesDataSource) : ViewModel() {
+class RecipesViewModel(private val repository: RecipesDataSource) : ViewModel() {
 
     private val _forceUpdate = MutableLiveData<Boolean>(false)
 

@@ -12,11 +12,11 @@ import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.adapters.RecipesAdapter
 import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
-import ru.buylist.view_models.RecipeViewModel
+import ru.buylist.view_models.RecipesViewModel
 
 class RecipesFragment : BaseFragment<FragmentRecipesBinding>() {
 
-    private val viewModel: RecipeViewModel by viewModels {
+    private val viewModel: RecipesViewModel by viewModels {
         InjectorUtils.provideRecipeViewModelFactory()
     }
 

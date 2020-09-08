@@ -1,20 +1,18 @@
 package ru.buylist.presentation.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
-import ru.buylist.data.entity.Recipe
 import ru.buylist.data.entity.wrappers.RecipeWrapper
 import ru.buylist.databinding.ItemRecipeBinding
-import ru.buylist.view_models.RecipeViewModel
+import ru.buylist.view_models.RecipesViewModel
 
 class RecipesAdapter(
-        private val viewModel: RecipeViewModel
+        private val viewModel: RecipesViewModel
 ) : ListAdapter<RecipeWrapper, GenericViewHolder>(RecipesDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
