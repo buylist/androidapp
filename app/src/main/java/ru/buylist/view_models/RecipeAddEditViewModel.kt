@@ -1,10 +1,8 @@
 package ru.buylist.view_models
 
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
+import ru.buylist.data.Result.*
 import ru.buylist.data.entity.Category
 import ru.buylist.data.entity.CookingStep
 import ru.buylist.data.entity.Item
@@ -13,91 +11,131 @@ import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.data.entity.wrappers.CookingStepWrapper
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.data.repositories.recipe.RecipesDataSource
-import ru.buylist.data.repositories.recipe.RecipesDataSource.*
 import ru.buylist.utils.Event
 import ru.buylist.utils.JsonUtils
+
+/**
+ * ViewModel for the Add/Edit screen.
+ */
 
 class RecipeAddEditViewModel(
         private val repository: RecipesDataSource,
         private val recipeId: Long) : ViewModel() {
 
-    var fabIsShown = ObservableBoolean(true)
-    var prevArrowIsShown = ObservableBoolean(true)
-    var nextArrowIsShown = ObservableBoolean(true)
+    private var _recipeId = NEW_RECIPE_ID
+
+    private var isEditable: Boolean = false
+
+    private var colorPosition = -1
+
+    // Fields for two-way databinding
     val recipeTitle = MutableLiveData<String>()
     val recipeCategory = MutableLiveData<String>()
     val recipeCookingTime = MutableLiveData<String>()
-    var itemName = ObservableField("")
-    var step = ObservableField("")
+    val itemName = MutableLiveData<String>()
+    val step = MutableLiveData<String>()
 
-    var isEditable: Boolean = false
-    private var colorPosition = -1
+    // Flags to show and hide buttons
+    val fabIsShown = MutableLiveData<Boolean>(true)
+    val prevArrowIsShown = MutableLiveData<Boolean>(true)
+    val nextArrowIsShown = MutableLiveData<Boolean>(true)
+
+    // Ingredients for the recipe
+    private val items = mutableListOf<Item>()
+    private val _wrappedItems = MutableLiveData<List<ItemWrapper>>()
+            .apply { value = getWrappedItems(items) }
+    val wrappedItems: LiveData<List<ItemWrapper>> = _wrappedItems
+
+    // Cooking steps for recipe
+    private val steps = mutableListOf<CookingStep>()
+    private val _wrappedSteps = MutableLiveData<List<CookingStepWrapper>>()
+            .apply { value = getWrappedSteps(steps) }
+    val wrappedSteps: LiveData<List<CookingStepWrapper>> = _wrappedSteps
+
+    // Markers that show the category of an ingredient using color
+    private val circles = mutableListOf<String>()
+    private val _wrappedCircles = MutableLiveData<List<CircleWrapper>>()
+            .apply { value = emptyList() }
+    val wrappedCircles: LiveData<List<CircleWrapper>> = _wrappedCircles
+
+    // Event that opens the recipe detail screen
+    private val _detailsEvent = MutableLiveData<Event<Recipe>>()
+    val detailsEvent: LiveData<Event<Recipe>> = _detailsEvent
 
     private lateinit var recipe: Recipe
-    val items = mutableListOf<Item>()
-    val cookingSteps = mutableListOf<CookingStep>()
-    private val circles = mutableListOf<String>()
-
-    val wrappedItems = MutableLiveData<List<ItemWrapper>>()
-            .apply { value = emptyList() }
-    val wrappedSteps = MutableLiveData<List<CookingStepWrapper>>()
-            .apply { value = emptyList() }
-    val wrappedCircles = MutableLiveData<List<CircleWrapper>>()
-            .apply { value = emptyList() }
-
-    private val _detailsEvent = MutableLiveData<Event<Long>>()
-    val detailsEvent: LiveData<Event<Long>> = _detailsEvent
 
 
-    init {
-        loadList()
-    }
 
-    fun getTitle(): String {
-        return recipe.title
+    fun start(recipeId: Long, newCircles: List<String>) {
+        _recipeId = recipeId
+        setupCircles(newCircles)
+        if (recipeId == NEW_RECIPE_ID) {
+            return
+        }
+
+        viewModelScope.launch {
+            repository.getRecipe(recipeId).let { result ->
+                if (result is Success) {
+                    onRecipeLoaded(result.data)
+                } else {
+                    onDataNotAvailable()
+                }
+            }
+        }
     }
 
     fun saveRecipe() {
-        val title = recipeTitle.value
-        if (title == null) {
-            // TODO: show snackbar "Введите название рецепта"
+        val recipe = Recipe()
+
+        val title = recipeTitle.value.toString().trim()
+        if (title.isEmpty() || items.isEmpty() || recipeTitle.value == null) {
+            // TODO: show snackbar "Введите название рецепта и добавьте ингредиенты."
             return
         }
+        recipe.title = title
+        recipe.items = JsonUtils.convertItemsToJson(items)
 
-        recipe.title = title.toString().trim()
-        if (recipe.isEmpty) {
-            // TODO: show snackbar "Заполните все обязательные поля: название, ингредиенты"
-            return
+        val category = recipeCategory.value.toString().trim()
+        if (category.isNotEmpty() && recipeCategory.value != null) {
+            recipe.category = category
         }
 
-        when(recipeId) {
-            0L -> repository.saveRecipe(recipe)
-            else -> repository.updateRecipe(recipe)
+        val time = recipeCookingTime.value.toString().trim()
+        if (time.isNotEmpty() && recipeCookingTime.value != null) {
+            recipe.cookingTime = time
         }
-        _detailsEvent.value = Event(recipeId)
+
+        if (steps.isNotEmpty()) {
+            recipe.cookingSteps = JsonUtils.convertCookingStepsToJson(steps)
+        }
+
+        when(_recipeId) {
+            NEW_RECIPE_ID -> createRecipe(recipe)
+            else -> updateRecipe(recipe)
+        }
+        _detailsEvent.value = Event(recipe)
     }
 
     fun addNewItem() {
-        val title = itemName.get().toString().trim()
-        if (title.isEmpty()) return
+        val name = itemName.value.toString().trim()
+        if (name.isEmpty() && itemName.value == null) return
 
-        val item = Item(name = title, category = getCategory())
+        val item = Item(name = name, category = getCategory())
+
         items.add(item)
         items.sortWith(compareBy({ it.category.color }, { it.id }))
         updateUi()
-        itemName.set("")
-        recipe.items = JsonUtils.convertItemsToJson(items)
+        itemName.value = null
     }
 
     fun addNewStep() {
-        val description = step.get().toString().trim()
+        val description = step.value.toString().trim()
         if (description.isEmpty()) return
 
-        val newStep = CookingStep(cookingSteps.size + 1, description)
-        cookingSteps.add(newStep)
+        val newStep = CookingStep(steps.size + 1, description)
+        steps.add(newStep)
         updateUi()
-        step.set("")
-        recipe.cookingSteps = JsonUtils.convertCookingStepsToJson(cookingSteps)
+        step.value = null
     }
 
     fun saveEditedItem(wrapper: ItemWrapper, newName: String) {
@@ -107,18 +145,18 @@ class RecipeAddEditViewModel(
 
         updateWrappedItems(list, wrapper, false)
         recipe.items = JsonUtils.convertItemsToJson(items)
-        repository.updateRecipe(recipe)
+        updateRecipe(recipe)
         isEditable = false
     }
 
     fun saveEditedStep(wrapper: CookingStepWrapper, newStep: String) {
         val list = extractDataFromWrappedSteps()
         wrapper.step.description = newStep
-        cookingSteps[wrapper.position].description = newStep
+        steps[wrapper.position].description = newStep
 
         updateWrappedSteps(list, wrapper, false)
-        recipe.cookingSteps = JsonUtils.convertCookingStepsToJson(cookingSteps)
-        repository.updateRecipe(recipe)
+        recipe.cookingSteps = JsonUtils.convertCookingStepsToJson(steps)
+        updateRecipe(recipe)
         isEditable = false
     }
 
@@ -143,14 +181,14 @@ class RecipeAddEditViewModel(
 
         items.remove(wrapper.item)
         recipe.items = JsonUtils.convertItemsToJson(items)
-        repository.updateRecipe(recipe)
+        updateRecipe(recipe)
         updateUi()
     }
 
     fun deleteStep(wrapper: CookingStepWrapper) {
-        cookingSteps.remove(wrapper.step)
-        recipe.cookingSteps = JsonUtils.convertCookingStepsToJson(cookingSteps)
-        repository.updateRecipe(recipe)
+        steps.remove(wrapper.step)
+        recipe.cookingSteps = JsonUtils.convertCookingStepsToJson(steps)
+        updateRecipe(recipe)
         updateUi()
     }
 
@@ -161,24 +199,26 @@ class RecipeAddEditViewModel(
     }
 
     fun updateCircle(selectedCircle: CircleWrapper) {
-        val circleList: MutableList<CircleWrapper> = wrappedCircles.value as MutableList<CircleWrapper>
+        val circleList: MutableList<CircleWrapper> = _wrappedCircles.value as MutableList<CircleWrapper>
         checkSelectedCircles(circleList)
         selectedCircle.isSelected = !selectedCircle.isSelected
     }
 
-    fun setupCircles(newCircles: List<String>) {
-        circles.clear()
-        circles.addAll(newCircles)
-        wrappedCircles.value = getWrappedCircles(newCircles)
-    }
-
     fun showHideArrows(prev: Boolean, next: Boolean) {
-        prevArrowIsShown.set(prev)
-        nextArrowIsShown.set(next)
+        prevArrowIsShown.value = prev
+        nextArrowIsShown.value = next
     }
 
     fun showHideFab(dy: Int) {
-        fabIsShown.set(dy <= 0)
+        fabIsShown.value = (dy <= 0)
+    }
+
+    private fun createRecipe(newRecipe: Recipe) = viewModelScope.launch {
+        repository.saveRecipe(newRecipe)
+    }
+
+    private fun updateRecipe(updatedRecipe: Recipe) = viewModelScope.launch {
+        repository.updateRecipe(updatedRecipe)
     }
 
     private fun getCategory(): Category {
@@ -189,8 +229,8 @@ class RecipeAddEditViewModel(
     }
 
     private fun updateUi() {
-        wrappedItems.value = getWrappedItems(items)
-        wrappedSteps.value = getWrappedSteps(cookingSteps)
+        _wrappedItems.value = getWrappedItems(items)
+        _wrappedSteps.value = getWrappedSteps(steps)
     }
 
     private fun updateWrappedSteps(list: MutableList<CookingStepWrapper>, wrapper: CookingStepWrapper,
@@ -198,7 +238,7 @@ class RecipeAddEditViewModel(
         val newWrapper = wrapper.copy(isEditable = isEditable, isSelected = isSelected)
         list.removeAt(wrapper.position)
         list.add(wrapper.position, newWrapper)
-        wrappedSteps.value = list
+        _wrappedSteps.value = list
     }
 
     private fun updateWrappedItems(list: MutableList<ItemWrapper>, wrapper: ItemWrapper,
@@ -206,7 +246,7 @@ class RecipeAddEditViewModel(
         val newWrapper = wrapper.copy(isEditable = isEditable, isSelected = isSelected)
         list.removeAt(wrapper.position)
         list.add(wrapper.position, newWrapper)
-        wrappedItems.value = list
+        _wrappedItems.value = list
     }
 
     private fun checkEditableItemField(list: MutableList<ItemWrapper>) {
@@ -254,7 +294,7 @@ class RecipeAddEditViewModel(
 
     private fun extractDataFromWrappedSteps(): MutableList<CookingStepWrapper> {
         val list = mutableListOf<CookingStepWrapper>()
-        wrappedSteps.value?.let { list.addAll(it) }
+        _wrappedSteps.value?.let { list.addAll(it) }
         return list
     }
 
@@ -285,25 +325,27 @@ class RecipeAddEditViewModel(
         return newList
     }
 
-    private fun loadList() {
-        repository.getRecipe(recipeId, object : GetRecipeCallback {
-            override fun onRecipeLoaded(loadedRecipe: Recipe) {
-                items.clear()
-                items.addAll(JsonUtils.convertItemsFromJson(loadedRecipe.items))
-                wrappedItems.value = getWrappedItems(items)
+    private fun setupCircles(newCircles: List<String>) {
+        circles.clear()
+        circles.addAll(newCircles)
+        _wrappedCircles.value = getWrappedCircles(newCircles)
+    }
 
-                cookingSteps.clear()
-                cookingSteps.addAll(JsonUtils.convertCookingStepsFromJson(loadedRecipe.cookingSteps))
-                wrappedSteps.value = getWrappedSteps(cookingSteps)
-                recipe = loadedRecipe
-            }
+    private fun onRecipeLoaded(recipe: Recipe) {
+        recipeTitle.value = recipe.title
+        recipeCategory.value = recipe.category
+        recipeCookingTime.value = recipe.cookingTime
+        items.addAll(JsonUtils.convertItemsFromJson(recipe.items))
+        steps.addAll(JsonUtils.convertCookingStepsFromJson(recipe.cookingSteps))
+        _wrappedItems.value = getWrappedItems(items)
+        _wrappedSteps.value = getWrappedSteps(steps)
+    }
 
-            override fun onDataNotAvailable() {
-                recipe = Recipe()
-            }
+    private fun onDataNotAvailable() {
 
-        })
     }
 
 
 }
+
+const val NEW_RECIPE_ID = 0L
