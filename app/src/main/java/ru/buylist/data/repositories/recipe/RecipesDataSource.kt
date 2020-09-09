@@ -30,5 +30,7 @@ interface RecipesDataSource {
 
     suspend fun getRecipes(): Result<List<Recipe>>
 
-    fun getRecipe(recipeId: Long, callback: GetRecipeCallback)
+    suspend fun getRecipe(recipeId: Long): Result<Recipe>
+
+    fun observeRecipe(recipeId: Long): LiveData<Result<Recipe>>
 }

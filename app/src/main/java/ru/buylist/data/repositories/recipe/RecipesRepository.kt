@@ -52,16 +52,22 @@ class RecipesRepository private constructor(
         }
     }
 
-    override fun getRecipe(recipeId: Long, callback: RecipesDataSource.GetRecipeCallback) {
-        executors.discIO().execute {
+    override suspend fun getRecipe(recipeId: Long): Result<Recipe> = withContext(ioDispatcher) {
+        try {
             val recipe = recipeDao.getRecipe(recipeId)
-            executors.mainThread().execute {
-                if (recipe == null) {
-                    callback.onDataNotAvailable()
-                } else {
-                    callback.onRecipeLoaded(recipe)
-                }
+            if (recipe == null) {
+                return@withContext Error(Exception("Рецепт не найден"))
+            } else {
+                return@withContext Success(recipe)
             }
+        } catch (e: Exception) {
+            return@withContext Error(e)
+        }
+    }
+
+    override fun observeRecipe(recipeId: Long): LiveData<Result<Recipe>> {
+        return recipeDao.observeRecipeById(recipeId).map {
+            Success(it)
         }
     }
 
