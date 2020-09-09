@@ -54,11 +54,13 @@ object BindingAdapters {
 
     @BindingAdapter("app:recipeItems")
     @JvmStatic
-    fun setRecipeItems(recycler: RecyclerView, items: List<ItemWrapper>) {
+    fun setRecipeItems(recycler: RecyclerView, items: List<ItemWrapper>?) {
         with(recycler.adapter as ConcatAdapter) {
-            for (adapter in adapters) {
-                if (adapter is RecipeItemsAdapter) {
-                    adapter.setData(items)
+            items?.let {
+                for (adapter in adapters) {
+                    if (adapter is RecipeItemsAdapter) {
+                        adapter.submitList(items)
+                    }
                 }
             }
         }
@@ -66,11 +68,13 @@ object BindingAdapters {
 
     @BindingAdapter("app:recipeSteps")
     @JvmStatic
-    fun setRecipeSteps(recycler: RecyclerView, steps: List<CookingStepWrapper>) {
+    fun setRecipeSteps(recycler: RecyclerView, steps: List<CookingStepWrapper>?) {
         with(recycler.adapter as ConcatAdapter) {
-            for (adapter in adapters) {
-                if (adapter is RecipeStepsAdapter) {
-                    adapter.setData(steps)
+            steps?.let {
+                for (adapter in adapters) {
+                    if (adapter is RecipeStepsAdapter) {
+                        adapter.submitList(steps)
+                    }
                 }
             }
         }

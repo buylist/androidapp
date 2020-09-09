@@ -10,8 +10,7 @@ import ru.buylist.data.entity.wrappers.CookingStepWrapper
 import ru.buylist.databinding.ItemRecipeCookingStepBinding
 import ru.buylist.presentation.adapters.GenericViewHolder
 
-class RecipeStepsAdapter(var steps: List<CookingStepWrapper>)
-    : ListAdapter<CookingStepWrapper, GenericViewHolder>(RecipeStepsDiffCallback()) {
+class RecipeStepsAdapter : ListAdapter<CookingStepWrapper, GenericViewHolder>(RecipeStepsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val binding: ItemRecipeCookingStepBinding = DataBindingUtil.inflate(
@@ -25,10 +24,6 @@ class RecipeStepsAdapter(var steps: List<CookingStepWrapper>)
         holder.bind(position)
     }
 
-    fun setData(newSteps: List<CookingStepWrapper>) {
-        steps = newSteps
-        submitList(steps)
-    }
 
 
     // ViewHolder
@@ -36,9 +31,11 @@ class RecipeStepsAdapter(var steps: List<CookingStepWrapper>)
         : GenericViewHolder(binding.root) {
 
         override fun bind(position: Int) {
+            val wrapper = getItem(position)
             binding.tvNumberOfStep.text = itemView.context
-                    .getString(R.string.number_of_step, position + 1)
-            binding.wrapper = steps[position]
+                    .getString(R.string.number_of_step, wrapper.step.number)
+            binding.wrapper = wrapper
+            binding.executePendingBindings()
         }
 
     }

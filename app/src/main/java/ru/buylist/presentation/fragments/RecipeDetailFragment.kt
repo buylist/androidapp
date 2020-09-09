@@ -43,7 +43,7 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
     }
 
     private fun setupNavigation() {
-        viewModel.editEvent.observe(this, EventObserver { recipe ->
+        viewModel.editEvent.observe(viewLifecycleOwner, EventObserver { recipe ->
             val action = RecipeDetailFragmentDirections
                     .actionRecipeDetailFragmentToRecipeAddEditFragment(recipe.id, recipe.title)
             findNavController().navigate(action)
@@ -53,9 +53,9 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
     private fun setupAdapter() {
         val generalInfoAdapter = RecipeDetailGeneralInfoAdapter(viewModel)
         val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.ingredient_text))
-        val itemsAdapter = RecipeItemsAdapter(emptyList())
+        val itemsAdapter = RecipeItemsAdapter()
         val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.cooking_steps_text))
-        val stepsAdapter = RecipeStepsAdapter(emptyList())
+        val stepsAdapter = RecipeStepsAdapter()
         val concatAdapter = ConcatAdapter(generalInfoAdapter, itemsHeaderAdapter, itemsAdapter,
                 stepsHeaderAdapter, stepsAdapter)
         recycler.adapter = concatAdapter

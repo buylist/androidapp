@@ -2,7 +2,6 @@ package ru.buylist.presentation.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
@@ -19,7 +18,8 @@ import ru.buylist.R
 import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentRecipeAddEditBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.presentation.adapters.*
+import ru.buylist.presentation.adapters.CircleItemClickListener
+import ru.buylist.presentation.adapters.CirclesAdapter
 import ru.buylist.presentation.adapters.recipe_adapters.*
 import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
@@ -159,10 +159,10 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         val generalHeaderAdapter = RecipeHeaderAdapter(getString(R.string.tv_general_header))
         val generalInfoAdapter = RecipeGeneralInfoAdapter(viewModel)
         val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.ingredient_text))
-        val itemsAdapter = RecipeItemsAdapter(emptyList())
+        val itemsAdapter = RecipeItemsAdapter()
         val itemsButtonAdapter = RecipeButtonAdapter(getString(R.string.btn_new_ingredient_description), newItemButtonCallback)
         val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.cooking_steps_text))
-        val stepsAdapter = RecipeStepsAdapter(emptyList())
+        val stepsAdapter = RecipeStepsAdapter()
         val stepsButtonAdapter = RecipeButtonAdapter(getString(R.string.add_new_step), newStepButtonCallback)
         val concatAdapter = ConcatAdapter(generalHeaderAdapter, generalInfoAdapter,
                 itemsHeaderAdapter, itemsAdapter, itemsButtonAdapter,

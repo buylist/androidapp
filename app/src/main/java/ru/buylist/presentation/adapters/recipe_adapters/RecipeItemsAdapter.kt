@@ -11,7 +11,8 @@ import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.databinding.ItemBuyListDetailBinding
 import ru.buylist.presentation.adapters.GenericViewHolder
 
-class RecipeItemsAdapter(var items: List<ItemWrapper>) : ListAdapter<ItemWrapper, GenericViewHolder>(RecipeItemsDiffCallback()) {
+class RecipeItemsAdapter : ListAdapter<ItemWrapper, GenericViewHolder>(RecipeItemsDiffCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val binding: ItemBuyListDetailBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
@@ -24,18 +25,14 @@ class RecipeItemsAdapter(var items: List<ItemWrapper>) : ListAdapter<ItemWrapper
         holder.bind(position)
     }
 
-    fun setData(newItems: List<ItemWrapper>) {
-        items = newItems
-        submitList(items)
-    }
-
-
     // ViewHolder
     private inner class RecipeItemsViewHolder(val binding: ItemBuyListDetailBinding) : GenericViewHolder(binding.root) {
 
         override fun bind(position: Int) {
-            binding.item = items[position]
-            binding.imgCategoryCircle.setColorFilter(Color.parseColor(items[position].item.category.color))
+            val wrapper = getItem(position)
+            binding.item = wrapper
+            binding.imgCategoryCircle.setColorFilter(Color.parseColor(wrapper.item.category.color))
+            binding.executePendingBindings()
         }
 
     }
