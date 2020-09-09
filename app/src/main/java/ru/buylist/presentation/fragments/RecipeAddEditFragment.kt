@@ -40,12 +40,12 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
     override fun setupBindings(binding: FragmentRecipeAddEditBinding) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this.viewLifecycleOwner
+        viewModel.start(args.recipeId, resources.getStringArray(R.array.category_color).toList())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setupCircles(resources.getStringArray(R.array.category_color).toList())
         fab_add.setOnClickListener { viewModel.saveRecipe() }
 
         btn_create_item.setOnClickListener{
@@ -56,10 +56,9 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         setupAdapter()
         setupArrowListeners()
 
-        viewModel.detailsEvent.observe(this, EventObserver {
-            Log.i("TAG2", "details event ")
+        viewModel.detailsEvent.observe(viewLifecycleOwner, EventObserver { recipe ->
             val action = RecipeAddEditFragmentDirections
-                    .actionRecipeAddEditFragmentToRecipeDetailFragment(it, viewModel.getTitle())
+                    .actionRecipeAddEditFragmentToRecipeDetailFragment(recipe.id, recipe.title)
             findNavController().navigate(action)
         })
     }
