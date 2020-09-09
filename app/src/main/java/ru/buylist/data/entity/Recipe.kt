@@ -10,8 +10,8 @@ data class Recipe(
         var items: String = "",
         var cookingSteps: String = "",
         var image: String = "",
-        var category: String = "",
-        var cookingTime: String = "",
+        var category: String = "Неизвестно",
+        var cookingTime: String = "Неизвестно",
         var portion: String = ""
 ) {
     val isEmpty
