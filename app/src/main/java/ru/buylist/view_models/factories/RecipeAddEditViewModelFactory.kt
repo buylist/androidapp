@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.view_models.RecipeAddEditViewModel
-import ru.buylist.view_models.RecipeViewModel
 
 class RecipeAddEditViewModelFactory(
         private val repository: RecipesDataSource,
