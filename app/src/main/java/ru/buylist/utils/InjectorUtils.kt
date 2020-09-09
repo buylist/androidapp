@@ -30,8 +30,8 @@ object InjectorUtils {
     fun providePatternDetailViewModelFactory(patternId: Long) =
             PatternDetailViewModelFactory(getPatternsRepository(), getGlobalItemsRepository(), patternId)
 
-    fun provideRecipeAddEditViewModelFactory(recipeId: Long) =
-            RecipeAddEditViewModelFactory(getRecipesRepository(), recipeId)
+    fun provideRecipeAddEditViewModelFactory() =
+            RecipeAddEditViewModelFactory(getRecipesRepository())
 
     fun provideRecipeDetailViewModelFactory(recipeId: Long) =
             RecipeDetailViewModelFactory(getRecipesRepository(), recipeId)

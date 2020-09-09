@@ -18,9 +18,7 @@ import ru.buylist.utils.JsonUtils
  * ViewModel for the Add/Edit screen.
  */
 
-class RecipeAddEditViewModel(
-        private val repository: RecipesDataSource,
-        private val recipeId: Long) : ViewModel() {
+class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewModel() {
 
     private var _recipeId = NEW_RECIPE_ID
 
