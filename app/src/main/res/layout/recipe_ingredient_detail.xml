@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="ru.buylist.data.entity.wrappers.ItemWrapper" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:minHeight="70dp"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/img_category_circle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/category_marker_description"
+                android:layout_gravity="center"
+                android:src="@drawable/circle"
+                app:tint="@color/colorNavNormal" />
+
+            <TextView
+                android:id="@+id/tv_item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:textSize="@dimen/default_text_size"
+                android:text="@{item.item.name}"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDivider"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"/>
+    </LinearLayout>
+</layout>

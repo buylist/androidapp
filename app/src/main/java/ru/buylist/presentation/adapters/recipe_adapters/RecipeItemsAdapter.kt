@@ -8,15 +8,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
 import ru.buylist.data.entity.wrappers.ItemWrapper
-import ru.buylist.databinding.ItemBuyListDetailBinding
+import ru.buylist.databinding.RecipeIngredientDetailBinding
 import ru.buylist.presentation.adapters.GenericViewHolder
 
 class RecipeItemsAdapter : ListAdapter<ItemWrapper, GenericViewHolder>(RecipeItemsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
-        val binding: ItemBuyListDetailBinding = DataBindingUtil.inflate(
+        val binding: RecipeIngredientDetailBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.item_buy_list_detail,
+                R.layout.recipe_ingredient_detail,
                 parent, false)
         return RecipeItemsViewHolder(binding)
     }
@@ -26,7 +26,7 @@ class RecipeItemsAdapter : ListAdapter<ItemWrapper, GenericViewHolder>(RecipeIte
     }
 
     // ViewHolder
-    private inner class RecipeItemsViewHolder(val binding: ItemBuyListDetailBinding) : GenericViewHolder(binding.root) {
+    private inner class RecipeItemsViewHolder(val binding: RecipeIngredientDetailBinding) : GenericViewHolder(binding.root) {
 
         override fun bind(position: Int) {
             val wrapper = getItem(position)
