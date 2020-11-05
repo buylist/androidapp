@@ -50,7 +50,6 @@ object InjectorUtils {
 
     private fun getRecipesRepository(): RecipesDataSource {
         return RecipesRepository.getInstance(
-                getExecutors(),
                 BuyListApp.get().getDatabase().recipeDao())
     }
 

@@ -13,7 +13,6 @@ import ru.buylist.utils.AppExecutors
 import java.lang.Exception
 
 class RecipesRepository private constructor(
-        private val executors: AppExecutors,
         private val recipeDao: RecipeDao,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RecipesDataSource {
@@ -75,9 +74,9 @@ class RecipesRepository private constructor(
         @Volatile
         private var instance: RecipesRepository? = null
 
-        fun getInstance(executors: AppExecutors, recipeDao: RecipeDao) =
+        fun getInstance(recipeDao: RecipeDao) =
                 instance ?: synchronized(this) {
-                    instance ?: RecipesRepository(executors, recipeDao).also { instance = it }
+                    instance ?: RecipesRepository(recipeDao).also { instance = it }
                 }
     }
 
