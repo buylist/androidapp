@@ -1,8 +1,11 @@
 package ru.buylist.view_models
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.buylist.data.Result.*
+import ru.buylist.data.Result.Success
 import ru.buylist.data.entity.Category
 import ru.buylist.data.entity.CookingStep
 import ru.buylist.data.entity.Item
@@ -63,7 +66,6 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     private lateinit var recipe: Recipe
 
 
-
     fun start(recipeId: Long, newCircles: List<String>) {
         _recipeId = recipeId
         setupCircles(newCircles)
@@ -107,11 +109,13 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
             recipe.cookingSteps = JsonUtils.convertCookingStepsToJson(steps)
         }
 
-        when(_recipeId) {
+        when (_recipeId) {
             NEW_RECIPE_ID -> createRecipe(recipe)
-            else -> updateRecipe(recipe)
+            else -> {
+                recipe.id = _recipeId
+                updateRecipe(recipe)
+            }
         }
-        _detailsEvent.value = Event(recipe)
     }
 
     fun addNewItem() {
@@ -213,10 +217,12 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
 
     private fun createRecipe(newRecipe: Recipe) = viewModelScope.launch {
         repository.saveRecipe(newRecipe)
+        _detailsEvent.value = Event(newRecipe)
     }
 
     private fun updateRecipe(updatedRecipe: Recipe) = viewModelScope.launch {
         repository.updateRecipe(updatedRecipe)
+        _detailsEvent.value = Event(updatedRecipe)
     }
 
     private fun getCategory(): Category {

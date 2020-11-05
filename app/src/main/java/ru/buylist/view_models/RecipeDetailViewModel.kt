@@ -15,6 +15,10 @@ import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.utils.Event
 import ru.buylist.utils.JsonUtils
 
+/**
+ * ViewModel for the recipe detail screen.
+ */
+
 class RecipeDetailViewModel(
         private val repository: RecipesDataSource,
         private val recipeId: Long) : ViewModel() {
@@ -27,6 +31,7 @@ class RecipeDetailViewModel(
             .apply { value = emptyList() }
 
     private lateinit var _recipe: Recipe
+
     val recipe = MutableLiveData<Recipe>()
 
     private val _editEvent = MutableLiveData<Event<Recipe>>()
@@ -73,7 +78,7 @@ class RecipeDetailViewModel(
                     wrappedSteps.value = getWrappedSteps(JsonUtils
                             .convertCookingStepsFromJson(result.data.cookingSteps))
                 } else {
-                    TODO("Error while loading recipe")
+                    TODO("Error while loading recipe $result")
                 }
             }
         }
