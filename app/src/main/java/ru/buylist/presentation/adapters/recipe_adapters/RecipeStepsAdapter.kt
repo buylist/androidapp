@@ -7,15 +7,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
 import ru.buylist.data.entity.wrappers.CookingStepWrapper
-import ru.buylist.databinding.ItemRecipeCookingStepBinding
+import ru.buylist.databinding.RecipeCookingStepDetailBinding
 import ru.buylist.presentation.adapters.GenericViewHolder
 
 class RecipeStepsAdapter : ListAdapter<CookingStepWrapper, GenericViewHolder>(RecipeStepsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
-        val binding: ItemRecipeCookingStepBinding = DataBindingUtil.inflate(
+        val binding: RecipeCookingStepDetailBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.item_recipe_cooking_step,
+                R.layout.recipe_cooking_step_detail,
                 parent, false)
         return RecipeStepsViewHolder(binding)
     }
@@ -27,7 +27,7 @@ class RecipeStepsAdapter : ListAdapter<CookingStepWrapper, GenericViewHolder>(Re
 
 
     // ViewHolder
-    private inner class RecipeStepsViewHolder(val binding: ItemRecipeCookingStepBinding)
+    private inner class RecipeStepsViewHolder(val binding: RecipeCookingStepDetailBinding)
         : GenericViewHolder(binding.root) {
 
         override fun bind(position: Int) {
