@@ -116,7 +116,7 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
 
     fun addNewItem() {
         val name = itemName.value.toString().trim()
-        if (name.isEmpty() && itemName.value == null) return
+        if (name.isEmpty() || itemName.value == null) return
 
         val item = Item(name = name, category = getCategory())
 
@@ -128,7 +128,7 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
 
     fun addNewStep() {
         val description = step.value.toString().trim()
-        if (description.isEmpty()) return
+        if (description.isEmpty() || step.value == null) return
 
         val newStep = CookingStep(steps.size + 1, description)
         steps.add(newStep)
