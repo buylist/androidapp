@@ -3,13 +3,15 @@ package ru.buylist.view_models
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import ru.buylist.data.Result.Success
 import ru.buylist.data.entity.CookingStep
 import ru.buylist.data.entity.Item
 import ru.buylist.data.entity.Recipe
 import ru.buylist.data.entity.wrappers.CookingStepWrapper
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.data.repositories.recipe.RecipesDataSource
-import ru.buylist.data.repositories.recipe.RecipesDataSource.*
 import ru.buylist.utils.Event
 import ru.buylist.utils.JsonUtils
 
@@ -61,20 +63,19 @@ class RecipeDetailViewModel(
     }
 
     private fun loadRecipe() {
-        repository.getRecipe(recipeId, object : GetRecipeCallback {
-            override fun onRecipeLoaded(loadedRecipe: Recipe) {
-                _recipe = loadedRecipe
-                recipe.value = loadedRecipe
-                wrappedItems.value = getWrappedItems(JsonUtils
-                        .convertItemsFromJson(loadedRecipe.items))
-                wrappedSteps.value = getWrappedSteps(JsonUtils
-                        .convertCookingStepsFromJson(loadedRecipe.cookingSteps))
+        viewModelScope.launch {
+            repository.getRecipe(recipeId).let { result ->
+                if (result is Success) {
+                    _recipe = result.data
+                    recipe.value = result.data
+                    wrappedItems.value = getWrappedItems(JsonUtils
+                            .convertItemsFromJson(result.data.items))
+                    wrappedSteps.value = getWrappedSteps(JsonUtils
+                            .convertCookingStepsFromJson(result.data.cookingSteps))
+                } else {
+                    TODO("Error while loading recipe")
+                }
             }
-
-            override fun onDataNotAvailable() {
-                // TODO: show error "Error while loading recipe"
-            }
-
-        })
+        }
     }
 }
