@@ -6,11 +6,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.buylist.data.Result
-import ru.buylist.data.Result.*
+import ru.buylist.data.Result.Error
+import ru.buylist.data.Result.Success
 import ru.buylist.data.dao.RecipeDao
 import ru.buylist.data.entity.Recipe
-import ru.buylist.utils.AppExecutors
-import java.lang.Exception
 
 class RecipesRepository private constructor(
         private val recipeDao: RecipeDao,
