@@ -9,6 +9,10 @@
         <variable
             name="item"
             type="ru.buylist.data.entity.wrappers.ItemWrapper" />
+
+        <variable
+            name="callback"
+            type="ru.buylist.presentation.adapters.recipe_adapters.RecipeItemListener" />
     </data>
 
     <LinearLayout
@@ -17,10 +21,9 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:minHeight="70dp"
             android:padding="8dp">
 
@@ -28,8 +31,9 @@
                 android:id="@+id/img_category_circle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
                 android:contentDescription="@string/category_marker_description"
-                android:layout_gravity="center"
+                android:layout_centerVertical="true"
                 android:src="@drawable/circle"
                 app:tint="@color/colorNavNormal" />
 
@@ -37,13 +41,25 @@
                 android:id="@+id/tv_item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/img_category_circle"
+                android:layout_toStartOf="@+id/btn_more"
                 android:layout_marginStart="8dp"
-                android:layout_gravity="center"
+                android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
                 android:textSize="@dimen/default_text_size"
                 android:text="@{item.item.name}"/>
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/btn_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_more"
+                app:tint="@color/colorNavNormal"
+                android:onClick="@{()-> callback.onButtonMoreClick(item)}"/>
+
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"

@@ -159,7 +159,7 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         val generalHeaderAdapter = RecipeHeaderAdapter(getString(R.string.tv_general_header))
         val generalInfoAdapter = RecipeGeneralInfoAdapter(viewModel)
         val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.ingredient_text))
-        val itemsAdapter = RecipeItemsAdapter()
+        val itemsAdapter = RecipeItemsAdapter(viewModel)
         val itemsButtonAdapter = RecipeButtonAdapter(getString(R.string.btn_new_ingredient_description), newItemButtonCallback)
         val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.cooking_steps_text))
         val stepsAdapter = RecipeStepsAdapter()
