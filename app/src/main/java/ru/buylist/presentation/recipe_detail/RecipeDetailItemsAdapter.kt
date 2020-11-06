@@ -15,7 +15,7 @@ import ru.buylist.presentation.adapters.GenericViewHolder
  * Adapter for the ingredients on recipe detail screen.
  */
 
-class RecipeItemsAdapter : ListAdapter<ItemWrapper, GenericViewHolder>(RecipeItemsDiffCallback()) {
+class RecipeDetailItemsAdapter : ListAdapter<ItemWrapper, GenericViewHolder>(RecipeItemsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val binding: RecipeIngredientDetailBinding = DataBindingUtil.inflate(

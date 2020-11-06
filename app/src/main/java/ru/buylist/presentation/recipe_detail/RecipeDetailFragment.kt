@@ -48,7 +48,7 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
     private fun setupAdapter() {
         val generalInfoAdapter = RecipeDetailGeneralInfoAdapter(viewModel)
         val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.ingredient_text))
-        val itemsAdapter = RecipeItemsAdapter()
+        val itemsAdapter = RecipeDetailItemsAdapter()
         val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.cooking_steps_text))
         val stepsAdapter = RecipeStepsAdapter()
         val concatAdapter = ConcatAdapter(generalInfoAdapter, itemsHeaderAdapter, itemsAdapter,
