@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
@@ -41,12 +42,13 @@ class RecipeAddEditItemsAdapter(val viewModel: RecipeAddEditViewModel) : ListAda
         override fun bind(position: Int) {
             val wrapper = getItem(position)
             binding.item = wrapper
+            binding.card.setBackgroundColor(if (wrapper.isEditable) Color.WHITE else 0)
             binding.imgCategoryCircle.setColorFilter(Color.parseColor(wrapper.item.category.color))
-            binding.callback = getListener(itemView.context, binding.btnMore)
+            binding.callback = getListener(itemView.context, binding.btnMore, binding.fieldItemTitle)
             binding.executePendingBindings()
         }
 
-        private fun getListener(context: Context, btnMore: View): RecipeItemListener {
+        private fun getListener(context: Context, btnMore: View, field: EditText): RecipeItemListener {
             return object : RecipeItemListener {
                 override fun onButtonMoreClick(wrapper: ItemWrapper) {
                     PopupMenu(context, btnMore).apply {
@@ -55,6 +57,8 @@ class RecipeAddEditItemsAdapter(val viewModel: RecipeAddEditViewModel) : ListAda
                             when (item.itemId) {
                                 R.id.edit -> {
                                     viewModel.editItem(wrapper)
+                                    field.requestFocus()
+                                    field.setSelection(field.text.length)
                                 }
                                 R.id.delete -> viewModel.deleteItem(wrapper)
                             }
@@ -65,7 +69,7 @@ class RecipeAddEditItemsAdapter(val viewModel: RecipeAddEditViewModel) : ListAda
                 }
 
                 override fun onButtonSaveClick(itemWrapper: ItemWrapper) {
-                    viewModel.saveEditedItem(itemWrapper, binding.fieldItemTitle.toString())
+                    viewModel.saveEditedItem(itemWrapper, binding.fieldItemTitle.text.toString())
                 }
 
             }
@@ -83,7 +87,7 @@ class RecipeItemsDiffCallback : DiffUtil.ItemCallback<ItemWrapper>() {
     }
 
     override fun areContentsTheSame(oldItem: ItemWrapper, newItem: ItemWrapper): Boolean {
-        return oldItem.item == newItem.item
+        return oldItem == newItem
     }
 
 }

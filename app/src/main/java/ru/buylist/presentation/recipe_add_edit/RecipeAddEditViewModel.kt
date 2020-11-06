@@ -22,8 +22,8 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
 
     private var _recipeId = NEW_RECIPE_ID
 
-    private var isEditable: Boolean = false
-
+    private var ingredientToEdit = NO_EDIT
+    private var stepToEdit = NO_EDIT
     private var colorPosition = -1
 
     // Fields for two-way databinding
@@ -43,7 +43,6 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     private val _wrappedIngredients = MutableLiveData<List<ItemWrapper>>()
             .apply { value = getWrappedItems(ingredients) }
     val wrappedIngredients: LiveData<List<ItemWrapper>> = _wrappedIngredients
-
 
     // Cooking steps for recipe
     private val steps = mutableListOf<CookingStep>()
@@ -138,42 +137,50 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
         step.value = null
     }
 
-    fun saveEditedItem(wrapper: ItemWrapper, newName: String) {
-        val list = extractDataFromWrappedItems()
-        wrapper.item.name = newName
-        ingredients[wrapper.position].name = newName
-
-        updateWrappedItems(list, wrapper, false)
-        recipe.items = JsonUtils.convertItemsToJson(ingredients)
-        updateRecipe(recipe)
-        isEditable = false
-    }
-
-    fun saveEditedStep(wrapper: CookingStepWrapper, newStep: String) {
-        val list = extractDataFromWrappedSteps()
-        wrapper.step.description = newStep
-        steps[wrapper.position].description = newStep
-
-        updateWrappedSteps(list, wrapper, false)
-        recipe.cookingSteps = JsonUtils.convertCookingStepsToJson(steps)
-        updateRecipe(recipe)
-        isEditable = false
-    }
-
     fun editItem(wrapper: ItemWrapper) {
         val items = extractDataFromWrappedItems()
-        checkEditableItemField(items)
-        checkEditableStepField(extractDataFromWrappedSteps())
-        updateWrappedItems(items, wrapper, true)
-        isEditable = true
+
+        if (ingredientToEdit >= 0 && ingredientToEdit < items.size) {
+            updateWrappedItems(items, ingredientToEdit)
+        }
+
+        if (stepToEdit >= 0 && stepToEdit < steps.size) {
+
+        }
+
+        ingredientToEdit = wrapper.position
+        updateWrappedItems(items, ingredientToEdit, isEditable = true)
+    }
+
+    fun saveEditedItem(wrapper: ItemWrapper, newName: String) {
+        val list = extractDataFromWrappedItems()
+        list[wrapper.position].item.name = newName
+        ingredients[wrapper.position].name = newName
+        updateWrappedItems(list, wrapper.position)
+        ingredientToEdit = NO_EDIT
     }
 
     fun editStep(wrapper: CookingStepWrapper) {
         val steps = extractDataFromWrappedSteps()
-        checkEditableStepField(steps)
-        checkEditableItemField(extractDataFromWrappedItems())
-        updateWrappedSteps(steps, wrapper, true)
-        isEditable = true
+
+        if (stepToEdit >= 0 && stepToEdit < steps.size) {
+            updateWrappedSteps(steps, stepToEdit)
+        }
+
+        if (ingredientToEdit >= 0 && ingredientToEdit < ingredients.size) {
+
+        }
+
+        stepToEdit = wrapper.position
+        updateWrappedSteps(steps, stepToEdit, true)
+    }
+
+    fun saveEditedStep(wrapper: CookingStepWrapper, newStep: String) {
+        val list = extractDataFromWrappedSteps()
+        list[wrapper.position].step.description = newStep
+        steps[wrapper.position].description = newStep
+        updateWrappedSteps(list, wrapper.position)
+        stepToEdit = NO_EDIT
     }
 
     fun deleteItem(wrapper: ItemWrapper) {
@@ -235,46 +242,20 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
         _wrappedSteps.value = getWrappedSteps(steps)
     }
 
-    private fun updateWrappedSteps(list: MutableList<CookingStepWrapper>, wrapper: CookingStepWrapper,
+    private fun updateWrappedSteps(list: MutableList<CookingStepWrapper>, position: Int,
                                    isEditable: Boolean = false, isSelected: Boolean = false) {
-        val newWrapper = wrapper.copy(isEditable = isEditable, isSelected = isSelected)
-        list.removeAt(wrapper.position)
-        list.add(wrapper.position, newWrapper)
+        val newWrapper = list[position].copy(isEditable = isEditable, isSelected = isSelected)
+        list.removeAt(position)
+        list.add(position, newWrapper)
         _wrappedSteps.value = list
     }
 
-    private fun updateWrappedItems(list: MutableList<ItemWrapper>, wrapper: ItemWrapper,
+    private fun updateWrappedItems(list: MutableList<ItemWrapper>, position: Int,
                                    isEditable: Boolean = false, isSelected: Boolean = false) {
-        val newWrapper = wrapper.copy(isEditable = isEditable, isSelected = isSelected)
-        list.removeAt(wrapper.position)
-        list.add(wrapper.position, newWrapper)
+        val newWrapper = list[position].copy(isEditable = isEditable, isSelected = isSelected)
+        list.removeAt(position)
+        list.add(position, newWrapper)
         _wrappedIngredients.value = list
-    }
-
-    private fun checkEditableItemField(list: MutableList<ItemWrapper>) {
-        if (isEditable) {
-            val iterator = list.iterator()
-            while (iterator.hasNext()) {
-                val item = iterator.next()
-                if (item.isEditable) {
-                    updateWrappedItems(list, item)
-                    break
-                }
-            }
-        }
-    }
-
-    private fun checkEditableStepField(list: MutableList<CookingStepWrapper>) {
-        if (isEditable) {
-            val iterator = list.iterator()
-            while (iterator.hasNext()) {
-                val item = iterator.next()
-                if (item.isEditable) {
-                    updateWrappedSteps(list, item)
-                    break
-                }
-            }
-        }
     }
 
     private fun checkSelectedCircles(list: MutableList<CircleWrapper>) {
@@ -351,3 +332,4 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
 }
 
 const val NEW_RECIPE_ID = 0L
+const val NO_EDIT = -1
