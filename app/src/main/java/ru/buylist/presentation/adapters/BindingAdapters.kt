@@ -5,8 +5,9 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.buylist.data.entity.wrappers.*
-import ru.buylist.presentation.recipe_detail.RecipeItemsAdapter
-import ru.buylist.presentation.recipe_detail.RecipeStepsAdapter
+import ru.buylist.presentation.recipe_add_edit.RecipeAddEditItemsAdapter
+import ru.buylist.presentation.recipe_add_edit.RecipeAddEditStepsAdapter
+import ru.buylist.presentation.recipe_detail.RecipeDetailStepsAdapter
 
 object BindingAdapters {
 
@@ -58,7 +59,7 @@ object BindingAdapters {
         with(recycler.adapter as ConcatAdapter) {
             items?.let {
                 for (adapter in adapters) {
-                    if (adapter is RecipeItemsAdapter) {
+                    if (adapter is RecipeAddEditItemsAdapter) {
                         adapter.submitList(items)
                     }
                 }
@@ -72,7 +73,7 @@ object BindingAdapters {
         with(recycler.adapter as ConcatAdapter) {
             steps?.let {
                 for (adapter in adapters) {
-                    if (adapter is RecipeStepsAdapter) {
+                    if (adapter is RecipeAddEditStepsAdapter) {
                         adapter.submitList(steps)
                     }
                 }
