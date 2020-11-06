@@ -1,4 +1,4 @@
-package ru.buylist.presentation.adapters.recipe_adapters
+package ru.buylist.presentation.recipe_detail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

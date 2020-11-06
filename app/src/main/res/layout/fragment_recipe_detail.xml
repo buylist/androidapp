@@ -8,7 +8,7 @@
 
         <variable
             name="view_model"
-            type="ru.buylist.view_models.RecipeDetailViewModel" />
+            type="ru.buylist.presentation.recipe_detail.RecipeDetailViewModel" />
 
         <variable
             name="recipe"
@@ -24,8 +24,7 @@
             android:id="@+id/layout_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_margin="8dp">
+            android:orientation="vertical">
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -35,7 +34,7 @@
                 android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:recipeItems="@{view_model.wrappedItems}"
-                app:recipeSteps="@{view_model.wrappedSteps}"/>
+                app:recipeSteps="@{view_model.wrappedSteps}" />
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

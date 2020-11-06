@@ -1,4 +1,4 @@
-package ru.buylist.presentation.fragments
+package ru.buylist.presentation.recipe_detail
 
 import android.os.Bundle
 import android.view.View
@@ -11,13 +11,9 @@ import kotlinx.android.synthetic.main.fragment_recipe_detail.*
 import ru.buylist.R
 import ru.buylist.databinding.FragmentRecipeDetailBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.presentation.adapters.recipe_adapters.RecipeDetailGeneralInfoAdapter
 import ru.buylist.presentation.adapters.recipe_adapters.RecipeHeaderAdapter
-import ru.buylist.presentation.adapters.recipe_adapters.RecipeItemsAdapter
-import ru.buylist.presentation.adapters.recipe_adapters.RecipeStepsAdapter
 import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
-import ru.buylist.view_models.RecipeDetailViewModel
 
 class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
 
@@ -44,8 +40,7 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
 
     private fun setupNavigation() {
         viewModel.editEvent.observe(viewLifecycleOwner, EventObserver { recipe ->
-            val action = RecipeDetailFragmentDirections
-                    .actionRecipeDetailFragmentToRecipeAddEditFragment(recipe.id, recipe.title)
+            val action = RecipeDetailFragmentDirections.actionRecipeDetailFragmentToRecipeAddEditFragment(recipe.id, recipe.title)
             findNavController().navigate(action)
         })
     }
@@ -53,7 +48,7 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
     private fun setupAdapter() {
         val generalInfoAdapter = RecipeDetailGeneralInfoAdapter(viewModel)
         val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.ingredient_text))
-        val itemsAdapter = RecipeItemsAdapter(null)
+        val itemsAdapter = RecipeItemsAdapter()
         val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.cooking_steps_text))
         val stepsAdapter = RecipeStepsAdapter()
         val concatAdapter = ConcatAdapter(generalInfoAdapter, itemsHeaderAdapter, itemsAdapter,

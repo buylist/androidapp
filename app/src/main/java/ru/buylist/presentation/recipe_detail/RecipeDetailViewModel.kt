@@ -1,4 +1,4 @@
-package ru.buylist.view_models
+package ru.buylist.presentation.recipe_detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

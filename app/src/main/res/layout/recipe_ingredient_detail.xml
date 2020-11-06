@@ -3,16 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
-        <import type="android.view.View" />
-
         <variable
             name="item"
             type="ru.buylist.data.entity.wrappers.ItemWrapper" />
-
-        <variable
-            name="callback"
-            type="ru.buylist.presentation.adapters.recipe_adapters.RecipeItemListener" />
     </data>
 
     <LinearLayout
@@ -24,6 +17,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:minHeight="70dp"
             android:padding="8dp">
 
@@ -32,8 +26,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:contentDescription="@string/category_marker_description"
                 android:layout_centerVertical="true"
+                android:contentDescription="@string/category_marker_description"
                 android:src="@drawable/circle"
                 app:tint="@color/colorNavNormal" />
 
@@ -41,23 +35,21 @@
                 android:id="@+id/tv_item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/img_category_circle"
-                android:layout_toStartOf="@+id/btn_more"
-                android:layout_marginStart="8dp"
                 android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
+                android:layout_toEndOf="@id/img_category_circle"
+                android:layout_toStartOf="@id/tv_quantity"
+                android:layout_marginStart="8dp"
                 android:textSize="@dimen/default_text_size"
                 android:text="@{item.item.name}"/>
 
-            <ImageView
-                android:id="@+id/btn_more"
+            <TextView
+                android:id="@+id/tv_quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_more"
-                app:tint="@color/colorNavNormal"
-                android:onClick="@{()-> callback.onButtonMoreClick(item)}"/>
+                android:layout_alignParentEnd="true"
+                android:textSize="@dimen/default_text_size"
+                android:text="@{item.item.quantity}" />
 
         </RelativeLayout>
 

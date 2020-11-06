@@ -5,8 +5,8 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.buylist.data.entity.wrappers.*
-import ru.buylist.presentation.adapters.recipe_adapters.RecipeItemsAdapter
-import ru.buylist.presentation.adapters.recipe_adapters.RecipeStepsAdapter
+import ru.buylist.presentation.recipe_detail.RecipeItemsAdapter
+import ru.buylist.presentation.recipe_detail.RecipeStepsAdapter
 
 object BindingAdapters {
 
