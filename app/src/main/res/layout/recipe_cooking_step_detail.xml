@@ -6,8 +6,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="wrapper"
-            type="ru.buylist.data.entity.wrappers.CookingStepWrapper" />
+            name="item"
+            type="ru.buylist.data.entity.CookingStep" />
 
     </data>
 
@@ -39,7 +39,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_gravity="center"
                 android:textSize="@dimen/default_text_size"
-                android:text="@{wrapper.step.description}" />
+                android:text="@{item.description}" />
 
         </LinearLayout>
 

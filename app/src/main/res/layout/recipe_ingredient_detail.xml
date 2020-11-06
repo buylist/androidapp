@@ -5,7 +5,7 @@
     <data>
         <variable
             name="item"
-            type="ru.buylist.data.entity.wrappers.ItemWrapper" />
+            type="ru.buylist.data.entity.Item" />
     </data>
 
     <LinearLayout
@@ -40,7 +40,7 @@
                 android:layout_toStartOf="@id/tv_quantity"
                 android:layout_marginStart="8dp"
                 android:textSize="@dimen/default_text_size"
-                android:text="@{item.item.name}"/>
+                android:text="@{item.name}"/>
 
             <TextView
                 android:id="@+id/tv_quantity"
@@ -49,7 +49,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:textSize="@dimen/default_text_size"
-                android:text="@{item.item.quantity}" />
+                android:text="@{item.quantity}" />
 
         </RelativeLayout>
 

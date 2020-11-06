@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
-import ru.buylist.data.entity.wrappers.ItemWrapper
+import ru.buylist.data.entity.Item
 import ru.buylist.databinding.RecipeIngredientDetailBinding
 import ru.buylist.presentation.adapters.GenericViewHolder
 
@@ -15,7 +15,7 @@ import ru.buylist.presentation.adapters.GenericViewHolder
  * Adapter for the ingredients on recipe detail screen.
  */
 
-class RecipeDetailItemsAdapter : ListAdapter<ItemWrapper, GenericViewHolder>(RecipeItemsDiffCallback()) {
+class RecipeDetailItemsAdapter : ListAdapter<Item, GenericViewHolder>(RecipeItemsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val binding: RecipeIngredientDetailBinding = DataBindingUtil.inflate(
@@ -36,9 +36,9 @@ class RecipeDetailItemsAdapter : ListAdapter<ItemWrapper, GenericViewHolder>(Rec
     private inner class RecipeItemsViewHolder(val binding: RecipeIngredientDetailBinding) : GenericViewHolder(binding.root) {
 
         override fun bind(position: Int) {
-            val wrapper = getItem(position)
-            binding.item = wrapper
-            binding.imgCategoryCircle.setColorFilter(Color.parseColor(wrapper.item.category.color))
+            val ingredient = getItem(position)
+            binding.item = ingredient
+            binding.imgCategoryCircle.setColorFilter(Color.parseColor(ingredient.category.color))
             binding.executePendingBindings()
         }
     }
@@ -48,13 +48,13 @@ class RecipeDetailItemsAdapter : ListAdapter<ItemWrapper, GenericViewHolder>(Rec
 /**
  * DiffUtil
  */
-class RecipeItemsDiffCallback : DiffUtil.ItemCallback<ItemWrapper>() {
-    override fun areItemsTheSame(oldItem: ItemWrapper, newItem: ItemWrapper): Boolean {
-        return oldItem.item.id == newItem.item.id
+class RecipeItemsDiffCallback : DiffUtil.ItemCallback<Item>() {
+    override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: ItemWrapper, newItem: ItemWrapper): Boolean {
-        return oldItem.item == newItem.item
+    override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
+        return oldItem == newItem
     }
 
 }

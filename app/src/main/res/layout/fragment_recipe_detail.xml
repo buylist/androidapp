@@ -33,8 +33,8 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:recipeItems="@{view_model.wrappedItems}"
-                app:recipeSteps="@{view_model.wrappedSteps}" />
+                app:ingredients="@{view_model.ingredients}"
+                app:cookingStep="@{view_model.cookingStep}" />
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -47,6 +47,7 @@
             app:fabSize="auto"
             android:src="@drawable/ic_edit"
             android:backgroundTint="@color/colorAccent"
+            android:onClick="@{() -> view_model.editRecipe()}"
             app:fabVisibility="@{view_model.fabIsShown}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

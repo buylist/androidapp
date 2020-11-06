@@ -15,6 +15,11 @@ import ru.buylist.presentation.adapters.recipe_adapters.RecipeHeaderAdapter
 import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
 
+
+/**
+ * Recipe detail screen.
+ */
+
 class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
 
     private val args: RecipeDetailFragmentArgs by navArgs()
@@ -32,15 +37,17 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        fab_edit.setOnClickListener { viewModel.editRecipe() }
         setupAdapter()
         setupNavigation()
     }
 
     private fun setupNavigation() {
-        viewModel.editEvent.observe(viewLifecycleOwner, EventObserver { recipe ->
-            val action = RecipeDetailFragmentDirections.actionRecipeDetailFragmentToRecipeAddEditFragment(recipe.id, recipe.title)
+        viewModel.editEvent.observe(viewLifecycleOwner, EventObserver {
+            val action = RecipeDetailFragmentDirections
+                    .actionRecipeDetailFragmentToRecipeAddEditFragment(
+                            args.recipeId,
+                            args.recipeTitle
+                    )
             findNavController().navigate(action)
         })
     }
@@ -50,7 +57,7 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
         val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.ingredient_text))
         val itemsAdapter = RecipeDetailItemsAdapter()
         val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.cooking_steps_text))
-        val stepsAdapter = RecipeStepsAdapter()
+        val stepsAdapter = RecipeDetailStepsAdapter()
         val concatAdapter = ConcatAdapter(generalInfoAdapter, itemsHeaderAdapter, itemsAdapter,
                 stepsHeaderAdapter, stepsAdapter)
         recycler.adapter = concatAdapter

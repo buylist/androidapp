@@ -6,11 +6,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
-import ru.buylist.data.entity.wrappers.CookingStepWrapper
+import ru.buylist.data.entity.CookingStep
 import ru.buylist.databinding.RecipeCookingStepDetailBinding
 import ru.buylist.presentation.adapters.GenericViewHolder
 
-class RecipeStepsAdapter : ListAdapter<CookingStepWrapper, GenericViewHolder>(RecipeStepsDiffCallback()) {
+/**
+ * Adapter for the cooking step on recipe detail screen.
+ */
+class RecipeDetailStepsAdapter : ListAdapter<CookingStep, GenericViewHolder>(RecipeStepsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val binding: RecipeCookingStepDetailBinding = DataBindingUtil.inflate(
@@ -25,37 +28,34 @@ class RecipeStepsAdapter : ListAdapter<CookingStepWrapper, GenericViewHolder>(Re
     }
 
 
-
-    // ViewHolder
+    /**
+     * ViewHolder
+     */
     private inner class RecipeStepsViewHolder(val binding: RecipeCookingStepDetailBinding)
         : GenericViewHolder(binding.root) {
 
         override fun bind(position: Int) {
-            val wrapper = getItem(position)
+            val step = getItem(position)
             binding.tvNumberOfStep.text = itemView.context
-                    .getString(R.string.number_of_step, wrapper.step.number)
-            binding.wrapper = wrapper
+                    .getString(R.string.number_of_step, step.number)
+            binding.item = step
             binding.executePendingBindings()
         }
 
     }
 }
 
-// Listeners
-interface CookingStepListener {
-    fun onButtonMoreClick(wrapper: CookingStepWrapper)
-    fun onButtonSaveClick(wrapper: CookingStepWrapper)
-}
 
-
-// DiffCallback
-class RecipeStepsDiffCallback : DiffUtil.ItemCallback<CookingStepWrapper>() {
-    override fun areItemsTheSame(oldItem: CookingStepWrapper, newItem: CookingStepWrapper): Boolean {
-        return oldItem.step.number == newItem.step.number
+/**
+ * DiffUtil
+ */
+class RecipeStepsDiffCallback : DiffUtil.ItemCallback<CookingStep>() {
+    override fun areItemsTheSame(oldItem: CookingStep, newItem: CookingStep): Boolean {
+        return oldItem.number == newItem.number
     }
 
-    override fun areContentsTheSame(oldItem: CookingStepWrapper, newItem: CookingStepWrapper): Boolean {
-        return oldItem.step == newItem.step
+    override fun areContentsTheSame(oldItem: CookingStep, newItem: CookingStep): Boolean {
+        return oldItem == newItem
     }
 
 }
