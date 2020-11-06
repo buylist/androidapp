@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:ingredients="@{viewModel.wrappedItems}"
+                app:ingredients="@{viewModel.wrappedIngredients}"
                 app:cookingStep="@{viewModel.wrappedSteps}" />
         </LinearLayout>
 
@@ -69,7 +69,8 @@
             app:fabSize="auto"
             android:src="@drawable/ic_done"
             android:backgroundTint="@color/colorAccent"
-            app:fabVisibility="@{viewModel.fabIsShown}" />
+            app:fabVisibility="@{viewModel.fabIsShown}"
+            android:onClick="@{()-> viewModel.saveRecipe()}"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -122,7 +122,8 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/btn_create_item_description"
-                android:src="@drawable/button_create" />
+                android:src="@drawable/button_create"
+                android:onClick="@{()-> viewModel.addNewItem()}"/>
 
         </LinearLayout>
 

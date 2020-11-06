@@ -3,6 +3,7 @@ package ru.buylist.presentation.recipe_add_edit
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.navigation.fragment.findNavController
@@ -52,14 +53,6 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        fab_add.setOnClickListener { viewModel.saveRecipe() }
-
-        btn_create_item.setOnClickListener{
-            viewModel.addNewItem()
-            field_name.requestFocus()
-        }
-
         setupAdapter()
         setupArrowListeners()
 
@@ -69,73 +62,6 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         })
     }
 
-    private fun expandNewStepButton(btnAdd: View) {
-        val transition = buildContainerTransform().apply {
-            startView = btnAdd
-            endView = layout_new_step
-            addTarget(layout_new_step)
-        }
-
-        TransitionManager.beginDelayedTransition(requireActivity().findViewById(android.R.id.content), transition)
-        layout_new_step.visibility = View.VISIBLE
-        shadow_view.visibility = View.VISIBLE
-        btnAdd.visibility = View.GONE
-        fab_add.visibility = View.GONE
-        requireActivity().nav_bottom.visibility = View.GONE
-        field_step.requestFocus()
-    }
-
-    private fun minimizeNewStepButton(btnAdd: View) {
-        val transition = buildContainerTransform().apply {
-            startView = layout_new_step
-            endView = btnAdd
-            addTarget(btnAdd)
-        }
-        TransitionManager.beginDelayedTransition(coordinator_layout, transition)
-        layout_new_step.visibility = View.GONE
-        shadow_view.visibility = View.GONE
-        btnAdd.visibility = View.VISIBLE
-        fab_add.visibility = View.VISIBLE
-        requireActivity().nav_bottom.visibility = View.VISIBLE
-    }
-
-    private fun expandNewItemButton(btnAdd: View) {
-        val transition = buildContainerTransform().apply {
-            startView = btnAdd
-            endView = layout_new_item
-            addTarget(layout_new_item)
-        }
-
-        TransitionManager.beginDelayedTransition(requireActivity().findViewById(android.R.id.content), transition)
-        layout_new_item.visibility = View.VISIBLE
-        shadow_view.visibility = View.VISIBLE
-        btnAdd.visibility = View.GONE
-        fab_add.visibility = View.GONE
-        requireActivity().nav_bottom.visibility = View.GONE
-        field_name.requestFocus()
-    }
-
-    private fun minimizeNewItemButton(btnAdd: View) {
-        val transition = buildContainerTransform().apply {
-            startView = layout_new_item
-            endView = btnAdd
-            addTarget(btnAdd)
-        }
-        TransitionManager.beginDelayedTransition(coordinator_layout, transition)
-        layout_new_item.visibility = View.GONE
-        shadow_view.visibility = View.GONE
-        btnAdd.visibility = View.VISIBLE
-        fab_add.visibility = View.VISIBLE
-        requireActivity().nav_bottom.visibility = View.VISIBLE
-    }
-
-    private fun buildContainerTransform() =
-            MaterialContainerTransform().apply {
-                scrimColor = Color.TRANSPARENT
-                duration = 500
-                fadeMode = MaterialContainerTransform.FADE_MODE_IN
-                interpolator = FastOutSlowInInterpolator()
-            }
 
     private fun setupArrowListeners() {
         val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
@@ -186,7 +112,7 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         recycler_circles.apply { adapter = circlesAdapter }
 
         recycler_circles.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun  onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 viewModel.showHideArrows(isFirstCircleVisible(), isLastCircleVisible(circlesAdapter))
             }
@@ -205,20 +131,60 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         return position > 0
     }
 
+    private fun expand(start: View, end: View, field: EditText) {
+        val transition = buildContainerTransform().apply {
+            startView = start
+            endView = end
+            addTarget(end)
+        }
+
+        TransitionManager.beginDelayedTransition(requireActivity().findViewById(android.R.id.content), transition)
+        end.visibility = View.VISIBLE
+        shadow_view.visibility = View.VISIBLE
+        start.visibility = View.GONE
+        fab_add.visibility = View.GONE
+        requireActivity().nav_bottom.visibility = View.GONE
+        field.requestFocus()
+    }
+
+    private fun minimize(start: View, end: View) {
+        val transition = buildContainerTransform().apply {
+            startView = start
+            endView = end
+            addTarget(end)
+        }
+        TransitionManager.beginDelayedTransition(coordinator_layout, transition)
+        start.visibility = View.GONE
+        shadow_view.visibility = View.GONE
+        end.visibility = View.VISIBLE
+        fab_add.visibility = View.VISIBLE
+        requireActivity().nav_bottom.visibility = View.VISIBLE
+    }
+
+    private fun buildContainerTransform() =
+            MaterialContainerTransform().apply {
+                scrimColor = Color.TRANSPARENT
+                duration = 500
+                fadeMode = MaterialContainerTransform.FADE_MODE_IN
+                interpolator = FastOutSlowInInterpolator()
+            }
+
     private val newItemButtonCallback = object : RecipeButtonListener {
         override fun onButtonClick(view: View) {
-            expandNewItemButton(view)
-            shadow_view.setOnClickListener { minimizeNewItemButton(view) }
+            expand(view, layout_new_item, field_name)
+            shadow_view.setOnClickListener { minimize(layout_new_item, view) }
         }
 
     }
 
     private val newStepButtonCallback = object : RecipeButtonListener {
         override fun onButtonClick(view: View) {
-            expandNewStepButton(view)
-            shadow_view.setOnClickListener { minimizeNewStepButton(view) }
+            expand(view, layout_new_step, field_step)
+
+            shadow_view.setOnClickListener { minimize(layout_new_step, view) }
+
             btn_create_step.setOnClickListener {
-                minimizeNewStepButton(view)
+                minimize(layout_new_step, view)
                 viewModel.addNewStep()
             }
         }
