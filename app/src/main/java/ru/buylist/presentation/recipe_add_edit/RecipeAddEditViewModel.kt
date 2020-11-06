@@ -184,12 +184,10 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     }
 
     fun deleteItem(wrapper: ItemWrapper) {
-        // TODO: добавить возможность отмены удаления
-
+        val list = extractDataFromWrappedItems()
+        list.removeAt(wrapper.position)
         ingredients.remove(wrapper.item)
-        recipe.items = JsonUtils.convertItemsToJson(ingredients)
-        updateRecipe(recipe)
-        updateUi()
+        _wrappedIngredients.value = list
     }
 
     fun deleteStep(wrapper: CookingStepWrapper) {
