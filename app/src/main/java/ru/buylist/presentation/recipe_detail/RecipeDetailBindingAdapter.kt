@@ -24,7 +24,7 @@ object RecipeDetailBindingAdapter {
 
     @BindingAdapter("app:cookingStep")
     @JvmStatic
-    fun setRecipeSteps(recycler: RecyclerView, steps: List<CookingStep>?) {
+    fun setCookingStep(recycler: RecyclerView, steps: List<CookingStep>?) {
         with(recycler.adapter as ConcatAdapter) {
             steps?.let {
                 for (adapter in adapters) {
