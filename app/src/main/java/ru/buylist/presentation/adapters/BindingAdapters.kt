@@ -53,34 +53,6 @@ object BindingAdapters {
         }
     }
 
-    @BindingAdapter("app:recipeItems")
-    @JvmStatic
-    fun setRecipeItems(recycler: RecyclerView, items: List<ItemWrapper>?) {
-        with(recycler.adapter as ConcatAdapter) {
-            items?.let {
-                for (adapter in adapters) {
-                    if (adapter is RecipeAddEditItemsAdapter) {
-                        adapter.submitList(items)
-                    }
-                }
-            }
-        }
-    }
-
-    @BindingAdapter("app:recipeSteps")
-    @JvmStatic
-    fun setRecipeSteps(recycler: RecyclerView, steps: List<CookingStepWrapper>?) {
-        with(recycler.adapter as ConcatAdapter) {
-            steps?.let {
-                for (adapter in adapters) {
-                    if (adapter is RecipeAddEditStepsAdapter) {
-                        adapter.submitList(steps)
-                    }
-                }
-            }
-        }
-    }
-
     @BindingAdapter("app:items")
     @JvmStatic
     fun setCircles(recycler: RecyclerView, circles: List<CircleWrapper>) {

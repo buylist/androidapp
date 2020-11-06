@@ -1,4 +1,4 @@
-package ru.buylist.presentation.adapters.recipe_adapters
+package ru.buylist.presentation.recipe_add_edit
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,9 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.buylist.R
 import ru.buylist.databinding.ItemRecipeGeneralInfoInputBinding
 import ru.buylist.presentation.adapters.GenericViewHolder
-import ru.buylist.view_models.RecipeAddEditViewModel
+import ru.buylist.presentation.recipe_add_edit.RecipeAddEditViewModel
 
-class RecipeGeneralInfoAdapter(val viewModel: RecipeAddEditViewModel)
+/**
+ * Adapter for the general info on recipe add/edit screen.
+ */
+
+class RecipeAddEditGeneralInfoAdapter(val viewModel: RecipeAddEditViewModel)
     : RecyclerView.Adapter<GenericViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
@@ -26,6 +30,9 @@ class RecipeGeneralInfoAdapter(val viewModel: RecipeAddEditViewModel)
 
     override fun getItemCount(): Int = 1
 
+    /**
+     * ViewHolder
+     */
     private inner class GeneralInfoViewHolder(val binding: ItemRecipeGeneralInfoInputBinding)
         : GenericViewHolder(binding.root) {
 

@@ -78,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/recipe_detail_fragment"
-        android:name="ru.buylist.presentation.fragments.RecipeDetailFragment"
+        android:name="ru.buylist.presentation.recipe_detail.RecipeDetailFragment"
         android:label="{recipe_title}">
         <argument
             android:name="recipe_id"
@@ -92,7 +92,7 @@
     </fragment>
     <fragment
         android:id="@+id/recipe_add_edit_fragment"
-        android:name="ru.buylist.presentation.fragments.RecipeAddEditFragment"
+        android:name="ru.buylist.presentation.recipe_add_edit.RecipeAddEditFragment"
         android:label="{recipe_title}">
         <argument
             android:name="recipe_id"

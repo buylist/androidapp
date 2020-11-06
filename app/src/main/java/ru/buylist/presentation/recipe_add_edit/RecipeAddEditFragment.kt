@@ -1,4 +1,4 @@
-package ru.buylist.presentation.fragments
+package ru.buylist.presentation.recipe_add_edit
 
 import android.graphics.Color
 import android.os.Bundle
@@ -14,6 +14,10 @@ import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_recipe_add_edit.*
+import kotlinx.android.synthetic.main.fragment_recipe_add_edit.layout_new_item
+import kotlinx.android.synthetic.main.fragment_recipe_add_edit.layout_new_step
+import kotlinx.android.synthetic.main.layout_new_cooking_step.*
+import kotlinx.android.synthetic.main.layout_new_ingredient.*
 import ru.buylist.R
 import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentRecipeAddEditBinding
@@ -23,7 +27,10 @@ import ru.buylist.presentation.adapters.CirclesAdapter
 import ru.buylist.presentation.adapters.recipe_adapters.*
 import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
-import ru.buylist.view_models.RecipeAddEditViewModel
+
+/**
+ * Recipe add/edit screen.
+ */
 
 class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
 
@@ -57,8 +64,7 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         setupArrowListeners()
 
         viewModel.detailsEvent.observe(viewLifecycleOwner, EventObserver { recipe ->
-            val action = RecipeAddEditFragmentDirections
-                    .actionRecipeAddEditFragmentToRecipeDetailFragment(recipe.id, recipe.title)
+            val action = RecipeAddEditFragmentDirections.actionRecipeAddEditFragmentToRecipeDetailFragment(recipe.id, recipe.title)
             findNavController().navigate(action)
         })
     }
@@ -157,12 +163,12 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
 
     private fun setupAdapter() {
         val generalHeaderAdapter = RecipeHeaderAdapter(getString(R.string.tv_general_header))
-        val generalInfoAdapter = RecipeGeneralInfoAdapter(viewModel)
+        val generalInfoAdapter = RecipeAddEditGeneralInfoAdapter(viewModel)
         val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.ingredient_text))
-        val itemsAdapter = RecipeItemsAdapter(viewModel)
+        val itemsAdapter = RecipeAddEditItemsAdapter(viewModel)
         val itemsButtonAdapter = RecipeButtonAdapter(getString(R.string.btn_new_ingredient_description), newItemButtonCallback)
         val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.cooking_steps_text))
-        val stepsAdapter = RecipeStepsAdapter()
+        val stepsAdapter = RecipeAddEditStepsAdapter()
         val stepsButtonAdapter = RecipeButtonAdapter(getString(R.string.add_new_step), newStepButtonCallback)
         val concatAdapter = ConcatAdapter(generalHeaderAdapter, generalInfoAdapter,
                 itemsHeaderAdapter, itemsAdapter, itemsButtonAdapter,

@@ -4,7 +4,7 @@
     <data>
         <variable
             name="view_model"
-            type="ru.buylist.view_models.RecipeAddEditViewModel" />
+            type="ru.buylist.presentation.recipe_add_edit.RecipeAddEditViewModel" />
     </data>
 
     <LinearLayout android:layout_width="match_parent"

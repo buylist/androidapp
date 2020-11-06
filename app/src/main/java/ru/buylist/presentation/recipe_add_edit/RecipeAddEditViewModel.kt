@@ -1,4 +1,4 @@
-package ru.buylist.view_models
+package ru.buylist.presentation.recipe_add_edit
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -346,7 +346,7 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     }
 
     private fun onDataNotAvailable() {
-
+        TODO("Error while loading recipe")
     }
 
 

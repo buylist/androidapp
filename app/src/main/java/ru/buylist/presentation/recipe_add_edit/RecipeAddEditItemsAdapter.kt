@@ -1,4 +1,4 @@
-package ru.buylist.presentation.adapters.recipe_adapters
+package ru.buylist.presentation.recipe_add_edit
 
 import android.content.Context
 import android.graphics.Color
@@ -11,16 +11,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
 import ru.buylist.data.entity.wrappers.ItemWrapper
-import ru.buylist.databinding.RecipeIngredientDetailBinding
+import ru.buylist.databinding.RecipeIngredientAddEditBinding
 import ru.buylist.presentation.adapters.GenericViewHolder
-import ru.buylist.view_models.RecipeAddEditViewModel
 
-class RecipeItemsAdapter(val viewModel: RecipeAddEditViewModel?) : ListAdapter<ItemWrapper, GenericViewHolder>(RecipeItemsDiffCallback()) {
+/**
+ * Adapter for the ingredients on recipe add/edit screen.
+ */
+
+class RecipeAddEditItemsAdapter(val viewModel: RecipeAddEditViewModel) : ListAdapter<ItemWrapper, GenericViewHolder>(RecipeItemsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
-        val binding: RecipeIngredientDetailBinding = DataBindingUtil.inflate(
+        val binding: RecipeIngredientAddEditBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.recipe_ingredient_detail,
+                R.layout.recipe_ingredient_add_edit,
                 parent, false)
         return RecipeItemsViewHolder(binding)
     }
@@ -30,14 +33,15 @@ class RecipeItemsAdapter(val viewModel: RecipeAddEditViewModel?) : ListAdapter<I
     }
 
 
-    // ViewHolder
-    private inner class RecipeItemsViewHolder(val binding: RecipeIngredientDetailBinding) : GenericViewHolder(binding.root) {
+    /**
+     * ViewHolder
+     */
+    private inner class RecipeItemsViewHolder(val binding: RecipeIngredientAddEditBinding) : GenericViewHolder(binding.root) {
 
         override fun bind(position: Int) {
             val wrapper = getItem(position)
             binding.item = wrapper
             binding.imgCategoryCircle.setColorFilter(Color.parseColor(wrapper.item.category.color))
-            binding.btnMore.visibility = if (viewModel == null) View.GONE else View.VISIBLE
             binding.callback = getListener(itemView.context, binding.btnMore)
             binding.executePendingBindings()
         }
@@ -50,14 +54,18 @@ class RecipeItemsAdapter(val viewModel: RecipeAddEditViewModel?) : ListAdapter<I
                         setOnMenuItemClickListener { item ->
                             when (item.itemId) {
                                 R.id.edit -> {
-                                    viewModel?.editItem(wrapper)
+                                    viewModel.editItem(wrapper)
                                 }
-                                R.id.delete -> viewModel?.deleteItem(wrapper)
+                                R.id.delete -> viewModel.deleteItem(wrapper)
                             }
                             true
                         }
                         show()
                     }
+                }
+
+                override fun onButtonSaveClick(itemWrapper: ItemWrapper) {
+                    viewModel.saveEditedItem(itemWrapper, binding.fieldItemTitle.toString())
                 }
 
             }
@@ -66,7 +74,9 @@ class RecipeItemsAdapter(val viewModel: RecipeAddEditViewModel?) : ListAdapter<I
 }
 
 
-// DiffUtil
+/**
+ * DiffUtil
+ */
 class RecipeItemsDiffCallback : DiffUtil.ItemCallback<ItemWrapper>() {
     override fun areItemsTheSame(oldItem: ItemWrapper, newItem: ItemWrapper): Boolean {
         return oldItem.item.id == newItem.item.id
@@ -79,6 +89,11 @@ class RecipeItemsDiffCallback : DiffUtil.ItemCallback<ItemWrapper>() {
 }
 
 
+/**
+ * Callbacks
+ */
 interface RecipeItemListener {
     fun onButtonMoreClick(wrapper: ItemWrapper)
+
+    fun onButtonSaveClick(itemWrapper: ItemWrapper)
 }
