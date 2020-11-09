@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/recipes_fragment"
-        android:name="ru.buylist.presentation.fragments.RecipesFragment"
+        android:name="ru.buylist.presentation.recipes.RecipesFragment"
         android:label="Recipes" >
         <action
             android:id="@+id/action_recipe_fragment_to_settings_fragment"

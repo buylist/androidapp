@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.buylist.data.entity.CookingStep
 import ru.buylist.data.entity.Item
 
-object RecipeDetailBindingAdapter {
+object RecipeDetailBindings {
 
     @BindingAdapter("app:ingredients")
     @JvmStatic

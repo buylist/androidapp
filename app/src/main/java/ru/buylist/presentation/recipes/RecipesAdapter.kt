@@ -1,4 +1,4 @@
-package ru.buylist.presentation.adapters
+package ru.buylist.presentation.recipes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
 import ru.buylist.data.entity.wrappers.RecipeWrapper
 import ru.buylist.databinding.ItemRecipeBinding
-import ru.buylist.view_models.RecipesViewModel
+import ru.buylist.presentation.GenericViewHolder
 
 class RecipesAdapter(
         private val viewModel: RecipesViewModel

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.databinding.RecipeIngredientAddEditBinding
-import ru.buylist.presentation.adapters.GenericViewHolder
+import ru.buylist.presentation.GenericViewHolder
 
 /**
  * Adapter for the ingredients on recipe add/edit screen.

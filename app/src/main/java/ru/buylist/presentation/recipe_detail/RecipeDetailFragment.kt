@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.fragment_recipe_detail.*
 import ru.buylist.R
 import ru.buylist.databinding.FragmentRecipeDetailBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.presentation.adapters.recipe_adapters.RecipeHeaderAdapter
+import ru.buylist.presentation.recipe_add_edit.RecipeHeaderAdapter
 import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
 

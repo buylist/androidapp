@@ -24,7 +24,6 @@ import ru.buylist.databinding.FragmentRecipeAddEditBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.adapters.CircleItemClickListener
 import ru.buylist.presentation.adapters.CirclesAdapter
-import ru.buylist.presentation.adapters.recipe_adapters.*
 import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
 import ru.buylist.utils.hideKeyboard

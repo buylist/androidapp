@@ -1,4 +1,4 @@
-package ru.buylist.presentation.adapters.recipe_adapters
+package ru.buylist.presentation.recipe_add_edit
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import ru.buylist.R
-import ru.buylist.presentation.adapters.GenericViewHolder
+import ru.buylist.presentation.GenericViewHolder
 
 class RecipeButtonAdapter(val btnText: String, val listener: RecipeButtonListener) :
         RecyclerView.Adapter<GenericViewHolder>() {

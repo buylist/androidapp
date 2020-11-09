@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.databinding.ItemPatternDetailBinding
+import ru.buylist.presentation.GenericViewHolder
 import ru.buylist.view_models.PatternDetailViewModel
 
 

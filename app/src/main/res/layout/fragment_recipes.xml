@@ -8,7 +8,7 @@
 
         <variable
             name="view_model"
-            type="ru.buylist.view_models.RecipesViewModel" />
+            type="ru.buylist.presentation.recipes.RecipesViewModel" />
     </data>
 
     <LinearLayout
@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:items="@{view_model.recipes}" />
+                    app:recipes="@{view_model.recipes}" />
             </FrameLayout>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton

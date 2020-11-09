@@ -10,7 +10,7 @@
 
         <variable
             name="callback"
-            type="ru.buylist.presentation.adapters.RecipeItemListener" />
+            type="ru.buylist.presentation.recipes.RecipeItemListener" />
     </data>
 
     <androidx.cardview.widget.CardView

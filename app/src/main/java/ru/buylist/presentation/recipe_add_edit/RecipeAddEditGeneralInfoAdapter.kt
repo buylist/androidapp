@@ -6,8 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.buylist.R
 import ru.buylist.databinding.ItemRecipeGeneralInfoInputBinding
-import ru.buylist.presentation.adapters.GenericViewHolder
-import ru.buylist.presentation.recipe_add_edit.RecipeAddEditViewModel
+import ru.buylist.presentation.GenericViewHolder
 
 /**
  * Adapter for the general info on recipe add/edit screen.

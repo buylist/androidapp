@@ -1,4 +1,4 @@
-package ru.buylist.presentation.fragments
+package ru.buylist.presentation.recipes
 
 import android.os.Bundle
 import android.view.View
@@ -9,10 +9,8 @@ import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.buylist.R
 import ru.buylist.databinding.FragmentRecipesBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.presentation.adapters.RecipesAdapter
 import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
-import ru.buylist.view_models.RecipesViewModel
 
 class RecipesFragment : BaseFragment<FragmentRecipesBinding>() {
 
@@ -38,8 +36,7 @@ class RecipesFragment : BaseFragment<FragmentRecipesBinding>() {
 
     private fun setupNavigation() {
         viewModel.detailsEvent.observe(viewLifecycleOwner, EventObserver { recipe ->
-            val action = RecipesFragmentDirections
-                    .actionRecipesFragmentToRecipeDetailFragment(recipe.id, recipe.title)
+            val action = RecipesFragmentDirections.actionRecipesFragmentToRecipeDetailFragment(recipe.id, recipe.title)
             findNavController().navigate(action)
         })
 

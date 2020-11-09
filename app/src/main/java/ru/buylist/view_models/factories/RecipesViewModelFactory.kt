@@ -3,7 +3,7 @@ package ru.buylist.view_models.factories
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.buylist.data.repositories.recipe.RecipesDataSource
-import ru.buylist.view_models.RecipesViewModel
+import ru.buylist.presentation.recipes.RecipesViewModel
 
 class RecipesViewModelFactory(
         private val repository: RecipesDataSource) : ViewModelProvider.NewInstanceFactory() {

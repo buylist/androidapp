@@ -1,4 +1,4 @@
-package ru.buylist.view_models
+package ru.buylist.presentation.recipes
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch

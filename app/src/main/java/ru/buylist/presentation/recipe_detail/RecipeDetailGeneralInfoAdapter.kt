@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.buylist.R
 import ru.buylist.databinding.ItemRecipeGeneralInfoDetailBinding
-import ru.buylist.presentation.adapters.GenericViewHolder
+import ru.buylist.presentation.GenericViewHolder
 
 class RecipeDetailGeneralInfoAdapter(val viewModel: RecipeDetailViewModel) : RecyclerView.Adapter<GenericViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {

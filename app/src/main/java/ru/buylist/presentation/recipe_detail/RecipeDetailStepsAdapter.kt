@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
 import ru.buylist.data.entity.CookingStep
 import ru.buylist.databinding.RecipeCookingStepDetailBinding
-import ru.buylist.presentation.adapters.GenericViewHolder
+import ru.buylist.presentation.GenericViewHolder
 
 /**
  * Adapter for the cooking step on recipe detail screen.

@@ -1,4 +1,4 @@
-package ru.buylist.presentation.adapters
+package ru.buylist.presentation
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

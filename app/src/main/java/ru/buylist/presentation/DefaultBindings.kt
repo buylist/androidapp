@@ -1,4 +1,4 @@
-package ru.buylist.presentation.adapters
+package ru.buylist.presentation
 
 import android.annotation.SuppressLint
 import android.widget.EditText
@@ -7,10 +7,12 @@ import androidx.databinding.adapters.TextViewBindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.buylist.data.entity.wrappers.*
+import ru.buylist.presentation.adapters.*
+import ru.buylist.presentation.recipes.RecipesAdapter
 import ru.buylist.utils.hideKeyboard
 import ru.buylist.utils.showKeyboard
 
-object BindingAdapters {
+object DefaultBindings {
 
     @BindingAdapter("app:items")
     @JvmStatic
@@ -25,14 +27,6 @@ object BindingAdapters {
     fun setPatterns(recycler: RecyclerView, patterns: List<PatternWrapper>) {
         with(recycler.adapter as PatternsAdapter) {
             list = patterns
-        }
-    }
-
-    @BindingAdapter("app:items")
-    @JvmStatic
-    fun setRecipes(recycler: RecyclerView, recipes: List<RecipeWrapper>?) {
-        recipes?.let {
-            (recycler.adapter as RecipesAdapter).submitList(recipes)
         }
     }
 
