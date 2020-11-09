@@ -218,6 +218,10 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     }
 
     fun showHideFab(dy: Int) {
+        if (ingredientToEdit > NO_EDIT || stepToEdit > NO_EDIT) {
+            fabIsShown.value = false
+            return
+        }
         fabIsShown.value = (dy <= 0)
     }
 
