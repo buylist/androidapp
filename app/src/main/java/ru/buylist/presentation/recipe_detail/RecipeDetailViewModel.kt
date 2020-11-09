@@ -22,7 +22,7 @@ class RecipeDetailViewModel(
         private val recipeId: Long) : ViewModel() {
 
     private val _recipe = MutableLiveData<Recipe>()
-    val recipe = _recipe
+    val recipe: LiveData<Recipe> = _recipe
 
     private val _ingredients = MutableLiveData<List<Item>>()
     val ingredients: LiveData<List<Item>> = _ingredients
