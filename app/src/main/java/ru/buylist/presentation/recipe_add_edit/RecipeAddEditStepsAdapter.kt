@@ -1,7 +1,12 @@
 package ru.buylist.presentation.recipe_add_edit
 
+import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -13,7 +18,8 @@ import ru.buylist.presentation.adapters.GenericViewHolder
 /**
  * Adapter for the cooking step on recipe add/edit screen.
  */
-class RecipeAddEditStepsAdapter : ListAdapter<CookingStepWrapper, GenericViewHolder>(RecipeStepsDiffCallback()) {
+class RecipeAddEditStepsAdapter(val viewModel: RecipeAddEditViewModel) :
+        ListAdapter<CookingStepWrapper, GenericViewHolder>(RecipeStepsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val binding: RecipeCookingStepAddEditBinding = DataBindingUtil.inflate(
@@ -28,7 +34,6 @@ class RecipeAddEditStepsAdapter : ListAdapter<CookingStepWrapper, GenericViewHol
     }
 
 
-
     /**
      * ViewHolder
      */
@@ -40,7 +45,36 @@ class RecipeAddEditStepsAdapter : ListAdapter<CookingStepWrapper, GenericViewHol
             binding.tvNumberOfStep.text = itemView.context
                     .getString(R.string.number_of_step, wrapper.step.number)
             binding.item = wrapper
+            binding.card.setBackgroundColor(if (wrapper.isEditable) Color.WHITE else 0)
+            binding.callback = getListener(itemView.context, binding.btnMore, binding.fieldStep)
             binding.executePendingBindings()
+        }
+
+        private fun getListener(context: Context, btnMore: View, field: EditText): CookingStepListener {
+            return object : CookingStepListener {
+                override fun onButtonMoreClick(wrapper: CookingStepWrapper) {
+                    PopupMenu(context, btnMore).apply {
+                        menuInflater.inflate(R.menu.buy_list_item_menu, menu)
+                        setOnMenuItemClickListener { item ->
+                            when (item.itemId) {
+                                R.id.edit -> {
+                                    viewModel.editStep(wrapper)
+                                    field.requestFocus()
+                                    field.setSelection(field.text.length)
+                                }
+                                R.id.delete -> viewModel.deleteStep(wrapper)
+                            }
+                            true
+                        }
+                        show()
+                    }
+                }
+
+                override fun onButtonSaveClick(wrapper: CookingStepWrapper) {
+                    viewModel.saveEditedStep(wrapper, binding.fieldStep.text.toString())
+                }
+
+            }
         }
 
     }
@@ -52,11 +86,11 @@ class RecipeAddEditStepsAdapter : ListAdapter<CookingStepWrapper, GenericViewHol
  */
 class RecipeStepsDiffCallback : DiffUtil.ItemCallback<CookingStepWrapper>() {
     override fun areItemsTheSame(oldItem: CookingStepWrapper, newItem: CookingStepWrapper): Boolean {
-        return oldItem.step.number == newItem.step.number
+        return oldItem.step == newItem.step
     }
 
     override fun areContentsTheSame(oldItem: CookingStepWrapper, newItem: CookingStepWrapper): Boolean {
-        return oldItem.step == newItem.step
+        return oldItem == newItem
     }
 
 }

@@ -145,7 +145,8 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
         }
 
         if (stepToEdit >= 0 && stepToEdit < steps.size) {
-
+            updateWrappedSteps(extractDataFromWrappedSteps(), stepToEdit)
+            stepToEdit = NO_EDIT
         }
 
         ingredientToEdit = wrapper.position
@@ -168,11 +169,12 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
         }
 
         if (ingredientToEdit >= 0 && ingredientToEdit < ingredients.size) {
-
+            updateWrappedItems(extractDataFromWrappedItems(), ingredientToEdit)
+            ingredientToEdit = NO_EDIT
         }
 
         stepToEdit = wrapper.position
-        updateWrappedSteps(steps, stepToEdit, true)
+        updateWrappedSteps(steps, stepToEdit, isEditable = true)
     }
 
     fun saveEditedStep(wrapper: CookingStepWrapper, newStep: String) {
@@ -191,10 +193,8 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     }
 
     fun deleteStep(wrapper: CookingStepWrapper) {
-        steps.remove(wrapper.step)
-        recipe.cookingSteps = JsonUtils.convertCookingStepsToJson(steps)
-        updateRecipe(recipe)
-        updateUi()
+        steps.removeAt(wrapper.position)
+        _wrappedSteps.value = getWrappedSteps(steps)
     }
 
     fun getCurrentColorPosition() = colorPosition
@@ -291,7 +291,8 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     private fun getWrappedSteps(list: List<CookingStep>): List<CookingStepWrapper> {
         val newList = mutableListOf<CookingStepWrapper>()
         for ((i, step) in list.withIndex()) {
-            val wrappedStep = CookingStepWrapper(step.copy(), i)
+            step.number = i + 1
+            val wrappedStep = CookingStepWrapper(step, i)
             newList.add(wrappedStep)
         }
         return newList
