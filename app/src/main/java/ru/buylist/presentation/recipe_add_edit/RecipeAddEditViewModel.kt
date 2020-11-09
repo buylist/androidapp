@@ -218,7 +218,7 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     }
 
     fun showHideFab(dy: Int) {
-        fabIsShown.value = (dy < 0)
+        fabIsShown.value = (dy <= 0)
     }
 
     private fun createRecipe(newRecipe: Recipe) = viewModelScope.launch {
