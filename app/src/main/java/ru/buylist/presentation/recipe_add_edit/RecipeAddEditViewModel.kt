@@ -1,6 +1,9 @@
 package ru.buylist.presentation.recipe_add_edit
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.buylist.data.Result.Success
 import ru.buylist.data.entity.Category
@@ -215,7 +218,7 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     }
 
     fun showHideFab(dy: Int) {
-        fabIsShown.value = (dy <= 0)
+        fabIsShown.value = (dy < 0)
     }
 
     private fun createRecipe(newRecipe: Recipe) = viewModelScope.launch {

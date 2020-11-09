@@ -142,8 +142,6 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         end.visibility = View.VISIBLE
         shadow_view.visibility = View.VISIBLE
         start.visibility = View.GONE
-        fab_add.visibility = View.GONE
-        requireActivity().nav_bottom.visibility = View.GONE
         field.requestFocus()
     }
 
@@ -157,8 +155,6 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         start.visibility = View.GONE
         shadow_view.visibility = View.GONE
         end.visibility = View.VISIBLE
-        fab_add.visibility = View.VISIBLE
-        requireActivity().nav_bottom.visibility = View.VISIBLE
     }
 
     private fun buildContainerTransform() =

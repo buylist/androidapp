@@ -46,7 +46,7 @@
                 app:cookingStep="@{viewModel.wrappedSteps}" />
         </LinearLayout>
 
-    <!--Поля для ввода нового ингредиента-->
+        <!--Поля для ввода нового ингредиента-->
         <include
             android:id="@+id/layout_new_item"
             layout="@layout/layout_new_ingredient"
