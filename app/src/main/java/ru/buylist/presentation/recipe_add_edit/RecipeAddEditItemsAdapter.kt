@@ -44,7 +44,7 @@ class RecipeAddEditItemsAdapter(val viewModel: RecipeAddEditViewModel) : ListAda
             binding.item = wrapper
             binding.card.setBackgroundColor(if (wrapper.isEditable) Color.WHITE else 0)
             binding.imgCategoryCircle.setColorFilter(Color.parseColor(wrapper.item.category.color))
-            binding.callback = getListener(itemView.context, binding.btnMore, binding.fieldItemTitle)
+            binding.callback = getListener(itemView.context, binding.btnMore, binding.fieldIngredientTitle)
             binding.executePendingBindings()
         }
 
@@ -57,8 +57,6 @@ class RecipeAddEditItemsAdapter(val viewModel: RecipeAddEditViewModel) : ListAda
                             when (item.itemId) {
                                 R.id.edit -> {
                                     viewModel.editItem(wrapper)
-                                    field.requestFocus()
-                                    field.setSelection(field.text.length)
                                 }
                                 R.id.delete -> viewModel.deleteItem(wrapper)
                             }
@@ -69,7 +67,7 @@ class RecipeAddEditItemsAdapter(val viewModel: RecipeAddEditViewModel) : ListAda
                 }
 
                 override fun onButtonSaveClick(itemWrapper: ItemWrapper) {
-                    viewModel.saveEditedItem(itemWrapper, binding.fieldItemTitle.text.toString())
+                    viewModel.saveEditedItem(itemWrapper, field.text.toString())
                 }
 
             }

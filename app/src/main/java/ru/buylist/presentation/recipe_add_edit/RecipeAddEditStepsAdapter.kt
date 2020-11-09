@@ -59,8 +59,6 @@ class RecipeAddEditStepsAdapter(val viewModel: RecipeAddEditViewModel) :
                             when (item.itemId) {
                                 R.id.edit -> {
                                     viewModel.editStep(wrapper)
-                                    field.requestFocus()
-                                    field.setSelection(field.text.length)
                                 }
                                 R.id.delete -> viewModel.deleteStep(wrapper)
                             }
@@ -71,7 +69,7 @@ class RecipeAddEditStepsAdapter(val viewModel: RecipeAddEditViewModel) :
                 }
 
                 override fun onButtonSaveClick(wrapper: CookingStepWrapper) {
-                    viewModel.saveEditedStep(wrapper, binding.fieldStep.text.toString())
+                    viewModel.saveEditedStep(wrapper, field.text.toString())
                 }
 
             }

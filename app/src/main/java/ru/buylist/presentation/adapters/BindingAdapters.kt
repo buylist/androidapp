@@ -1,13 +1,14 @@
 package ru.buylist.presentation.adapters
 
+import android.annotation.SuppressLint
+import android.widget.EditText
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.ConcatAdapter
+import androidx.databinding.adapters.TextViewBindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.buylist.data.entity.wrappers.*
-import ru.buylist.presentation.recipe_add_edit.RecipeAddEditItemsAdapter
-import ru.buylist.presentation.recipe_add_edit.RecipeAddEditStepsAdapter
-import ru.buylist.presentation.recipe_detail.RecipeDetailStepsAdapter
+import ru.buylist.utils.hideKeyboard
+import ru.buylist.utils.showKeyboard
 
 object BindingAdapters {
 
@@ -68,6 +69,25 @@ object BindingAdapters {
             fab.show()
         } else {
             fab.hide()
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    @BindingAdapter("android:text")
+    @JvmStatic
+    fun setSelection(field: EditText, text: String?) {
+        if (text == null || text.isEmpty()) return
+        TextViewBindingAdapter.setText(field, text)
+        field.setSelection(text.trim().length)
+    }
+
+    @BindingAdapter("app:requestFocus")
+    @JvmStatic
+    fun requestFocus(field: EditText, requestFocus: Boolean) {
+        if (requestFocus) {
+            field.showKeyboard()
+        } else {
+            field.hideKeyboard()
         }
     }
 }

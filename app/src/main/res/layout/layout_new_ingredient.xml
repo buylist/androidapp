@@ -78,7 +78,7 @@
             android:layout_marginBottom="@dimen/field_margin_vertical"
             android:background="@drawable/field_border">
 
-            <ru.buylist.utils.FocusableEditText
+            <EditText
                 android:id="@+id/field_name"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -90,7 +90,7 @@
                 android:background="@android:color/transparent"
                 android:text="@={viewModel.itemName}" />
 
-            <ru.buylist.utils.FocusableEditText
+            <EditText
                 android:id="@+id/field_quantity"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -104,7 +104,7 @@
                 android:nextFocusForward="@id/field_unit"
                 android:background="@drawable/field_bg" />
 
-            <ru.buylist.utils.FocusableEditText
+            <EditText
                 android:id="@+id/field_unit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

@@ -29,11 +29,11 @@ public class FocusableEditText extends AppCompatEditText {
         if (focused) {
             InputMethodManager imm = (InputMethodManager) getContext()
                     .getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(this, InputMethodManager.SHOW_FORCED);
+            imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT);
         } else {
             InputMethodManager imm = (InputMethodManager) getContext()
                     .getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(this.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
 }

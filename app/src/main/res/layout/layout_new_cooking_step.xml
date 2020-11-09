@@ -23,8 +23,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/field_border">
 
-            <ru.buylist.utils.FocusableEditText
-                android:id="@+id/field_step"
+            <EditText
+                android:id="@+id/field_new_step"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"

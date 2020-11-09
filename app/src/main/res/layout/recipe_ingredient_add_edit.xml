@@ -40,7 +40,7 @@
                 android:src="@drawable/circle"/>
 
             <TextView
-                android:id="@+id/tv_item_title"
+                android:id="@+id/tv_ingredient_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/img_category_circle"
@@ -52,8 +52,8 @@
                 android:text="@{item.item.name}"
                 android:visibility="@{item.editable ? View.GONE : View.VISIBLE}"/>
 
-            <ru.buylist.utils.FocusableEditText
-                android:id="@+id/field_item_title"
+            <EditText
+                android:id="@+id/field_ingredient_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/img_category_circle"
@@ -64,6 +64,7 @@
                 android:inputType="text"
                 android:textSize="@dimen/default_text_size"
                 android:imeOptions="actionDone"
+                app:requestFocus="@{item.editable}"
                 android:text="@{item.item.name}"
                 android:visibility="@{item.editable ? View.VISIBLE : View.GONE}"/>
 

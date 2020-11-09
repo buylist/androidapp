@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialContainerTransform
-import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_recipe_add_edit.*
 import kotlinx.android.synthetic.main.fragment_recipe_add_edit.layout_new_item
 import kotlinx.android.synthetic.main.fragment_recipe_add_edit.layout_new_step
@@ -28,6 +27,8 @@ import ru.buylist.presentation.adapters.CirclesAdapter
 import ru.buylist.presentation.adapters.recipe_adapters.*
 import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
+import ru.buylist.utils.hideKeyboard
+import ru.buylist.utils.showKeyboard
 
 /**
  * Recipe add/edit screen.
@@ -142,10 +143,10 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         end.visibility = View.VISIBLE
         shadow_view.visibility = View.VISIBLE
         start.visibility = View.GONE
-        field.requestFocus()
+        field.showKeyboard()
     }
 
-    private fun minimize(start: View, end: View) {
+    private fun minimize(start: View, end: View, field: EditText) {
         val transition = buildContainerTransform().apply {
             startView = start
             endView = end
@@ -155,6 +156,7 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         start.visibility = View.GONE
         shadow_view.visibility = View.GONE
         end.visibility = View.VISIBLE
+        field.hideKeyboard()
     }
 
     private fun buildContainerTransform() =
@@ -168,19 +170,19 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
     private val newItemButtonCallback = object : RecipeButtonListener {
         override fun onButtonClick(view: View) {
             expand(view, layout_new_item, field_name)
-            shadow_view.setOnClickListener { minimize(layout_new_item, view) }
+            shadow_view.setOnClickListener { minimize(layout_new_item, view, field_name) }
         }
 
     }
 
     private val newStepButtonCallback = object : RecipeButtonListener {
         override fun onButtonClick(view: View) {
-            expand(view, layout_new_step, field_step)
+            expand(view, layout_new_step, field_new_step)
 
-            shadow_view.setOnClickListener { minimize(layout_new_step, view) }
+            shadow_view.setOnClickListener { minimize(layout_new_step, view, field_new_step) }
 
             btn_create_step.setOnClickListener {
-                minimize(layout_new_step, view)
+                minimize(layout_new_step, view, field_new_step)
                 viewModel.addNewStep()
             }
         }
