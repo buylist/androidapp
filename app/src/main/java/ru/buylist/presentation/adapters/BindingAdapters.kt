@@ -76,8 +76,9 @@ object BindingAdapters {
     @BindingAdapter("android:text")
     @JvmStatic
     fun setSelection(field: EditText, text: String?) {
-        if (text == null || text.isEmpty()) return
         TextViewBindingAdapter.setText(field, text)
+
+        if (text == null || text.isEmpty()) return
         field.setSelection(text.trim().length)
     }
 
