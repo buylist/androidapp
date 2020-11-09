@@ -42,15 +42,15 @@
     <string name="add_new_step">Добавить шаг</string>
     <string name="number_of_step">%d.</string>
     <string name="tv_cooking_time">Готовится за:</string>
-    <string name="field_cooking_time_hint">Введите время приготовления</string>
-    <string name="field_recipe_category_hint">Выберите категорию рецепта</string>
     <string name="fragment_label_new_recipe">Новый рецепт</string>
     <string name="default_recipe_title">(Без названия…)</string>
     <string name="tv_recipe_category">Категория рецепта:</string>
     <string name="tv_cooking_time_detail">Время приготовления:</string>
         <!--hint-->
-        <string name="field_name_recipe_hint">Введите название рецепта</string>
+        <string name="field_name_recipe_hint">Название</string>
+        <string name="field_recipe_category_hint">Категория</string>
         <string name="field_recipe_step_hint">Описание шага</string>
+        <string name="field_cooking_time_hint">Время приготовления</string>
 
 
     <!--ContentDescription-->

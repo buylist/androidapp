@@ -27,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
                 android:contentDescription="@string/category_marker_description"
                 android:src="@drawable/circle"
                 app:tint="@color/colorNavNormal" />
@@ -48,6 +49,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="8dp"
                 android:textSize="@dimen/default_text_size"
                 android:text="@{item.quantity}" />
 
@@ -57,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colorDivider"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"/>
     </LinearLayout>
 </layout>
