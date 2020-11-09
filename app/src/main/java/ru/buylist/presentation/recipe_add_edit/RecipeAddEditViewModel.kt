@@ -63,8 +63,6 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     private val _detailsEvent = MutableLiveData<Event<Recipe>>()
     val detailsEvent: LiveData<Event<Recipe>> = _detailsEvent
 
-    private lateinit var recipe: Recipe
-
 
     fun start(recipeId: Long, newCircles: List<String>) {
         _recipeId = recipeId
