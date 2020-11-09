@@ -34,8 +34,7 @@ class SingleActivity : AppCompatActivity() {
                 R.id.buy_list_fragment -> showBottomMenu()
                 R.id.patterns_fragment -> showBottomMenu()
                 R.id.recipes_fragment -> showBottomMenu()
-                R.id.about_fragment -> hideBottomMenu()
-                R.id.settings_fragment -> hideBottomMenu()
+                else -> hideBottomMenu()
             }
         }
     }
