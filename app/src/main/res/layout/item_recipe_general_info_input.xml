@@ -35,42 +35,25 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <RelativeLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             android:background="@drawable/field_border"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            android:hint="@string/field_recipe_category_hint">
 
-
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/field_recipe_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/field_recipe_category_hint">
-
-                <AutoCompleteTextView
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                    android:id="@+id/field_recipe_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_toStartOf="@+id/btn_more_category"
-                    android:background="@android:color/transparent"
-                    android:inputType="text"
-                    android:imeOptions="actionNext"
-                    android:text="@={view_model.recipeCategory}" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <ImageView
-                android:id="@+id/btn_more_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="4dp"
-                android:src="@drawable/ic_spinner_arrow" />
-        </RelativeLayout>
-
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/btn_more_category"
+                android:background="@android:color/transparent"
+                android:inputType="text"
+                android:imeOptions="actionNext"
+                android:text="@={view_model.recipeCategory}" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
