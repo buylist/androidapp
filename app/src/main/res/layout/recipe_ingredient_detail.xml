@@ -52,7 +52,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="8dp"
                 android:textSize="@dimen/default_text_size"
-                android:text="@{item.quantity}" />
+                android:text="@{item.quantity + item.unit}" />
 
         </RelativeLayout>
 
