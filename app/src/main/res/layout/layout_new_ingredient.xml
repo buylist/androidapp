@@ -102,7 +102,8 @@
                 android:digits="0123456789.,"
                 android:imeOptions="actionNext"
                 android:nextFocusForward="@id/field_unit"
-                android:background="@drawable/field_bg" />
+                android:background="@drawable/field_bg"
+                android:text="@={viewModel.quantity}"/>
 
             <EditText
                 android:id="@+id/field_unit"
@@ -113,7 +114,8 @@
                 android:hint="@string/field_unit_hint"
                 android:inputType="text"
                 android:imeOptions="actionDone"
-                android:background="@drawable/field_bg" />
+                android:background="@drawable/field_bg"
+                android:text="@={viewModel.unit}"/>
 
             <ImageButton
                 android:id="@+id/btn_create_item"

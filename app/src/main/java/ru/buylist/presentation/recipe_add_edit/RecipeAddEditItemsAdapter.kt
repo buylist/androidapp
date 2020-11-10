@@ -67,7 +67,11 @@ class RecipeAddEditItemsAdapter(val viewModel: RecipeAddEditViewModel) : ListAda
                 }
 
                 override fun onButtonSaveClick(itemWrapper: ItemWrapper) {
-                    viewModel.saveEditedItem(itemWrapper, field.text.toString())
+                    viewModel.saveEditedItem(
+                            itemWrapper,
+                            field.text.toString(),
+                            binding.fieldQuantity.text.toString(),
+                            binding.fieldUnit.text.toString())
                 }
 
             }

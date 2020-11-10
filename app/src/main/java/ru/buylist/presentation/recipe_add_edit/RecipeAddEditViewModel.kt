@@ -34,6 +34,8 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     val recipeCategory = MutableLiveData<String>()
     val recipeCookingTime = MutableLiveData<String>()
     val itemName = MutableLiveData<String>()
+    val quantity = MutableLiveData<String>()
+    val unit = MutableLiveData<String>()
     val step = MutableLiveData<String>()
 
     // Flags to show and hide buttons
@@ -122,10 +124,24 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
 
         val item = Item(name = name, category = getCategory())
 
+        val quantity = this.quantity.value.toString().trim()
+        val unit = this.unit.value.toString().trim()
+
+        if (this.quantity.value == null || quantity.isEmpty()) {
+            // если количество не указано, то и ЕИ не сохраняем
+        } else {
+            item.quantity = quantity
+            if (unit.isNotEmpty() || this.unit.value != null) {
+                item.unit = unit
+            }
+        }
+
         ingredients.add(item)
         ingredients.sortWith(compareBy({ it.category.color }, { it.id }))
         updateUi()
         itemName.value = null
+        this.quantity.value = null
+        this.unit.value = null
     }
 
     fun addNewStep() {
@@ -154,10 +170,18 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
         updateWrappedItems(items, ingredientToEdit, isEditable = true)
     }
 
-    fun saveEditedItem(wrapper: ItemWrapper, newName: String) {
+    fun saveEditedItem(wrapper: ItemWrapper, newName: String, newQuantity: String, newUnit: String) {
         val list = extractDataFromWrappedItems()
-        list[wrapper.position].item.name = newName
-        ingredients[wrapper.position].name = newName
+        list[wrapper.position].item.apply {
+            name = if (newName.trim().isEmpty()) this.name else newName
+            quantity = newQuantity
+            unit = if (newQuantity.isEmpty()) EMPTY else newUnit
+        }
+        ingredients[wrapper.position].apply {
+            name = if (newName.trim().isEmpty()) this.name else newName
+            quantity = newQuantity
+            unit = if (newQuantity.isEmpty()) EMPTY else newUnit
+        }
         updateWrappedItems(list, wrapper.position)
         ingredientToEdit = NO_EDIT
     }
@@ -187,10 +211,8 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     }
 
     fun deleteItem(wrapper: ItemWrapper) {
-        val list = extractDataFromWrappedItems()
-        list.removeAt(wrapper.position)
         ingredients.remove(wrapper.item)
-        _wrappedIngredients.value = list
+        _wrappedIngredients.value = getWrappedItems(ingredients)
     }
 
     fun deleteStep(wrapper: CookingStepWrapper) {
@@ -337,3 +359,4 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
 
 const val NEW_RECIPE_ID = 0L
 const val NO_EDIT = -1
+const val EMPTY = ""
