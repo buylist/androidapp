@@ -1,10 +1,7 @@
 package ru.buylist.presentation.recipe_detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import androidx.lifecycle.*
+import ru.buylist.data.Result
 import ru.buylist.data.Result.Success
 import ru.buylist.data.entity.CookingStep
 import ru.buylist.data.entity.Item
@@ -17,12 +14,14 @@ import ru.buylist.utils.JsonUtils
  * ViewModel for the recipe detail screen.
  */
 
-class RecipeDetailViewModel(
-        private val repository: RecipesDataSource,
-        private val recipeId: Long) : ViewModel() {
+class RecipeDetailViewModel(private val repository: RecipesDataSource) : ViewModel() {
 
-    private val _recipe = MutableLiveData<Recipe>()
-    val recipe: LiveData<Recipe> = _recipe
+    private val _recipeId = MutableLiveData<Long>()
+
+    private val _recipe = _recipeId.switchMap { recipeId ->
+        repository.observeRecipe(recipeId).map { computeResult(it) }
+    }
+    val recipe: LiveData<Recipe?> = _recipe
 
     private val _ingredients = MutableLiveData<List<Item>>()
     val ingredients: LiveData<List<Item>> = _ingredients
@@ -30,13 +29,16 @@ class RecipeDetailViewModel(
     private val _cookingStep = MutableLiveData<List<CookingStep>>()
     val cookingStep: LiveData<List<CookingStep>> = _cookingStep
 
+    val isDataAvailable = _recipe.map { it != null }
+
     private val _editEvent = MutableLiveData<Event<Unit>>()
     val editEvent: LiveData<Event<Unit>> = _editEvent
 
     val fabIsShown = MutableLiveData<Boolean>(true)
 
-    init {
-        loadRecipe()
+
+    fun start(recipeId: Long) {
+        _recipeId.value = recipeId
     }
 
     fun editRecipe() {
@@ -44,21 +46,21 @@ class RecipeDetailViewModel(
     }
 
     fun showHideFab(dy: Int) {
+        if (isDataAvailable.value == false) {
+            fabIsShown.value = false
+            return
+        }
         fabIsShown.value = dy <= 0
     }
 
-    private fun loadRecipe() {
-        viewModelScope.launch {
-            repository.getRecipe(recipeId).let { result ->
-                if (result is Success) {
-                    _recipe.value = result.data
-                    _ingredients.value = JsonUtils.convertItemsFromJson(result.data.items)
-                    _cookingStep.value = JsonUtils
-                            .convertCookingStepsFromJson(result.data.cookingSteps)
-                } else {
-                    TODO("Error while loading recipe $result")
-                }
-            }
+    private fun computeResult(recipeResult: Result<Recipe>): Recipe? {
+        if (recipeResult is Success) {
+            _ingredients.value = JsonUtils.convertItemsFromJson(recipeResult.data.items)
+            _cookingStep.value = JsonUtils
+                    .convertCookingStepsFromJson(recipeResult.data.cookingSteps)
+            return recipeResult.data
+        } else {
+            TODO("Error while loading recipe $recipeResult")
         }
     }
 }

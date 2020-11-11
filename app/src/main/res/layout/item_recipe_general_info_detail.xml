@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="view_model"
-            type="ru.buylist.presentation.recipe_detail.RecipeDetailViewModel" />
+            name="recipe"
+            type="ru.buylist.data.entity.Recipe" />
     </data>
 
     <LinearLayout
@@ -29,7 +29,7 @@
                 android:id="@+id/tv_recipe_category_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{view_model.recipe.category}"
+                android:text="@{recipe.category}"
                 android:layout_marginTop="4dp" />
 
             <TextView
@@ -43,7 +43,7 @@
                 android:id="@+id/tv_cooking_time_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{view_model.recipe.cookingTime}"
+                android:text="@{recipe.cookingTime}"
                 android:layout_marginTop="4dp" />
 
         </LinearLayout>

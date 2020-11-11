@@ -6,10 +6,9 @@ import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.presentation.recipe_detail.RecipeDetailViewModel
 
 class RecipeDetailViewModelFactory(
-        private val repository: RecipesDataSource,
-        private val recipeId: Long) : ViewModelProvider.NewInstanceFactory() {
+        private val repository: RecipesDataSource) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-            RecipeDetailViewModel(repository, recipeId) as T
+            RecipeDetailViewModel(repository) as T
 }

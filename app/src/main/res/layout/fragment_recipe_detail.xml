@@ -20,11 +20,19 @@
         android:layout_height="match_parent"
         android:id="@+id/coordinator_layout">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorScrimLoading"
+            android:elevation="5dp"
+            android:visibility="@{view_model.isDataAvailable() ? View.GONE : View.VISIBLE}" />
+
         <LinearLayout
             android:id="@+id/layout_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="@{view_model.isDataAvailable() ? View.VISIBLE : View.INVISIBLE}">
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -33,6 +41,7 @@
                 android:layout_height="match_parent"
                 android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:recipe="@{view_model.recipe}"
                 app:ingredients="@{view_model.ingredients}"
                 app:cookingStep="@{view_model.cookingStep}" />
         </LinearLayout>

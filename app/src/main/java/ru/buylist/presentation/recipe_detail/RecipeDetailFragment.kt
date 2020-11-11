@@ -25,14 +25,15 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
     private val args: RecipeDetailFragmentArgs by navArgs()
 
     private val viewModel: RecipeDetailViewModel by viewModels {
-        InjectorUtils.provideRecipeDetailViewModelFactory(args.recipeId)
+        InjectorUtils.provideRecipeDetailViewModelFactory()
     }
 
     override val layoutResId: Int = R.layout.fragment_recipe_detail
 
     override fun setupBindings(binding: FragmentRecipeDetailBinding) {
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = this.viewLifecycleOwner
+        viewModel.start(args.recipeId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,7 +54,7 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
     }
 
     private fun setupAdapter() {
-        val generalInfoAdapter = RecipeDetailGeneralInfoAdapter(viewModel)
+        val generalInfoAdapter = RecipeDetailGeneralInfoAdapter()
         val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.ingredient_text))
         val itemsAdapter = RecipeDetailItemsAdapter()
         val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.cooking_steps_text))

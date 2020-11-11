@@ -5,8 +5,23 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.buylist.data.entity.CookingStep
 import ru.buylist.data.entity.Item
+import ru.buylist.data.entity.Recipe
 
 object RecipeDetailBindings {
+
+    @BindingAdapter("app:recipe")
+    @JvmStatic
+    fun setRecipe(recycler: RecyclerView, recipe: Recipe?) {
+        with(recycler.adapter as ConcatAdapter) {
+            recipe?.let {
+                for (adapter in adapters) {
+                    if (adapter is RecipeDetailGeneralInfoAdapter) {
+                        adapter.setRecipe(recipe)
+                    }
+                }
+            }
+        }
+    }
 
     @BindingAdapter("app:ingredients")
     @JvmStatic
