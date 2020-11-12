@@ -21,7 +21,7 @@ class SingleActivity : AppCompatActivity() {
         // toolbar config
         setSupportActionBar(toolbar)
         appBarConfig = AppBarConfiguration(
-                setOf(R.id.buy_list_fragment, R.id.patterns_fragment, R.id.recipes_fragment),
+                setOf(R.id.buy_lists_fragment, R.id.patterns_fragment, R.id.recipes_fragment),
                 drawer_layout)
         setupActionBarWithNavController(navController, appBarConfig)
 
@@ -31,7 +31,7 @@ class SingleActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id) {
-                R.id.buy_list_fragment -> showBottomMenu()
+                R.id.buy_lists_fragment -> showBottomMenu()
                 R.id.patterns_fragment -> showBottomMenu()
                 R.id.recipes_fragment -> showBottomMenu()
                 else -> hideBottomMenu()

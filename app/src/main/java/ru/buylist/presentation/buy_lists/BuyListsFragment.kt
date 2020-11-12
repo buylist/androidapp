@@ -1,28 +1,28 @@
-package ru.buylist.presentation.fragments
+package ru.buylist.presentation.buy_lists
 
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_fragment.*
-import kotlinx.android.synthetic.main.fragment_buy_list.*
+import kotlinx.android.synthetic.main.fragment_buy_lists.*
 import ru.buylist.R
-import ru.buylist.databinding.FragmentBuyListBinding
+import ru.buylist.databinding.FragmentBuyListsBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.presentation.adapters.BuyListAdapter
+import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
-import ru.buylist.view_models.BuyListViewModel
 
-class BuyListsFragment : BaseFragment<FragmentBuyListBinding>() {
+class BuyListsFragment : BaseFragment<FragmentBuyListsBinding>() {
 
-    private val viewModel: BuyListViewModel by viewModels {
+    private val viewModel: BuyListsViewModel by viewModels {
         InjectorUtils.provideBuyListViewModelFactory()
     }
 
-    override val layoutResId: Int = R.layout.fragment_buy_list
+    override val layoutResId: Int = R.layout.fragment_buy_lists
 
-    override fun setupBindings(binding: FragmentBuyListBinding) {
+    override fun setupBindings(binding: FragmentBuyListsBinding) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
     }
@@ -35,6 +35,7 @@ class BuyListsFragment : BaseFragment<FragmentBuyListBinding>() {
 
         setupListenersToButtonsCreate()
         setupAdapter()
+        setupNavigation()
     }
 
     override fun onResume() {
@@ -42,9 +43,17 @@ class BuyListsFragment : BaseFragment<FragmentBuyListBinding>() {
         minimizeFab()
     }
 
+    private fun setupNavigation() {
+        viewModel.detailsEvent.observe(viewLifecycleOwner, EventObserver { buyList ->
+            val action = BuyListsFragmentDirections
+                    .actionBuyListFragmentToBuyListDetailFragment(buyList.id, buyList.title)
+            findNavController().navigate(action)
+        })
+    }
+
     private fun setupAdapter() {
-        val buyListAdapter = BuyListAdapter(ArrayList(0), viewModel)
-        recycler.apply { adapter = buyListAdapter }
+        val buyListAdapter = BuyListsAdapter(viewModel)
+        recycler.adapter = buyListAdapter
 
         recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

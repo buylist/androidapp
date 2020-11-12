@@ -12,7 +12,7 @@
 
         <variable
             name="callback"
-            type="ru.buylist.presentation.adapters.BuyListItemListener" />
+            type="ru.buylist.presentation.buy_lists.BuyListItemListener" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -40,7 +40,7 @@
                 android:background="@android:color/transparent"
                 android:textSize="24sp"
                 android:text="@{item.buyList.title}"
-                android:onClick="@{()-> callback.onBuyListClicked(item)}"
+                android:onClick="@{()-> callback.onBuyListClicked(item.buyList)}"
                 android:visibility="@{item.editable ? View.GONE : View.VISIBLE}"/>
 
             <EditText

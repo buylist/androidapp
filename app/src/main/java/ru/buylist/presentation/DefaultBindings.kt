@@ -1,28 +1,21 @@
 package ru.buylist.presentation
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.widget.EditText
 import androidx.databinding.BindingAdapter
 import androidx.databinding.adapters.TextViewBindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import ru.buylist.data.entity.wrappers.BuyListWrapper
 import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.data.entity.wrappers.PatternWrapper
-import ru.buylist.presentation.adapters.*
+import ru.buylist.presentation.adapters.BuyListDetailAdapter
+import ru.buylist.presentation.adapters.CirclesAdapter
+import ru.buylist.presentation.adapters.PatternDetailAdapter
+import ru.buylist.presentation.adapters.PatternsAdapter
 import ru.buylist.utils.showKeyboard
 
 object DefaultBindings {
-
-    @BindingAdapter("app:items")
-    @JvmStatic
-    fun setBuyLists(recycler: RecyclerView, items: List<BuyListWrapper>) {
-        with(recycler.adapter as BuyListAdapter) {
-            list = items
-        }
-    }
 
     @BindingAdapter("app:items")
     @JvmStatic

@@ -6,11 +6,11 @@ import kotlinx.android.synthetic.main.fragment_page.*
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.R
 import ru.buylist.databinding.FragmentPageBinding
-import ru.buylist.view_models.BuyListViewModel
+import ru.buylist.presentation.buy_lists.BuyListsViewModel
 
 class SettingsFragment : BaseFragment<FragmentPageBinding>() {
 
-    private lateinit var viewModel: BuyListViewModel
+    private lateinit var viewModel: BuyListsViewModel
 
     override val layoutResId: Int = R.layout.fragment_page
 

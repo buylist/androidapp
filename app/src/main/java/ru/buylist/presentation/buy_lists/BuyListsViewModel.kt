@@ -1,14 +1,20 @@
-package ru.buylist.view_models
+package ru.buylist.presentation.buy_lists
 
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.buylist.data.entity.BuyList
+import ru.buylist.data.entity.Recipe
 import ru.buylist.data.entity.wrappers.BuyListWrapper
 import ru.buylist.data.repositories.buyList.BuyListsDataSource
+import ru.buylist.utils.Event
 
-class BuyListViewModel(private val repository: BuyListsDataSource) : ViewModel() {
+/**
+ * ViewModel for the buy lists screen.
+ */
+class BuyListsViewModel(private val repository: BuyListsDataSource) : ViewModel() {
 
     var listIsEmpty = ObservableBoolean(true)
     var fabIsShown = ObservableBoolean(true)
@@ -18,8 +24,15 @@ class BuyListViewModel(private val repository: BuyListsDataSource) : ViewModel()
     var wrapperList = MutableLiveData<List<BuyListWrapper>>().apply { value = emptyList() }
     var buyLists = mutableListOf<BuyList>()
 
+    private val _detailsEvent = MutableLiveData<Event<BuyList>>()
+    val detailsEvent: LiveData<Event<BuyList>> = _detailsEvent
+
     init {
         loadList()
+    }
+
+    fun showDetail(buyList: BuyList) {
+        _detailsEvent.value = Event(buyList)
     }
 
     fun save() {
@@ -100,8 +113,8 @@ class BuyListViewModel(private val repository: BuyListsDataSource) : ViewModel()
         repository.getBuyLists(object : BuyListsDataSource.LoadBuyListsCallback {
             override fun onBuyListsLoaded(buyLists: List<BuyList>) {
                 wrapperList.value = getWrapperList(buyLists).toMutableList()
-                this@BuyListViewModel.buyLists.clear()
-                this@BuyListViewModel.buyLists.addAll(buyLists)
+                this@BuyListsViewModel.buyLists.clear()
+                this@BuyListsViewModel.buyLists.addAll(buyLists)
                 listIsEmpty.set(false)
             }
 

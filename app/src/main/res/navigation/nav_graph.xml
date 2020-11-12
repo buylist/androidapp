@@ -3,11 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/buy_list_fragment">
+    app:startDestination="@id/buy_lists_fragment">
     <fragment
-        android:id="@+id/buy_list_fragment"
-        android:name="ru.buylist.presentation.fragments.BuyListsFragment"
-        android:label="BuyLists" >
+        android:id="@+id/buy_lists_fragment"
+        android:name="ru.buylist.presentation.buy_lists.BuyListsFragment"
+        android:label="@string/action_buy_list_text" >
         <action
             android:id="@+id/action_lists_fragment_to_settings_fragment"
             app:destination="@id/settings_fragment" />
@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/patterns_fragment"
         android:name="ru.buylist.presentation.fragments.PatternsFragment"
-        android:label="Patterns" >
+        android:label="@string/action_pattern_text" >
         <action
             android:id="@+id/action_pattern_fragment_to_settings_fragment"
             app:destination="@id/settings_fragment" />
@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/recipes_fragment"
         android:name="ru.buylist.presentation.recipes.RecipesFragment"
-        android:label="Recipes" >
+        android:label="@string/action_recipe_text" >
         <action
             android:id="@+id/action_recipe_fragment_to_settings_fragment"
             app:destination="@id/settings_fragment" />
@@ -52,18 +52,21 @@
     <fragment
         android:id="@+id/settings_fragment"
         android:name="ru.buylist.presentation.fragments.SettingsFragment"
-        android:label="Settings" />
+        android:label="@string/action_settings" />
     <fragment
         android:id="@+id/about_fragment"
         android:name="ru.buylist.presentation.fragments.AboutFragment"
-        android:label="About" />
+        android:label="@string/action_about" />
     <fragment
         android:id="@+id/buy_list_detail_fragment"
         android:name="ru.buylist.presentation.fragments.BuyListDetailFragment"
-        android:label="BuyListDetail" >
+        android:label="{buy_list_title}" >
         <argument
             android:name="buy_list_id"
             app:argType="long" />
+        <argument
+            android:name="buy_list_title"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/pattern_detail_fragment"

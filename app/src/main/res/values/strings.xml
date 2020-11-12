@@ -7,8 +7,16 @@
     <string name="action_recipe_text">Рецепты</string>
 
 
-    <!--Snackbar text-->
+    <!--Drawer-->
+    <string name="action_settings">Настройки</string>
+    <string name="action_about">О приложении</string>
 
+
+    <!--Snackbar text-->
+    <string name="snackbar_action_ok">OK</string>
+    <string name="snackbar_recipes_loading_error">Не удалось загрузить список рецептов.</string>
+    <string name="snackbar_recipe_loading_error">Не удалось загрузить рецепт.</string>
+    <string name="snackbar_empty_recipe_title">Введите название рецепта.</string>
 
     <!--Default-->
     <string name="item_name_default_text">Название продукта</string>
@@ -18,7 +26,7 @@
 
 
     <!--BuyList-->
-    <string name="tv_buy_list_info">Списков покупок еще нет</string>
+    <string name="tv_buy_list_info">Списка покупок еще нет</string>
     <string name="tv_buylist_detail_info">Список покупок пуст</string>
     <string name="btn_pattern_text">По шаблону</string>
     <string name="btn_recipe_text">По рецепту</string>
@@ -72,11 +80,6 @@
     <string name="btn_new_ingredient_description">Добавить ингредиент</string>
     <string name="btn_create_item_description">Сохранить товар</string>
 
-    <!--Snackbar-->
-    <string name="snackbar_action_ok">OK</string>
-    <string name="snackbar_recipes_loading_error">Не удалось загрузить список рецептов.</string>
-    <string name="snackbar_recipe_loading_error">Не удалось загрузить рецепт.</string>
-    <string name="snackbar_empty_recipe_title">Введите название рецепта.</string>
 
 
     <!--Стандартные категории и цвета-->
