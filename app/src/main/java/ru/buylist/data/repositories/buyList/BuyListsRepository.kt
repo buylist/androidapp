@@ -1,66 +1,80 @@
 package ru.buylist.data.repositories.buyList
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import ru.buylist.data.Result
+import ru.buylist.data.Result.Error
+import ru.buylist.data.Result.Success
 import ru.buylist.data.dao.BuyListDao
 import ru.buylist.data.entity.BuyList
-import ru.buylist.utils.AppExecutors
 
 class BuyListsRepository private constructor(
-        private val executors: AppExecutors,
-        private val buyListDao: BuyListDao
+        private val buyListDao: BuyListDao,
+        private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): BuyListsDataSource {
 
-    override fun saveBuyList(buyList: BuyList) {
-        executors.discIO().execute { buyListDao.insertBuyList(buyList) }
+    override suspend fun saveBuyList(buyList: BuyList) = withContext(ioDispatcher) {
+        buyListDao.insertBuyList(buyList)
     }
 
-    override fun updateBuyList(buyList: BuyList) {
-        executors.discIO().execute { buyListDao.updateBuyList(buyList) }
+    override suspend fun updateBuyList(buyList: BuyList) = withContext(ioDispatcher) {
+        buyListDao.updateBuyList(buyList)
     }
 
-    override fun deleteBuyList(buyList: BuyList) {
-        executors.discIO().execute { buyListDao.deleteBuyList(buyList) }
+    override suspend fun deleteBuyList(buyList: BuyList) = withContext(ioDispatcher) {
+        buyListDao.deleteBuyList(buyList)
     }
 
-    override fun deleteSelectedBuyList(buyLists: List<BuyList>) {
-        executors.discIO().execute { buyListDao.deleteSelectedBuyLists(buyLists) }
+    override suspend fun deleteSelectedBuyList(buyLists: List<BuyList>) = withContext(ioDispatcher) {
+        buyListDao.deleteSelectedBuyLists(buyLists)
     }
 
-    override fun deleteAllBuyList() {
-        executors.discIO().execute { buyListDao.deleteAllBuyLists() }
+    override suspend fun deleteAllBuyList() = withContext(ioDispatcher) {
+        buyListDao.deleteAllBuyLists()
     }
 
-    override fun getBuyLists(callback: BuyListsDataSource.LoadBuyListsCallback) {
-        executors.discIO().execute {
-            val buyLists = buyListDao.getBuyLists()
-            executors.mainThread().execute{
-                if (buyLists.isEmpty()) {
-                    callback.onDataNotAvailable()
-                } else {
-                    callback.onBuyListsLoaded(buyLists)
-                }
-            }
+    override suspend fun getBuyLists(): Result<List<BuyList>> = withContext(ioDispatcher) {
+        return@withContext try {
+            Success(buyListDao.getBuyLists())
+        } catch (e: Exception) {
+            Error(e)
         }
     }
 
-    override fun getBuyList(buyListId: Long, callback: BuyListsDataSource.GetBuyListCallback) {
-        executors.discIO().execute {
+    override suspend fun getBuyList(buyListId: Long): Result<BuyList> = withContext(ioDispatcher) {
+        try {
             val buyList = buyListDao.getBuyList(buyListId)
-            executors.mainThread().execute {
-                if (buyList == null) {
-                    callback.onDataNotAvailable()
-                } else {
-                    callback.onBuyListLoaded(buyList)
-                }
+            if (buyList == null) {
+                return@withContext Error(Exception("Список не найден"))
+            } else {
+                return@withContext Success(buyList)
             }
+        } catch (e: Exception) {
+            return@withContext Error(e)
+        }
+    }
+
+    override fun observeBuyLists(): LiveData<Result<List<BuyList>>> {
+        return buyListDao.observeBuyLists().map {
+            Success(it)
+        }
+    }
+
+    override fun observeBuyList(buyListId: Long): LiveData<Result<BuyList>> {
+        return buyListDao.observeBuyListById(buyListId).map {
+            Success(it)
         }
     }
 
     companion object {
         @Volatile private var instance: BuyListsRepository? = null
 
-        fun getInstance(executors: AppExecutors, buyListDao: BuyListDao) =
+        fun getInstance(buyListDao: BuyListDao) =
                 instance ?: synchronized(this) {
-                    instance ?: BuyListsRepository(executors, buyListDao).also { instance = it }
+                    instance ?: BuyListsRepository(buyListDao).also { instance = it }
                 }
     }
 }

@@ -37,9 +37,7 @@ object InjectorUtils {
             RecipeDetailViewModelFactory(getRecipesRepository())
 
     private fun getBuyListsRepository(): BuyListsDataSource {
-        return BuyListsRepository.getInstance(
-                getExecutors(),
-                BuyListApp.get().getDatabase().buyListDao())
+        return BuyListsRepository.getInstance(BuyListApp.get().getDatabase().buyListDao())
     }
 
     private fun getPatternsRepository(): PatternsDataSource {

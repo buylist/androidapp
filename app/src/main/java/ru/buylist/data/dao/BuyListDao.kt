@@ -1,5 +1,6 @@
 package ru.buylist.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.buylist.data.entity.BuyList
 
@@ -26,5 +27,11 @@ interface BuyListDao {
 
     @Query("SELECT * FROM buy_lists WHERE id = :buyListId")
     fun getBuyList(buyListId: Long): BuyList
+
+    @Query("SELECT * FROM buy_lists")
+    fun observeBuyLists(): LiveData<List<BuyList>>
+
+    @Query("SELECT * FROM buy_lists WHERE id = :buyListId")
+    fun observeBuyListById(buyListId: Long): LiveData<BuyList>
 
 }

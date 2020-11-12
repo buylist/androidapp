@@ -1,30 +1,26 @@
 package ru.buylist.data.repositories.buyList
 
+import androidx.lifecycle.LiveData
 import ru.buylist.data.entity.BuyList
+import ru.buylist.data.Result
 
 interface BuyListsDataSource {
 
-    interface GetBuyListCallback {
-        fun onBuyListLoaded(buyList: BuyList)
-        fun onDataNotAvailable()
-    }
+    suspend fun saveBuyList(buyList: BuyList)
 
-    interface LoadBuyListsCallback {
-        fun onBuyListsLoaded(buyLists: List<BuyList>)
-        fun onDataNotAvailable()
-    }
+    suspend fun updateBuyList(buyList: BuyList)
 
-    fun saveBuyList(buyList: BuyList)
+    suspend fun deleteBuyList(buyList: BuyList)
 
-    fun updateBuyList(buyList: BuyList)
+    suspend fun deleteSelectedBuyList(buyLists: List<BuyList>)
 
-    fun deleteBuyList(buyList: BuyList)
+    suspend fun deleteAllBuyList()
 
-    fun deleteSelectedBuyList(buyLists: List<BuyList>)
+    suspend fun getBuyLists(): Result<List<BuyList>>
 
-    fun deleteAllBuyList()
+    suspend fun getBuyList(buyListId: Long): Result<BuyList>
 
-    fun getBuyLists(callback: LoadBuyListsCallback)
+    fun observeBuyLists(): LiveData<Result<List<BuyList>>>
 
-    fun getBuyList(buyListId: Long, callback: GetBuyListCallback)
+    fun observeBuyList(buyListId: Long): LiveData<Result<BuyList>>
 }
