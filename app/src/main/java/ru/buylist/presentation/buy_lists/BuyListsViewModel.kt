@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.buylist.data.entity.BuyList
-import ru.buylist.data.entity.Recipe
 import ru.buylist.data.entity.wrappers.BuyListWrapper
 import ru.buylist.data.repositories.buyList.BuyListsDataSource
 import ru.buylist.utils.Event
@@ -24,11 +23,21 @@ class BuyListsViewModel(private val repository: BuyListsDataSource) : ViewModel(
     var wrapperList = MutableLiveData<List<BuyListWrapper>>().apply { value = emptyList() }
     var buyLists = mutableListOf<BuyList>()
 
+    private val _addBuyListsEvent = MutableLiveData<Event<Unit>>()
+    val addBuyList: LiveData<Event<Unit>> = _addBuyListsEvent
+
+    private val _buyListCreated = MutableLiveData<Event<Unit>>()
+    val buyListCreated: LiveData<Event<Unit>> = _buyListCreated
+
     private val _detailsEvent = MutableLiveData<Event<BuyList>>()
     val detailsEvent: LiveData<Event<BuyList>> = _detailsEvent
 
     init {
         loadList()
+    }
+
+    fun addNewBuyList() {
+        _addBuyListsEvent.value = Event(Unit)
     }
 
     fun showDetail(buyList: BuyList) {
@@ -41,6 +50,11 @@ class BuyListsViewModel(private val repository: BuyListsDataSource) : ViewModel(
         buyLists.add(buyList)
         updateUi()
         buyListTitle.set("")
+        hideLayoutWithFields()
+    }
+
+    fun hideLayoutWithFields() {
+        _buyListCreated.value = Event((Unit))
     }
 
     fun saveEditedData(buyListWrapper: BuyListWrapper, newTitle: String) {
@@ -65,6 +79,10 @@ class BuyListsViewModel(private val repository: BuyListsDataSource) : ViewModel(
     }
 
     fun showHideFab(dy: Int) {
+        if (isEditable) {
+            fabIsShown.set(false)
+            return
+        }
         fabIsShown.set(dy <= 0)
     }
 

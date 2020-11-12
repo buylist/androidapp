@@ -32,7 +32,7 @@
     <string name="btn_recipe_text">По рецепту</string>
     <string name="btn_new_item_text">Новый товар</string>
         <!--hint-->
-        <string name="field_name_list_hint">Введите название списка</string>
+        <string name="field_name_buy_list_hint">Введите название списка</string>
 
 
     <!--Pattern-->
