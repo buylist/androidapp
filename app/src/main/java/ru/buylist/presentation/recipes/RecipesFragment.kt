@@ -28,9 +28,6 @@ class RecipesFragment : BaseFragment<FragmentRecipesBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        fab_add.setOnClickListener { viewModel.addNewRecipe() }
-
         setupAdapter()
         setupNavigation()
         setupSnackbar()

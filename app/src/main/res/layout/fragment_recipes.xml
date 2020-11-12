@@ -54,7 +54,8 @@
                 app:layout_anchorGravity="end|bottom"
                 app:fabSize="auto"
                 android:src="@drawable/fab_add_white"
-                app:fabVisibility="@{view_model.fabIsShown}" />
+                app:fabVisibility="@{view_model.fabIsShown}"
+                android:onClick="@{()-> view_model.addNewRecipe()}"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
