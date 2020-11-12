@@ -73,7 +73,7 @@ object DefaultBindings {
         TextViewBindingAdapter.setText(field, text)
 
         if (text == null || text.isEmpty()) return
-        field.setSelection(text.trim().length)
+        field.setSelection(text.length)
     }
 
     @BindingAdapter("app:requestFocus")
