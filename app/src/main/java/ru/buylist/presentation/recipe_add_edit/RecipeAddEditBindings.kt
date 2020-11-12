@@ -10,7 +10,7 @@ import ru.buylist.data.entity.wrappers.ItemWrapper
  * Binding Adapters for the recipe add/edit screen.
  */
 
-object RecipeAddEditBindingAdapters {
+object RecipeAddEditBindings {
 
     @BindingAdapter("app:ingredients")
     @JvmStatic
