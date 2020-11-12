@@ -24,10 +24,7 @@ import ru.buylist.databinding.FragmentRecipeAddEditBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.adapters.CircleItemClickListener
 import ru.buylist.presentation.adapters.CirclesAdapter
-import ru.buylist.utils.EventObserver
-import ru.buylist.utils.InjectorUtils
-import ru.buylist.utils.hideKeyboard
-import ru.buylist.utils.showKeyboard
+import ru.buylist.utils.*
 
 /**
  * Recipe add/edit screen.
@@ -55,6 +52,7 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
         setupArrowListeners()
+        setupSnackbar()
 
         viewModel.detailsEvent.observe(viewLifecycleOwner, EventObserver { recipe ->
             val action = RecipeAddEditFragmentDirections.actionRecipeAddEditFragmentToRecipeDetailFragment(recipe.id, recipe.title)
@@ -62,6 +60,9 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         })
     }
 
+    private fun setupSnackbar() {
+        view?.setupSnackbar(this, viewModel.snackbarText)
+    }
 
     private fun setupArrowListeners() {
         val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager

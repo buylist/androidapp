@@ -8,6 +8,7 @@ import ru.buylist.data.entity.Recipe
 import ru.buylist.data.entity.wrappers.RecipeWrapper
 import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.utils.Event
+import ru.buylist.R
 
 class RecipesViewModel(private val repository: RecipesDataSource) : ViewModel() {
 
@@ -27,6 +28,9 @@ class RecipesViewModel(private val repository: RecipesDataSource) : ViewModel() 
     }
 
     val fabIsShown = MutableLiveData<Boolean>(true)
+
+    private val _snackbarText = MutableLiveData<Event<Int>>()
+    val snackbarText: LiveData<Event<Int>> = _snackbarText
 
     private val _newRecipeEvent = MutableLiveData<Event<Recipe>>()
     val newRecipeEvent: LiveData<Event<Recipe>> = _newRecipeEvent
@@ -56,6 +60,10 @@ class RecipesViewModel(private val repository: RecipesDataSource) : ViewModel() 
         _detailsEvent.value = Event(recipe)
     }
 
+    private fun showSnackbarMessage(message: Int) {
+        _snackbarText.value = Event(message)
+    }
+
     private fun getWrappedRecipes(recipes: List<Recipe>): List<RecipeWrapper> {
         val newList = mutableListOf<RecipeWrapper>()
         for ((i, recipe) in recipes.withIndex()) {
@@ -74,6 +82,7 @@ class RecipesViewModel(private val repository: RecipesDataSource) : ViewModel() 
             }
         } else {
             result.value = emptyList()
+            showSnackbarMessage(R.string.snackbar_recipes_loading_error)
         }
         return result
     }

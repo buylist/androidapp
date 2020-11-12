@@ -1,6 +1,7 @@
 package ru.buylist.presentation.recipe_detail
 
 import androidx.lifecycle.*
+import ru.buylist.R
 import ru.buylist.data.Result
 import ru.buylist.data.Result.Success
 import ru.buylist.data.entity.CookingStep
@@ -31,6 +32,9 @@ class RecipeDetailViewModel(private val repository: RecipesDataSource) : ViewMod
 
     val isDataAvailable = _recipe.map { it != null }
 
+    private val _snackbarText = MutableLiveData<Event<Int>>()
+    val snackbarText: LiveData<Event<Int>> = _snackbarText
+
     private val _editEvent = MutableLiveData<Event<Unit>>()
     val editEvent: LiveData<Event<Unit>> = _editEvent
 
@@ -53,14 +57,19 @@ class RecipeDetailViewModel(private val repository: RecipesDataSource) : ViewMod
         fabIsShown.value = dy <= 0
     }
 
+    private fun showSnackbarMessage(message: Int) {
+        _snackbarText.value = Event(message)
+    }
+
     private fun computeResult(recipeResult: Result<Recipe>): Recipe? {
-        if (recipeResult is Success) {
+        return if (recipeResult is Success) {
             _ingredients.value = JsonUtils.convertItemsFromJson(recipeResult.data.items)
             _cookingStep.value = JsonUtils
                     .convertCookingStepsFromJson(recipeResult.data.cookingSteps)
-            return recipeResult.data
+            recipeResult.data
         } else {
-            TODO("Error while loading recipe $recipeResult")
+            showSnackbarMessage(R.string.snackbar_recipe_loading_error)
+            null
         }
     }
 }

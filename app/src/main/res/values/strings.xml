@@ -72,6 +72,12 @@
     <string name="btn_new_ingredient_description">Добавить ингредиент</string>
     <string name="btn_create_item_description">Сохранить товар</string>
 
+    <!--Snackbar-->
+    <string name="snackbar_action_ok">OK</string>
+    <string name="snackbar_recipes_loading_error">Не удалось загрузить список рецептов.</string>
+    <string name="snackbar_recipe_loading_error">Не удалось загрузить рецепт.</string>
+    <string name="snackbar_empty_recipe_title">Введите название рецепта.</string>
+
 
     <!--Стандартные категории и цвета-->
     <string-array name="category">

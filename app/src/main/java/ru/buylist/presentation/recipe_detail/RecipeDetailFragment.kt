@@ -14,6 +14,7 @@ import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.recipe_add_edit.RecipeHeaderAdapter
 import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
+import ru.buylist.utils.setupSnackbar
 
 
 /**
@@ -40,6 +41,11 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
         setupNavigation()
+        setupSnackbar()
+    }
+
+    private fun setupSnackbar() {
+        view?.setupSnackbar(this, viewModel.snackbarText)
     }
 
     private fun setupNavigation() {

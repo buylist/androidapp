@@ -11,6 +11,7 @@ import ru.buylist.databinding.FragmentRecipesBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
+import ru.buylist.utils.setupSnackbar
 
 class RecipesFragment : BaseFragment<FragmentRecipesBinding>() {
 
@@ -32,6 +33,11 @@ class RecipesFragment : BaseFragment<FragmentRecipesBinding>() {
 
         setupAdapter()
         setupNavigation()
+        setupSnackbar()
+    }
+
+    private fun setupSnackbar() {
+        view?.setupSnackbar(this, viewModel.snackbarText)
     }
 
     private fun setupNavigation() {

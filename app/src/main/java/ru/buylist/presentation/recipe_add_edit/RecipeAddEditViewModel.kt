@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.buylist.R
 import ru.buylist.data.Result.Success
 import ru.buylist.data.entity.Category
 import ru.buylist.data.entity.CookingStep
@@ -61,6 +62,9 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
             .apply { value = emptyList() }
     val wrappedCircles: LiveData<List<CircleWrapper>> = _wrappedCircles
 
+    private val _snackbarText = MutableLiveData<Event<Int>>()
+    val snackbarText: LiveData<Event<Int>> = _snackbarText
+
     // Event that opens the recipe detail screen
     private val _detailsEvent = MutableLiveData<Event<Recipe>>()
     val detailsEvent: LiveData<Event<Recipe>> = _detailsEvent
@@ -87,13 +91,13 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     fun saveRecipe() {
         val recipe = Recipe()
 
-        val title = recipeTitle.value.toString().trim()
-        if (title.isEmpty() || ingredients.isEmpty() || recipeTitle.value == null) {
-            // TODO: show snackbar "Введите название рецепта и добавьте ингредиенты."
+        val title = recipeTitle.value
+        if (title == null) {
+            showSnackbarMessage(R.string.snackbar_empty_recipe_title)
             return
         }
+
         recipe.title = title
-        recipe.items = JsonUtils.convertItemsToJson(ingredients)
 
         val category = recipeCategory.value.toString().trim()
         if (category.isNotEmpty() && recipeCategory.value != null) {
@@ -103,6 +107,10 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
         val time = recipeCookingTime.value.toString().trim()
         if (time.isNotEmpty() && recipeCookingTime.value != null) {
             recipe.cookingTime = time
+        }
+
+        if (ingredients.isNotEmpty()) {
+            recipe.items = JsonUtils.convertItemsToJson(ingredients)
         }
 
         if (steps.isNotEmpty()) {
@@ -340,6 +348,10 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
         _wrappedCircles.value = getWrappedCircles(newCircles)
     }
 
+    private fun showSnackbarMessage(message: Int) {
+        _snackbarText.value = Event(message)
+    }
+
     private fun onRecipeLoaded(recipe: Recipe) {
         recipeTitle.value = recipe.title
         recipeCategory.value = recipe.category
@@ -351,7 +363,7 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     }
 
     private fun onDataNotAvailable() {
-        TODO("Error while loading recipe")
+        showSnackbarMessage(R.string.snackbar_recipe_loading_error)
     }
 
 
