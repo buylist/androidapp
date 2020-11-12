@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:buyLists="@{view_model.wrapperList}"
+                    app:buyLists="@{view_model.buyLists}"
                     app:onScrolled="@{view_model}"/>
             </FrameLayout>
 
