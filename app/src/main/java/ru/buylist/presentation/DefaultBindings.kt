@@ -1,15 +1,17 @@
 package ru.buylist.presentation
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.widget.EditText
 import androidx.databinding.BindingAdapter
 import androidx.databinding.adapters.TextViewBindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import ru.buylist.data.entity.wrappers.*
+import ru.buylist.data.entity.wrappers.BuyListWrapper
+import ru.buylist.data.entity.wrappers.CircleWrapper
+import ru.buylist.data.entity.wrappers.ItemWrapper
+import ru.buylist.data.entity.wrappers.PatternWrapper
 import ru.buylist.presentation.adapters.*
-import ru.buylist.presentation.recipes.RecipesAdapter
-import ru.buylist.utils.hideKeyboard
 import ru.buylist.utils.showKeyboard
 
 object DefaultBindings {
@@ -81,8 +83,6 @@ object DefaultBindings {
     fun requestFocus(field: EditText, requestFocus: Boolean) {
         if (requestFocus) {
             field.showKeyboard()
-        } else {
-            field.hideKeyboard()
         }
     }
 }

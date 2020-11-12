@@ -14,6 +14,7 @@ import ru.buylist.R
 import ru.buylist.data.entity.wrappers.CookingStepWrapper
 import ru.buylist.databinding.RecipeCookingStepAddEditBinding
 import ru.buylist.presentation.GenericViewHolder
+import ru.buylist.utils.hideKeyboard
 
 /**
  * Adapter for the cooking step on recipe add/edit screen.
@@ -70,6 +71,7 @@ class RecipeAddEditStepsAdapter(val viewModel: RecipeAddEditViewModel) :
 
                 override fun onButtonSaveClick(wrapper: CookingStepWrapper) {
                     viewModel.saveEditedStep(wrapper, field.text.toString())
+                    field.hideKeyboard()
                 }
 
             }

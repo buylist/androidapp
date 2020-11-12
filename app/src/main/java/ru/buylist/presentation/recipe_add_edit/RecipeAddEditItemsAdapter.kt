@@ -14,6 +14,7 @@ import ru.buylist.R
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.databinding.RecipeIngredientAddEditBinding
 import ru.buylist.presentation.GenericViewHolder
+import ru.buylist.utils.hideKeyboard
 
 /**
  * Adapter for the ingredients on recipe add/edit screen.
@@ -72,6 +73,7 @@ class RecipeAddEditItemsAdapter(val viewModel: RecipeAddEditViewModel) : ListAda
                             field.text.toString(),
                             binding.fieldQuantity.text.toString(),
                             binding.fieldUnit.text.toString())
+                    field.hideKeyboard()
                 }
 
             }
