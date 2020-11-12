@@ -18,6 +18,9 @@ import ru.buylist.utils.InjectorUtils
 import ru.buylist.utils.hideKeyboard
 import ru.buylist.utils.showKeyboard
 
+/**
+ * Buy lists screen.
+ */
 class BuyListsFragment : BaseFragment<FragmentBuyListsBinding>() {
 
     private val viewModel: BuyListsViewModel by viewModels {
