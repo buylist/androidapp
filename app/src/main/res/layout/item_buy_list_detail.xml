@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -47,7 +48,7 @@
                 android:background="@android:color/transparent"
                 android:textSize="@dimen/default_text_size"
                 android:text="@{item.item.name}"
-                android:onClick="@{()-> callback.onItemClicked(item)}"
+                android:onClick="@{()-> callback.onItemClicked(item.position)}"
                 android:visibility="@{item.editable ? View.GONE : View.VISIBLE}"/>
 
             <EditText
@@ -55,13 +56,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/img_category_circle"
-                android:layout_toStartOf="@+id/btn_save"
+                android:layout_toStartOf="@+id/field_quantity"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
                 android:background="@android:color/transparent"
                 android:inputType="text"
                 android:textSize="@dimen/default_text_size"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionNext"
+                app:requestFocus="@{item.editable}"
                 android:text="@{item.item.name}"
                 android:visibility="@{item.editable ? View.VISIBLE : View.GONE}"/>
 
@@ -73,8 +75,41 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="@dimen/default_layout_margin"
+                android:text="@{item.item.quantity + item.item.unit}"
+                android:textSize="@dimen/default_text_size"
+                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}"/>
+
+            <EditText
+                android:id="@+id/field_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/field_unit"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/field_bg"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:digits="0123456789.,"
+                android:textSize="@dimen/default_text_size"
+                android:imeOptions="actionNext"
                 android:text="@{item.item.quantity}"
-                android:textSize="@dimen/default_text_size" />
+                android:visibility="@{item.editable ? View.VISIBLE : View.GONE}"/>
+
+            <EditText
+                android:id="@+id/field_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/btn_save"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/field_bg"
+                android:gravity="center"
+                android:inputType="text"
+                android:textSize="@dimen/default_text_size"
+                android:imeOptions="actionDone"
+                android:text="@{item.item.unit}"
+                android:visibility="@{item.editable ? View.VISIBLE : View.GONE}"/>
 
             <ImageView
                 android:id="@+id/btn_more"
@@ -83,9 +118,9 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_more"
-                android:tint="@color/colorNavNormal"
                 android:onClick="@{()-> callback.onButtonMoreClick(item)}"
-                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}" />
+                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}"
+                app:tint="@color/colorNavNormal" />
 
             <ImageView
                 android:id="@+id/btn_save"

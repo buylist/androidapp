@@ -27,7 +27,8 @@
                 android:layout_height="match_parent"
                 android:background="@color/colorScrim"
                 android:elevation="8dp"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                android:onClick="@{()-> view_model.hideNewProductLayout()}"/>
 
             <FrameLayout
                 android:id="@+id/frame_layout"
@@ -53,10 +54,10 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_items"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:scrollbars="vertical"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:items="@{view_model.wrappedItems}" />
+                        app:buyListProducts="@{view_model.products}" />
 
                 </LinearLayout>
             </FrameLayout>
@@ -115,7 +116,8 @@
                         android:gravity="center_vertical"
                         android:background="@color/colorAccent"
                         android:clickable="true"
-                        android:focusable="true" />
+                        android:focusable="true"
+                        android:onClick="@{()-> view_model.addNewProduct()}"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -155,10 +157,11 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="4dp"
+                        android:layout_marginStart="16dp"
                         android:src="@drawable/ic_arrow_left"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_prev_color_description"
+
                         android:visibility="@{view_model.prevArrowIsShown ? View.VISIBLE : View.INVISIBLE}" />
 
                     <ImageButton
@@ -167,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_arrow_right"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_next_color_description"
@@ -187,7 +190,7 @@
                     android:layout_marginBottom="@dimen/field_margin_vertical"
                     android:background="@drawable/field_border">
 
-                    <ru.buylist.utils.FocusableEditText
+                    <EditText
                         android:id="@+id/field_name"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -197,9 +200,9 @@
                         android:imeOptions="actionNext"
                         android:nextFocusForward="@id/field_quantity"
                         android:background="@android:color/transparent"
-                        android:text="@={view_model.itemName}" />
+                        android:text="@={view_model.productName}" />
 
-                    <ru.buylist.utils.FocusableEditText
+                    <EditText
                         android:id="@+id/field_quantity"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -211,9 +214,10 @@
                         android:digits="0123456789.,"
                         android:imeOptions="actionNext"
                         android:nextFocusForward="@id/field_unit"
-                        android:background="@drawable/field_bg" />
+                        android:background="@drawable/field_bg"
+                        android:text="@={view_model.productQuantity}"/>
 
-                    <ru.buylist.utils.FocusableEditText
+                    <EditText
                         android:id="@+id/field_unit"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -222,7 +226,9 @@
                         android:hint="@string/field_unit_hint"
                         android:inputType="text"
                         android:imeOptions="actionDone"
-                        android:background="@drawable/field_bg" />
+                        android:background="@drawable/field_bg"
+                        android:text="@={view_model.productUnit}"
+                        app:imeActionDoneListener="@{view_model}"/>
 
                     <ImageButton
                         android:id="@+id/btn_create"
@@ -231,7 +237,8 @@
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_create_item_description"
-                        android:src="@drawable/button_create" />
+                        android:src="@drawable/button_create"
+                        android:onClick="@{()-> view_model.saveNewItem()}"/>
 
                 </LinearLayout>
 
@@ -248,7 +255,8 @@
                 app:fabSize="auto"
                 android:src="@drawable/fab_add_white"
                 android:backgroundTint="@color/colorAccent"
-                app:fabVisibility="@{view_model.fabIsShown}" />
+                app:fabVisibility="@{view_model.fabIsShown}"
+                android:onClick="@{()-> view_model.addProduct()}"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

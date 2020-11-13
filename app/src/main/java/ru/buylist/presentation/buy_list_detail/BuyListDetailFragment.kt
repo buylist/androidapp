@@ -3,6 +3,7 @@ package ru.buylist.presentation.buy_list_detail
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.navigation.fragment.navArgs
@@ -10,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialContainerTransform
-import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_buy_list_detail.*
 import ru.buylist.R
 import ru.buylist.data.entity.wrappers.CircleWrapper
@@ -18,14 +18,14 @@ import ru.buylist.databinding.FragmentBuyListDetailBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.adapters.CircleItemClickListener
 import ru.buylist.presentation.adapters.CirclesAdapter
-import ru.buylist.utils.InjectorUtils
+import ru.buylist.utils.*
 
 class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
 
     private val args: BuyListDetailFragmentArgs by navArgs()
 
     private val viewModel: BuyListDetailViewModel by viewModels {
-        InjectorUtils.provideBuyListDetailViewModelFactory(args.buyListId)
+        InjectorUtils.provideBuyListDetailViewModelFactory()
     }
 
     override val layoutResId: Int = R.layout.fragment_buy_list_detail
@@ -35,61 +35,67 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
     override fun setupBindings(binding: FragmentBuyListDetailBinding) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+        viewModel.start(args.buyListId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.setupCircles(resources.getStringArray(R.array.category_color).toList())
-        fab_add.setOnClickListener { expandFab() }
-        shadow_view.setOnClickListener { minimizeFab() }
-        btn_new_item.setOnClickListener { expandNewItemLayout() }
-        btn_create.setOnClickListener {
-            viewModel.saveNewItem()
-            field_name.requestFocus()
-        }
+
         setupAdapter()
-        setupArrowListeners()
+        setupNavigation()
+        setupSnackbar()
     }
 
-    private fun expandNewItemLayout() {
+    private fun setupSnackbar() {
+        view?.setupSnackbar(this, viewModel.snackbarText)
+    }
+
+    private fun setupNavigation() {
+        viewModel.addProductEvent.observe(viewLifecycleOwner, EventObserver {
+            expand(fab_add, fab_menu, null)
+        })
+
+        viewModel.newProductEvent.observe(viewLifecycleOwner, EventObserver {
+            expand(fab_menu, layout_new_item, field_name)
+        })
+
+        viewModel.productAddedEvent.observe(viewLifecycleOwner, EventObserver {
+            minimize(fab_menu, fab_add, field_name)
+        })
+
+        viewModel.saveProductEvent.observe(viewLifecycleOwner, EventObserver {
+            field_name.requestFocus()
+        })
+    }
+
+    private fun expand(start: View, end: View, field: EditText?) {
         val transition = buildContainerTransform().apply {
-            startView = btn_new_item
-            endView = layout_new_item
-            addTarget(layout_new_item)
+            startView = start
+            endView = end
+            addTarget(end)
         }
 
         TransitionManager.beginDelayedTransition(requireActivity().findViewById(android.R.id.content), transition)
-        fab_menu.visibility = View.GONE
-        requireActivity().nav_bottom.visibility = View.GONE
-        layout_new_item.visibility = View.VISIBLE
-        field_name.requestFocus()
-    }
-
-    private fun expandFab() {
-        val transition = buildContainerTransform().apply {
-            startView = fab_add
-            endView = fab_menu
-            addTarget(fab_menu)
-        }
-
-        TransitionManager.beginDelayedTransition(requireActivity().findViewById(android.R.id.content), transition)
-        fab_menu.visibility = View.VISIBLE
+        end.visibility = View.VISIBLE
         shadow_view.visibility = View.VISIBLE
-        fab_add.visibility = View.GONE
+        start.visibility = View.GONE
+        field?.showKeyboard()
     }
 
-    private fun minimizeFab() {
+    private fun minimize(start: View, end: View, field: EditText) {
         val transition = buildContainerTransform().apply {
-            startView = fab_menu
-            endView = fab_add
+            startView = start
+            endView = end
             addTarget(fab_add)
         }
         TransitionManager.beginDelayedTransition(coordinator_layout, transition)
-        fab_menu.visibility = View.GONE
+        start.visibility = View.GONE
         shadow_view.visibility = View.GONE
         layout_new_item.visibility = View.GONE
-        fab_add.visibility = View.VISIBLE
+        end.visibility = View.VISIBLE
+        field.hideKeyboard()
     }
 
     private fun buildContainerTransform() =
@@ -99,30 +105,6 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
                 fadeMode = MaterialContainerTransform.FADE_MODE_IN
                 interpolator = FastOutSlowInInterpolator()
             }
-
-    private fun setupArrowListeners() {
-        val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
-        btn_prev_circles.setOnClickListener {
-            val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
-            if (firstVisiblePosition > 0) {
-                layoutManager.smoothScrollToPosition(
-                        recycler_circles, null, firstVisiblePosition - 1)
-            }
-        }
-
-        btn_next_circles.setOnClickListener {
-            recycler_circles.adapter?.itemCount?.let {
-                if (it <= 0) return@let
-
-                val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
-                if (lastVisiblePosition >= it) return@let
-
-                layoutManager.smoothScrollToPosition(
-                        recycler_circles, null, lastVisiblePosition + 1)
-            }
-
-        }
-    }
 
     private fun isLastCircleVisible(circlesAdapter: CirclesAdapter): Boolean {
         val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
@@ -137,7 +119,7 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
     }
 
     private fun setupAdapter() {
-        val itemsAdapter = BuyListDetailAdapter(ArrayList(0), viewModel)
+        val itemsAdapter = BuyListDetailAdapter(viewModel)
         recycler_items.adapter = itemsAdapter
 
         recycler_items.addOnScrollListener(object : RecyclerView.OnScrollListener() {

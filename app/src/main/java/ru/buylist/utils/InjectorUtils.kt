@@ -24,8 +24,8 @@ object InjectorUtils {
     fun provideRecipeViewModelFactory() =
             RecipesViewModelFactory(getRecipesRepository())
 
-    fun provideBuyListDetailViewModelFactory(buyListId: Long) =
-            BuyListDetailViewModelFactory(getBuyListsRepository(), getGlobalItemsRepository(), buyListId)
+    fun provideBuyListDetailViewModelFactory() =
+            BuyListDetailViewModelFactory(getBuyListsRepository())
 
     fun providePatternDetailViewModelFactory(patternId: Long) =
             PatternDetailViewModelFactory(getPatternsRepository(), getGlobalItemsRepository(), patternId)

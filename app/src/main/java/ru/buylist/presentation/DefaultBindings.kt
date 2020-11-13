@@ -25,15 +25,6 @@ object DefaultBindings {
         }
     }
 
-    @BindingAdapter("app:items")
-    @JvmStatic
-    fun setItems(recycler: RecyclerView,
-                 items: List<ItemWrapper>) {
-        with(recycler.adapter as BuyListDetailAdapter) {
-            wrappedItems = items
-        }
-    }
-
     @BindingAdapter("app:patternItems")
     @JvmStatic
     fun setPatternItems(recycler: RecyclerView,
