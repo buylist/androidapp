@@ -1,4 +1,4 @@
-package ru.buylist.presentation.adapters
+package ru.buylist.presentation.pattern_detail
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -11,7 +11,6 @@ import ru.buylist.R
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.databinding.ItemPatternDetailBinding
 import ru.buylist.presentation.GenericViewHolder
-import ru.buylist.view_models.PatternDetailViewModel
 
 
 // TODO: в будущем сделать общий адаптер для BuyListDetail и PatterDetail

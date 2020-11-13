@@ -70,7 +70,7 @@
     </fragment>
     <fragment
         android:id="@+id/pattern_detail_fragment"
-        android:name="ru.buylist.presentation.fragments.PatternDetailFragment"
+        android:name="ru.buylist.presentation.pattern_detail.PatternDetailFragment"
         android:label="{pattern_title}" >
         <argument
             android:name="pattern_id"

@@ -1,4 +1,4 @@
-package ru.buylist.presentation.fragments
+package ru.buylist.presentation.pattern_detail
 
 import android.graphics.Color
 import android.os.Bundle
@@ -17,10 +17,9 @@ import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentPatternDetailBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.circle_adapter.CirclesAdapter
-import ru.buylist.presentation.adapters.PatternDetailAdapter
 import ru.buylist.presentation.circle_adapter.CircleItemClickListener
+import ru.buylist.presentation.fragments.PatternDetailFragmentArgs
 import ru.buylist.utils.InjectorUtils
-import ru.buylist.view_models.PatternDetailViewModel
 
 class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
 

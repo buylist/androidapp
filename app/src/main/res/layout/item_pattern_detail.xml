@@ -12,7 +12,7 @@
 
         <variable
             name="callback"
-            type="ru.buylist.presentation.adapters.PatternDetailItemCallback" />
+            type="ru.buylist.presentation.pattern_detail.PatternDetailItemCallback" />
     </data>
 
     <androidx.cardview.widget.CardView

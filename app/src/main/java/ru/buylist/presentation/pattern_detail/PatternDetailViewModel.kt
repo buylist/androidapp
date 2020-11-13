@@ -1,4 +1,4 @@
-package ru.buylist.view_models
+package ru.buylist.presentation.pattern_detail
 
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField

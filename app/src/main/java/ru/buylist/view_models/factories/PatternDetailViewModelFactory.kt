@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.buylist.data.repositories.items.GlobalItemsDataSource
 import ru.buylist.data.repositories.pattern.PatternsDataSource
-import ru.buylist.view_models.PatternDetailViewModel
+import ru.buylist.presentation.pattern_detail.PatternDetailViewModel
 
 class PatternDetailViewModelFactory(
         private val patternsRepository: PatternsDataSource,
