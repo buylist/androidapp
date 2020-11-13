@@ -16,9 +16,9 @@ import ru.buylist.R
 import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentPatternDetailBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.presentation.adapters.CircleItemClickListener
-import ru.buylist.presentation.adapters.CirclesAdapter
+import ru.buylist.presentation.circle_adapter.CirclesAdapter
 import ru.buylist.presentation.adapters.PatternDetailAdapter
+import ru.buylist.presentation.circle_adapter.CircleItemClickListener
 import ru.buylist.utils.InjectorUtils
 import ru.buylist.view_models.PatternDetailViewModel
 
@@ -37,12 +37,12 @@ class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
     override fun setupBindings(binding: FragmentPatternDetailBinding) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+        viewModel.start(resources.getStringArray(R.array.category_color).toList())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setupCircles(resources.getStringArray(R.array.category_color).toList())
         fab_add.setOnClickListener { expandFab() }
         shadow_view.setOnClickListener { minimizeFab() }
         btn_create.setOnClickListener{
@@ -125,7 +125,7 @@ class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
             }
         })
 
-        circlesAdapter = CirclesAdapter(emptyList(), callback)
+        circlesAdapter = CirclesAdapter(callback)
         recycler_circles.apply { adapter = circlesAdapter }
 
         recycler_circles.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -151,8 +151,6 @@ class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
     private val callback = object : CircleItemClickListener {
         override fun onCircleClick(circleWrapper: CircleWrapper) {
             viewModel.updateCircle(circleWrapper)
-            circlesAdapter.updateCircles(viewModel.getCurrentColorPosition(), circleWrapper.position)
-            viewModel.saveCurrentColorPosition(circleWrapper.position)
         }
 
     }

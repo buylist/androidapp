@@ -20,7 +20,8 @@ import ru.buylist.utils.hideKeyboard
  * Adapter for the ingredients on recipe add/edit screen.
  */
 
-class RecipeAddEditItemsAdapter(val viewModel: RecipeAddEditViewModel) : ListAdapter<ItemWrapper, GenericViewHolder>(RecipeItemsDiffCallback()) {
+class RecipeAddEditItemsAdapter(val viewModel: RecipeAddEditViewModel)
+    : ListAdapter<ItemWrapper, GenericViewHolder>(RecipeItemsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val binding: RecipeIngredientAddEditBinding = DataBindingUtil.inflate(
@@ -44,7 +45,7 @@ class RecipeAddEditItemsAdapter(val viewModel: RecipeAddEditViewModel) : ListAda
             val wrapper = getItem(position)
             binding.item = wrapper
             binding.card.setBackgroundColor(if (wrapper.isEditable) Color.WHITE else 0)
-            binding.imgCategoryCircle.setColorFilter(Color.parseColor(wrapper.item.category.color))
+            binding.imgCategoryCircle.setColorFilter(Color.parseColor(wrapper.item.color))
             binding.callback = getListener(itemView.context, binding.btnMore, binding.fieldIngredientTitle)
             binding.executePendingBindings()
         }

@@ -1,13 +1,9 @@
 package ru.buylist.presentation.recipe_add_edit
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import ru.buylist.R
 import ru.buylist.data.Result.Success
-import ru.buylist.data.entity.Category
 import ru.buylist.data.entity.CookingStep
 import ru.buylist.data.entity.Item
 import ru.buylist.data.entity.Recipe
@@ -15,6 +11,7 @@ import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.data.entity.wrappers.CookingStepWrapper
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.data.repositories.recipe.RecipesDataSource
+import ru.buylist.utils.CategoryInfo
 import ru.buylist.utils.Event
 import ru.buylist.utils.JsonUtils
 
@@ -57,10 +54,20 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     val wrappedSteps: LiveData<List<CookingStepWrapper>> = _wrappedSteps
 
     // Markers that show the category of an ingredient using color
-    private val circles = mutableListOf<String>()
-    private val _wrappedCircles = MutableLiveData<List<CircleWrapper>>()
-            .apply { value = emptyList() }
-    val wrappedCircles: LiveData<List<CircleWrapper>> = _wrappedCircles
+    private val _colors = MutableLiveData<List<String>>()
+    private val _selectedColor = MutableLiveData<Int>()
+
+    private val _circlesUpdate
+            = MediatorLiveData<Pair<List<String>?, Int?>>().apply {
+        addSource(_colors) { value = Pair(it, _selectedColor.value) }
+        addSource(_selectedColor) { value = Pair(_colors.value, it) }
+    }
+
+    private val _circles: LiveData<List<CircleWrapper>> = _circlesUpdate.map { pair ->
+        getWrappedCircles(pair.first, pair.second)
+    }
+
+    val circles: LiveData<List<CircleWrapper>> = _circles
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
@@ -70,9 +77,9 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     val detailsEvent: LiveData<Event<Recipe>> = _detailsEvent
 
 
-    fun start(recipeId: Long, newCircles: List<String>) {
+    fun start(recipeId: Long, newColors: List<String>) {
         _recipeId = recipeId
-        setupCircles(newCircles)
+        _colors.value = newColors
         if (recipeId == NEW_RECIPE_ID) {
             return
         }
@@ -86,6 +93,10 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
                 }
             }
         }
+    }
+
+    fun hideNewIngredientLayout() {
+        _selectedColor.value = null
     }
 
     fun saveRecipe() {
@@ -130,7 +141,7 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
         val name = itemName.value.toString().trim()
         if (name.isEmpty() || itemName.value == null) return
 
-        val item = Item(name = name, category = getCategory())
+        val item = Item(name = name, color = getColor())
 
         val quantity = this.quantity.value.toString().trim()
         val unit = this.unit.value.toString().trim()
@@ -145,7 +156,7 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
         }
 
         ingredients.add(item)
-        ingredients.sortWith(compareBy({ it.category.color }, { it.id }))
+        ingredients.sortWith(compareBy({ it.color }, { it.id }))
         updateUi()
         itemName.value = null
         this.quantity.value = null
@@ -228,16 +239,8 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
         _wrappedSteps.value = getWrappedSteps(steps)
     }
 
-    fun getCurrentColorPosition() = colorPosition
-
-    fun saveCurrentColorPosition(position: Int) {
-        colorPosition = position
-    }
-
     fun updateCircle(selectedCircle: CircleWrapper) {
-        val circleList: MutableList<CircleWrapper> = _wrappedCircles.value as MutableList<CircleWrapper>
-        checkSelectedCircles(circleList)
-        selectedCircle.isSelected = !selectedCircle.isSelected
+        _selectedColor.value = selectedCircle.position
     }
 
     fun showHideArrows(prev: Boolean, next: Boolean) {
@@ -263,11 +266,12 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
         _detailsEvent.value = Event(updatedRecipe)
     }
 
-    private fun getCategory(): Category {
-        return when {
-            colorPosition < 0 -> Category()
-            else -> Category(color = circles[colorPosition])
-        }
+    private fun getColor(): String {
+        _selectedColor.value?.let {position ->
+            _colors.value?.let { colors ->
+                return colors[position]
+            }
+        } ?: return CategoryInfo.COLOR
     }
 
     private fun updateUi() {
@@ -291,17 +295,6 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
         _wrappedIngredients.value = list
     }
 
-    private fun checkSelectedCircles(list: MutableList<CircleWrapper>) {
-        val iterator = list.iterator()
-        while (iterator.hasNext()) {
-            val circle = iterator.next()
-            if (circle.isSelected) {
-                circle.isSelected = !circle.isSelected
-                break
-            }
-        }
-    }
-
     private fun extractDataFromWrappedItems(): MutableList<ItemWrapper> {
         val list = mutableListOf<ItemWrapper>()
         wrappedIngredients.value?.let { list.addAll(it) }
@@ -314,10 +307,15 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
         return list
     }
 
-    private fun getWrappedCircles(list: List<String>): List<CircleWrapper> {
+    private fun getWrappedCircles(list: List<String>?, position: Int?): List<CircleWrapper> {
+        if (list == null) return emptyList()
+
         val newList = mutableListOf<CircleWrapper>()
         for ((i, circle) in list.withIndex()) {
             val circleWrapper = CircleWrapper(circle, i)
+            if (position != null && position == i) {
+                circleWrapper.isSelected = true
+            }
             newList.add(circleWrapper)
         }
         return newList
@@ -340,12 +338,6 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
             newList.add(wrappedItem)
         }
         return newList
-    }
-
-    private fun setupCircles(newCircles: List<String>) {
-        circles.clear()
-        circles.addAll(newCircles)
-        _wrappedCircles.value = getWrappedCircles(newCircles)
     }
 
     private fun showSnackbarMessage(message: Int) {

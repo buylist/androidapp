@@ -18,7 +18,8 @@ class BuyListsViewModel(private val repository: BuyListsDataSource) : ViewModel(
     private val _forceUpdate = MutableLiveData<Boolean>(false)
     private val _buyListToEdit = MutableLiveData<Int>()
 
-    private val _triggers = MediatorLiveData<Pair<Boolean?, Int?>>().apply {
+    private val _triggers =
+            MediatorLiveData<Pair<Boolean?, Int?>>().apply {
         addSource(_forceUpdate) { value = Pair(it, _buyListToEdit.value) }
         addSource(_buyListToEdit) { value = Pair(_forceUpdate.value, it) }
     }

@@ -149,7 +149,7 @@
                         android:scrollbars="none"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:orientation="horizontal"
-                        app:items="@{view_model.wrapperCircles}" />
+                        app:circles="@{view_model.circles}" />
 
                     <ImageButton
                         android:id="@+id/btn_prev_circles"

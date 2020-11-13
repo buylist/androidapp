@@ -3,12 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="circle"
+            name="item"
             type="ru.buylist.data.entity.wrappers.CircleWrapper" />
 
         <variable
             name="callback"
-            type="ru.buylist.presentation.adapters.CircleItemClickListener" />
+            type="ru.buylist.presentation.circle_adapter.CircleItemClickListener" />
 
     </data>
     <ImageView android:id="@+id/circle"
@@ -16,6 +16,6 @@
         android:layout_height="@dimen/img_category_circle_big"
         android:layout_margin="@dimen/small_layout_margin"
         android:contentDescription="@string/category_marker_description"
-        android:src="@{circle.selected ? @drawable/circle_empty : @drawable/circle}"
-        android:onClick="@{() -> callback.onCircleClick(circle)}"/>
+        android:src="@{item.selected ? @drawable/circle_empty : @drawable/circle}"
+        android:onClick="@{() -> callback.onCircleClick(item)}"/>
 </layout>

@@ -2,14 +2,15 @@ package ru.buylist.view_models
 
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import ru.buylist.data.entity.*
+import androidx.lifecycle.*
+import ru.buylist.data.entity.Item
+import ru.buylist.data.entity.Pattern
 import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.data.repositories.items.GlobalItemsDataSource
 import ru.buylist.data.repositories.pattern.PatternsDataSource
-import ru.buylist.data.repositories.pattern.PatternsDataSource.*
+import ru.buylist.data.repositories.pattern.PatternsDataSource.GetPatternCallback
+import ru.buylist.utils.CategoryInfo
 import ru.buylist.utils.JsonUtils
 
 class PatternDetailViewModel(
@@ -27,21 +28,42 @@ class PatternDetailViewModel(
     private var colorPosition = -1
     private lateinit var pattern: Pattern
     val items = mutableListOf<Item>()
-    val wrappedItems = MutableLiveData<List<ItemWrapper>>().apply { value = emptyList() }
-    val wrapperCircles = MutableLiveData<List<CircleWrapper>>().apply { value = emptyList() }
-    private val circles = mutableListOf<String>()
+    val wrappedItems
+            = MutableLiveData<List<ItemWrapper>>().apply { value = emptyList() }
+
+    private val _colors = MutableLiveData<List<String>>()
+    private val _selectedColor = MutableLiveData<Int>()
+
+    private val _circlesUpdate
+            = MediatorLiveData<Pair<List<String>?, Int?>>().apply {
+        addSource(_colors) { value = Pair(it, _selectedColor.value) }
+        addSource(_selectedColor) { value = Pair(_colors.value, it) }
+    }
+
+    private val _circles: LiveData<List<CircleWrapper>> = _circlesUpdate.map { pair ->
+        getWrappedCircles(pair.first, pair.second)
+    }
+    val circles: LiveData<List<CircleWrapper>> = _circles
 
     init {
         loadList()
+    }
+
+    fun start(newColors: List<String>) {
+        _colors.value = newColors
+    }
+
+    fun hideNewProductLayout() {
+        _selectedColor.value = null
     }
 
     fun saveNewItem() {
         val title = itemName.get().toString().trim()
         if (title.isEmpty())  return
 
-        val item = Item(name = title, category = getCategory())
+        val item = Item(name = title, color = getColor())
         items.add(item)
-        items.sortWith(compareBy({ it.isPurchased }, { it.category.color }, { it.id }))
+        items.sortWith(compareBy({ it.isPurchased }, { it.color }, { it.id }))
         updateUi()
         itemName.set("")
         pattern.items = JsonUtils.convertItemsToJson(items)
@@ -75,22 +97,8 @@ class PatternDetailViewModel(
         updateUi()
     }
 
-    fun getCurrentColorPosition() = colorPosition
-
-    fun saveCurrentColorPosition(position: Int) {
-        colorPosition = position
-    }
-
     fun updateCircle(selectedCircle: CircleWrapper) {
-        val circleList: MutableList<CircleWrapper> = wrapperCircles.value as MutableList<CircleWrapper>
-        checkSelectedCircles(circleList)
-        selectedCircle.isSelected = !selectedCircle.isSelected
-    }
-
-    fun setupCircles(newCircles: List<String>) {
-        circles.clear()
-        circles.addAll(newCircles)
-        wrapperCircles.value = getWrappedCircles(newCircles)
+        _selectedColor.value = selectedCircle.position
     }
 
     fun showHideArrows(prev: Boolean, next: Boolean) {
@@ -102,11 +110,12 @@ class PatternDetailViewModel(
         fabIsShown.set(dy <= 0)
     }
 
-    private fun getCategory(): Category {
-        return when {
-            colorPosition < 0 -> Category()
-            else -> Category(color = circles[colorPosition])
-        }
+    private fun getColor(): String {
+        _selectedColor.value?.let {position ->
+            _colors.value?.let { colors ->
+                return colors[position]
+            }
+        } ?: return CategoryInfo.COLOR
     }
 
     private fun updateUi() {
@@ -135,27 +144,21 @@ class PatternDetailViewModel(
         }
     }
 
-    private fun checkSelectedCircles(list: MutableList<CircleWrapper>) {
-        val iterator = list.iterator()
-        while (iterator.hasNext()) {
-            val circle = iterator.next()
-            if (circle.isSelected) {
-                circle.isSelected = !circle.isSelected
-                break
-            }
-        }
-    }
-
     private fun extractDataFromWrappedItems(): MutableList<ItemWrapper> {
         val list = mutableListOf<ItemWrapper>()
         wrappedItems.value?.let { list.addAll(it) }
         return list
     }
 
-    private fun getWrappedCircles(list: List<String>): List<CircleWrapper> {
+    private fun getWrappedCircles(list: List<String>?, position: Int?): List<CircleWrapper> {
+        if (list == null) return emptyList()
+
         val newList = mutableListOf<CircleWrapper>()
         for ((i, circle) in list.withIndex()) {
             val circleWrapper = CircleWrapper(circle, i)
+            if (position != null && position == i) {
+                circleWrapper.isSelected = true
+            }
             newList.add(circleWrapper)
         }
         return newList

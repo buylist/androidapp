@@ -8,7 +8,7 @@ data class Item(
         var quantity: String = "",
         var unit: String = "",
         var isPurchased: Boolean = false,
-        var category: Category = Category()
+        var color: String = "#8A000000"
 ) {
     val isEmpty get() = name.isEmpty()
 }

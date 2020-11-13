@@ -38,7 +38,7 @@
                 android:scrollbars="none"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:orientation="horizontal"
-                app:items="@{viewModel.wrappedCircles}" />
+                app:circles="@{viewModel.circles}" />
 
             <ImageButton
                 android:id="@+id/btn_prev_circles"

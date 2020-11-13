@@ -38,7 +38,7 @@ class RecipeDetailItemsAdapter : ListAdapter<Item, GenericViewHolder>(RecipeItem
         override fun bind(position: Int) {
             val ingredient = getItem(position)
             binding.item = ingredient
-            binding.imgCategoryCircle.setColorFilter(Color.parseColor(ingredient.category.color))
+            binding.imgCategoryCircle.setColorFilter(Color.parseColor(ingredient.color))
             binding.executePendingBindings()
         }
     }

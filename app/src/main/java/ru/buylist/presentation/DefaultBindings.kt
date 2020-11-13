@@ -6,11 +6,8 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.adapters.TextViewBindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.data.entity.wrappers.PatternWrapper
-import ru.buylist.presentation.buy_list_detail.BuyListDetailAdapter
-import ru.buylist.presentation.adapters.CirclesAdapter
 import ru.buylist.presentation.adapters.PatternDetailAdapter
 import ru.buylist.presentation.adapters.PatternsAdapter
 import ru.buylist.utils.showKeyboard
@@ -31,14 +28,6 @@ object DefaultBindings {
                         items: List<ItemWrapper>) {
         with(recycler.adapter as PatternDetailAdapter) {
             wrappedItems = items
-        }
-    }
-
-    @BindingAdapter("app:items")
-    @JvmStatic
-    fun setCircles(recycler: RecyclerView, circles: List<CircleWrapper>) {
-        with(recycler.adapter as CirclesAdapter) {
-            list = circles
         }
     }
 

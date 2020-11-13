@@ -69,7 +69,7 @@ class PatternDetailAdapter(
     private inner class ItemViewHolder(private val binding: ItemPatternDetailBinding) : GenericViewHolder(binding.root) {
         override fun bind(position: Int) {
             binding.item = wrappedItems[position]
-            binding.imgCategoryCircle.setColorFilter(Color.parseColor(wrappedItems[position].item.category.color))
+            binding.imgCategoryCircle.setColorFilter(Color.parseColor(wrappedItems[position].item.color))
             binding.executePendingBindings()
         }
     }

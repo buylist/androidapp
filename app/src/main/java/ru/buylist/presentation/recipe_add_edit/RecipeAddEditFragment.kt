@@ -22,8 +22,8 @@ import ru.buylist.R
 import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentRecipeAddEditBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.presentation.adapters.CircleItemClickListener
-import ru.buylist.presentation.adapters.CirclesAdapter
+import ru.buylist.presentation.circle_adapter.CircleItemClickListener
+import ru.buylist.presentation.circle_adapter.CirclesAdapter
 import ru.buylist.utils.*
 
 /**
@@ -109,7 +109,7 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
             }
         })
 
-        circlesAdapter = CirclesAdapter(emptyList(), circleCallback)
+        circlesAdapter = CirclesAdapter(circleCallback)
         recycler_circles.apply { adapter = circlesAdapter }
 
         recycler_circles.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -192,8 +192,6 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
     private val circleCallback = object : CircleItemClickListener {
         override fun onCircleClick(circleWrapper: CircleWrapper) {
             viewModel.updateCircle(circleWrapper)
-            circlesAdapter.updateCircles(viewModel.getCurrentColorPosition(), circleWrapper.position)
-            viewModel.saveCurrentColorPosition(circleWrapper.position)
         }
 
     }

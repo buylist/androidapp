@@ -102,7 +102,7 @@ class BuyListDetailAdapter(
                     binding.fieldItemTitle,
                     binding.fieldQuantity,
                     binding.fieldUnit)
-            binding.imgCategoryCircle.setColorFilter(Color.parseColor(item.item.category.color))
+            binding.imgCategoryCircle.setColorFilter(Color.parseColor(item.item.color))
             binding.executePendingBindings()
         }
 
