@@ -13,10 +13,7 @@ import kotlinx.android.synthetic.main.fragment_buy_lists.*
 import ru.buylist.R
 import ru.buylist.databinding.FragmentBuyListsBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.utils.EventObserver
-import ru.buylist.utils.InjectorUtils
-import ru.buylist.utils.hideKeyboard
-import ru.buylist.utils.showKeyboard
+import ru.buylist.utils.*
 
 /**
  * Buy lists screen.
@@ -38,6 +35,11 @@ class BuyListsFragment : BaseFragment<FragmentBuyListsBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
         setupNavigation()
+        setupSnackbar()
+    }
+
+    private fun setupSnackbar() {
+        view?.setupSnackbar(this, viewModel.snackbarText)
     }
 
     private fun setupNavigation() {
