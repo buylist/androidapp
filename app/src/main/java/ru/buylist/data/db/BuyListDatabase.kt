@@ -8,16 +8,14 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import ru.buylist.data.dao.*
 import ru.buylist.data.entity.*
 import ru.buylist.utils.AppExecutors
-import ru.buylist.utils.CategoryDatabaseWorker
 
-@Database(entities = [BuyList::class, Pattern::class, Recipe::class, GlobalItem::class, Category::class],
+@Database(entities = [BuyList::class, Pattern::class, Recipe::class, GlobalItem::class],
         version = 1, exportSchema = false)
 abstract class BuyListDatabase : RoomDatabase() {
     abstract fun buyListDao(): BuyListDao
     abstract fun patternDao(): PatternDao
     abstract fun recipeDao(): RecipeDao
     abstract fun globalItemDao(): GlobalItemDao
-    abstract fun categoryDao(): CategoryDao
 
     companion object {
         private const val DATABASE_NAME = "buyListBase"
@@ -37,10 +35,7 @@ abstract class BuyListDatabase : RoomDatabase() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
                             executors.discIO().execute {
-                                val categories = CategoryDatabaseWorker.getStandardCategories(context)
-                                for (category in categories) {
-                                    getInstance(context, executors).categoryDao().insertCategory(category)
-                                }
+                                // prepopulate database here
                             }
                         }
                     })
