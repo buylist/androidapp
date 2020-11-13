@@ -1,9 +1,11 @@
-package ru.buylist.view_models
+package ru.buylist.presentation.buy_list_detail
 
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import ru.buylist.data.entity.*
 import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.data.entity.wrappers.ItemWrapper
@@ -41,7 +43,10 @@ class BuyListDetailViewModel(
         updateUi()
         itemName.set("")
         buyList.items = JsonUtils.convertItemsToJson(items)
-        buyListRepository.updateBuyList(buyList)
+        viewModelScope.launch {
+            buyListRepository.updateBuyList(buyList)
+        }
+
     }
 
     fun saveEditedData(wrapper: ItemWrapper, newName: String) {
@@ -51,7 +56,10 @@ class BuyListDetailViewModel(
 
         updateWrappedItems(list, wrapper, false)
         buyList.items = JsonUtils.convertItemsToJson(items)
-        buyListRepository.updateBuyList(buyList)
+        viewModelScope.launch {
+            buyListRepository.updateBuyList(buyList)
+        }
+
         isEditable = false
     }
 
@@ -67,7 +75,10 @@ class BuyListDetailViewModel(
 
         items.remove(wrapper.item)
         buyList.items = JsonUtils.convertItemsToJson(items)
-        buyListRepository.updateBuyList(buyList)
+        viewModelScope.launch {
+            buyListRepository.updateBuyList(buyList)
+        }
+
         updateUi()
     }
 
@@ -75,7 +86,10 @@ class BuyListDetailViewModel(
         items[wrapper.position].isPurchased = !items[wrapper.position].isPurchased
         items.sortWith(compareBy({ it.isPurchased }, { it.category.color }, { it.id }))
         buyList.items = JsonUtils.convertItemsToJson(items)
-        buyListRepository.updateBuyList(buyList)
+        viewModelScope.launch {
+            buyListRepository.updateBuyList(buyList)
+        }
+
         updateUi()
     }
 
@@ -175,19 +189,19 @@ class BuyListDetailViewModel(
     }
 
     private fun loadList() {
-        buyListRepository.getBuyList(buyListId, object : BuyListsDataSource.GetBuyListCallback {
-            override fun onBuyListLoaded(buyList: BuyList) {
-                items.clear()
-                items.addAll(JsonUtils.convertItemsFromJson(buyList.items))
-                wrappedItems.value = getWrappedItems(items)
-                listIsEmpty.set(items.isEmpty())
-                this@BuyListDetailViewModel.buyList = buyList
-            }
-
-            override fun onDataNotAvailable() {
-                listIsEmpty.set(true)
-            }
-        })
+//        buyListRepository.getBuyList(buyListId, object : BuyListsDataSource.GetBuyListCallback {
+//            override fun onBuyListLoaded(buyList: BuyList) {
+//                items.clear()
+//                items.addAll(JsonUtils.convertItemsFromJson(buyList.items))
+//                wrappedItems.value = getWrappedItems(items)
+//                listIsEmpty.set(items.isEmpty())
+//                this@BuyListDetailViewModel.buyList = buyList
+//            }
+//
+//            override fun onDataNotAvailable() {
+//                listIsEmpty.set(true)
+//            }
+//        })
     }
 
 

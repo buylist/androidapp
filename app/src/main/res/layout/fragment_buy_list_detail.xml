@@ -8,7 +8,7 @@
 
         <variable
             name="view_model"
-            type="ru.buylist.view_models.BuyListDetailViewModel" />
+            type="ru.buylist.presentation.buy_list_detail.BuyListDetailViewModel" />
     </data>
 
     <LinearLayout

@@ -59,7 +59,7 @@
         android:label="@string/action_about" />
     <fragment
         android:id="@+id/buy_list_detail_fragment"
-        android:name="ru.buylist.presentation.fragments.BuyListDetailFragment"
+        android:name="ru.buylist.presentation.buy_list_detail.BuyListDetailFragment"
         android:label="{buy_list_title}" >
         <argument
             android:name="buy_list_id"

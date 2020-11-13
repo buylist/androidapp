@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.buylist.data.repositories.buyList.BuyListsDataSource
 import ru.buylist.data.repositories.items.GlobalItemsDataSource
-import ru.buylist.view_models.BuyListDetailViewModel
+import ru.buylist.presentation.buy_list_detail.BuyListDetailViewModel
 
 class BuyListDetailViewModelFactory(
         private val buyListRepository: BuyListsDataSource,

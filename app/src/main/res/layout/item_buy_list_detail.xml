@@ -11,7 +11,7 @@
 
         <variable
             name="callback"
-            type="ru.buylist.presentation.adapters.BuyListDetailItemListener" />
+            type="ru.buylist.presentation.buy_list_detail.BuyListDetailItemListener" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -1,4 +1,4 @@
-package ru.buylist.presentation.fragments
+package ru.buylist.presentation.buy_list_detail
 
 import android.graphics.Color
 import android.os.Bundle
@@ -16,11 +16,9 @@ import ru.buylist.R
 import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentBuyListDetailBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.presentation.adapters.BuyListDetailAdapter
 import ru.buylist.presentation.adapters.CircleItemClickListener
 import ru.buylist.presentation.adapters.CirclesAdapter
 import ru.buylist.utils.InjectorUtils
-import ru.buylist.view_models.BuyListDetailViewModel
 
 class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
 

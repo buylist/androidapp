@@ -1,4 +1,4 @@
-package ru.buylist.presentation.adapters
+package ru.buylist.presentation.buy_list_detail
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -12,7 +12,6 @@ import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.databinding.ItemBuyListDetailBinding
 import ru.buylist.presentation.GenericViewHolder
 import ru.buylist.utils.CategoryInfo
-import ru.buylist.view_models.BuyListDetailViewModel
 
 class BuyListDetailAdapter(
         wrappedItems: List<ItemWrapper>,
@@ -120,3 +119,11 @@ class BuyListDetailDiffCallback : DiffUtil.ItemCallback<ItemWrapper>() {
 }
 
 
+interface BuyListDetailItemListener {
+
+    fun onItemClicked(itemWrapper: ItemWrapper)
+
+    fun onButtonMoreClick(itemWrapper: ItemWrapper)
+
+    fun onButtonSaveClick(itemWrapper: ItemWrapper)
+}

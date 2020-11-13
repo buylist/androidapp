@@ -9,7 +9,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.buylist.data.entity.wrappers.CircleWrapper
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.data.entity.wrappers.PatternWrapper
-import ru.buylist.presentation.adapters.BuyListDetailAdapter
+import ru.buylist.presentation.buy_list_detail.BuyListDetailAdapter
 import ru.buylist.presentation.adapters.CirclesAdapter
 import ru.buylist.presentation.adapters.PatternDetailAdapter
 import ru.buylist.presentation.adapters.PatternsAdapter
