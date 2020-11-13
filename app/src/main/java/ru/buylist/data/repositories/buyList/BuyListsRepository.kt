@@ -1,6 +1,7 @@
 package ru.buylist.data.repositories.buyList
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -10,6 +11,7 @@ import ru.buylist.data.Result.Error
 import ru.buylist.data.Result.Success
 import ru.buylist.data.dao.BuyListDao
 import ru.buylist.data.entity.BuyList
+import ru.buylist.data.entity.wrappers.ItemWrapper
 
 class BuyListsRepository private constructor(
         private val buyListDao: BuyListDao,
@@ -63,10 +65,19 @@ class BuyListsRepository private constructor(
         }
     }
 
-    override fun observeBuyList(buyListId: Long): LiveData<Result<BuyList>> {
-        return buyListDao.observeBuyListById(buyListId).map {
-            Success(it)
+    override fun observeBuyList(buyListId: Long?): LiveData<Result<String>> {
+        return if (buyListId == null) {
+            MutableLiveData<ItemWrapper>().map { Error(Exception("Buy list id is null")) }
+        } else {
+            buyListDao.observeBuyListById(buyListId).map {
+                Success(it)
+            }
         }
+    }
+
+    override suspend fun updateProducts(buyListId: Long?, products: String) = withContext(ioDispatcher) {
+        if (buyListId == null) return@withContext
+        buyListDao.updateProducts(buyListId, products)
     }
 
     companion object {
