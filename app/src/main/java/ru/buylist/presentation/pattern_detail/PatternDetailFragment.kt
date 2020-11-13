@@ -13,12 +13,11 @@ import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_pattern_detail.*
 import ru.buylist.R
-import ru.buylist.data.entity.wrappers.CircleWrapper
+import ru.buylist.data.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentPatternDetailBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.circle_adapter.CirclesAdapter
 import ru.buylist.presentation.circle_adapter.CircleItemClickListener
-import ru.buylist.presentation.fragments.PatternDetailFragmentArgs
 import ru.buylist.utils.InjectorUtils
 
 class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {

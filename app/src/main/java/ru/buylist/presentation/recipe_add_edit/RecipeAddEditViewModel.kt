@@ -7,9 +7,9 @@ import ru.buylist.data.Result.Success
 import ru.buylist.data.entity.CookingStep
 import ru.buylist.data.entity.Item
 import ru.buylist.data.entity.Recipe
-import ru.buylist.data.entity.wrappers.CircleWrapper
-import ru.buylist.data.entity.wrappers.CookingStepWrapper
-import ru.buylist.data.entity.wrappers.ItemWrapper
+import ru.buylist.data.wrappers.CircleWrapper
+import ru.buylist.data.wrappers.CookingStepWrapper
+import ru.buylist.data.wrappers.ItemWrapper
 import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.utils.CategoryInfo
 import ru.buylist.utils.Event

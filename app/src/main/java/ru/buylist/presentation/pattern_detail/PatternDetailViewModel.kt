@@ -5,8 +5,8 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.*
 import ru.buylist.data.entity.Item
 import ru.buylist.data.entity.Pattern
-import ru.buylist.data.entity.wrappers.CircleWrapper
-import ru.buylist.data.entity.wrappers.ItemWrapper
+import ru.buylist.data.wrappers.CircleWrapper
+import ru.buylist.data.wrappers.ItemWrapper
 import ru.buylist.data.repositories.items.GlobalItemsDataSource
 import ru.buylist.data.repositories.pattern.PatternsDataSource
 import ru.buylist.data.repositories.pattern.PatternsDataSource.GetPatternCallback

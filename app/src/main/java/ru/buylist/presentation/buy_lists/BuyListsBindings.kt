@@ -4,7 +4,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.buylist.data.entity.wrappers.BuyListWrapper
+import ru.buylist.data.wrappers.BuyListWrapper
 
 object BuyListsBindings {
 

@@ -6,8 +6,8 @@ import ru.buylist.R
 import ru.buylist.data.Result
 import ru.buylist.data.Result.Success
 import ru.buylist.data.entity.Item
-import ru.buylist.data.entity.wrappers.CircleWrapper
-import ru.buylist.data.entity.wrappers.ItemWrapper
+import ru.buylist.data.wrappers.CircleWrapper
+import ru.buylist.data.wrappers.ItemWrapper
 import ru.buylist.data.repositories.buyList.BuyListsDataSource
 import ru.buylist.utils.CategoryInfo
 import ru.buylist.utils.Event

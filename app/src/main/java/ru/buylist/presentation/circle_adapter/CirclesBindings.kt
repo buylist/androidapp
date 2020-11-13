@@ -2,7 +2,7 @@ package ru.buylist.presentation.circle_adapter
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.buylist.data.entity.wrappers.CircleWrapper
+import ru.buylist.data.wrappers.CircleWrapper
 
 object CirclesBindings {
 

@@ -6,7 +6,7 @@ import ru.buylist.R
 import ru.buylist.data.Result
 import ru.buylist.data.Result.*
 import ru.buylist.data.entity.BuyList
-import ru.buylist.data.entity.wrappers.BuyListWrapper
+import ru.buylist.data.wrappers.BuyListWrapper
 import ru.buylist.data.repositories.buyList.BuyListsDataSource
 import ru.buylist.utils.Event
 

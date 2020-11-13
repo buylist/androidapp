@@ -51,11 +51,11 @@
     </fragment>
     <fragment
         android:id="@+id/settings_fragment"
-        android:name="ru.buylist.presentation.fragments.SettingsFragment"
+        android:name="ru.buylist.presentation.settings.SettingsFragment"
         android:label="@string/action_settings" />
     <fragment
         android:id="@+id/about_fragment"
-        android:name="ru.buylist.presentation.fragments.AboutFragment"
+        android:name="ru.buylist.presentation.about.AboutFragment"
         android:label="@string/action_about" />
     <fragment
         android:id="@+id/buy_list_detail_fragment"

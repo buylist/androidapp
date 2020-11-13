@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
-import ru.buylist.data.entity.wrappers.RecipeWrapper
+import ru.buylist.data.wrappers.RecipeWrapper
 import ru.buylist.databinding.ItemRecipeBinding
 import ru.buylist.presentation.GenericViewHolder
 

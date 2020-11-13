@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
-import ru.buylist.data.entity.wrappers.CircleWrapper
+import ru.buylist.data.wrappers.CircleWrapper
 import ru.buylist.databinding.ItemCircleBinding
 import ru.buylist.presentation.GenericViewHolder
 

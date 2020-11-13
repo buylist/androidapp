@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
 import ru.buylist.data.entity.BuyList
-import ru.buylist.data.entity.wrappers.BuyListWrapper
+import ru.buylist.data.wrappers.BuyListWrapper
 import ru.buylist.databinding.ItemBuyListBinding
 import ru.buylist.presentation.GenericViewHolder
 

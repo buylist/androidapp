@@ -5,7 +5,7 @@ import kotlinx.coroutines.launch
 import ru.buylist.data.Result
 import ru.buylist.data.Result.Success
 import ru.buylist.data.entity.Recipe
-import ru.buylist.data.entity.wrappers.RecipeWrapper
+import ru.buylist.data.wrappers.RecipeWrapper
 import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.utils.Event
 import ru.buylist.R

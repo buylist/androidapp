@@ -3,8 +3,8 @@ package ru.buylist.presentation.recipe_add_edit
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.buylist.data.entity.wrappers.CookingStepWrapper
-import ru.buylist.data.entity.wrappers.ItemWrapper
+import ru.buylist.data.wrappers.CookingStepWrapper
+import ru.buylist.data.wrappers.ItemWrapper
 
 /**
  * Binding Adapters for the recipe add/edit screen.

@@ -4,7 +4,7 @@
     <data>
         <variable
             name="item"
-            type="ru.buylist.data.entity.wrappers.CircleWrapper" />
+            type="ru.buylist.data.wrappers.CircleWrapper" />
 
         <variable
             name="callback"

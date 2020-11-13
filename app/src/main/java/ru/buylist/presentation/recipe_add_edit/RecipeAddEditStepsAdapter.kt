@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.buylist.R
-import ru.buylist.data.entity.wrappers.CookingStepWrapper
+import ru.buylist.data.wrappers.CookingStepWrapper
 import ru.buylist.databinding.RecipeCookingStepAddEditBinding
 import ru.buylist.presentation.GenericViewHolder
 import ru.buylist.utils.hideKeyboard

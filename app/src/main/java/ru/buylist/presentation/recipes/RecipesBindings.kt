@@ -2,7 +2,7 @@ package ru.buylist.presentation.recipes
 
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.buylist.data.entity.wrappers.RecipeWrapper
+import ru.buylist.data.wrappers.RecipeWrapper
 
 object RecipesBindings {
 

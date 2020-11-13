@@ -11,7 +11,7 @@ import ru.buylist.data.Result.Error
 import ru.buylist.data.Result.Success
 import ru.buylist.data.dao.BuyListDao
 import ru.buylist.data.entity.BuyList
-import ru.buylist.data.entity.wrappers.ItemWrapper
+import ru.buylist.data.wrappers.ItemWrapper
 
 class BuyListsRepository private constructor(
         private val buyListDao: BuyListDao,

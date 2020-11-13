@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_recipe_add_edit.layout_new_step
 import kotlinx.android.synthetic.main.layout_new_cooking_step.*
 import kotlinx.android.synthetic.main.layout_new_ingredient.*
 import ru.buylist.R
-import ru.buylist.data.entity.wrappers.CircleWrapper
+import ru.buylist.data.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentRecipeAddEditBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.circle_adapter.CircleItemClickListener

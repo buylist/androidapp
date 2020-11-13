@@ -12,7 +12,7 @@
 
         <variable
             name="recipe"
-            type="ru.buylist.data.entity.wrappers.RecipeWrapper" />
+            type="ru.buylist.data.wrappers.RecipeWrapper" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

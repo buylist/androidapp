@@ -8,7 +8,7 @@
 
         <variable
             name="wrapper"
-            type="ru.buylist.data.entity.wrappers.RecipeWrapper" />
+            type="ru.buylist.data.wrappers.RecipeWrapper" />
 
         <variable
             name="callback"

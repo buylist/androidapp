@@ -1,4 +1,4 @@
-package ru.buylist.presentation.fragments
+package ru.buylist.presentation.settings
 
 import android.os.Bundle
 import android.view.View

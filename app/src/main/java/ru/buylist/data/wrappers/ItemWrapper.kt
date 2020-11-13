@@ -1,4 +1,4 @@
-package ru.buylist.data.entity.wrappers
+package ru.buylist.data.wrappers
 
 import ru.buylist.data.entity.Item
 
