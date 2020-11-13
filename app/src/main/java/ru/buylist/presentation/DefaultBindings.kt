@@ -9,7 +9,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.buylist.data.entity.wrappers.ItemWrapper
 import ru.buylist.data.entity.wrappers.PatternWrapper
 import ru.buylist.presentation.adapters.PatternDetailAdapter
-import ru.buylist.presentation.adapters.PatternsAdapter
+import ru.buylist.presentation.patterns.PatternsAdapter
 import ru.buylist.utils.showKeyboard
 
 object DefaultBindings {

@@ -1,4 +1,4 @@
-package ru.buylist.presentation.fragments
+package ru.buylist.presentation.patterns
 
 import android.graphics.Color
 import android.os.Bundle
@@ -14,9 +14,7 @@ import kotlinx.android.synthetic.main.fragment_patterns.*
 import ru.buylist.R
 import ru.buylist.databinding.FragmentPatternsBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.presentation.adapters.PatternsAdapter
 import ru.buylist.utils.InjectorUtils
-import ru.buylist.view_models.PatternsViewModel
 
 class PatternsFragment : BaseFragment<FragmentPatternsBinding>() {
 

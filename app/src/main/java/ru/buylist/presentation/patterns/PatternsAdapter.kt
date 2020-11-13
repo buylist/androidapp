@@ -1,4 +1,4 @@
-package ru.buylist.presentation.adapters
+package ru.buylist.presentation.patterns
 
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +14,6 @@ import ru.buylist.data.entity.wrappers.PatternWrapper
 import ru.buylist.databinding.ItemPatternBinding
 import ru.buylist.presentation.GenericViewHolder
 import ru.buylist.presentation.fragments.PatternsFragmentDirections
-import ru.buylist.view_models.PatternsViewModel
 
 class PatternsAdapter(
         list: List<PatternWrapper>,
@@ -92,4 +91,14 @@ class PatternsDiffCallback : DiffUtil.ItemCallback<PatternWrapper>() {
         return oldItem == newItem
     }
 
+}
+
+
+interface PatternItemListener {
+
+    fun onPatternClicked(wrapper: PatternWrapper)
+
+    fun onButtonMoreClick(wrapper: PatternWrapper)
+
+    fun onButtonSaveClick(wrapper: PatternWrapper)
 }
