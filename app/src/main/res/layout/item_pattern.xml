@@ -62,6 +62,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_more"
                 app:tint="@color/colorNavNormal"
                 android:onClick="@{()-> callback.onButtonMoreClick(item)}"
@@ -72,6 +74,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="8dp"
                 android:src="@drawable/button_create"
                 android:onClick="@{()-> callback.onButtonSaveClick(item)}"
                 android:visibility="@{item.editable ? View.VISIBLE : View.GONE}" />

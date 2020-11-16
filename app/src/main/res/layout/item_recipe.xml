@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_more"
                 app:tint="@color/colorNavNormal"
                 android:layout_centerVertical="true"

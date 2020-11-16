@@ -32,7 +32,7 @@
 
 
     <!--BuyList-->
-    <string name="tv_buy_list_info">Списка покупок еще нет</string>
+    <string name="tv_buy_list_info">Создайте свой первый список покупок</string>
     <string name="tv_buylist_detail_info">Список покупок пуст</string>
     <string name="btn_pattern_text">По шаблону</string>
     <string name="btn_recipe_text">По рецепту</string>
@@ -42,14 +42,14 @@
 
 
     <!--Pattern-->
-    <string name="tv_pattern_list_info">Список шаблонов пуст</string>
+    <string name="tv_pattern_list_info">Создайте свой первый шаблон</string>
     <string name="tv_pattern_detail_info">Шаблон пуст</string>
         <!--hint-->
         <string name="field_name_pattern_hint">Введите название шаблона</string>
 
 
     <!--Recipe-->
-    <string name="tv_recipe_list_info">Список рецептов пуст</string>
+    <string name="tv_recipe_list_info">Создайте свой первый рецепт</string>
     <string name="tv_general_header">Основная информация</string>
     <string name="ingredient_text">Ингредиенты</string>
     <string name="cooking_steps_text">Шаги приготовления</string>

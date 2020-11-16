@@ -28,12 +28,20 @@
                 android:background="@color/colorScrim"
                 android:elevation="8dp"
                 android:visibility="invisible"
-                android:onClick="@{()-> view_model.hideNewProductLayout()}"/>
+                android:onClick="@{()-> view_model.hideNewProductLayout()}" />
 
-            <FrameLayout
-                android:id="@+id/frame_layout"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}">
+
+                <ImageView
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_list" />
 
                 <TextView
                     android:id="@+id/tv_info"
@@ -42,25 +50,16 @@
                     android:text="@string/tv_buylist_detail_info"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:textSize="30sp"
-                    android:drawableTop="@drawable/ic_list"
-                    android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}" />
+                    android:textSize="30sp" />
+            </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_items"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scrollbars="vertical"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:buyListProducts="@{view_model.products}" />
-
-                </LinearLayout>
-            </FrameLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_items"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:buyListProducts="@{view_model.products}" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/fab_menu"
@@ -117,7 +116,7 @@
                         android:background="@color/colorAccent"
                         android:clickable="true"
                         android:focusable="true"
-                        android:onClick="@{()-> view_model.addNewProduct()}"/>
+                        android:onClick="@{()-> view_model.addNewProduct()}" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -161,7 +160,6 @@
                         android:src="@drawable/ic_arrow_left"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_prev_color_description"
-
                         android:visibility="@{view_model.prevArrowIsShown ? View.VISIBLE : View.INVISIBLE}" />
 
                     <ImageButton
@@ -215,7 +213,7 @@
                         android:imeOptions="actionNext"
                         android:nextFocusForward="@id/field_unit"
                         android:background="@drawable/field_bg"
-                        android:text="@={view_model.productQuantity}"/>
+                        android:text="@={view_model.productQuantity}" />
 
                     <EditText
                         android:id="@+id/field_unit"
@@ -228,7 +226,7 @@
                         android:imeOptions="actionDone"
                         android:background="@drawable/field_bg"
                         android:text="@={view_model.productUnit}"
-                        app:imeActionDoneListener="@{view_model}"/>
+                        app:imeActionDoneListener="@{view_model}" />
 
                     <ImageButton
                         android:id="@+id/btn_create"
@@ -238,7 +236,7 @@
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_create_item_description"
                         android:src="@drawable/button_create"
-                        android:onClick="@{()-> view_model.saveNewItem()}"/>
+                        android:onClick="@{()-> view_model.saveNewItem()}" />
 
                 </LinearLayout>
 
@@ -250,13 +248,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:useCompatPadding="true"
-                app:layout_anchor="@id/frame_layout"
+                app:layout_anchor="@id/recycler_items"
                 app:layout_anchorGravity="end|bottom"
                 app:fabSize="auto"
                 android:src="@drawable/fab_add_white"
                 android:backgroundTint="@color/colorAccent"
                 app:fabVisibility="@{view_model.fabIsShown}"
-                android:onClick="@{()-> view_model.addProduct()}"/>
+                android:onClick="@{()-> view_model.addProduct()}" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -21,10 +21,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <FrameLayout
-                android:id="@+id/frame_layout"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}">
+
+                <ImageView
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_recipe" />
 
                 <TextView
                     android:id="@+id/tv_info"
@@ -33,29 +41,27 @@
                     android:text="@string/tv_recipe_list_info"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:textSize="30sp"
-                    android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}"
-                    app:drawableTopCompat="@drawable/ic_recipe" />
+                    android:textSize="30sp" />
+            </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:recipes="@{view_model.recipes}" />
-            </FrameLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:recipes="@{view_model.recipes}" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:useCompatPadding="true"
-                app:layout_anchor="@id/frame_layout"
+                app:layout_anchor="@id/recycler"
                 app:layout_anchorGravity="end|bottom"
                 app:fabSize="auto"
                 android:src="@drawable/fab_add_white"
                 app:fabVisibility="@{view_model.fabIsShown}"
-                android:onClick="@{()-> view_model.addNewRecipe()}"/>
+                android:onClick="@{()-> view_model.addNewRecipe()}" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

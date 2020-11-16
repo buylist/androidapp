@@ -22,10 +22,18 @@
             android:layout_height="match_parent"
             android:id="@+id/coordinator_layout">
 
-            <FrameLayout
-                android:id="@+id/frame_layout"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}">
+
+                <ImageView
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_pattern" />
 
                 <TextView
                     android:id="@+id/tv_info"
@@ -34,24 +42,17 @@
                     android:text="@string/tv_pattern_list_info"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:textSize="30sp"
-                    android:drawableTop="@drawable/ic_pattern"
-                    android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}" />
+                    android:textSize="30sp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+            </LinearLayout>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:patterns="@{view_model.patterns}"
-                        app:onScrolled="@{view_model}"/>
-                </LinearLayout>
-            </FrameLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:patterns="@{view_model.patterns}"
+                app:onScrolled="@{view_model}" />
 
             <View
                 android:id="@+id/shadow_view"
@@ -60,7 +61,7 @@
                 android:background="@color/colorScrim"
                 android:elevation="8dp"
                 android:visibility="invisible"
-                android:onClick="@{()-> view_model.hideNewPatternLayout()}"/>
+                android:onClick="@{()-> view_model.hideNewPatternLayout()}" />
 
             <LinearLayout
                 android:id="@+id/layout_new_item"
@@ -73,7 +74,6 @@
                 android:visibility="invisible">
 
                 <RelativeLayout
-                    android:id="@+id/layout_pattern_fields"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_horizontal_margin"
@@ -89,11 +89,12 @@
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/btn_create"
                         android:hint="@string/field_name_pattern_hint"
-                        android:inputType="text"
+                        android:inputType="textMultiLine"
+                        android:maxLines="10"
                         android:imeOptions="actionDone"
                         android:background="@android:color/transparent"
                         android:text="@={view_model.patternTitle}"
-                        app:imeActionDoneListener="@{view_model}"/>
+                        app:imeActionDoneListener="@{view_model}" />
 
                     <ImageButton
                         android:id="@+id/btn_create"
@@ -105,7 +106,7 @@
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_create_item_description"
                         android:src="@drawable/button_create"
-                        android:onClick="@{()-> view_model.save()}"/>
+                        android:onClick="@{()-> view_model.save()}" />
 
                 </RelativeLayout>
             </LinearLayout>
@@ -115,13 +116,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:useCompatPadding="true"
-                app:layout_anchor="@id/frame_layout"
+                app:layout_anchor="@id/recycler"
                 app:layout_anchorGravity="end|bottom"
                 app:fabSize="auto"
                 android:src="@drawable/fab_add_white"
-                android:backgroundTint="@color/colorAccent"
                 app:fabVisibility="@{view_model.fabIsShown}"
-                android:onClick="@{()-> view_model.addNewPattern()}"/>
+                android:onClick="@{()-> view_model.addNewPattern()}" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
