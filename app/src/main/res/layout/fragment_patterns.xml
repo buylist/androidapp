@@ -48,7 +48,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:patterns="@{view_model.wrappedPatterns}" />
+                        app:patterns="@{view_model.patterns}"
+                        app:onScrolled="@{view_model}"/>
                 </LinearLayout>
             </FrameLayout>
 
@@ -58,7 +59,8 @@
                 android:layout_height="match_parent"
                 android:background="@color/colorScrim"
                 android:elevation="8dp"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                android:onClick="@{()-> view_model.hideNewPatternLayout()}"/>
 
             <LinearLayout
                 android:id="@+id/layout_new_item"
@@ -80,7 +82,7 @@
                     android:layout_marginBottom="@dimen/field_margin_vertical"
                     android:background="@drawable/field_border">
 
-                    <ru.buylist.utils.FocusableEditText
+                    <EditText
                         android:id="@+id/field_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -88,9 +90,10 @@
                         android:layout_toStartOf="@+id/btn_create"
                         android:hint="@string/field_name_pattern_hint"
                         android:inputType="text"
-                        android:imeOptions="actionNext"
+                        android:imeOptions="actionDone"
                         android:background="@android:color/transparent"
-                        android:text="@={view_model.patternTitle}" />
+                        android:text="@={view_model.patternTitle}"
+                        app:imeActionDoneListener="@{view_model}"/>
 
                     <ImageButton
                         android:id="@+id/btn_create"
@@ -101,7 +104,8 @@
                         android:layout_marginEnd="@dimen/btn_create_margin_end"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/btn_create_item_description"
-                        android:src="@drawable/button_create" />
+                        android:src="@drawable/button_create"
+                        android:onClick="@{()-> view_model.save()}"/>
 
                 </RelativeLayout>
             </LinearLayout>
@@ -116,7 +120,8 @@
                 app:fabSize="auto"
                 android:src="@drawable/fab_add_white"
                 android:backgroundTint="@color/colorAccent"
-                app:fabVisibility="@{view_model.fabIsShown}" />
+                app:fabVisibility="@{view_model.fabIsShown}"
+                android:onClick="@{()-> view_model.addNewPattern()}"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

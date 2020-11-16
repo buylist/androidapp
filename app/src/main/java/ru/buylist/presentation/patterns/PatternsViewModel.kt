@@ -1,10 +1,10 @@
 package ru.buylist.presentation.patterns
 
-import androidx.databinding.ObservableBoolean
-import androidx.databinding.ObservableField
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import kotlinx.coroutines.launch
+import ru.buylist.R
+import ru.buylist.data.Result
+import ru.buylist.data.Result.Success
 import ru.buylist.data.entity.Pattern
 import ru.buylist.data.repositories.pattern.PatternsDataSource
 import ru.buylist.data.wrappers.PatternWrapper
@@ -12,19 +12,51 @@ import ru.buylist.utils.Event
 
 class PatternsViewModel(private val repository: PatternsDataSource) : ViewModel() {
 
-    var listIsEmpty = ObservableBoolean(true)
-    var fabIsShown = ObservableBoolean(true)
-    var isEditable: Boolean = false
-    var patternTitle = ObservableField("")
+    private val _forceUpdate = MutableLiveData<Boolean>(false)
+    private val _patternToEdit = MutableLiveData<Int>()
 
-    var wrappedPatterns = MutableLiveData<List<PatternWrapper>>().apply { value = emptyList() }
-    var patterns = mutableListOf<Pattern>()
+    private val _triggers =
+            MediatorLiveData<Pair<Boolean?, Int?>>().apply {
+                addSource(_forceUpdate) { value = Pair(it, _patternToEdit.value) }
+                addSource(_patternToEdit) { value = Pair(_forceUpdate.value, it) }
+            }
+
+    private val _patterns: LiveData<List<PatternWrapper>> = _triggers.switchMap { pair ->
+        if (pair.first == true) {
+            TODO("Load patterns from remote data source")
+        }
+        repository.observePatterns().distinctUntilChanged().switchMap {
+            loadPatterns(it, pair.second)
+        }
+    }
+
+    val patterns: LiveData<List<PatternWrapper>> = _patterns
+
+    var listIsEmpty: LiveData<Boolean> = Transformations.map(_patterns) { it.isEmpty() }
+
+    var fabIsShown = MutableLiveData<Boolean>(true)
+
+    var patternTitle = MutableLiveData<String>()
+
+    private val _snackbarText = MutableLiveData<Event<Int>>()
+    val snackbarText: LiveData<Event<Int>> = _snackbarText
+
+    private val _addPatternEvent = MutableLiveData<Event<Unit>>()
+    val addPatternEvent: LiveData<Event<Unit>> = _addPatternEvent
+
+    private val _patternCreatedEvent = MutableLiveData<Event<Unit>>()
+    val patternCreatedEvent: LiveData<Event<Unit>> = _patternCreatedEvent
 
     private val _detailsEvent = MutableLiveData<Event<Pattern>>()
     val detailsEvent: LiveData<Event<Pattern>> = _detailsEvent
 
-    init {
-        loadList()
+
+    fun addNewPattern() {
+        _addPatternEvent.value = Event(Unit)
+    }
+
+    fun hideNewPatternLayout() {
+        _patternCreatedEvent.value = Event(Unit)
     }
 
     fun showDetail(pattern: Pattern) {
@@ -32,98 +64,74 @@ class PatternsViewModel(private val repository: PatternsDataSource) : ViewModel(
     }
 
     fun save() {
-        val newPattern = Pattern()
-        val title = patternTitle.get().toString().trim()
-        if (title.isNotEmpty())  {
-            newPattern.title = title
+        val title = patternTitle.value
+        if (title == null) {
+            showSnackbarMessage(R.string.snackbar_empty_pattern_title)
+            return
         }
-        repository.savePattern(newPattern)
-        patterns.add(newPattern)
-        updateUi()
-        patternTitle.set("")
-    }
 
-    fun saveEditedData(wrapper: PatternWrapper, newTitle: String) {
-        val list = extractDataFromWrappedPatterns()
-        wrapper.pattern.title = newTitle
-        patterns[wrapper.position].title = newTitle
-
-        updateWrappedPatterns(list, wrapper)
-        repository.updatePattern(wrapper.pattern)
-        isEditable = false
+        createPattern(Pattern(title = title))
+        patternTitle.value = null
+        hideNewPatternLayout()
     }
 
     fun edit(wrapper: PatternWrapper) {
-        val list = extractDataFromWrappedPatterns()
-        checkEditableField(list)
-        updateWrappedPatterns(list, wrapper, true)
-        isEditable = true
+        _patternToEdit.value = wrapper.position
     }
 
-    fun delete(wrapper: PatternWrapper) {
-        patterns.remove(wrapper.pattern)
+    fun saveEditedData(wrapper: PatternWrapper, newTitle: String) {
+        wrapper.pattern.title = newTitle
+        viewModelScope.launch {
+            repository.updatePattern(wrapper.pattern)
+        }
+        _patternToEdit.value = null
+        fabIsShown.value = true
+    }
+
+    fun delete(wrapper: PatternWrapper) = viewModelScope.launch {
         repository.deletePattern(wrapper.pattern)
-        updateUi()
     }
 
     fun showHideFab(dy: Int) {
-        fabIsShown.set(dy <= 0)
-    }
-
-    private fun updateUi() {
-        wrappedPatterns.value = getWrappedPatterns(patterns)
-        listIsEmpty.set(patterns.isEmpty())
-    }
-
-    private fun updateWrappedPatterns(list: MutableList<PatternWrapper>, wrapper: PatternWrapper,
-                                      isEditable: Boolean = false, isSelected: Boolean = false) {
-        val newWrapper = wrapper.copy(isEditable = isEditable, isSelected = isSelected)
-        list.removeAt(wrapper.position)
-        list.add(wrapper.position, newWrapper)
-        wrappedPatterns.value = list
-    }
-
-    private fun checkEditableField(list: MutableList<PatternWrapper>) {
-        if (isEditable) {
-            val iterator = list.iterator()
-            while (iterator.hasNext()) {
-                val wrappedPattern = iterator.next()
-                if (wrappedPattern.isEditable) {
-                    updateWrappedPatterns(list, wrappedPattern)
-                    break
-                }
-            }
+        if (_patternToEdit.value != null) {
+            fabIsShown.value = false
+            return
         }
+        fabIsShown.value = (dy <= 0)
     }
 
-    private fun extractDataFromWrappedPatterns(): MutableList<PatternWrapper> {
-        val list = mutableListOf<PatternWrapper>()
-        wrappedPatterns.value?.let { list.addAll(it) }
-        return list
+    private fun createPattern(pattern: Pattern) = viewModelScope.launch {
+        repository.savePattern(pattern)
     }
 
-    private fun getWrappedPatterns(patterns: List<Pattern>): List<PatternWrapper> {
+    private fun getWrappedPatterns(patterns: List<Pattern>, position: Int?): List<PatternWrapper> {
         val newList = mutableListOf<PatternWrapper>()
         for ((i, pattern) in patterns.withIndex()) {
             val patternWrapper = PatternWrapper(pattern.copy(), i)
+            if (position != null && position == i) {
+                patternWrapper.isEditable = true
+            }
             newList.add(patternWrapper)
         }
         return newList
     }
 
-    private fun loadList() {
-        repository.getPatterns(object : PatternsDataSource.LoadPatternsCallback {
-            override fun onPatternsLoaded(loadedPatterns: List<Pattern>) {
-                wrappedPatterns.value = getWrappedPatterns(loadedPatterns)
-                patterns.clear()
-                patterns.addAll(loadedPatterns)
-                listIsEmpty.set(patterns.isEmpty())
-            }
+    private fun showSnackbarMessage(message: Int) {
+        _snackbarText.value = Event(message)
+    }
 
-            override fun onDataNotAvailable() {
-                listIsEmpty.set(true)
-            }
+    private fun loadPatterns(patternsResult: Result<List<Pattern>>, position: Int?)
+            : LiveData<List<PatternWrapper>> {
+        val result = MutableLiveData<List<PatternWrapper>>()
 
-        })
+        if (patternsResult is Success) {
+            viewModelScope.launch {
+                result.value = getWrappedPatterns(patternsResult.data, position)
+            }
+        } else {
+            result.value = emptyList()
+            showSnackbarMessage(R.string.snackbar_patterns_loading_error)
+        }
+        return result
     }
 }

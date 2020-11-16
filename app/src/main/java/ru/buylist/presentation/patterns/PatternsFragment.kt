@@ -3,11 +3,9 @@ package ru.buylist.presentation.patterns
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.activity_fragment.*
@@ -15,9 +13,12 @@ import kotlinx.android.synthetic.main.fragment_patterns.*
 import ru.buylist.R
 import ru.buylist.databinding.FragmentPatternsBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.utils.EventObserver
-import ru.buylist.utils.InjectorUtils
+import ru.buylist.utils.*
 
+
+/**
+ * Patterns screen.
+ */
 class PatternsFragment : BaseFragment<FragmentPatternsBinding>() {
 
     private val viewModel: PatternsViewModel by viewModels {
@@ -33,21 +34,24 @@ class PatternsFragment : BaseFragment<FragmentPatternsBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        fab_add.setOnClickListener { expandFab() }
-        shadow_view.setOnClickListener { minimizeFab() }
-
-        setupListenersToButtonsCreate()
         setupAdapter()
         setupNavigation()
+        setupSnackbar()
     }
 
-    override fun onResume() {
-        super.onResume()
-        minimizeFab()
+    private fun setupSnackbar() {
+        view?.setupSnackbar(this, viewModel.snackbarText)
     }
 
     private fun setupNavigation() {
+        viewModel.addPatternEvent.observe(viewLifecycleOwner, EventObserver {
+            expandFab()
+        })
+
+        viewModel.patternCreatedEvent.observe(viewLifecycleOwner, EventObserver {
+            minimizeFab()
+        })
+
         viewModel.detailsEvent.observe(viewLifecycleOwner, EventObserver { pattern ->
             val action = PatternsFragmentDirections
                     .actionPatternsFragmentToPatternDetailFragment(pattern.id, pattern.title)
@@ -57,32 +61,7 @@ class PatternsFragment : BaseFragment<FragmentPatternsBinding>() {
 
     private fun setupAdapter() {
         val patternAdapter = PatternsAdapter(viewModel)
-        recycler.apply { adapter = patternAdapter }
-
-        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                viewModel.showHideFab(dy)
-            }
-        })
-    }
-
-    private fun setupListenersToButtonsCreate() {
-        btn_create.setOnClickListener {
-            viewModel.save()
-            minimizeFab()
-        }
-
-        field_name.setOnEditorActionListener { _, actionId, _ ->
-            when (actionId) {
-                EditorInfo.IME_ACTION_DONE -> {
-                    viewModel.save()
-                    minimizeFab()
-                    true
-                }
-                else -> false
-            }
-        }
+        recycler.adapter = patternAdapter
     }
 
     private fun expandFab() {
@@ -97,7 +76,7 @@ class PatternsFragment : BaseFragment<FragmentPatternsBinding>() {
         shadow_view.visibility = View.VISIBLE
         fab_add.visibility = View.GONE
         requireActivity().nav_bottom.visibility = View.GONE
-        field_name.requestFocus()
+        field_name.showKeyboard()
     }
 
     private fun minimizeFab() {
@@ -111,6 +90,7 @@ class PatternsFragment : BaseFragment<FragmentPatternsBinding>() {
         shadow_view.visibility = View.GONE
         fab_add.visibility = View.VISIBLE
         requireActivity().nav_bottom.visibility = View.VISIBLE
+        field_name.hideKeyboard()
     }
 
     private fun buildContainerTransform() =
