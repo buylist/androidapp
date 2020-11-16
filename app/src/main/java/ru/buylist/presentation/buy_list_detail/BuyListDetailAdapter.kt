@@ -124,7 +124,6 @@ class BuyListDetailAdapter(
                     binding.fieldQuantity,
                     binding.fieldUnit)
             binding.card.setBackgroundColor(0)
-            binding.imgCategoryCircle.setColorFilter(Color.parseColor(CategoryInfo.COLOR))
             binding.executePendingBindings()
         }
 

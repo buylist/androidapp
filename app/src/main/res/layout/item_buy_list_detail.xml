@@ -35,7 +35,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:contentDescription="@string/category_marker_description"
-                android:src="@drawable/circle"/>
+                android:src="@{item.item.purchased ? @drawable/ic_purchased : @drawable/circle}"/>
 
             <TextView
                 android:id="@+id/tv_item_title"
@@ -45,7 +45,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
                 android:layout_toStartOf="@+id/tv_quantity"
-                android:background="@android:color/transparent"
                 android:textSize="@dimen/default_text_size"
                 android:text="@{item.item.name}"
                 android:onClick="@{()-> callback.onItemClicked(item.position)}"
