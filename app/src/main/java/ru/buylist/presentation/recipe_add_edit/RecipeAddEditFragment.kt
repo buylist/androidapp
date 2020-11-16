@@ -51,7 +51,6 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupAdapter()
-        setupArrowListeners()
         setupSnackbar()
 
         viewModel.detailsEvent.observe(viewLifecycleOwner, EventObserver { recipe ->
@@ -62,30 +61,6 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
 
     private fun setupSnackbar() {
         view?.setupSnackbar(this, viewModel.snackbarText)
-    }
-
-    private fun setupArrowListeners() {
-        val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
-        btn_prev_circles.setOnClickListener {
-            val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
-            if (firstVisiblePosition > 0) {
-                layoutManager.smoothScrollToPosition(
-                        recycler_circles, null, firstVisiblePosition - 1)
-            }
-        }
-
-        btn_next_circles.setOnClickListener {
-            recycler_circles.adapter?.itemCount?.let {
-                if (it <= 0) return@let
-
-                val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
-                if (lastVisiblePosition >= it) return@let
-
-                layoutManager.smoothScrollToPosition(
-                        recycler_circles, null, lastVisiblePosition + 1)
-            }
-
-        }
     }
 
     private fun setupAdapter() {
