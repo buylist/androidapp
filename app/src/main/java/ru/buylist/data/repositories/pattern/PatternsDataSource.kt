@@ -1,30 +1,28 @@
 package ru.buylist.data.repositories.pattern
 
+import androidx.lifecycle.LiveData
+import ru.buylist.data.Result
 import ru.buylist.data.entity.Pattern
 
 interface PatternsDataSource {
 
-    interface GetPatternCallback {
-        fun onPatternLoaded(loadedPattern: Pattern)
-        fun onDataNotAvailable()
-    }
+    suspend fun savePattern(pattern: Pattern)
 
-    interface LoadPatternsCallback {
-        fun onPatternsLoaded(loadedPatterns: List<Pattern>)
-        fun onDataNotAvailable()
-    }
+    suspend fun updatePattern(pattern: Pattern)
 
-    fun savePattern(pattern: Pattern)
+    suspend fun deletePattern(pattern: Pattern)
 
-    fun updatePattern(pattern: Pattern)
+    suspend fun deleteSelectedPattern(patterns: List<Pattern>)
 
-    fun deletePattern(pattern: Pattern)
+    suspend fun deleteAllPatterns()
 
-    fun deleteSelectedPattern(patterns: List<Pattern>)
+    suspend fun getPatterns(): Result<List<Pattern>>
 
-    fun deleteAllPatterns()
+    suspend fun getPattern(patternId: Long): Result<Pattern>
 
-    fun getPatterns(callback: LoadPatternsCallback)
+    fun observePatterns(): LiveData<Result<List<Pattern>>>
 
-    fun getPattern(patternId: Long, callback: GetPatternCallback)
+    fun observePattern(patternId: Long?): LiveData<Result<String>>
+
+    suspend fun updateProducts(patternId: Long?, products: String)
 }

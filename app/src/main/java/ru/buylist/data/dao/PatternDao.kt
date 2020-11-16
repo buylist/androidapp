@@ -1,5 +1,6 @@
 package ru.buylist.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.buylist.data.entity.Pattern
 
@@ -7,24 +8,33 @@ import ru.buylist.data.entity.Pattern
 interface PatternDao {
 
     @Insert
-    fun insertPattern(pattern: Pattern)
+    suspend fun insertPattern(pattern: Pattern)
 
     @Update
-    fun updatePattern(pattern: Pattern)
+    suspend fun updatePattern(pattern: Pattern)
 
     @Delete
-    fun deletePattern(pattern: Pattern)
+    suspend fun deletePattern(pattern: Pattern)
 
     @Delete
-    fun deleteSelectedPatterns(patterns: List<Pattern>)
+    suspend fun deleteSelectedPatterns(patterns: List<Pattern>)
 
     @Query("DELETE FROM patterns")
-    fun deleteAllPatterns()
+    suspend fun deleteAllPatterns()
 
     @Query("SELECT * FROM patterns")
-    fun getPatterns(): List<Pattern>
+    suspend fun getPatterns(): List<Pattern>
 
     @Query("SELECT * FROM patterns WHERE id = :patternId")
-    fun getPattern(patternId: Long): Pattern
+    suspend fun getPattern(patternId: Long): Pattern
+
+    @Query("SELECT * FROM patterns")
+    fun observePatterns(): LiveData<List<Pattern>>
+
+    @Query("SELECT items FROM patterns WHERE id =:patternId")
+    fun observePatternById(patternId: Long): LiveData<String>
+
+    @Query("UPDATE patterns SET items =:products WHERE id =:patternId")
+    suspend fun updateProducts(patternId: Long, products: String)
 
 }
