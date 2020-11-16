@@ -48,7 +48,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:items="@{view_model.wrappedPatterns}" />
+                        app:patterns="@{view_model.wrappedPatterns}" />
                 </LinearLayout>
             </FrameLayout>
 

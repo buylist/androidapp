@@ -6,6 +6,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialContainerTransform
@@ -14,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_patterns.*
 import ru.buylist.R
 import ru.buylist.databinding.FragmentPatternsBinding
 import ru.buylist.presentation.BaseFragment
+import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
 
 class PatternsFragment : BaseFragment<FragmentPatternsBinding>() {
@@ -37,6 +39,7 @@ class PatternsFragment : BaseFragment<FragmentPatternsBinding>() {
 
         setupListenersToButtonsCreate()
         setupAdapter()
+        setupNavigation()
     }
 
     override fun onResume() {
@@ -44,8 +47,16 @@ class PatternsFragment : BaseFragment<FragmentPatternsBinding>() {
         minimizeFab()
     }
 
+    private fun setupNavigation() {
+        viewModel.detailsEvent.observe(viewLifecycleOwner, EventObserver { pattern ->
+            val action = PatternsFragmentDirections
+                    .actionPatternsFragmentToPatternDetailFragment(pattern.id, pattern.title)
+            findNavController().navigate(action)
+        })
+    }
+
     private fun setupAdapter() {
-        val patternAdapter = PatternsAdapter(ArrayList(0), viewModel)
+        val patternAdapter = PatternsAdapter(viewModel)
         recycler.apply { adapter = patternAdapter }
 
         recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {

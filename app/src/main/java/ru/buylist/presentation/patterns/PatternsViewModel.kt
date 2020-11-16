@@ -2,11 +2,13 @@ package ru.buylist.presentation.patterns
 
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.buylist.data.entity.Pattern
-import ru.buylist.data.wrappers.PatternWrapper
 import ru.buylist.data.repositories.pattern.PatternsDataSource
+import ru.buylist.data.wrappers.PatternWrapper
+import ru.buylist.utils.Event
 
 class PatternsViewModel(private val repository: PatternsDataSource) : ViewModel() {
 
@@ -18,8 +20,15 @@ class PatternsViewModel(private val repository: PatternsDataSource) : ViewModel(
     var wrappedPatterns = MutableLiveData<List<PatternWrapper>>().apply { value = emptyList() }
     var patterns = mutableListOf<Pattern>()
 
+    private val _detailsEvent = MutableLiveData<Event<Pattern>>()
+    val detailsEvent: LiveData<Event<Pattern>> = _detailsEvent
+
     init {
         loadList()
+    }
+
+    fun showDetail(pattern: Pattern) {
+        _detailsEvent.value = Event(pattern)
     }
 
     fun save() {
