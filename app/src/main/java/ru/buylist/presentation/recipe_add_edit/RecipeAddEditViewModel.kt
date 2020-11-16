@@ -25,7 +25,6 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
 
     private var ingredientToEdit = NO_EDIT
     private var stepToEdit = NO_EDIT
-    private var colorPosition = -1
 
     // Fields for two-way databinding
     val recipeTitle = MutableLiveData<String>()
