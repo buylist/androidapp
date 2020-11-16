@@ -54,6 +54,7 @@
                 android:inputType="text"
                 android:textSize="24sp"
                 android:imeOptions="actionDone"
+                app:requestFocus="@{item.editable}"
                 android:text="@{item.buyList.title}"
                 android:visibility="@{item.editable ? View.VISIBLE : View.GONE}"/>
 

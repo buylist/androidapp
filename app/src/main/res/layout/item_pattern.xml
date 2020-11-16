@@ -7,7 +7,7 @@
         <import type="android.view.View" />
 
         <variable
-            name="wrapper"
+            name="item"
             type="ru.buylist.data.wrappers.PatternWrapper" />
 
         <variable
@@ -38,9 +38,9 @@
                 android:layout_toStartOf="@+id/btn_more"
                 android:layout_marginStart="8dp"
                 android:textSize="24sp"
-                android:text="@{wrapper.pattern.title}"
-                android:onClick="@{()-> callback.onPatternClicked(wrapper)}"
-                android:visibility="@{wrapper.editable ? View.GONE : View.VISIBLE}"/>
+                android:text="@{item.pattern.title}"
+                android:onClick="@{()-> callback.onPatternClicked(item)}"
+                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}"/>
 
             <EditText
                 android:id="@+id/field_pattern_title"
@@ -53,8 +53,9 @@
                 android:inputType="text"
                 android:textSize="24sp"
                 android:imeOptions="actionDone"
-                android:text="@{wrapper.pattern.title}"
-                android:visibility="@{wrapper.editable ? View.VISIBLE : View.GONE}"/>
+                app:requestFocus="@{item.editable}"
+                android:text="@{item.pattern.title}"
+                android:visibility="@{item.editable ? View.VISIBLE : View.GONE}"/>
 
             <ImageView
                 android:id="@+id/btn_more"
@@ -63,8 +64,8 @@
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_more"
                 app:tint="@color/colorNavNormal"
-                android:onClick="@{()-> callback.onButtonMoreClick(wrapper)}"
-                android:visibility="@{wrapper.editable ? View.GONE : View.VISIBLE}"/>
+                android:onClick="@{()-> callback.onButtonMoreClick(item)}"
+                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}"/>
 
             <ImageView
                 android:id="@+id/btn_save"
@@ -72,8 +73,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/button_create"
-                android:onClick="@{()-> callback.onButtonSaveClick(wrapper)}"
-                android:visibility="@{wrapper.editable ? View.VISIBLE : View.GONE}" />
+                android:onClick="@{()-> callback.onButtonSaveClick(item)}"
+                android:visibility="@{item.editable ? View.VISIBLE : View.GONE}" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

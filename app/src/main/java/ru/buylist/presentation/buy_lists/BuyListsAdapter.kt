@@ -14,6 +14,7 @@ import ru.buylist.data.entity.BuyList
 import ru.buylist.data.wrappers.BuyListWrapper
 import ru.buylist.databinding.ItemBuyListBinding
 import ru.buylist.presentation.GenericViewHolder
+import ru.buylist.utils.hideKeyboard
 
 /**
  * Adapter for the lists on buy lists screen.
@@ -76,6 +77,7 @@ class BuyListsAdapter(
 
                 override fun onButtonSaveClick(buyListWrapper: BuyListWrapper) {
                     viewModel.saveEditedData(buyListWrapper, field.text.toString())
+                    field.hideKeyboard()
                 }
 
             }

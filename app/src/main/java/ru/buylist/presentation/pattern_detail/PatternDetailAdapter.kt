@@ -14,6 +14,7 @@ import ru.buylist.R
 import ru.buylist.data.wrappers.ItemWrapper
 import ru.buylist.databinding.ItemPatternDetailBinding
 import ru.buylist.presentation.GenericViewHolder
+import ru.buylist.utils.hideKeyboard
 
 
 /**
@@ -76,7 +77,9 @@ class PatternDetailAdapter(
                             itemWrapper,
                             field.text.toString(),
                             binding.fieldQuantity.text.toString(),
-                            binding.fieldUnit.text.toString())
+                            binding.fieldUnit.text.toString()
+                    )
+                    field.hideKeyboard()
                 }
             }
         }

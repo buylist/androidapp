@@ -13,6 +13,7 @@ import ru.buylist.R
 import ru.buylist.data.wrappers.PatternWrapper
 import ru.buylist.databinding.ItemPatternBinding
 import ru.buylist.presentation.GenericViewHolder
+import ru.buylist.utils.hideKeyboard
 
 
 /**
@@ -43,7 +44,7 @@ class PatternsAdapter(
 
         override fun bind(position: Int) {
             val item = getItem(position)
-            binding.wrapper = item
+            binding.item = item
             binding.callback = getListener(
                     itemView.context,
                     binding.btnMore,
@@ -75,6 +76,7 @@ class PatternsAdapter(
 
                 override fun onButtonSaveClick(wrapper: PatternWrapper) {
                     viewModel.saveEditedData(wrapper, field.text.toString())
+                    field.hideKeyboard()
                 }
 
             }
