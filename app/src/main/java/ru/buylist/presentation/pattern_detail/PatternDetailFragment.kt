@@ -10,22 +10,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import com.google.android.material.transition.MaterialContainerTransform
-import kotlinx.android.synthetic.main.activity_fragment.*
 import kotlinx.android.synthetic.main.fragment_pattern_detail.*
 import ru.buylist.R
 import ru.buylist.data.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentPatternDetailBinding
 import ru.buylist.presentation.BaseFragment
-import ru.buylist.presentation.circle_adapter.CirclesAdapter
 import ru.buylist.presentation.circle_adapter.CircleItemClickListener
-import ru.buylist.utils.InjectorUtils
+import ru.buylist.presentation.circle_adapter.CirclesAdapter
+import ru.buylist.utils.*
 
 class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
 
     private val args: PatternDetailFragmentArgs by navArgs()
 
     private val viewModel: PatternDetailViewModel by viewModels {
-        InjectorUtils.providePatternDetailViewModelFactory(args.patternId)
+        InjectorUtils.providePatternDetailViewModelFactory()
     }
 
     override val layoutResId: Int = R.layout.fragment_pattern_detail
@@ -35,20 +34,32 @@ class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
     override fun setupBindings(binding: FragmentPatternDetailBinding) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
-        viewModel.start(resources.getStringArray(R.array.category_color).toList())
+        viewModel.start(args.patternId, resources.getStringArray(R.array.category_color).toList())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        fab_add.setOnClickListener { expandFab() }
-        shadow_view.setOnClickListener { minimizeFab() }
-        btn_create.setOnClickListener{
-            viewModel.saveNewItem()
-            field_name.requestFocus()
-        }
         setupAdapter()
-        setupArrowListeners()
+        setupNavigation()
+        setupSnackbar()
+    }
+
+    private fun setupSnackbar() {
+        view?.setupSnackbar(this, viewModel.snackbarText)
+    }
+
+    private fun setupNavigation() {
+        viewModel.addProductEvent.observe(viewLifecycleOwner, EventObserver {
+            expandFab()
+        })
+
+        viewModel.productsAddedEvent.observe(viewLifecycleOwner, EventObserver {
+            minimizeFab()
+        })
+
+        viewModel.saveProductEvent.observe(viewLifecycleOwner, EventObserver {
+            field_name.requestFocus()
+        })
     }
 
     private fun expandFab() {
@@ -62,8 +73,7 @@ class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
         layout_new_item.visibility = View.VISIBLE
         shadow_view.visibility = View.VISIBLE
         fab_add.visibility = View.GONE
-        requireActivity().nav_bottom.visibility = View.GONE
-        field_name.requestFocus()
+        field_name.showKeyboard()
     }
 
     private fun minimizeFab() {
@@ -77,7 +87,7 @@ class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
         shadow_view.visibility = View.GONE
         layout_new_item.visibility = View.GONE
         fab_add.visibility = View.VISIBLE
-        requireActivity().nav_bottom.visibility = View.VISIBLE
+        field_name.hideKeyboard()
     }
 
     private fun buildContainerTransform() =
@@ -88,32 +98,9 @@ class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
                 interpolator = FastOutSlowInInterpolator()
             }
 
-    private fun setupArrowListeners() {
-        val layoutManager: LinearLayoutManager = recycler_circles.layoutManager as LinearLayoutManager
-        btn_prev_circles.setOnClickListener {
-            val firstVisiblePosition = layoutManager.findFirstVisibleItemPosition()
-            if (firstVisiblePosition > 0) {
-                layoutManager.smoothScrollToPosition(
-                        recycler_circles, null, firstVisiblePosition - 1)
-            }
-        }
-
-        btn_next_circles.setOnClickListener {
-            recycler_circles.adapter?.itemCount?.let {
-                if (it <= 0) return@let
-
-                val lastVisiblePosition = layoutManager.findLastVisibleItemPosition()
-                if (lastVisiblePosition >= it) return@let
-
-                layoutManager.smoothScrollToPosition(
-                        recycler_circles, null, lastVisiblePosition + 1)
-            }
-
-        }
-    }
 
     private fun setupAdapter() {
-        val itemsAdapter = PatternDetailAdapter(emptyList(), viewModel)
+        val itemsAdapter = PatternDetailAdapter(viewModel)
         recycler_items.adapter = itemsAdapter
 
         recycler_items.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -127,7 +114,7 @@ class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
         recycler_circles.apply { adapter = circlesAdapter }
 
         recycler_circles.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun  onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 viewModel.showHideArrows(isFirstCircleVisible(), isLastCircleVisible(circlesAdapter))
             }

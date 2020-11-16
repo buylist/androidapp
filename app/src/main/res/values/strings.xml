@@ -19,6 +19,7 @@
     <string name="snackbar_empty_product_name">Введите название продукта.</string>
     <string name="snackbar_patterns_loading_error">Не удалось загрузить список покупок.</string>
     <string name="snackbar_empty_pattern_title">Введите название шаблона.</string>
+    <string name="snackbar_products_loading_error">Не удалось загрузить список продуктов.</string>
     <string name="snackbar_recipes_loading_error">Не удалось загрузить список рецептов.</string>
     <string name="snackbar_recipe_loading_error">Не удалось загрузить рецепт.</string>
     <string name="snackbar_empty_recipe_title">Введите название рецепта.</string>

@@ -1,8 +1,11 @@
 package ru.buylist.presentation.pattern_detail
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
@@ -13,48 +16,18 @@ import ru.buylist.databinding.ItemPatternDetailBinding
 import ru.buylist.presentation.GenericViewHolder
 
 
-// TODO: в будущем сделать общий адаптер для BuyListDetail и PatterDetail
+/**
+ * Adapter for the products on pattern detail screen.
+ */
 class PatternDetailAdapter(
-        wrappedItems: List<ItemWrapper>,
         private val viewModel: PatternDetailViewModel
 ) : ListAdapter<ItemWrapper, GenericViewHolder>(PatternDetailDiffCallback()) {
-
-    var wrappedItems: List<ItemWrapper> = wrappedItems
-        set(wrappedItems) {
-            field = wrappedItems
-            submitList(wrappedItems)
-        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder {
         val binding: ItemPatternDetailBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 R.layout.item_pattern_detail,
                 parent, false)
-
-        val listener = object : PatternDetailItemCallback {
-            override fun onButtonMoreClick(itemWrapper: ItemWrapper) {
-                PopupMenu(parent.context, binding.btnMore).apply {
-                    menuInflater.inflate(R.menu.buy_list_item_menu, menu)
-                    setOnMenuItemClickListener { item ->
-                        when (item.itemId) {
-                            R.id.edit -> {
-                                viewModel.edit(itemWrapper)
-                                binding.fieldItemTitle.requestFocus()
-                            }
-                            R.id.delete -> viewModel.delete(itemWrapper)
-                        }
-                        true
-                    }
-                    show()
-                }
-            }
-
-            override fun onButtonSaveClick(itemWrapper: ItemWrapper) {
-                viewModel.saveEditedData(itemWrapper, binding.fieldItemTitle.text.toString())
-            }
-        }
-
-        binding.callback = listener
         return ItemViewHolder(binding)
     }
 
@@ -63,13 +36,49 @@ class PatternDetailAdapter(
     }
 
 
+    /**
+     * ViewHolder
+     */
+    private inner class ItemViewHolder(private val binding: ItemPatternDetailBinding)
+        : GenericViewHolder(binding.root) {
 
-    // View Holder
-    private inner class ItemViewHolder(private val binding: ItemPatternDetailBinding) : GenericViewHolder(binding.root) {
         override fun bind(position: Int) {
-            binding.item = wrappedItems[position]
-            binding.imgCategoryCircle.setColorFilter(Color.parseColor(wrappedItems[position].item.color))
+            val item = getItem(position)
+            binding.item = item
+            binding.callback = getListener(itemView.context, binding.btnMore, binding.fieldItemTitle)
+            binding.imgCategoryCircle
+                    .setColorFilter(Color.parseColor(item.item.color))
             binding.executePendingBindings()
+        }
+
+        private fun getListener(context: Context, btnMore: View, field: EditText)
+                : PatternDetailItemCallback {
+            return object : PatternDetailItemCallback {
+                override fun onButtonMoreClick(itemWrapper: ItemWrapper) {
+                    PopupMenu(context, btnMore).apply {
+                        menuInflater.inflate(R.menu.buy_list_item_menu, menu)
+                        setOnMenuItemClickListener { item ->
+                            when (item.itemId) {
+                                R.id.edit -> {
+                                    viewModel.edit(itemWrapper)
+                                    field.requestFocus()
+                                }
+                                R.id.delete -> viewModel.delete(itemWrapper)
+                            }
+                            true
+                        }
+                        show()
+                    }
+                }
+
+                override fun onButtonSaveClick(itemWrapper: ItemWrapper) {
+                    viewModel.saveEditedData(
+                            itemWrapper,
+                            field.text.toString(),
+                            binding.fieldQuantity.text.toString(),
+                            binding.fieldUnit.text.toString())
+                }
+            }
         }
     }
 
@@ -77,7 +86,9 @@ class PatternDetailAdapter(
 }
 
 
-// DiffUtil
+/**
+ * DiffUtil
+ */
 class PatternDetailDiffCallback : DiffUtil.ItemCallback<ItemWrapper>() {
     override fun areItemsTheSame(oldItem: ItemWrapper, newItem: ItemWrapper): Boolean {
         return oldItem.item.id == newItem.item.id
@@ -89,7 +100,9 @@ class PatternDetailDiffCallback : DiffUtil.ItemCallback<ItemWrapper>() {
 }
 
 
-// Callback
+/**
+ * Callbacks
+ */
 interface PatternDetailItemCallback {
     fun onButtonMoreClick(itemWrapper: ItemWrapper)
 

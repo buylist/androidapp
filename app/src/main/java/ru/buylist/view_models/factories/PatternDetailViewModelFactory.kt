@@ -7,11 +7,10 @@ import ru.buylist.data.repositories.pattern.PatternsDataSource
 import ru.buylist.presentation.pattern_detail.PatternDetailViewModel
 
 class PatternDetailViewModelFactory(
-        private val patternsRepository: PatternsDataSource,
-        private val globalItemsRepository: GlobalItemsDataSource,
-        private val patternId: Long) : ViewModelProvider.NewInstanceFactory() {
+        private val patternsRepository: PatternsDataSource
+) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-            PatternDetailViewModel(patternsRepository, globalItemsRepository, patternId) as T
+            PatternDetailViewModel(patternsRepository) as T
 }
