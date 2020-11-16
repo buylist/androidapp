@@ -34,9 +34,7 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
 
     private val args: RecipeAddEditFragmentArgs by navArgs()
 
-    private val viewModel: RecipeAddEditViewModel by viewModels {
-        InjectorUtils.provideRecipeAddEditViewModelFactory()
-    }
+    private val viewModel: RecipeAddEditViewModel by viewModels { getViewModelFactory() }
 
     override val layoutResId: Int = R.layout.fragment_recipe_add_edit
 

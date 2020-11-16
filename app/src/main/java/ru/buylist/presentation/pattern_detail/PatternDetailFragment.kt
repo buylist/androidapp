@@ -23,9 +23,7 @@ class PatternDetailFragment : BaseFragment<FragmentPatternDetailBinding>() {
 
     private val args: PatternDetailFragmentArgs by navArgs()
 
-    private val viewModel: PatternDetailViewModel by viewModels {
-        InjectorUtils.providePatternDetailViewModelFactory()
-    }
+    private val viewModel: PatternDetailViewModel by viewModels { getViewModelFactory() }
 
     override val layoutResId: Int = R.layout.fragment_pattern_detail
 

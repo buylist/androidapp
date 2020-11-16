@@ -11,13 +11,12 @@ import ru.buylist.databinding.FragmentRecipesBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
+import ru.buylist.utils.getViewModelFactory
 import ru.buylist.utils.setupSnackbar
 
 class RecipesFragment : BaseFragment<FragmentRecipesBinding>() {
 
-    private val viewModel: RecipesViewModel by viewModels {
-        InjectorUtils.provideRecipeViewModelFactory()
-    }
+    private val viewModel: RecipesViewModel by viewModels { getViewModelFactory() }
 
     override val layoutResId: Int = R.layout.fragment_recipes
 

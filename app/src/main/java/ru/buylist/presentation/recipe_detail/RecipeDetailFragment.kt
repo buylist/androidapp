@@ -14,6 +14,7 @@ import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.recipe_add_edit.RecipeHeaderAdapter
 import ru.buylist.utils.EventObserver
 import ru.buylist.utils.InjectorUtils
+import ru.buylist.utils.getViewModelFactory
 import ru.buylist.utils.setupSnackbar
 
 
@@ -25,9 +26,7 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
 
     private val args: RecipeDetailFragmentArgs by navArgs()
 
-    private val viewModel: RecipeDetailViewModel by viewModels {
-        InjectorUtils.provideRecipeDetailViewModelFactory()
-    }
+    private val viewModel: RecipeDetailViewModel by viewModels { getViewModelFactory() }
 
     override val layoutResId: Int = R.layout.fragment_recipe_detail
 

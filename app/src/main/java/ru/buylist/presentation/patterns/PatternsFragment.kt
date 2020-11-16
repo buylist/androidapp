@@ -21,9 +21,7 @@ import ru.buylist.utils.*
  */
 class PatternsFragment : BaseFragment<FragmentPatternsBinding>() {
 
-    private val viewModel: PatternsViewModel by viewModels {
-        InjectorUtils.providePatternViewModelFactory()
-    }
+    private val viewModel: PatternsViewModel by viewModels { getViewModelFactory() }
 
     override val layoutResId: Int = R.layout.fragment_patterns
 

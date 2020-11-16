@@ -1,5 +1,6 @@
 package ru.buylist.utils
 
+import androidx.savedstate.SavedStateRegistryOwner
 import ru.buylist.BuyListApp
 import ru.buylist.data.repositories.buyList.BuyListsDataSource
 import ru.buylist.data.repositories.buyList.BuyListsRepository
@@ -9,32 +10,18 @@ import ru.buylist.data.repositories.pattern.PatternsDataSource
 import ru.buylist.data.repositories.pattern.PatternsRepository
 import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.data.repositories.recipe.RecipesRepository
-import ru.buylist.view_models.factories.*
+import ru.buylist.presentation.ViewModelFactory
 
 object InjectorUtils {
 
     fun getExecutors(): AppExecutors = AppExecutors()
 
-    fun provideBuyListViewModelFactory() =
-            BuyListViewModelFactory(getBuyListsRepository())
-
-    fun providePatternViewModelFactory() =
-            PatternsViewModelFactory(getPatternsRepository())
-
-    fun provideRecipeViewModelFactory() =
-            RecipesViewModelFactory(getRecipesRepository())
-
-    fun provideBuyListDetailViewModelFactory() =
-            BuyListDetailViewModelFactory(getBuyListsRepository())
-
-    fun providePatternDetailViewModelFactory() =
-            PatternDetailViewModelFactory(getPatternsRepository())
-
-    fun provideRecipeAddEditViewModelFactory() =
-            RecipeAddEditViewModelFactory(getRecipesRepository())
-
-    fun provideRecipeDetailViewModelFactory() =
-            RecipeDetailViewModelFactory(getRecipesRepository())
+    fun provideViewModel(owner: SavedStateRegistryOwner) = ViewModelFactory(
+            getBuyListsRepository(),
+            getPatternsRepository(),
+            getRecipesRepository(),
+            owner
+    )
 
     private fun getBuyListsRepository(): BuyListsDataSource {
         return BuyListsRepository.getInstance(BuyListApp.get().getDatabase().buyListDao())

@@ -24,9 +24,7 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
 
     private val args: BuyListDetailFragmentArgs by navArgs()
 
-    private val viewModel: BuyListDetailViewModel by viewModels {
-        InjectorUtils.provideBuyListDetailViewModelFactory()
-    }
+    private val viewModel: BuyListDetailViewModel by viewModels { getViewModelFactory() }
 
     override val layoutResId: Int = R.layout.fragment_buy_list_detail
 

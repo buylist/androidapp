@@ -20,9 +20,7 @@ import ru.buylist.utils.*
  */
 class BuyListsFragment : BaseFragment<FragmentBuyListsBinding>() {
 
-    private val viewModel: BuyListsViewModel by viewModels {
-        InjectorUtils.provideBuyListViewModelFactory()
-    }
+    private val viewModel: BuyListsViewModel by viewModels { getViewModelFactory() }
 
     override val layoutResId: Int = R.layout.fragment_buy_lists
 
