@@ -42,7 +42,6 @@ object InjectorUtils {
 
     private fun getPatternsRepository(): PatternsDataSource {
         return PatternsRepository.getInstance(
-                getExecutors(),
                 BuyListApp.get().getDatabase().patternDao())
     }
 
