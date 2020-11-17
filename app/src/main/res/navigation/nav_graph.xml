@@ -9,9 +9,6 @@
         android:name="ru.buylist.presentation.buy_lists.BuyListsFragment"
         android:label="@string/action_buy_list_text" >
         <action
-            android:id="@+id/action_lists_fragment_to_settings_fragment"
-            app:destination="@id/settings_fragment" />
-        <action
             android:id="@+id/action_lists_fragment_to_about_fragment"
             app:destination="@id/about_fragment" />
         <action
@@ -22,9 +19,6 @@
         android:id="@+id/patterns_fragment"
         android:name="ru.buylist.presentation.patterns.PatternsFragment"
         android:label="@string/action_pattern_text" >
-        <action
-            android:id="@+id/action_pattern_fragment_to_settings_fragment"
-            app:destination="@id/settings_fragment" />
         <action
             android:id="@+id/action_pattern_fragment_to_about_fragment"
             app:destination="@id/about_fragment" />
@@ -37,9 +31,6 @@
         android:name="ru.buylist.presentation.recipes.RecipesFragment"
         android:label="@string/action_recipe_text" >
         <action
-            android:id="@+id/action_recipe_fragment_to_settings_fragment"
-            app:destination="@id/settings_fragment" />
-        <action
             android:id="@+id/action_recipe_fragment_to_about_fragment"
             app:destination="@id/about_fragment" />
         <action
@@ -49,10 +40,6 @@
             android:id="@+id/action_recipes_fragment_to_recipe_add_edit_fragment"
             app:destination="@id/recipe_add_edit_fragment" />
     </fragment>
-    <fragment
-        android:id="@+id/settings_fragment"
-        android:name="ru.buylist.presentation.settings.SettingsFragment"
-        android:label="@string/action_settings" />
     <fragment
         android:id="@+id/about_fragment"
         android:name="ru.buylist.presentation.about.AboutFragment"
