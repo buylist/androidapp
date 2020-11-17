@@ -63,6 +63,12 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
             findNavController().navigate(action)
         })
 
+        viewModel.productsFromRecipeEvent.observe(viewLifecycleOwner, EventObserver {
+            val action = BuyListDetailFragmentDirections
+                    .actionBuyListDetailFragmentToMoveProductsFromRecipeFragment(args.buyListId)
+            findNavController().navigate(action)
+        })
+
         viewModel.productAddedEvent.observe(viewLifecycleOwner, EventObserver {
             minimize(fab_menu, fab_add, field_name)
         })

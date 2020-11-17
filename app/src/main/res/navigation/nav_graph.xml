@@ -70,6 +70,9 @@
         <action
             android:id="@+id/action_buy_list_detail_fragment_to_move_products_from_pattern_fragment"
             app:destination="@id/move_products_from_pattern_fragment" />
+        <action
+            android:id="@+id/action_buy_list_detail_fragment_to_move_products_from_recipe_fragment"
+            app:destination="@id/move_products_from_recipe_fragment" />
     </fragment>
     <fragment
         android:id="@+id/pattern_detail_fragment"
@@ -116,6 +119,14 @@
         android:id="@+id/move_products_from_pattern_fragment"
         android:name="ru.buylist.presentation.move_products_from_pattern.MoveProductsFromPatternFragment"
         android:label="Выберите шаблон">
+        <argument
+            android:name="buy_list_id"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/move_products_from_recipe_fragment"
+        android:name="ru.buylist.presentation.move_products_from_recipe.MoveFromRecipeFragment"
+        android:label="Выберите рецепт" >
         <argument
             android:name="buy_list_id"
             app:argType="long" />

@@ -24,7 +24,9 @@
     <string name="snackbar_recipe_loading_error">Не удалось загрузить рецепт.</string>
     <string name="snackbar_empty_recipe_title">Введите название рецепта.</string>
     <string name="snackbar_no_products_in_pattern">В выбранном шаблоне нет продуктов</string>
+    <string name="snackbar_no_products_in_recipe">В выбранном рецепте нет продуктов</string>
     <string name="snackbar_products_moved_from_pattern">Продукты из шаблона перенесены в список покупок</string>
+    <string name="snackbar_products_moved_from_recipe">Продукты из рецепта перенесены в список покупок</string>
 
     <!--Default-->
     <string name="item_name_default_text">Название продукта</string>

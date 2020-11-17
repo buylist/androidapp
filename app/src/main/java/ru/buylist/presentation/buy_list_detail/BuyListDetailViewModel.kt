@@ -72,6 +72,9 @@ class BuyListDetailViewModel(private val repository: BuyListsDataSource) : ViewM
     private val _productsFromPatternEvent = MutableLiveData<Event<Unit>>()
     val productsFromPatternEvent: LiveData<Event<Unit>> = _productsFromPatternEvent
 
+    private val _productsFromRecipeEvent = MutableLiveData<Event<Unit>>()
+    val productsFromRecipeEvent: LiveData<Event<Unit>> = _productsFromRecipeEvent
+
     private val _saveProductEvent = MediatorLiveData<Event<Unit>>()
     val saveProductEvent: LiveData<Event<Unit>> = _saveProductEvent
 
@@ -94,6 +97,10 @@ class BuyListDetailViewModel(private val repository: BuyListsDataSource) : ViewM
 
     fun addProductsFromPattern() {
         _productsFromPatternEvent.value = Event(Unit)
+    }
+
+    fun addProductsFromRecipe() {
+        _productsFromRecipeEvent.value = Event(Unit)
     }
 
     fun hideNewProductLayout() {
