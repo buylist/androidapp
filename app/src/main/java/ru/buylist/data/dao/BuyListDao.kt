@@ -37,4 +37,7 @@ interface BuyListDao {
     @Query("UPDATE buy_lists SET items =:products WHERE id =:buyListId")
     suspend fun updateProducts(buyListId: Long, products: String)
 
+    @Query("SELECT items FROM buy_lists WHERE id =:buyListId")
+    suspend fun getProducts(buyListId: Long): String
+
 }

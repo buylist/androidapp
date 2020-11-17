@@ -10,6 +10,7 @@ import ru.buylist.data.repositories.pattern.PatternsDataSource
 import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.presentation.buy_list_detail.BuyListDetailViewModel
 import ru.buylist.presentation.buy_lists.BuyListsViewModel
+import ru.buylist.presentation.move_products_from_pattern.MoveProductsFromPatternViewModel
 import ru.buylist.presentation.pattern_detail.PatternDetailViewModel
 import ru.buylist.presentation.patterns.PatternsViewModel
 import ru.buylist.presentation.recipe_add_edit.RecipeAddEditViewModel
@@ -35,22 +36,29 @@ class ViewModelFactory constructor(
             handle: SavedStateHandle
     ) = with(modelClass) {
         when {
+            // buy lists
             isAssignableFrom(BuyListsViewModel::class.java) ->
                 BuyListsViewModel(buyListsRepository)
             isAssignableFrom(BuyListDetailViewModel::class.java) ->
                 BuyListDetailViewModel(buyListsRepository)
 
+            // patterns
             isAssignableFrom(PatternsViewModel::class.java) ->
                 PatternsViewModel(patternsRepository)
             isAssignableFrom(PatternDetailViewModel::class.java) ->
                 PatternDetailViewModel(patternsRepository)
 
+            // recipes
             isAssignableFrom(RecipesViewModel::class.java) ->
                 RecipesViewModel(recipesRepository)
             isAssignableFrom(RecipeAddEditViewModel::class.java) ->
                 RecipeAddEditViewModel(recipesRepository)
             isAssignableFrom(RecipeDetailViewModel::class.java) ->
                 RecipeDetailViewModel(recipesRepository)
+
+            // move from pattern/recipe
+            isAssignableFrom(MoveProductsFromPatternViewModel::class.java) ->
+                MoveProductsFromPatternViewModel(buyListsRepository, patternsRepository)
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

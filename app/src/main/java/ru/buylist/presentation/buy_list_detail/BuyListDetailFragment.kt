@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -54,6 +55,12 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
 
         viewModel.newProductEvent.observe(viewLifecycleOwner, EventObserver {
             expand(fab_menu, layout_new_item, field_name)
+        })
+
+        viewModel.productsFromPatternEvent.observe(viewLifecycleOwner, EventObserver {
+            val action = BuyListDetailFragmentDirections
+                    .actionBuyListDetailFragmentToMoveProductsFromPatternFragment(args.buyListId)
+            findNavController().navigate(action)
         })
 
         viewModel.productAddedEvent.observe(viewLifecycleOwner, EventObserver {

@@ -87,7 +87,8 @@
                         android:gravity="center_vertical"
                         android:clickable="true"
                         android:focusable="true"
-                        android:background="?attr/selectableItemBackground" />
+                        android:background="?attr/selectableItemBackground"
+                        android:onClick="@{()-> view_model.addProductsFromPattern()}"/>
 
                     <TextView
                         android:id="@+id/btn_recipe"

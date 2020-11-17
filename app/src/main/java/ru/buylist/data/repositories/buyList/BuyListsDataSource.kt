@@ -25,4 +25,6 @@ interface BuyListsDataSource {
     fun observeBuyList(buyListId: Long?): LiveData<Result<String>>
 
     suspend fun updateProducts(buyListId: Long?, products: String)
+
+    suspend fun getProducts(buyListId: Long?): Result<String>
 }

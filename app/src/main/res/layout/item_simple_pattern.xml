@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="item"
+            type="ru.buylist.data.entity.Pattern" />
+
+        <variable
+            name="view_model"
+            type="ru.buylist.presentation.move_products_from_pattern.MoveProductsFromPatternViewModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="70dp"
+        android:layout_marginStart="@dimen/default_layout_margin"
+        android:layout_marginEnd="@dimen/default_layout_margin"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        android:onClick="@{()-> view_model.moveProducts(item)}">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_toStartOf="@+id/btn_more"
+            android:layout_marginStart="8dp"
+            android:textSize="24sp"
+            android:text="@{item.title}" />
+
+    </androidx.cardview.widget.CardView>
+</layout>

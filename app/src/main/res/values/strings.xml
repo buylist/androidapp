@@ -23,6 +23,8 @@
     <string name="snackbar_recipes_loading_error">Не удалось загрузить список рецептов.</string>
     <string name="snackbar_recipe_loading_error">Не удалось загрузить рецепт.</string>
     <string name="snackbar_empty_recipe_title">Введите название рецепта.</string>
+    <string name="snackbar_no_products_in_pattern">В выбранном шаблоне нет продуктов</string>
+    <string name="snackbar_products_moved_from_pattern">Продукты из шаблона перенесены в список покупок</string>
 
     <!--Default-->
     <string name="item_name_default_text">Название продукта</string>
@@ -37,6 +39,8 @@
     <string name="btn_pattern_text">По шаблону</string>
     <string name="btn_recipe_text">По рецепту</string>
     <string name="btn_new_item_text">Новый товар</string>
+    <string name="tv_patterns_not_found">Шаблоны не найдены</string>
+    <string name="tv_recipes_not_found">Рецепты не найдены</string>
         <!--hint-->
         <string name="field_name_buy_list_hint">Введите название списка</string>
 
@@ -87,16 +91,6 @@
     <string name="btn_create_item_description">Сохранить товар</string>
 
 
-
-    <!--Стандартные категории и цвета-->
-    <string-array name="category">
-        <item>Продукты</item>
-        <item>Товары для дома</item>
-        <item>Красота и здоровье</item>
-        <item>Детям и мамам</item>
-        <item>Авто Мото</item>
-        <item>Зоотовары</item>
-    </string-array>
 
     <string-array name="category_color">
         <item>#56CCF2</item>

@@ -80,6 +80,21 @@ class BuyListsRepository private constructor(
         buyListDao.updateProducts(buyListId, products)
     }
 
+    override suspend fun getProducts(buyListId: Long?): Result<String> = withContext(ioDispatcher) {
+        if (buyListId == null) return@withContext Error(Exception("Products not found"))
+
+        try {
+            val items = buyListDao.getProducts(buyListId)
+            if (items == null || items.isEmpty()) {
+                return@withContext Error(Exception("Products not found"))
+            } else {
+                return@withContext Success(items)
+            }
+        } catch (e: Exception) {
+            return@withContext Error(e)
+        }
+    }
+
     companion object {
         @Volatile private var instance: BuyListsRepository? = null
 
