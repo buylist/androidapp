@@ -1,5 +1,6 @@
 package ru.buylist.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.buylist.data.entity.GlobalItem
 
@@ -7,21 +8,24 @@ import ru.buylist.data.entity.GlobalItem
 interface GlobalItemDao {
 
     @Insert
-    fun insertGlobalItem(globalItem: GlobalItem)
+    suspend fun insertGlobalItems(globalItems: List<GlobalItem>)
+
+    @Insert
+    suspend fun insertGlobalItem(globalItem: GlobalItem)
 
     @Update
-    fun updateGlobalItem(globalItem: GlobalItem)
+    suspend fun updateGlobalItem(globalItem: GlobalItem)
 
-    @Query("UPDATE global_items SET category = :category")
-    fun updateGlobalItemCategory(category: String)
-
-    @Query("UPDATE global_items SET categoryColor = :color")
-    fun updateGlobalItemColor(color: String)
+    @Query("UPDATE global_items SET color = :color")
+    suspend fun updateColor(color: String)
 
     @Query("SELECT * FROM global_items")
-    fun getGlobalItems(): List<GlobalItem>
+    suspend fun getGlobalItems(): List<GlobalItem>
 
     @Query("SELECT * FROM global_items WHERE id = :globalItemId")
-    fun getGlobalItem(globalItemId: Long): GlobalItem
+    suspend fun getGlobalItem(globalItemId: Long): GlobalItem
+
+    @Query("SELECT * FROM global_items")
+    fun observeGlobalItems(): LiveData<List<GlobalItem>>
 
 }

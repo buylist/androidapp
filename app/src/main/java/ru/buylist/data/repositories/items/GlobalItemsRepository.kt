@@ -1,63 +1,69 @@
 package ru.buylist.data.repositories.items
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import ru.buylist.data.Result
+import ru.buylist.data.Result.Error
+import ru.buylist.data.Result.Success
 import ru.buylist.data.dao.GlobalItemDao
 import ru.buylist.data.entity.GlobalItem
-import ru.buylist.utils.AppExecutors
 
 class GlobalItemsRepository(
-        private val executors: AppExecutors,
-        private val globalItemDao: GlobalItemDao
+        private val globalItemDao: GlobalItemDao,
+        private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : GlobalItemsDataSource {
 
-    override fun saveGlobalItem(globalItem: GlobalItem) {
-        executors.discIO().execute { globalItemDao.insertGlobalItem(globalItem) }
+    override suspend fun saveGlobalItem(globalItem: GlobalItem) = withContext(ioDispatcher) {
+        globalItemDao.insertGlobalItem(globalItem)
     }
 
-    override fun updateGlobalItem(globalItem: GlobalItem) {
-        executors.discIO().execute { globalItemDao.updateGlobalItem(globalItem) }
+    override suspend fun updateGlobalItem(globalItem: GlobalItem) = withContext(ioDispatcher) {
+        globalItemDao.updateGlobalItem(globalItem)
     }
 
-    override fun updateGlobalItemCategory(category: String) {
-        executors.discIO().execute { globalItemDao.updateGlobalItemCategory(category) }
+    override suspend fun updateColor(color: String) = withContext(ioDispatcher) {
+        globalItemDao.updateColor(color)
     }
 
-    override fun updateGlobalItemColor(color: String) {
-        executors.discIO().execute { globalItemDao.updateGlobalItemColor(color) }
-    }
-
-    override fun getGlobalItems(callback: GlobalItemsDataSource.LoadGlobalItemsCallback) {
-        executors.discIO().execute {
-            val items = globalItemDao.getGlobalItems()
-            executors.mainThread().execute {
-                if (items.isEmpty()) {
-                    callback.onDataNotAvailable()
-                } else {
-                    callback.onGlobalItemsLoaded(items)
-                }
-            }
+    override suspend fun getGlobalItems(): Result<List<GlobalItem>> = withContext(ioDispatcher) {
+        return@withContext try {
+            Success(globalItemDao.getGlobalItems())
+        } catch (e: Exception) {
+            Error(e)
         }
     }
 
-    override fun getGlobalItem(globalItemId: Long, callback: GlobalItemsDataSource.GetGlobalItemCallback) {
-        executors.discIO().execute {
+    override suspend fun getGlobalItem(globalItemId: Long): Result<GlobalItem> = withContext(ioDispatcher) {
+        try {
             val item = globalItemDao.getGlobalItem(globalItemId)
-            executors.mainThread().execute {
-                if (item == null) {
-                    callback.onDataNotAvailable()
-                } else {
-                    callback.onGlobalItemLoaded(item)
-                }
+            if (item == null) {
+                return@withContext Error(Exception("Товар не найден"))
+            } else {
+                return@withContext Success(item)
             }
+        } catch (e: Exception) {
+            Error(e)
         }
     }
+
+    override fun observeGlobalItems(): LiveData<Result<List<GlobalItem>>> {
+        return globalItemDao.observeGlobalItems().map {
+            Success(it)
+        }
+    }
+
+
 
     companion object {
         @Volatile
         private var instance: GlobalItemsRepository? = null
 
-        fun getInstance(executors: AppExecutors, globalItemDao: GlobalItemDao) =
+        fun getInstance(globalItemDao: GlobalItemDao) =
                 instance ?: synchronized(this) {
-                    instance ?: GlobalItemsRepository(executors, globalItemDao)
+                    instance ?: GlobalItemsRepository(globalItemDao)
                             .also { instance = it }
                 }
     }

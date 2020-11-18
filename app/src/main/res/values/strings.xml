@@ -73,6 +73,10 @@
         <string name="field_cooking_time_hint">Время приготовления</string>
 
 
+    <!--ProductDictionary-->
+    <string name="tv_product_dictionary_empty">Словарь пуст</string>
+
+
     <!--ContentDescription-->
     <string name="logo_description">Логотип</string>
     <string name="btn_new_buy_list_description">Создать список</string>
@@ -95,17 +99,40 @@
 
 
     <string-array name="category_color">
-        <item>#56CCF2</item>
-        <item>#4CB5AB</item>
-        <item>#EB5757</item>
-        <item>#F2994A</item>
-        <item>#F2E148</item>
+        <!--мясо-->
+        <item>#EF5350</item>
+        <!--хозтовары-->
+        <item>#EC407A</item>
+        <!--консерв-->
+        <item>#AB47BC</item>
+        <!--орехи/сухофрукты-->
+        <item>#7E57C2</item>
+        <!--рыба-->
+        <item>#5C6BC0</item>
+        <!--заморозка-->
+        <item>#42A5F5</item>
+        <!--напитки-->
+        <item>#29B6F6</item>
+        <!--молочка-->
+        <item>#26C6DA</item>
+        <!---->
+        <item>#26A69A</item>
+        <!--овощи/зелень-->
+        <item>#66BB6A</item>
+        <!--соусы / масла-->
+        <item>#9CCC65</item>
+        <!---->
+        <item>#D4E157</item>
+        <!--фрукты-->
+        <item>#FFEE58</item>
+        <!---->
+        <item>#FFCA28</item>
+        <!--хлебобулочные-->
+        <item>#FFA726</item>
+        <!--бакалея-->
+        <item>#FF7043</item>
 
-        <item>#D766FF</item>
-        <item>#D4DD6A</item>
-        <item>#DEA000</item>
-        <item>#9C27B0</item>
-        <item>#3F51B5</item>
+
     </string-array>
 
 

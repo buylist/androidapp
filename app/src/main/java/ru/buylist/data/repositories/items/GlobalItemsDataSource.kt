@@ -1,28 +1,20 @@
 package ru.buylist.data.repositories.items
 
+import androidx.lifecycle.LiveData
+import ru.buylist.data.Result
 import ru.buylist.data.entity.GlobalItem
 
 interface GlobalItemsDataSource {
 
-    interface GetGlobalItemCallback {
-        fun onGlobalItemLoaded(globalItem: GlobalItem)
-        fun onDataNotAvailable()
-    }
+    suspend fun saveGlobalItem(globalItem: GlobalItem)
 
-    interface LoadGlobalItemsCallback {
-        fun onGlobalItemsLoaded(globalItems: List<GlobalItem>)
-        fun onDataNotAvailable()
-    }
+    suspend fun updateGlobalItem(globalItem: GlobalItem)
 
-    fun saveGlobalItem(globalItem: GlobalItem)
+    suspend fun updateColor(color: String)
 
-    fun updateGlobalItem(globalItem: GlobalItem)
+    suspend fun getGlobalItems(): Result<List<GlobalItem>>
 
-    fun updateGlobalItemCategory(category: String)
+    suspend fun getGlobalItem(globalItemId: Long): Result<GlobalItem>
 
-    fun updateGlobalItemColor(color: String)
-
-    fun getGlobalItems(callback: LoadGlobalItemsCallback)
-
-    fun getGlobalItem(globalItemId: Long, callback: GetGlobalItemCallback)
+    fun observeGlobalItems(): LiveData<Result<List<GlobalItem>>>
 }

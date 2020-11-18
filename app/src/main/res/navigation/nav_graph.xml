@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_buy_list_fragment_to_buy_list_detail_fragment"
             app:destination="@id/buy_list_detail_fragment" />
+        <action
+            android:id="@+id/action_buy_lists_fragment_to_product_dictionary_fragment"
+            app:destination="@id/product_dictionary_fragment" />
     </fragment>
     <fragment
         android:id="@+id/patterns_fragment"
@@ -25,6 +28,9 @@
         <action
             android:id="@+id/action_patterns_fragment_to_pattern_detail_fragment"
             app:destination="@id/pattern_detail_fragment" />
+        <action
+            android:id="@+id/action_patterns_fragment_to_product_dictionary_fragment"
+            app:destination="@id/product_dictionary_fragment" />
     </fragment>
     <fragment
         android:id="@+id/recipes_fragment"
@@ -39,6 +45,9 @@
         <action
             android:id="@+id/action_recipes_fragment_to_recipe_add_edit_fragment"
             app:destination="@id/recipe_add_edit_fragment" />
+        <action
+            android:id="@+id/action_recipes_fragment_to_product_dictionary_fragment"
+            app:destination="@id/product_dictionary_fragment" />
     </fragment>
     <fragment
         android:id="@+id/about_fragment"
@@ -118,4 +127,8 @@
             android:name="buy_list_id"
             app:argType="long" />
     </fragment>
+    <fragment
+        android:id="@+id/product_dictionary_fragment"
+        android:name="ru.buylist.presentation.product_dictionary.ProductDictionaryFragment"
+        android:label="Словарь продуктов" />
 </navigation>

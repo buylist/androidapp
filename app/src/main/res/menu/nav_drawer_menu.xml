@@ -4,7 +4,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/product_dictionary"
+            android:id="@+id/product_dictionary_fragment"
             android:title="Словарь продуктов"
             android:icon="@drawable/ic_books" />
     </group>

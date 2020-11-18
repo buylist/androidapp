@@ -5,9 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import ru.buylist.data.dao.*
 import ru.buylist.data.entity.*
-import ru.buylist.utils.AppExecutors
+import ru.buylist.utils.ProductsWorker
 
 @Database(entities = [BuyList::class, Pattern::class, Recipe::class, GlobalItem::class],
         version = 1, exportSchema = false)
@@ -22,21 +24,20 @@ abstract class BuyListDatabase : RoomDatabase() {
 
         @Volatile private var instance: BuyListDatabase? = null
 
-        fun getInstance(context: Context, executors: AppExecutors): BuyListDatabase {
+        fun getInstance(context: Context): BuyListDatabase {
             return instance ?: synchronized(this) {
                 instance
-                        ?: buildDatabase(context, executors).also { instance = it }
+                        ?: buildDatabase(context).also { instance = it }
             }
         }
 
-        private fun buildDatabase(context: Context, executors: AppExecutors): BuyListDatabase {
+        private fun buildDatabase(context: Context): BuyListDatabase {
             return Room.databaseBuilder(context, BuyListDatabase::class.java, DATABASE_NAME)
                     .addCallback(object : RoomDatabase.Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
                             super.onCreate(db)
-                            executors.discIO().execute {
-                                // prepopulate database here
-                            }
+                            val request = OneTimeWorkRequestBuilder<ProductsWorker>().build()
+                            WorkManager.getInstance(context).enqueue(request)
                         }
                     })
                     .build()

@@ -14,12 +14,11 @@ import ru.buylist.presentation.ViewModelFactory
 
 object InjectorUtils {
 
-    fun getExecutors(): AppExecutors = AppExecutors()
-
     fun provideViewModel(owner: SavedStateRegistryOwner) = ViewModelFactory(
             getBuyListsRepository(),
             getPatternsRepository(),
             getRecipesRepository(),
+            getGlobalItemsRepository(),
             owner
     )
 
@@ -28,19 +27,14 @@ object InjectorUtils {
     }
 
     private fun getPatternsRepository(): PatternsDataSource {
-        return PatternsRepository.getInstance(
-                BuyListApp.get().getDatabase().patternDao())
+        return PatternsRepository.getInstance(BuyListApp.get().getDatabase().patternDao())
     }
 
     private fun getRecipesRepository(): RecipesDataSource {
-        return RecipesRepository.getInstance(
-                BuyListApp.get().getDatabase().recipeDao())
+        return RecipesRepository.getInstance(BuyListApp.get().getDatabase().recipeDao())
     }
 
     private fun getGlobalItemsRepository(): GlobalItemsDataSource {
-        return GlobalItemsRepository.getInstance(
-                getExecutors(),
-                BuyListApp.get().getDatabase().globalItemDao()
-        )
+        return GlobalItemsRepository.getInstance(BuyListApp.get().getDatabase().globalItemDao())
     }
 }

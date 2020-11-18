@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import ru.buylist.data.repositories.buyList.BuyListsDataSource
+import ru.buylist.data.repositories.items.GlobalItemsDataSource
 import ru.buylist.data.repositories.pattern.PatternsDataSource
 import ru.buylist.data.repositories.recipe.RecipesDataSource
 import ru.buylist.presentation.buy_list_detail.BuyListDetailViewModel
@@ -14,6 +15,7 @@ import ru.buylist.presentation.move_products_from_pattern.MoveProductsFromPatter
 import ru.buylist.presentation.move_products_from_recipe.MoveFromRecipeViewModel
 import ru.buylist.presentation.pattern_detail.PatternDetailViewModel
 import ru.buylist.presentation.patterns.PatternsViewModel
+import ru.buylist.presentation.product_dictionary.ProductDictionaryViewModel
 import ru.buylist.presentation.recipe_add_edit.RecipeAddEditViewModel
 import ru.buylist.presentation.recipe_detail.RecipeDetailViewModel
 import ru.buylist.presentation.recipes.RecipesViewModel
@@ -27,6 +29,7 @@ class ViewModelFactory constructor(
         private val buyListsRepository: BuyListsDataSource,
         private val patternsRepository: PatternsDataSource,
         private val recipesRepository: RecipesDataSource,
+        private val globalItemRepository: GlobalItemsDataSource,
         owner: SavedStateRegistryOwner,
         defaultArgs: Bundle? = null
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
@@ -62,6 +65,10 @@ class ViewModelFactory constructor(
                 MoveProductsFromPatternViewModel(buyListsRepository, patternsRepository)
             isAssignableFrom(MoveFromRecipeViewModel::class.java) ->
                 MoveFromRecipeViewModel(buyListsRepository, recipesRepository)
+
+            // product dictionary
+            isAssignableFrom(ProductDictionaryViewModel::class.java) ->
+                ProductDictionaryViewModel(globalItemRepository)
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
