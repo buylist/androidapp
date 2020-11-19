@@ -50,5 +50,6 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_drawer_header"
         app:menu="@menu/nav_drawer_menu"
-        android:background="@color/colorWhite" />
+        android:background="@color/colorWhite"
+        app:itemIconTint="@color/colorNavChecked"/>
 </androidx.drawerlayout.widget.DrawerLayout>

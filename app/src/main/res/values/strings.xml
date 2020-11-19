@@ -8,8 +8,10 @@
 
 
     <!--Drawer-->
-    <string name="action_settings">Настройки</string>
-    <string name="action_about">О приложении</string>
+    <string name="nav_product_dictionary">Словарь продуктов</string>
+    <string name="nav_group_info">Информация</string>
+    <string name="nav_feedback">Отправить отзыв</string>
+    <string name="nav_about">О приложении</string>
 
 
     <!--Snackbar text-->
@@ -77,6 +79,21 @@
     <string name="tv_product_dictionary_empty">Словарь пуст</string>
 
 
+    <!--AboutActivity-->
+    <string name="slide_welcome_title">Добро пожаловать в BuyList!</string>
+    <string name="slide_welcome_main">Приложение для составления списков покупок</string>
+    <string name="slide_list_title">Коллекция списков</string>
+    <string name="slide_list_main">Составляй списки покупок</string>
+    <string name="slide_pattern_title">Удобные шаблоны</string>
+    <string name="slide_pattern_main">Создавай шаблоны на основе регулярно приобретаемых товаров
+        или любимых магазинов</string>
+    <string name="slide_recipe_title">Любимые рецепты</string>
+    <string name="slide_recipe_main">Сохраняй любимые рецепты и переноси ингредиенты в список
+        покупок</string>
+    <string name="slide_product_dictionary_title">Словарь продуктов</string>
+    <string name="slide_product_dictionary_main">Добавляй регулярно приобретаемые товары в словарь
+        для более конкретных подсказок при заполнении списка</string>
+
     <!--ContentDescription-->
     <string name="logo_description">Логотип</string>
     <string name="btn_new_buy_list_description">Создать список</string>
@@ -95,6 +112,9 @@
     <string name="btn_next_color_description">Следующие цвета</string>
     <string name="btn_new_ingredient_description">Добавить ингредиент</string>
     <string name="btn_create_item_description">Сохранить товар</string>
+
+
+
 
 
 

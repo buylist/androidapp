@@ -5,23 +5,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/product_dictionary_fragment"
-            android:title="Словарь продуктов"
-            android:icon="@drawable/ic_books" />
+            android:title="@string/nav_product_dictionary"
+            android:icon="@drawable/ic_book" />
     </group>
 
-    <item android:title="Информация">
+    <item android:title="@string/nav_group_info">
         <menu>
-            <group android:checkableBehavior="single">
+<!--            <group android:checkableBehavior="single">-->
                 <item
                     android:id="@+id/nav_feedback"
-                    android:title="Отправить отзыв"
+                    android:title="@string/nav_feedback"
                     android:icon="@drawable/ic_email" />
                 <item
                     android:id="@+id/about_fragment"
-                    android:title="О приложении"
+                    android:title="@string/nav_about"
                     android:icon="@drawable/ic_info" />
 
-            </group>
+<!--            </group>-->
         </menu>
     </item>
 

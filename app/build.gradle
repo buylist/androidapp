@@ -33,6 +33,10 @@ android {
     dataBinding {
         enabled = true
     }
+
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
 // To inline the bytecode built with JVM target 1.8 into
 // bytecode that is being built with JVM target 1.6. (e.g. navArgs)
 }
@@ -66,6 +70,9 @@ dependencies {
     // navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.1"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.1"
+
+    // AppIntro
+    implementation 'com.github.AppIntro:AppIntro:6.0.0'
 
     implementation "androidx.work:work-runtime-ktx:2.4.0"
     implementation 'com.google.android:flexbox:2.0.1'
