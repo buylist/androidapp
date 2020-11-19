@@ -2,6 +2,7 @@ package ru.buylist.data.repositories.recipe
 
 import androidx.lifecycle.LiveData
 import ru.buylist.data.Result
+import ru.buylist.data.entity.GlobalItem
 import ru.buylist.data.entity.Recipe
 
 interface RecipesDataSource {
@@ -33,4 +34,6 @@ interface RecipesDataSource {
     suspend fun getRecipe(recipeId: Long): Result<Recipe>
 
     fun observeRecipe(recipeId: Long): LiveData<Result<Recipe>>
+
+    suspend fun getTags(): Result<List<GlobalItem>>
 }

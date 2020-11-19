@@ -8,11 +8,14 @@ import kotlinx.coroutines.withContext
 import ru.buylist.data.Result
 import ru.buylist.data.Result.Error
 import ru.buylist.data.Result.Success
+import ru.buylist.data.dao.GlobalItemDao
 import ru.buylist.data.dao.RecipeDao
+import ru.buylist.data.entity.GlobalItem
 import ru.buylist.data.entity.Recipe
 
 class RecipesRepository private constructor(
         private val recipeDao: RecipeDao,
+        private val globalItemDao: GlobalItemDao,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RecipesDataSource {
 
@@ -69,13 +72,21 @@ class RecipesRepository private constructor(
         }
     }
 
+    override suspend fun getTags(): Result<List<GlobalItem>> = withContext(ioDispatcher) {
+        return@withContext try {
+            Success(globalItemDao.getGlobalItems())
+        } catch (e: Exception) {
+            Error(e)
+        }
+    }
+
     companion object {
         @Volatile
         private var instance: RecipesRepository? = null
 
-        fun getInstance(recipeDao: RecipeDao) =
+        fun getInstance(recipeDao: RecipeDao, globalItemDao: GlobalItemDao) =
                 instance ?: synchronized(this) {
-                    instance ?: RecipesRepository(recipeDao).also { instance = it }
+                    instance ?: RecipesRepository(recipeDao, globalItemDao).also { instance = it }
                 }
     }
 

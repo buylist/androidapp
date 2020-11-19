@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import ru.buylist.R
 import ru.buylist.data.Result
+import ru.buylist.data.entity.GlobalItem
 import ru.buylist.data.entity.Item
 import ru.buylist.data.repositories.pattern.PatternsDataSource
 import ru.buylist.data.wrappers.CircleWrapper
@@ -15,6 +16,17 @@ import ru.buylist.utils.JsonUtils
 class PatternDetailViewModel(private val repository: PatternsDataSource) : ViewModel() {
 
     private val items = mutableListOf<Item>()
+    private val wordTips = mutableListOf<GlobalItem>()
+
+    // Fields for two-way databinding
+    val productName = MutableLiveData<String>()
+    val productQuantity = MutableLiveData<String>()
+    val productUnit = MutableLiveData<String>()
+
+    // Flags to show and hide buttons
+    val fabIsShown = MutableLiveData<Boolean>(true)
+    val prevArrowIsShown = MutableLiveData<Boolean>(true)
+    val nextArrowIsShown = MutableLiveData<Boolean>(true)
 
     // Triggers to load and update products in the database
     private val _patternId = MutableLiveData<Long>()
@@ -35,15 +47,16 @@ class PatternDetailViewModel(private val repository: PatternsDataSource) : ViewM
         it == null || it.isEmpty()
     }
 
-    // Fields for two-way databinding
-    val productName = MutableLiveData<String>()
-    val productQuantity = MutableLiveData<String>()
-    val productUnit = MutableLiveData<String>()
+    // Word tips
+    private val _wordTipsToShow: LiveData<List<GlobalItem>> = productName.map { query ->
+        if (query == null || query.isEmpty()) {
+            emptyList()
+        } else {
+            filterTags(query)
+        }
+    }
 
-    // Flags to show and hide buttons
-    val fabIsShown = MutableLiveData<Boolean>(true)
-    val prevArrowIsShown = MutableLiveData<Boolean>(true)
-    val nextArrowIsShown = MutableLiveData<Boolean>(true)
+    val wordTipsToShow: LiveData<List<GlobalItem>> = _wordTipsToShow
 
     // Triggers to load and update selected color
     private val _colors = MutableLiveData<List<String>>()
@@ -77,6 +90,7 @@ class PatternDetailViewModel(private val repository: PatternsDataSource) : ViewM
     fun start(patternId: Long, newColors: List<String>) {
         _patternId.value = patternId
         _colors.value = newColors
+        loadWordTips()
     }
 
     fun addProduct() {
@@ -86,6 +100,19 @@ class PatternDetailViewModel(private val repository: PatternsDataSource) : ViewM
     fun hideNewProductLayout() {
         _productsAddedEvent.value = Event(Unit)
         _selectedColor.value = null
+    }
+
+    fun setProductInfoByWordTip(wordTip: GlobalItem) {
+        productName.value = wordTip.name
+
+        circles.value?.let {
+            for (circle in it) {
+                if (circle.color == wordTip.color) {
+                    _selectedColor.value = circle.position
+                    break
+                }
+            }
+        }
     }
 
     fun saveNewItem() {
@@ -200,6 +227,30 @@ class PatternDetailViewModel(private val repository: PatternsDataSource) : ViewM
 
     private fun showSnackbarMessage(message: Int) {
         _snackbarText.value = Event(message)
+    }
+
+    private fun filterTags(query: CharSequence): List<GlobalItem> {
+        val newTags = mutableListOf<GlobalItem>()
+        var count = 0
+        for (tag in wordTips) {
+            if (count == 10) break
+            if (tag.name.startsWith(query, true)) {
+                newTags.add(tag)
+                count++
+            }
+        }
+        return newTags
+    }
+
+    private fun loadWordTips() {
+        viewModelScope.launch {
+            val result = repository.getTags()
+
+            if (result is Result.Success) {
+                wordTips.clear()
+                wordTips.addAll(result.data)
+            }
+        }
     }
 
     private fun computeResult(productsResult: Result<String>, position: Int?): List<ItemWrapper>? {

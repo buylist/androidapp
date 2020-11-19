@@ -3,6 +3,7 @@ package ru.buylist.data.repositories.buyList
 import androidx.lifecycle.LiveData
 import ru.buylist.data.entity.BuyList
 import ru.buylist.data.Result
+import ru.buylist.data.entity.GlobalItem
 
 interface BuyListsDataSource {
 
@@ -27,4 +28,6 @@ interface BuyListsDataSource {
     suspend fun updateProducts(buyListId: Long?, products: String)
 
     suspend fun getProducts(buyListId: Long?): Result<String>
+
+    suspend fun getTags(): Result<List<GlobalItem>>
 }

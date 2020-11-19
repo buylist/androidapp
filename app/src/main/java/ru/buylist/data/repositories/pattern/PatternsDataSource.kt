@@ -2,6 +2,7 @@ package ru.buylist.data.repositories.pattern
 
 import androidx.lifecycle.LiveData
 import ru.buylist.data.Result
+import ru.buylist.data.entity.GlobalItem
 import ru.buylist.data.entity.Pattern
 
 interface PatternsDataSource {
@@ -25,4 +26,6 @@ interface PatternsDataSource {
     fun observePattern(patternId: Long?): LiveData<Result<String>>
 
     suspend fun updateProducts(patternId: Long?, products: String)
+
+    suspend fun getTags(): Result<List<GlobalItem>>
 }

@@ -12,6 +12,10 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.fragment_recipe_add_edit.*
 import kotlinx.android.synthetic.main.fragment_recipe_add_edit.layout_new_item
@@ -19,11 +23,14 @@ import kotlinx.android.synthetic.main.fragment_recipe_add_edit.layout_new_step
 import kotlinx.android.synthetic.main.layout_new_cooking_step.*
 import kotlinx.android.synthetic.main.layout_new_ingredient.*
 import ru.buylist.R
+import ru.buylist.data.entity.GlobalItem
 import ru.buylist.data.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentRecipeAddEditBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.circle_adapter.CircleItemClickListener
 import ru.buylist.presentation.circle_adapter.CirclesAdapter
+import ru.buylist.presentation.tag_adapter.WordTipsAdapter
+import ru.buylist.presentation.tag_adapter.WordTipsListener
 import ru.buylist.utils.*
 
 /**
@@ -91,6 +98,18 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
                 viewModel.showHideArrows(isFirstCircleVisible(), isLastCircleVisible(circlesAdapter))
             }
         })
+
+        val wordTipsAdapter = WordTipsAdapter(wordTipCallback)
+        val flexManager = FlexboxLayoutManager(requireContext()).apply {
+            flexDirection = FlexDirection.ROW
+            justifyContent = JustifyContent.FLEX_START
+            alignItems = AlignItems.CENTER
+        }
+
+        recycler_word_tips.apply {
+            layoutManager = flexManager
+            adapter = wordTipsAdapter
+        }
     }
 
     private fun isLastCircleVisible(circlesAdapter: CirclesAdapter): Boolean {
@@ -166,6 +185,12 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
         override fun onCircleClick(circleWrapper: CircleWrapper) {
             viewModel.updateCircle(circleWrapper)
         }
+    }
 
+    private val wordTipCallback = object : WordTipsListener {
+
+        override fun onWordTipClick(wordTip: GlobalItem) {
+            viewModel.setProductInfoByWordTip(wordTip)
+        }
     }
 }

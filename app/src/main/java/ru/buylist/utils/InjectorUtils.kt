@@ -23,15 +23,24 @@ object InjectorUtils {
     )
 
     private fun getBuyListsRepository(): BuyListsDataSource {
-        return BuyListsRepository.getInstance(BuyListApp.get().getDatabase().buyListDao())
+        return BuyListsRepository.getInstance(
+                BuyListApp.get().getDatabase().buyListDao(),
+                BuyListApp.get().getDatabase().globalItemDao()
+        )
     }
 
     private fun getPatternsRepository(): PatternsDataSource {
-        return PatternsRepository.getInstance(BuyListApp.get().getDatabase().patternDao())
+        return PatternsRepository.getInstance(
+                BuyListApp.get().getDatabase().patternDao(),
+                BuyListApp.get().getDatabase().globalItemDao()
+        )
     }
 
     private fun getRecipesRepository(): RecipesDataSource {
-        return RecipesRepository.getInstance(BuyListApp.get().getDatabase().recipeDao())
+        return RecipesRepository.getInstance(
+                BuyListApp.get().getDatabase().recipeDao(),
+                BuyListApp.get().getDatabase().globalItemDao()
+        )
     }
 
     private fun getGlobalItemsRepository(): GlobalItemsDataSource {

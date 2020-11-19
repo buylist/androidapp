@@ -5,6 +5,7 @@ import kotlinx.coroutines.launch
 import ru.buylist.R
 import ru.buylist.data.Result.Success
 import ru.buylist.data.entity.CookingStep
+import ru.buylist.data.entity.GlobalItem
 import ru.buylist.data.entity.Item
 import ru.buylist.data.entity.Recipe
 import ru.buylist.data.wrappers.CircleWrapper
@@ -20,6 +21,8 @@ import ru.buylist.utils.JsonUtils
  */
 
 class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewModel() {
+
+    private val wordTips = mutableListOf<GlobalItem>()
 
     private var _recipeId = NEW_RECIPE_ID
 
@@ -52,6 +55,17 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
             .apply { value = getWrappedSteps(steps) }
     val wrappedSteps: LiveData<List<CookingStepWrapper>> = _wrappedSteps
 
+    // Word tips
+    private val _wordTipsToShow: LiveData<List<GlobalItem>> = itemName.map { query ->
+        if (query == null || query.isEmpty()) {
+            emptyList()
+        } else {
+            filterWordTips(query)
+        }
+    }
+
+    val wordTipsToShow: LiveData<List<GlobalItem>> = _wordTipsToShow
+
     // Markers that show the category of an ingredient using color
     private val _colors = MutableLiveData<List<String>>()
     private val _selectedColor = MutableLiveData<Int>()
@@ -79,6 +93,7 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
     fun start(recipeId: Long, newColors: List<String>) {
         _recipeId = recipeId
         _colors.value = newColors
+        loadWordTips()
         if (recipeId == NEW_RECIPE_ID) {
             return
         }
@@ -96,6 +111,19 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
 
     fun hideNewIngredientLayout() {
         _selectedColor.value = null
+    }
+
+    fun setProductInfoByWordTip(wordTip: GlobalItem) {
+        itemName.value = wordTip.name
+
+        circles.value?.let {
+            for (circle in it) {
+                if (circle.color == wordTip.color) {
+                    _selectedColor.value = circle.position
+                    break
+                }
+            }
+        }
     }
 
     fun saveRecipe() {
@@ -355,6 +383,30 @@ class RecipeAddEditViewModel(private val repository: RecipesDataSource) : ViewMo
 
     private fun onDataNotAvailable() {
         showSnackbarMessage(R.string.snackbar_recipe_loading_error)
+    }
+
+    private fun filterWordTips(query: CharSequence): List<GlobalItem> {
+        val newTags = mutableListOf<GlobalItem>()
+        var count = 0
+        for (tag in wordTips) {
+            if (count == 10) break
+            if (tag.name.startsWith(query, true)) {
+                newTags.add(tag)
+                count++
+            }
+        }
+        return newTags
+    }
+
+    private fun loadWordTips() {
+        viewModelScope.launch {
+            val result = repository.getTags()
+
+            if (result is Success) {
+                wordTips.clear()
+                wordTips.addAll(result.data)
+            }
+        }
     }
 
 

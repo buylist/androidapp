@@ -11,14 +11,21 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.fragment_buy_list_detail.*
 import ru.buylist.R
+import ru.buylist.data.entity.GlobalItem
 import ru.buylist.data.wrappers.CircleWrapper
 import ru.buylist.databinding.FragmentBuyListDetailBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.circle_adapter.CircleItemClickListener
 import ru.buylist.presentation.circle_adapter.CirclesAdapter
+import ru.buylist.presentation.tag_adapter.WordTipsAdapter
+import ru.buylist.presentation.tag_adapter.WordTipsListener
 import ru.buylist.utils.*
 
 class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
@@ -146,11 +153,30 @@ class BuyListDetailFragment : BaseFragment<FragmentBuyListDetailBinding>() {
                 viewModel.showHideArrows(isFirstCircleVisible(), isLastCircleVisible(circlesAdapter))
             }
         })
+
+        val wordTipsAdapter = WordTipsAdapter(wordTipCallback)
+        val flexManager = FlexboxLayoutManager(requireContext()).apply {
+            flexDirection = FlexDirection.ROW
+            justifyContent = JustifyContent.FLEX_START
+            alignItems = AlignItems.CENTER
+        }
+
+        recycler_word_tips.apply {
+            layoutManager = flexManager
+            adapter = wordTipsAdapter
+        }
     }
 
     private val circlesCallback = object : CircleItemClickListener {
         override fun onCircleClick(circleWrapper: CircleWrapper) {
             viewModel.updateCircle(circleWrapper)
+        }
+    }
+
+    private val wordTipCallback = object : WordTipsListener {
+
+        override fun onWordTipClick(wordTip: GlobalItem) {
+            viewModel.setProductInfoByWordTip(wordTip)
         }
     }
 

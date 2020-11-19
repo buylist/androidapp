@@ -5,6 +5,7 @@ import kotlinx.coroutines.launch
 import ru.buylist.R
 import ru.buylist.data.Result
 import ru.buylist.data.Result.Success
+import ru.buylist.data.entity.GlobalItem
 import ru.buylist.data.entity.Item
 import ru.buylist.data.wrappers.CircleWrapper
 import ru.buylist.data.wrappers.ItemWrapper
@@ -16,7 +17,19 @@ import ru.buylist.utils.JsonUtils
 class BuyListDetailViewModel(private val repository: BuyListsDataSource) : ViewModel() {
 
     private val items = mutableListOf<Item>()
+    private val wordTips = mutableListOf<GlobalItem>()
 
+    // Fields for two-way databinding
+    val productName = MutableLiveData<String>()
+    val productQuantity = MutableLiveData<String>()
+    val productUnit = MutableLiveData<String>()
+
+    // Flags to show and hide buttons
+    val fabIsShown = MutableLiveData<Boolean>(true)
+    val prevArrowIsShown = MutableLiveData<Boolean>(true)
+    val nextArrowIsShown = MutableLiveData<Boolean>(true)
+
+    // Products in the list
     private val _buyListId = MutableLiveData<Long>()
     private val _productToEdit = MutableLiveData<Int>()
 
@@ -35,6 +48,17 @@ class BuyListDetailViewModel(private val repository: BuyListsDataSource) : ViewM
         it == null || it.isEmpty()
     }
 
+    // Word tips
+    private val _wordTipsToShow: LiveData<List<GlobalItem>> = productName.map { query ->
+        if (query == null || query.isEmpty()) {
+            emptyList()
+        } else {
+            filterWordTips(query)
+        }
+    }
+
+    val wordTipsToShow: LiveData<List<GlobalItem>> = _wordTipsToShow
+
     private val _colors = MutableLiveData<List<String>>()
     private val _selectedColor = MutableLiveData<Int>()
 
@@ -49,16 +73,6 @@ class BuyListDetailViewModel(private val repository: BuyListsDataSource) : ViewM
         getWrappedCircles(pair.first, pair.second)
     }
     val circles: LiveData<List<CircleWrapper>> = _circles
-
-    // Fields for two-way databinding
-    val productName = MutableLiveData<String>()
-    val productQuantity = MutableLiveData<String>()
-    val productUnit = MutableLiveData<String>()
-
-    // Flags to show and hide buttons
-    val fabIsShown = MutableLiveData<Boolean>(true)
-    val prevArrowIsShown = MutableLiveData<Boolean>(true)
-    val nextArrowIsShown = MutableLiveData<Boolean>(true)
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
@@ -85,6 +99,7 @@ class BuyListDetailViewModel(private val repository: BuyListsDataSource) : ViewM
     fun start(buyListId: Long, colors: List<String>) {
         _buyListId.value = buyListId
         _colors.value = colors
+        loadWordTips()
     }
 
     fun addProduct() {
@@ -106,6 +121,19 @@ class BuyListDetailViewModel(private val repository: BuyListsDataSource) : ViewM
     fun hideNewProductLayout() {
         _productsAddedEvent.value = Event(Unit)
         _selectedColor.value = null
+    }
+
+    fun setProductInfoByWordTip(wordTip: GlobalItem) {
+        productName.value = wordTip.name
+
+        circles.value?.let {
+            for (circle in it) {
+                if (circle.color == wordTip.color) {
+                    _selectedColor.value = circle.position
+                    break
+                }
+            }
+        }
     }
 
     fun saveNewItem() {
@@ -222,6 +250,30 @@ class BuyListDetailViewModel(private val repository: BuyListsDataSource) : ViewM
 
     private fun showSnackbarMessage(message: Int) {
         _snackbarText.value = Event(message)
+    }
+
+    private fun filterWordTips(query: CharSequence): List<GlobalItem> {
+        val newTags = mutableListOf<GlobalItem>()
+        var count = 0
+        for (tag in wordTips) {
+            if (count == 10) break
+            if (tag.name.startsWith(query, true)) {
+                newTags.add(tag)
+                count++
+            }
+        }
+        return newTags
+    }
+
+    private fun loadWordTips() {
+        viewModelScope.launch {
+            val result = repository.getTags()
+
+            if (result is Success) {
+                wordTips.clear()
+                wordTips.addAll(result.data)
+            }
+        }
     }
 
     private fun computeResult(productsResult: Result<String>, position: Int?): List<ItemWrapper>? {

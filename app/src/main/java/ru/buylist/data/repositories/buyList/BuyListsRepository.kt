@@ -10,11 +10,14 @@ import ru.buylist.data.Result
 import ru.buylist.data.Result.Error
 import ru.buylist.data.Result.Success
 import ru.buylist.data.dao.BuyListDao
+import ru.buylist.data.dao.GlobalItemDao
 import ru.buylist.data.entity.BuyList
+import ru.buylist.data.entity.GlobalItem
 import ru.buylist.data.wrappers.ItemWrapper
 
 class BuyListsRepository private constructor(
         private val buyListDao: BuyListDao,
+        private val globalItemDao: GlobalItemDao,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): BuyListsDataSource {
 
@@ -95,12 +98,20 @@ class BuyListsRepository private constructor(
         }
     }
 
+    override suspend fun getTags(): Result<List<GlobalItem>> = withContext(ioDispatcher) {
+        return@withContext try {
+            Success(globalItemDao.getGlobalItems())
+        } catch (e: Exception) {
+            Error(e)
+        }
+    }
+
     companion object {
         @Volatile private var instance: BuyListsRepository? = null
 
-        fun getInstance(buyListDao: BuyListDao) =
+        fun getInstance(buyListDao: BuyListDao, globalItemDao: GlobalItemDao) =
                 instance ?: synchronized(this) {
-                    instance ?: BuyListsRepository(buyListDao).also { instance = it }
+                    instance ?: BuyListsRepository(buyListDao, globalItemDao).also { instance = it }
                 }
     }
 }

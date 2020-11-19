@@ -9,12 +9,15 @@ import kotlinx.coroutines.withContext
 import ru.buylist.data.Result
 import ru.buylist.data.Result.Error
 import ru.buylist.data.Result.Success
+import ru.buylist.data.dao.GlobalItemDao
 import ru.buylist.data.dao.PatternDao
+import ru.buylist.data.entity.GlobalItem
 import ru.buylist.data.entity.Pattern
 import ru.buylist.data.wrappers.ItemWrapper
 
 class PatternsRepository private constructor(
         private val patternDao: PatternDao,
+        private val globalItemDao: GlobalItemDao,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : PatternsDataSource {
 
@@ -77,13 +80,21 @@ class PatternsRepository private constructor(
                 patternDao.updateProducts(patternId, products)
             }
 
+    override suspend fun getTags(): Result<List<GlobalItem>> = withContext(ioDispatcher) {
+        return@withContext try {
+            Success(globalItemDao.getGlobalItems())
+        } catch (e: Exception) {
+            Error(e)
+        }
+    }
+
     companion object {
         @Volatile
         private var instance: PatternsRepository? = null
 
-        fun getInstance(patternDao: PatternDao) =
+        fun getInstance(patternDao: PatternDao, globalItemDao: GlobalItemDao) =
                 instance ?: synchronized(this) {
-                    instance ?: PatternsRepository(patternDao).also { instance = it }
+                    instance ?: PatternsRepository(patternDao, globalItemDao).also { instance = it }
                 }
     }
 
