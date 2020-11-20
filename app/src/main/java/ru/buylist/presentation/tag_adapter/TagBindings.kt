@@ -3,7 +3,6 @@ package ru.buylist.presentation.tag_adapter
 import android.graphics.Color
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.buylist.R

@@ -3,7 +3,6 @@ package ru.buylist.presentation.product_dictionary
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.buylist.data.entity.GlobalItem
-import ru.buylist.presentation.buy_lists.BuyListsViewModel
 
 object ProductDictionaryBindings {
 

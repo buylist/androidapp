@@ -45,12 +45,12 @@ fun View.setupSnackbar(
         snackbarEvent: LiveData<Event<Int>>
 ) {
 
-    snackbarEvent.observe(lifecycleOwner, Observer { event ->
+    snackbarEvent.observe(lifecycleOwner, { event ->
         event.getContentIfNotHandled()?.let {
             showSnackbar(
                     context.getString(it),
-                    context.getString(R.string.snackbar_action_ok),
-                    View.OnClickListener {  })
+                    context.getString(R.string.snackbar_action_ok)
+            ) { }
         }
     })
 }

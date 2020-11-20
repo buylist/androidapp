@@ -10,7 +10,6 @@ import ru.buylist.R
 import ru.buylist.databinding.FragmentRecipesBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.utils.EventObserver
-import ru.buylist.utils.InjectorUtils
 import ru.buylist.utils.getViewModelFactory
 import ru.buylist.utils.setupSnackbar
 
