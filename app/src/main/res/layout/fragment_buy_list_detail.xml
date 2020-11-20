@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -35,7 +36,8 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}">
+                android:visibility="@{view_model.listIsEmpty ? View.VISIBLE : View.GONE}"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:layout_width="96dp"
@@ -81,7 +83,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:padding="8dp"
-                        android:drawableStart="@drawable/ic_nav_pattern"
                         android:drawablePadding="8dp"
                         android:text="@string/label_btn_pattern"
                         android:textColor="@color/colorAccent"
@@ -89,14 +90,14 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:background="?attr/selectableItemBackground"
-                        android:onClick="@{()-> view_model.addProductsFromPattern()}" />
+                        android:onClick="@{()-> view_model.addProductsFromPattern()}"
+                        app:drawableStartCompat="@drawable/ic_nav_pattern" />
 
                     <TextView
                         android:id="@+id/btn_recipe"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:padding="8dp"
-                        android:drawableStart="@drawable/ic_nav_recipe"
                         android:drawablePadding="8dp"
                         android:text="@string/label_btn_recipe"
                         android:textColor="@color/colorAccent"
@@ -104,14 +105,14 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:background="?attr/selectableItemBackground"
-                        android:onClick="@{()-> view_model.addProductsFromRecipe()}" />
+                        android:onClick="@{()-> view_model.addProductsFromRecipe()}"
+                        app:drawableStartCompat="@drawable/ic_nav_recipe" />
 
                     <TextView
                         android:id="@+id/btn_new_item"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:padding="8dp"
-                        android:drawableStart="@drawable/fab_add_white"
                         android:drawablePadding="8dp"
                         android:text="@string/label_btn_new_product"
                         android:textColor="@color/colorWhite"
@@ -119,7 +120,8 @@
                         android:background="@color/colorAccent"
                         android:clickable="true"
                         android:focusable="true"
-                        android:onClick="@{()-> view_model.addNewProduct()}" />
+                        android:onClick="@{()-> view_model.addNewProduct()}"
+                        app:drawableStartCompat="@drawable/fab_add_white" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
