@@ -42,8 +42,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(path: ':androidSwipeLayout')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72"
 
     // Android KTX
