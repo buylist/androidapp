@@ -7,7 +7,7 @@
     android:background="@drawable/button_top_bg"
     android:text="@string/placeholder_btn"
     android:textColor="@color/colorWhite"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp" />
+    android:layout_marginStart="@dimen/activity_horizontal_margin"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/list_item_padding"
+    android:layout_marginBottom="@dimen/list_item_padding" />

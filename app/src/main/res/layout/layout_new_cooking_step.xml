@@ -45,7 +45,7 @@
                 android:layout_height="@dimen/btn_create_size"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/btn_create_margin_end"
+                android:layout_marginEnd="@dimen/list_item_padding"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/img_description_save"
                 android:src="@drawable/button_create" />

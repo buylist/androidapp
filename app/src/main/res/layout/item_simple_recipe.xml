@@ -16,10 +16,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="70dp"
-        android:layout_marginStart="@dimen/default_layout_margin"
-        android:layout_marginEnd="@dimen/default_layout_margin"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/list_item_padding"
+        android:layout_marginBottom="@dimen/list_item_padding"
         android:orientation="vertical"
         android:onClick="@{()-> view_model.moveProducts(item)}">
 
@@ -29,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_toStartOf="@+id/btn_more"
-            android:layout_marginStart="8dp"
-            android:textSize="24sp"
+            android:layout_marginStart="@dimen/list_item_padding"
+            android:textSize="@dimen/default_text_size"
             android:text="@{item.title}" />
 
     </androidx.cardview.widget.CardView>

@@ -22,14 +22,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:minHeight="70dp"
-            android:padding="8dp">
+            android:padding="@dimen/list_item_padding">
 
             <TextView
                 android:id="@+id/tv_number_of_step"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:text="@string/label_number_of_step"
                 android:textSize="@dimen/default_text_size" />
 
@@ -37,8 +37,8 @@
                 android:id="@+id/tv_step"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/list_item_padding"
+                android:layout_marginEnd="@dimen/list_item_padding"
                 android:layout_gravity="center"
                 android:textSize="@dimen/default_text_size"
                 android:text="@{item.description}" />

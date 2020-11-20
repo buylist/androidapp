@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="8dp">
+        android:layout_margin="@dimen/activity_horizontal_margin">
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             android:background="@drawable/field_border"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/list_item_padding"
             android:hint="@string/hint_recipe_title">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             android:background="@drawable/field_border"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="@dimen/list_item_padding"
             android:hint="@string/hint_recipe_category">
 
             <com.google.android.material.textfield.TextInputEditText

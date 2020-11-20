@@ -62,13 +62,12 @@
             android:id="@+id/fab_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:useCompatPadding="true"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_done"
+            android:contentDescription="@string/img_description_save"
             app:layout_anchor="@id/layout_content"
             app:layout_anchorGravity="end|bottom"
             app:fabSize="auto"
-            android:src="@drawable/ic_done"
-            android:backgroundTint="@color/colorAccent"
-            android:contentDescription="@string/img_description_save"
             app:fabVisibility="@{viewModel.fabIsShown}"
             android:onClick="@{()-> viewModel.saveRecipe()}" />
 

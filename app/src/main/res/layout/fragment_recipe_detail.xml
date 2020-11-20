@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorScrimLoading"
-            android:elevation="5dp"
+            android:elevation="8dp"
             android:visibility="@{view_model.isDataAvailable() ? View.GONE : View.VISIBLE}" />
 
         <LinearLayout
@@ -50,13 +50,12 @@
             android:id="@+id/fab_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:useCompatPadding="true"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_edit"
+            android:contentDescription="@string/img_description_edit_recipe"
             app:layout_anchor="@id/layout_content"
             app:layout_anchorGravity="end|bottom"
             app:fabSize="auto"
-            android:src="@drawable/ic_edit"
-            android:backgroundTint="@color/colorAccent"
-            android:contentDescription="@string/img_description_edit_recipe"
             android:onClick="@{() -> view_model.editRecipe()}"
             app:fabVisibility="@{view_model.fabIsShown}" />
 

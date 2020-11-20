@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:minHeight="70dp"
-            android:padding="8dp">
+            android:padding="@dimen/list_item_padding">
 
             <TextView
                 android:id="@+id/tv_number_of_step"
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/list_item_padding"
                 android:text="@string/label_number_of_step"
                 android:textSize="@dimen/default_text_size" />
 
@@ -47,7 +47,7 @@
                 android:layout_toEndOf="@id/tv_number_of_step"
                 android:layout_toStartOf="@id/btn_more"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/list_item_padding"
                 android:layout_gravity="center"
                 android:textSize="@dimen/default_text_size"
                 android:text="@{item.step.description}"
@@ -60,7 +60,7 @@
                 android:layout_toEndOf="@id/tv_number_of_step"
                 android:layout_toStartOf="@id/btn_save"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/list_item_padding"
                 android:background="@android:color/transparent"
                 android:inputType="text"
                 android:importantForAutofill="no"
@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/list_item_padding"
                 android:src="@drawable/ic_more"
                 android:contentDescription="@string/img_description_item_menu"
                 android:onClick="@{()-> callback.onButtonMoreClick(item)}"
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/list_item_padding"
                 android:src="@drawable/button_create"
                 android:contentDescription="@string/img_description_save"
                 android:onClick="@{()-> callback.onButtonSaveClick(item)}"
@@ -102,8 +102,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colorDivider"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
+            android:layout_marginTop="@dimen/list_item_padding"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin" />
     </LinearLayout>
 </layout>

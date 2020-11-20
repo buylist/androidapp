@@ -25,8 +25,8 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:layout_width="96dp"
-                android:layout_height="96dp"
+                android:layout_width="@dimen/info_img_size"
+                android:layout_height="@dimen/info_img_size"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_pattern"
                 android:contentDescription="@string/img_description_default" />
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/label_patterns_not_found"
-                android:textSize="30sp" />
+                android:textSize="@dimen/info_text_size" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

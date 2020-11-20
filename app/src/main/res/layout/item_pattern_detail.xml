@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:padding="8dp">
+            android:padding="@dimen/list_item_padding">
 
             <ImageView
                 android:id="@+id/img_category_circle"
@@ -34,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/list_item_padding"
                 android:contentDescription="@string/img_description_category_color"
                 android:src="@drawable/circle" />
 
@@ -43,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/img_category_circle"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/list_item_padding"
                 android:layout_toStartOf="@+id/tv_quantity"
                 android:background="@android:color/transparent"
                 android:textSize="@dimen/default_text_size"
@@ -57,7 +58,7 @@
                 android:layout_toEndOf="@id/img_category_circle"
                 android:layout_toStartOf="@+id/field_quantity"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/list_item_padding"
                 android:background="@android:color/transparent"
                 android:inputType="text"
                 android:textSize="@dimen/default_text_size"
@@ -74,8 +75,8 @@
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@id/btn_more"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="@dimen/default_layout_margin"
+                android:layout_marginStart="@dimen/list_item_padding"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:textSize="@dimen/default_text_size"
                 android:text="@{item.item.quantity + item.item.unit}"
                 android:visibility="@{item.editable ? View.GONE : View.VISIBLE}" />
@@ -86,8 +87,8 @@
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@id/field_unit"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
+                android:layout_marginStart="@dimen/list_item_padding"
+                android:layout_marginEnd="@dimen/list_item_padding"
                 android:background="@drawable/field_bg"
                 android:gravity="center"
                 android:inputType="numberDecimal"
@@ -105,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@id/btn_save"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:background="@drawable/field_bg"
                 android:gravity="center"
                 android:inputType="text"
@@ -122,6 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/list_item_padding"
                 android:src="@drawable/ic_more"
                 app:tint="@color/colorNavNormal"
                 android:contentDescription="@string/img_description_item_menu"
@@ -130,10 +132,11 @@
 
             <ImageView
                 android:id="@+id/btn_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/btn_create_size"
+                android:layout_height="@dimen/btn_create_size"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/list_item_padding"
                 android:src="@drawable/button_create"
                 android:contentDescription="@string/img_description_save"
                 android:onClick="@{()-> callback.onButtonSaveClick(item)}"

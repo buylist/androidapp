@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:minHeight="70dp"
-            android:padding="8dp">
+            android:padding="@dimen/list_item_padding">
 
             <ImageView
                 android:id="@+id/img_category_circle"
@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:contentDescription="@string/img_description_category_color"
                 android:src="@drawable/circle"
                 app:tint="@color/colorNavNormal" />
@@ -40,7 +40,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/img_category_circle"
                 android:layout_toStartOf="@id/tv_quantity"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/list_item_padding"
                 android:textSize="@dimen/default_text_size"
                 android:text="@{item.name}" />
 
@@ -50,8 +50,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/list_item_padding"
+                android:layout_marginEnd="@dimen/list_item_padding"
                 android:textSize="@dimen/default_text_size"
                 android:text="@{item.quantity + item.unit}" />
 
@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colorDivider"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin" />
     </LinearLayout>
 </layout>

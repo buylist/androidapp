@@ -40,8 +40,8 @@
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
+                    android:layout_width="@dimen/info_img_size"
+                    android:layout_height="@dimen/info_img_size"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_list"
                     android:contentDescription="@string/img_description_default" />
@@ -53,7 +53,7 @@
                     android:text="@string/label_buy_list_info"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:textSize="30sp" />
+                    android:textSize="@dimen/info_text_size" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -71,7 +71,7 @@
                 android:layout_gravity="bottom|end"
                 android:layout_margin="16dp"
                 app:cardElevation="8dp"
-                android:visibility="invisible">
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -82,8 +82,8 @@
                         android:id="@+id/btn_pattern"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:padding="8dp"
-                        android:drawablePadding="8dp"
+                        android:padding="@dimen/list_item_padding"
+                        android:drawablePadding="@dimen/list_item_padding"
                         android:text="@string/label_btn_pattern"
                         android:textColor="@color/colorAccent"
                         android:gravity="center_vertical"
@@ -97,8 +97,8 @@
                         android:id="@+id/btn_recipe"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:padding="8dp"
-                        android:drawablePadding="8dp"
+                        android:padding="@dimen/list_item_padding"
+                        android:drawablePadding="@dimen/list_item_padding"
                         android:text="@string/label_btn_recipe"
                         android:textColor="@color/colorAccent"
                         android:gravity="center_vertical"
@@ -112,8 +112,8 @@
                         android:id="@+id/btn_new_item"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:padding="8dp"
-                        android:drawablePadding="8dp"
+                        android:padding="@dimen/list_item_padding"
+                        android:drawablePadding="@dimen/list_item_padding"
                         android:text="@string/label_btn_new_product"
                         android:textColor="@color/colorWhite"
                         android:gravity="center_vertical"
@@ -141,8 +141,8 @@
                     android:id="@+id/recycler_word_tips"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="@dimen/list_item_padding"
+                    android:layout_marginEnd="@dimen/list_item_padding"
                     android:scrollbars="none"
                     android:background="@android:color/transparent"
                     app:tags="@{view_model.wordTipsToShow}" />
@@ -159,8 +159,8 @@
                         android:layout_alignParentTop="true"
                         android:layout_toStartOf="@id/btn_next_circles"
                         android:layout_toEndOf="@id/btn_prev_circles"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="@dimen/list_item_padding"
+                        android:layout_marginEnd="@dimen/list_item_padding"
                         android:scrollbars="none"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:orientation="horizontal"
@@ -172,7 +172,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:src="@drawable/ic_arrow_left"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/img_description_prev_color"
@@ -184,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="16dp"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
                         android:src="@drawable/ic_arrow_right"
                         android:background="@android:color/transparent"
                         android:contentDescription="@string/img_description_next_color"
@@ -198,10 +198,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginStart="@dimen/default_horizontal_margin"
-                    android:layout_marginTop="@dimen/field_margin_vertical"
-                    android:layout_marginEnd="@dimen/default_horizontal_margin"
-                    android:layout_marginBottom="@dimen/field_margin_vertical"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/list_item_padding"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginBottom="@dimen/list_item_padding"
                     android:background="@drawable/field_border">
 
                     <EditText
@@ -222,7 +222,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/field_quantity_margin_end"
+                        android:layout_marginEnd="@dimen/list_item_padding"
                         android:gravity="center"
                         android:importantForAutofill="no"
                         android:hint="@string/hint_product_quantity"
@@ -266,13 +266,12 @@
                 android:id="@+id/fab_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:useCompatPadding="true"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/fab_add_white"
+                android:contentDescription="@string/img_description_new_product"
                 app:layout_anchor="@id/recycler_items"
                 app:layout_anchorGravity="end|bottom"
                 app:fabSize="auto"
-                android:src="@drawable/fab_add_white"
-                android:backgroundTint="@color/colorAccent"
-                android:contentDescription="@string/img_description_new_product"
                 app:fabVisibility="@{view_model.fabIsShown}"
                 android:onClick="@{()-> view_model.addProduct()}" />
 

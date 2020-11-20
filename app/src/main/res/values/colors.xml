@@ -8,20 +8,13 @@
     <color name="colorWhite">#FFFFFFFF</color>
 
     <color name="colorText">#4F4F4F</color>
-
-    <color name="colorVisibilityFab">#F1F1F1</color>
     <color name="colorDivider">#1F000000</color>
-    <color name="colorButtonNextText">#007AFF</color>
-    <color name="colorButtonSkipText">#4F4F4F</color>
     <color name="colorNavChecked">#4F4F4F</color>
     <color name="colorNavNormal">#979797</color>
     <color name="colorNavBackground">#F2F2F2</color>
-    <color name="colorMarkerDefault">#858E99</color>
-
     <color name="colorSlideTextTitle">#37474F</color>
     <color name="colorSlideTextMain">#555555</color>
     <color name="colorSlideUnselectedIndicator">#4D000000</color>
-
     <color name="colorScrim">#66434343</color>
     <color name="colorScrimLoading">#80FFFFFF</color>
 </resources>
