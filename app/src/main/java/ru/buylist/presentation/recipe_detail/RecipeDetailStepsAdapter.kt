@@ -37,7 +37,7 @@ class RecipeDetailStepsAdapter : ListAdapter<CookingStep, GenericViewHolder>(Rec
         override fun bind(position: Int) {
             val step = getItem(position)
             binding.tvNumberOfStep.text = itemView.context
-                    .getString(R.string.number_of_step, step.number)
+                    .getString(R.string.label_number_of_step, step.number)
             binding.item = step
             binding.executePendingBindings()
         }

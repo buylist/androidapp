@@ -36,7 +36,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="8dp"
-                android:contentDescription="@string/category_marker_description"
+                android:contentDescription="@string/img_description_category_color"
                 android:src="@drawable/circle"/>
 
             <TextView
@@ -64,6 +64,7 @@
                 android:inputType="text"
                 android:textSize="@dimen/default_text_size"
                 android:imeOptions="actionNext"
+                android:hint="@string/hint_product_name"
                 app:requestFocus="@{item.editable}"
                 android:text="@{item.item.name}"
                 android:visibility="@{item.editable ? View.VISIBLE : View.GONE}"/>
@@ -94,6 +95,7 @@
                 android:digits="0123456789.,"
                 android:textSize="@dimen/default_text_size"
                 android:imeOptions="actionNext"
+                android:hint="@string/hint_product_quantity"
                 android:text="@{item.item.quantity}"
                 android:visibility="@{item.editable ? View.VISIBLE : View.GONE}" />
 
@@ -109,6 +111,7 @@
                 android:inputType="text"
                 android:textSize="@dimen/default_text_size"
                 android:imeOptions="actionDone"
+                android:hint="@string/hint_product_unit"
                 android:text="@{item.item.unit}"
                 android:visibility="@{item.editable ? View.VISIBLE : View.GONE}" />
 
@@ -120,6 +123,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_more"
+                android:contentDescription="@string/img_description_item_menu"
                 android:onClick="@{()-> callback.onButtonMoreClick(item)}"
                 android:visibility="@{item.editable ? View.GONE : View.VISIBLE}"
                 app:tint="@color/colorNavNormal" />
@@ -132,6 +136,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/button_create"
+                android:contentDescription="@string/img_description_save"
                 android:onClick="@{()-> callback.onButtonSaveClick(item)}"
                 android:visibility="@{item.editable ? View.VISIBLE : View.GONE}" />
 

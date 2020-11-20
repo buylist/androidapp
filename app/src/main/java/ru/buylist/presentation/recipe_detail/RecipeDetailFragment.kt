@@ -13,7 +13,6 @@ import ru.buylist.databinding.FragmentRecipeDetailBinding
 import ru.buylist.presentation.BaseFragment
 import ru.buylist.presentation.recipe_add_edit.RecipeHeaderAdapter
 import ru.buylist.utils.EventObserver
-import ru.buylist.utils.InjectorUtils
 import ru.buylist.utils.getViewModelFactory
 import ru.buylist.utils.setupSnackbar
 
@@ -60,9 +59,9 @@ class RecipeDetailFragment : BaseFragment<FragmentRecipeDetailBinding>() {
 
     private fun setupAdapter() {
         val generalInfoAdapter = RecipeDetailGeneralInfoAdapter()
-        val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.ingredient_text))
+        val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.label_recipe_ingredient))
         val itemsAdapter = RecipeDetailItemsAdapter()
-        val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.cooking_steps_text))
+        val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.label_cooking_steps))
         val stepsAdapter = RecipeDetailStepsAdapter()
         val concatAdapter = ConcatAdapter(generalInfoAdapter, itemsHeaderAdapter, itemsAdapter,
                 stepsHeaderAdapter, stepsAdapter)

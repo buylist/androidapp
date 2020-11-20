@@ -41,13 +41,14 @@
                     android:layout_width="96dp"
                     android:layout_height="96dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_list" />
+                    android:src="@drawable/ic_list"
+                    android:contentDescription="@string/img_description_default" />
 
                 <TextView
                     android:id="@+id/tv_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/tv_buylist_detail_info"
+                    android:text="@string/label_buy_list_info"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textSize="30sp" />
@@ -82,13 +83,13 @@
                         android:padding="8dp"
                         android:drawableStart="@drawable/ic_nav_pattern"
                         android:drawablePadding="8dp"
-                        android:text="@string/btn_pattern_text"
+                        android:text="@string/label_btn_pattern"
                         android:textColor="@color/colorAccent"
                         android:gravity="center_vertical"
                         android:clickable="true"
                         android:focusable="true"
                         android:background="?attr/selectableItemBackground"
-                        android:onClick="@{()-> view_model.addProductsFromPattern()}"/>
+                        android:onClick="@{()-> view_model.addProductsFromPattern()}" />
 
                     <TextView
                         android:id="@+id/btn_recipe"
@@ -97,13 +98,13 @@
                         android:padding="8dp"
                         android:drawableStart="@drawable/ic_nav_recipe"
                         android:drawablePadding="8dp"
-                        android:text="@string/btn_recipe_text"
+                        android:text="@string/label_btn_recipe"
                         android:textColor="@color/colorAccent"
                         android:gravity="center_vertical"
                         android:clickable="true"
                         android:focusable="true"
                         android:background="?attr/selectableItemBackground"
-                        android:onClick="@{()-> view_model.addProductsFromRecipe()}"/>
+                        android:onClick="@{()-> view_model.addProductsFromRecipe()}" />
 
                     <TextView
                         android:id="@+id/btn_new_item"
@@ -112,7 +113,7 @@
                         android:padding="8dp"
                         android:drawableStart="@drawable/fab_add_white"
                         android:drawablePadding="8dp"
-                        android:text="@string/btn_new_item_text"
+                        android:text="@string/label_btn_new_product"
                         android:textColor="@color/colorWhite"
                         android:gravity="center_vertical"
                         android:background="@color/colorAccent"
@@ -142,7 +143,7 @@
                     android:layout_marginEnd="8dp"
                     android:scrollbars="none"
                     android:background="@android:color/transparent"
-                    app:tags="@{view_model.wordTipsToShow}"/>
+                    app:tags="@{view_model.wordTipsToShow}" />
 
                 <!--Палитра цветов-->
                 <RelativeLayout
@@ -172,7 +173,7 @@
                         android:layout_marginStart="16dp"
                         android:src="@drawable/ic_arrow_left"
                         android:background="@android:color/transparent"
-                        android:contentDescription="@string/btn_prev_color_description"
+                        android:contentDescription="@string/img_description_prev_color"
                         android:visibility="@{view_model.prevArrowIsShown ? View.VISIBLE : View.INVISIBLE}" />
 
                     <ImageButton
@@ -184,7 +185,7 @@
                         android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_arrow_right"
                         android:background="@android:color/transparent"
-                        android:contentDescription="@string/btn_next_color_description"
+                        android:contentDescription="@string/img_description_next_color"
                         android:visibility="@{view_model.nextArrowIsShown ? View.INVISIBLE : View.VISIBLE}" />
 
                 </RelativeLayout>
@@ -206,7 +207,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="4"
-                        android:hint="@string/item_name_default_text"
+                        android:hint="@string/hint_product_name"
                         android:inputType="text"
                         android:imeOptions="actionNext"
                         android:nextFocusForward="@id/field_quantity"
@@ -220,7 +221,7 @@
                         android:layout_weight="1"
                         android:layout_marginEnd="@dimen/field_quantity_margin_end"
                         android:gravity="center"
-                        android:hint="@string/field_quantity_hint"
+                        android:hint="@string/hint_product_quantity"
                         android:inputType="numberDecimal"
                         android:digits="0123456789.,"
                         android:imeOptions="actionNext"
@@ -234,7 +235,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:hint="@string/field_unit_hint"
+                        android:hint="@string/hint_product_unit"
                         android:inputType="text"
                         android:imeOptions="actionDone"
                         android:background="@drawable/field_bg"
@@ -247,7 +248,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
-                        android:contentDescription="@string/btn_create_item_description"
+                        android:contentDescription="@string/img_description_save"
                         android:src="@drawable/button_create"
                         android:onClick="@{()-> view_model.saveNewItem()}" />
 
@@ -266,6 +267,7 @@
                 app:fabSize="auto"
                 android:src="@drawable/fab_add_white"
                 android:backgroundTint="@color/colorAccent"
+                android:contentDescription="@string/img_description_new_product"
                 app:fabVisibility="@{view_model.fabIsShown}"
                 android:onClick="@{()-> view_model.addProduct()}" />
 

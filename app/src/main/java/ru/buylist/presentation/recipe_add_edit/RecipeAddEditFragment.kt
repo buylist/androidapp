@@ -69,14 +69,14 @@ class RecipeAddEditFragment : BaseFragment<FragmentRecipeAddEditBinding>() {
     }
 
     private fun setupAdapter() {
-        val generalHeaderAdapter = RecipeHeaderAdapter(getString(R.string.tv_general_header))
+        val generalHeaderAdapter = RecipeHeaderAdapter(getString(R.string.label_recipe_general_info))
         val generalInfoAdapter = RecipeAddEditGeneralInfoAdapter(viewModel)
-        val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.ingredient_text))
+        val itemsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.label_recipe_ingredient))
         val itemsAdapter = RecipeAddEditItemsAdapter(viewModel)
-        val itemsButtonAdapter = RecipeButtonAdapter(getString(R.string.btn_new_ingredient_description), newItemButtonCallback)
-        val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.cooking_steps_text))
+        val itemsButtonAdapter = RecipeButtonAdapter(getString(R.string.label_new_ingredient), newItemButtonCallback)
+        val stepsHeaderAdapter = RecipeHeaderAdapter(getString(R.string.label_cooking_steps))
         val stepsAdapter = RecipeAddEditStepsAdapter(viewModel)
-        val stepsButtonAdapter = RecipeButtonAdapter(getString(R.string.add_new_step), newStepButtonCallback)
+        val stepsButtonAdapter = RecipeButtonAdapter(getString(R.string.label_new_step), newStepButtonCallback)
         val concatAdapter = ConcatAdapter(generalHeaderAdapter, generalInfoAdapter,
                 itemsHeaderAdapter, itemsAdapter, itemsButtonAdapter,
                 stepsHeaderAdapter, stepsAdapter, stepsButtonAdapter)

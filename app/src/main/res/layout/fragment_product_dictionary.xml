@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
 
         <variable
             name="view_model"
@@ -32,13 +33,14 @@
                     android:layout_width="96dp"
                     android:layout_height="96dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_slide_book" />
+                    android:src="@drawable/ic_slide_book"
+                    android:contentDescription="@string/img_description_default" />
 
                 <TextView
                     android:id="@+id/tv_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/tv_product_dictionary_empty"
+                    android:text="@string/label_product_dictionary_info"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textSize="30sp" />
@@ -99,7 +101,7 @@
                         android:layout_marginStart="16dp"
                         android:src="@drawable/ic_arrow_left"
                         android:background="@android:color/transparent"
-                        android:contentDescription="@string/btn_prev_color_description"
+                        android:contentDescription="@string/img_description_prev_color"
                         android:visibility="@{view_model.prevArrowIsShown ? View.VISIBLE : View.INVISIBLE}" />
 
                     <ImageButton
@@ -111,7 +113,7 @@
                         android:layout_marginEnd="16dp"
                         android:src="@drawable/ic_arrow_right"
                         android:background="@android:color/transparent"
-                        android:contentDescription="@string/btn_next_color_description"
+                        android:contentDescription="@string/img_description_next_color"
                         android:visibility="@{view_model.nextArrowIsShown ? View.INVISIBLE : View.VISIBLE}" />
 
                 </RelativeLayout>
@@ -134,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@id/btn_create"
-                        android:hint="@string/item_name_default_text"
+                        android:hint="@string/hint_product_name"
                         android:inputType="text"
                         android:imeOptions="actionNext"
                         android:nextFocusForward="@id/field_quantity"
@@ -147,7 +149,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:background="@android:color/transparent"
-                        android:contentDescription="@string/btn_create_item_description"
+                        android:contentDescription="@string/img_description_save"
                         android:src="@drawable/button_create"
                         android:onClick="@{()-> view_model.saveNewProduct()}" />
 
@@ -165,6 +167,7 @@
                 app:fabSize="auto"
                 android:src="@drawable/fab_add_white"
                 android:backgroundTint="@color/colorAccent"
+                android:contentDescription="@string/img_description_new_product"
                 app:fabVisibility="@{view_model.fabIsShown}"
                 android:onClick="@{()-> view_model.addProduct()}" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

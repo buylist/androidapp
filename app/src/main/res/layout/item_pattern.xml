@@ -41,7 +41,7 @@
                 android:textSize="24sp"
                 android:text="@{item.pattern.title}"
                 android:onClick="@{()-> callback.onPatternClicked(item)}"
-                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}"/>
+                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}" />
 
             <EditText
                 android:id="@+id/field_pattern_title"
@@ -54,9 +54,10 @@
                 android:inputType="text"
                 android:textSize="24sp"
                 android:imeOptions="actionDone"
+                android:hint="@string/hint_pattern_title"
                 app:requestFocus="@{item.editable}"
                 android:text="@{item.pattern.title}"
-                android:visibility="@{item.editable ? View.VISIBLE : View.GONE}"/>
+                android:visibility="@{item.editable ? View.VISIBLE : View.GONE}" />
 
             <ImageView
                 android:id="@+id/btn_more"
@@ -67,8 +68,9 @@
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_more"
                 app:tint="@color/colorNavNormal"
+                android:contentDescription="@string/img_description_item_menu"
                 android:onClick="@{()-> callback.onButtonMoreClick(item)}"
-                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}"/>
+                android:visibility="@{item.editable ? View.GONE : View.VISIBLE}" />
 
             <ImageView
                 android:id="@+id/btn_save"
@@ -78,6 +80,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/button_create"
+                android:contentDescription="@string/img_description_save"
                 android:onClick="@{()-> callback.onButtonSaveClick(item)}"
                 android:visibility="@{item.editable ? View.VISIBLE : View.GONE}" />
 

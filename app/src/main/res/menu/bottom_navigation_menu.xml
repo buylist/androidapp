@@ -3,13 +3,13 @@
     <item
         android:id="@+id/buy_lists_fragment"
         android:icon="@drawable/ic_nav_list"
-        android:title="@string/action_buy_list_text" />
+        android:title="@string/label_buy_list" />
     <item
         android:id="@+id/patterns_fragment"
         android:icon="@drawable/ic_nav_pattern"
-        android:title="@string/action_pattern_text" />
+        android:title="@string/label_pattern" />
     <item
         android:id="@+id/recipes_fragment"
         android:icon="@drawable/ic_nav_recipe"
-        android:title="@string/action_recipe_text" />
+        android:title="@string/label_recipe" />
 </menu>

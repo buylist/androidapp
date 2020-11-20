@@ -56,6 +56,7 @@
             app:fabSize="auto"
             android:src="@drawable/ic_edit"
             android:backgroundTint="@color/colorAccent"
+            android:contentDescription="@string/img_description_edit_recipe"
             android:onClick="@{() -> view_model.editRecipe()}"
             app:fabVisibility="@{view_model.fabIsShown}" />
 

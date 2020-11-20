@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/buy_lists_fragment"
         android:name="ru.buylist.presentation.buy_lists.BuyListsFragment"
-        android:label="@string/action_buy_list_text" >
+        android:label="@string/label_buy_list" >
         <action
             android:id="@+id/action_buy_list_fragment_to_buy_list_detail_fragment"
             app:destination="@id/buy_list_detail_fragment" />
@@ -18,7 +18,7 @@
     <fragment
         android:id="@+id/patterns_fragment"
         android:name="ru.buylist.presentation.patterns.PatternsFragment"
-        android:label="@string/action_pattern_text" >
+        android:label="@string/label_pattern" >
         <action
             android:id="@+id/action_patterns_fragment_to_pattern_detail_fragment"
             app:destination="@id/pattern_detail_fragment" />
@@ -29,7 +29,7 @@
     <fragment
         android:id="@+id/recipes_fragment"
         android:name="ru.buylist.presentation.recipes.RecipesFragment"
-        android:label="@string/action_recipe_text" >
+        android:label="@string/label_recipe" >
         <action
             android:id="@+id/action_recipes_fragment_to_recipe_detail_fragment"
             app:destination="@id/recipe_detail_fragment" />

@@ -44,7 +44,7 @@ class RecipeAddEditStepsAdapter(val viewModel: RecipeAddEditViewModel) :
         override fun bind(position: Int) {
             val wrapper = getItem(position)
             binding.tvNumberOfStep.text = itemView.context
-                    .getString(R.string.number_of_step, wrapper.step.number)
+                    .getString(R.string.label_number_of_step, wrapper.step.number)
             binding.item = wrapper
             binding.card.setBackgroundColor(if (wrapper.isEditable) Color.WHITE else 0)
             binding.callback = getListener(itemView.context, binding.btnMore, binding.fieldStep)

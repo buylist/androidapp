@@ -74,6 +74,7 @@
                 android:src="@drawable/ic_more"
                 app:tint="@color/colorNavNormal"
                 android:layout_centerVertical="true"
+                android:contentDescription="@string/img_description_item_menu"
                 android:onClick="@{()-> callback.onButtonMoreClick(wrapper)}" />
 
         </RelativeLayout>

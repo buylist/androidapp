@@ -26,13 +26,14 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_recipe" />
+                android:src="@drawable/ic_recipe"
+                android:contentDescription="@string/img_description_default" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/tv_recipes_not_found"
+                android:text="@string/label_recipes_not_found"
                 android:textSize="30sp" />
         </LinearLayout>
 
@@ -41,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:recipes="@{view_model.recipes}"/>
+            app:recipes="@{view_model.recipes}" />
     </FrameLayout>
 
 </layout>

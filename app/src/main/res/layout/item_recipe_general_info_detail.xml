@@ -23,7 +23,7 @@
                 android:id="@+id/tv_recipe_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tv_recipe_category" />
+                android:text="@string/label_recipe_category" />
 
             <TextView
                 android:id="@+id/tv_recipe_category_value"
@@ -36,7 +36,7 @@
                 android:id="@+id/tv_cooking_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/tv_cooking_time_detail"
+                android:text="@string/label_cooking_time"
                 android:layout_marginTop="16dp" />
 
             <TextView

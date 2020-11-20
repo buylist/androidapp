@@ -13,18 +13,13 @@
             type="ru.buylist.presentation.tag_adapter.WordTipsListener" />
     </data>
 
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:layout_margin="8dp"
-            android:text="@{item.name}"
-            app:tagColor="@{item.color}"
-            android:textColor="@color/colorWhite"
-            android:onClick="@{()-> callback.onWordTipClick(item)}" />
-
-
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_margin="8dp"
+        android:text="@{item.name}"
+        app:tagColor="@{item.color}"
+        android:textColor="@color/colorWhite"
+        android:onClick="@{()-> callback.onWordTipClick(item)}" />
 </layout>

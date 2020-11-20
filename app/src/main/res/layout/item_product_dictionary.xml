@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_gravity="center"
-                android:contentDescription="@string/category_marker_description"
+                android:contentDescription="@string/img_description_category_color"
                 android:src="@drawable/circle" />
 
             <TextView
@@ -50,6 +50,6 @@
             android:layout_height="1dp"
             android:background="@color/colorDivider"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="16dp" />
     </LinearLayout>
 </layout>

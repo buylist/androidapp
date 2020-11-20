@@ -32,13 +32,14 @@
                     android:layout_width="96dp"
                     android:layout_height="96dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_recipe" />
+                    android:src="@drawable/ic_recipe"
+                    android:contentDescription="@string/img_description_default" />
 
                 <TextView
                     android:id="@+id/tv_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/tv_recipe_list_info"
+                    android:text="@string/label_recipes_info"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textSize="30sp" />
@@ -60,6 +61,7 @@
                 app:layout_anchorGravity="end|bottom"
                 app:fabSize="auto"
                 android:src="@drawable/fab_add_white"
+                android:contentDescription="@string/img_description_new_recipe"
                 app:fabVisibility="@{view_model.fabIsShown}"
                 android:onClick="@{()-> view_model.addNewRecipe()}" />
 

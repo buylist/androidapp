@@ -1,83 +1,48 @@
 <resources>
-    <string name="app_name">BuyList</string>
-
-    <!--Bottom navigation-->
-    <string name="action_buy_list_text">Списки</string>
-    <string name="action_pattern_text">Шаблоны</string>
-    <string name="action_recipe_text">Рецепты</string>
-
-
-    <!--Drawer-->
-    <string name="nav_product_dictionary">Словарь продуктов</string>
-    <string name="nav_group_info">Информация</string>
-    <string name="nav_feedback">Отправить отзыв</string>
-    <string name="nav_about">О приложении</string>
-
-
-    <!--Snackbar text-->
-    <string name="snackbar_action_ok">OK</string>
-    <string name="snackbar_buy_lists_loading_error">Не удалось загрузить список покупок.</string>
-    <string name="snackbar_empty_buy_list_title">Введите название списка.</string>
-    <string name="snackbar_empty_product_name">Введите название продукта.</string>
-    <string name="snackbar_patterns_loading_error">Не удалось загрузить список покупок.</string>
-    <string name="snackbar_empty_pattern_title">Введите название шаблона.</string>
-    <string name="snackbar_products_loading_error">Не удалось загрузить список продуктов.</string>
-    <string name="snackbar_recipes_loading_error">Не удалось загрузить список рецептов.</string>
-    <string name="snackbar_recipe_loading_error">Не удалось загрузить рецепт.</string>
-    <string name="snackbar_empty_recipe_title">Введите название рецепта.</string>
-    <string name="snackbar_no_products_in_pattern">В выбранном шаблоне нет продуктов</string>
-    <string name="snackbar_no_products_in_recipe">В выбранном рецепте нет продуктов</string>
-    <string name="snackbar_products_moved_from_pattern">Продукты из шаблона перенесены в список покупок</string>
-    <string name="snackbar_products_moved_from_recipe">Продукты из рецепта перенесены в список покупок</string>
+    <string name="app_name" translatable="false">BuyList</string>
 
     <!--Default-->
-    <string name="item_name_default_text">Название продукта</string>
-        <!--hint-->
-        <string name="field_quantity_hint">1</string>
-        <string name="field_unit_hint">шт</string>
-
+    <string name="label_buy_list">Списки</string>
+    <string name="label_pattern">Шаблоны</string>
+    <string name="label_recipe">Рецепты</string>
+    <string name="label_edit">Редактировать</string>
+    <string name="label_delete">Удалить</string>
+    <string name="hint_product_name">Название продукта</string>
+    <string name="hint_product_quantity">1</string>
+    <string name="hint_product_unit">шт</string>
 
     <!--BuyList-->
-    <string name="tv_buy_list_info">Создайте свой первый список покупок</string>
-    <string name="tv_buylist_detail_info">Список покупок пуст</string>
-    <string name="btn_pattern_text">По шаблону</string>
-    <string name="btn_recipe_text">По рецепту</string>
-    <string name="btn_new_item_text">Новый товар</string>
-    <string name="tv_patterns_not_found">Шаблоны не найдены</string>
-    <string name="tv_recipes_not_found">Рецепты не найдены</string>
-        <!--hint-->
-        <string name="field_name_buy_list_hint">Введите название списка</string>
-
+    <string name="label_buy_lists_info">Создайте свой первый список покупок</string>
+    <string name="label_buy_list_info">Список покупок пуст</string>
+    <string name="label_btn_pattern">По шаблону</string>
+    <string name="label_btn_recipe">По рецепту</string>
+    <string name="label_btn_new_product">Новый товар</string>
+    <string name="label_patterns_not_found">Шаблоны не найдены</string>
+    <string name="label_recipes_not_found">Рецепты не найдены</string>
+    <string name="hint_buy_list_title">Введите название списка</string>
 
     <!--Pattern-->
-    <string name="tv_pattern_list_info">Создайте свой первый шаблон</string>
-    <string name="tv_pattern_detail_info">Шаблон пуст</string>
-        <!--hint-->
-        <string name="field_name_pattern_hint">Введите название шаблона</string>
-
+    <string name="label_patterns_info">Создайте свой первый шаблон</string>
+    <string name="label_pattern_info">Шаблон пуст</string>
+    <string name="hint_pattern_title">Введите название шаблона</string>
 
     <!--Recipe-->
-    <string name="tv_recipe_list_info">Создайте свой первый рецепт</string>
-    <string name="tv_general_header">Основная информация</string>
-    <string name="ingredient_text">Ингредиенты</string>
-    <string name="cooking_steps_text">Шаги приготовления</string>
-    <string name="add_new_step">Добавить шаг</string>
-    <string name="number_of_step">%d.</string>
-    <string name="tv_cooking_time">Готовится за:</string>
-    <string name="fragment_label_new_recipe">Новый рецепт</string>
-    <string name="default_recipe_title">(Без названия…)</string>
-    <string name="tv_recipe_category">Категория рецепта:</string>
-    <string name="tv_cooking_time_detail">Время приготовления:</string>
-        <!--hint-->
-        <string name="field_name_recipe_hint">Название</string>
-        <string name="field_recipe_category_hint">Категория</string>
-        <string name="field_recipe_step_hint">Описание шага</string>
-        <string name="field_cooking_time_hint">Время приготовления</string>
-
+    <string name="label_recipes_info">Создайте свой первый рецепт</string>
+    <string name="label_recipe_general_info">Основная информация</string>
+    <string name="label_recipe_ingredient">Ингредиенты</string>
+    <string name="label_cooking_steps">Шаги приготовления</string>
+    <string name="label_new_ingredient">Добавить ингредиент</string>
+    <string name="label_new_step">Добавить шаг</string>
+    <string name="label_number_of_step">%d.</string>
+    <string name="label_recipe_category">Категория рецепта:</string>
+    <string name="label_cooking_time">Время приготовления:</string>
+    <string name="hint_recipe_title">Название</string>
+    <string name="hint_recipe_category">Категория</string>
+    <string name="hint_recipe_step">Описание шага</string>
+    <string name="hint_cooking_time">Время приготовления</string>
 
     <!--ProductDictionary-->
-    <string name="tv_product_dictionary_empty">Словарь пуст</string>
-
+    <string name="label_product_dictionary_info">Словарь пуст</string>
 
     <!--AboutActivity-->
     <string name="slide_welcome_title">Добро пожаловать в BuyList!</string>
@@ -95,29 +60,45 @@
         для более конкретных подсказок при заполнении списка</string>
 
     <!--ContentDescription-->
-    <string name="logo_description">Логотип</string>
-    <string name="btn_new_buy_list_description">Создать список</string>
-    <string name="btn_create_buy_list_description">Сохранить список</string>
-    <string name="btn_create_cooking_step_description">Сохранить шаг</string>
-    <string name="btn_new_pattern_description">Создать шаблон</string>
-    <string name="btn_create_pattern_description">Сохранить шаблон</string>
-    <string name="btn_new_recipe_description">Создать рецепт</string>
-    <string name="btn_create_recipe_description">Сохранить рецепт</string>
-    <string name="btn_edit_collection_description">Редактировать список</string>
-    <string name="btn_delete_collection_description">Удалить список</string>
-    <string name="img_circle_description">Маркер</string>
-    <string name="fab_visibility_description">Показать или скрыть купленные товары</string>
-    <string name="category_marker_description">Цвет категории</string>
-    <string name="btn_prev_color_description">Предыдущие цвета</string>
-    <string name="btn_next_color_description">Следующие цвета</string>
-    <string name="btn_new_ingredient_description">Добавить ингредиент</string>
-    <string name="btn_create_item_description">Сохранить товар</string>
+    <string name="img_description_default">Изображение</string>
+    <string name="img_description_item_menu">Показать меню</string>
+    <string name="img_description_new_product">Добавить товар</string>
+    <string name="img_description_new_buy_list">Добавить список</string>
+    <string name="img_description_new_pattern">Добавить шаблон</string>
+    <string name="img_description_new_recipe">Добавить рецепт</string>
+    <string name="img_description_edit_recipe">Редактировать рецепт</string>
+    <string name="img_description_save">Сохранить</string>
+    <string name="img_description_category_color">Цвет категории</string>
+    <string name="img_description_prev_color">Предыдущие цвета</string>
+    <string name="img_description_next_color">Следующие цвета</string>
 
+    <!--PlaceHolders-->
+    <string name="placeholder_btn">Добавить</string>
+    <string name="placeholder_title">Заголовок</string>
 
+    <!--Drawer-->
+    <string name="nav_product_dictionary">Словарь продуктов</string>
+    <string name="nav_group_info">Информация</string>
+    <string name="nav_feedback">Отправить отзыв</string>
+    <string name="nav_about">О приложении</string>
 
+    <!--Snackbar text-->
+    <string name="snackbar_action_ok">OK</string>
+    <string name="snackbar_buy_lists_loading_error">Не удалось загрузить список покупок.</string>
+    <string name="snackbar_empty_buy_list_title">Введите название списка.</string>
+    <string name="snackbar_empty_product_name">Введите название продукта.</string>
+    <string name="snackbar_patterns_loading_error">Не удалось загрузить список покупок.</string>
+    <string name="snackbar_empty_pattern_title">Введите название шаблона.</string>
+    <string name="snackbar_products_loading_error">Не удалось загрузить список продуктов.</string>
+    <string name="snackbar_recipes_loading_error">Не удалось загрузить список рецептов.</string>
+    <string name="snackbar_recipe_loading_error">Не удалось загрузить рецепт.</string>
+    <string name="snackbar_empty_recipe_title">Введите название рецепта.</string>
+    <string name="snackbar_no_products_in_pattern">В выбранном шаблоне нет продуктов</string>
+    <string name="snackbar_no_products_in_recipe">В выбранном рецепте нет продуктов</string>
+    <string name="snackbar_products_moved_from_pattern">Продукты из шаблона перенесены в список покупок</string>
+    <string name="snackbar_products_moved_from_recipe">Продукты из рецепта перенесены в список покупок</string>
 
-
-
+    <!--Colors-->
     <string-array name="category_color">
         <!--мясо-->
         <item>#EF5350</item>
@@ -151,9 +132,6 @@
         <item>#FFA726</item>
         <!--бакалея-->
         <item>#FF7043</item>
-
-
     </string-array>
-
 
 </resources>
