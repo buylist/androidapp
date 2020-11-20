@@ -55,6 +55,7 @@
                 android:inputType="text"
                 android:textSize="24sp"
                 android:imeOptions="actionDone"
+                android:importantForAutofill="no"
                 android:hint="@string/hint_buy_list_title"
                 app:requestFocus="@{item.editable}"
                 android:text="@{item.buyList.title}"

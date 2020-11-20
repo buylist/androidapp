@@ -136,6 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@id/btn_create"
+                        android:importantForAutofill="no"
                         android:hint="@string/hint_product_name"
                         android:inputType="text"
                         android:imeOptions="actionNext"

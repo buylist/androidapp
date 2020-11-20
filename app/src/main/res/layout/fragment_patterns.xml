@@ -89,6 +89,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/btn_create"
+                        android:importantForAutofill="no"
                         android:hint="@string/hint_pattern_title"
                         android:inputType="textMultiLine"
                         android:maxLines="10"

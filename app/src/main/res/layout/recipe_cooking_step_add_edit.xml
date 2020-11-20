@@ -63,6 +63,7 @@
                 android:layout_marginStart="8dp"
                 android:background="@android:color/transparent"
                 android:inputType="text"
+                android:importantForAutofill="no"
                 android:textSize="@dimen/default_text_size"
                 android:imeOptions="actionDone"
                 android:hint="@string/hint_recipe_step"

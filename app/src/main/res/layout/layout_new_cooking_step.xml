@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_toStartOf="@+id/btn_create_step"
+                android:importantForAutofill="no"
                 android:hint="@string/hint_recipe_step"
                 android:inputType="textMultiLine"
                 android:minLines="3"
